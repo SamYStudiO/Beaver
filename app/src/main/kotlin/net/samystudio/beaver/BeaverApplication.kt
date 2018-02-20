@@ -6,12 +6,11 @@ import android.util.Base64
 import android.util.Log
 import dagger.android.AndroidInjector
 import dagger.android.support.DaggerApplication
-import net.samystudio.beaver.di.component.DaggerApplicationComponent
 import timber.log.Timber
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 
-class HighwayApplication : DaggerApplication()
+class BeaverApplication : DaggerApplication()
 {
     override fun onCreate()
     {

@@ -7,7 +7,7 @@ android {
     compileSdkVersion 27
 
     defaultConfig {
-        applicationId "net.samystudio.highway"
+        applicationId "net.samystudio.beaver"
         minSdkVersion 19
         targetSdkVersion 27
         versionCode 1

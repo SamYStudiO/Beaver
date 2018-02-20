@@ -19,6 +19,6 @@ class ExampleInstrumentedTest
     {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getTargetContext()
-        assertEquals("net.samystudio.highway", appContext.packageName)
+        assertEquals("net.samystudio.beaver", appContext.packageName)
     }
 }

@@ -4,7 +4,7 @@ import android.content.Context
 import dagger.Module
 import dagger.Provides
 import dagger.android.support.AndroidSupportInjectionModule
-import net.samystudio.beaver.HighwayApplication
+import net.samystudio.beaver.BeaverApplication
 import net.samystudio.beaver.di.qualifier.ApplicationContext
 import net.samystudio.beaver.ui.ActivityBuildersModule
 import javax.inject.Singleton
@@ -19,6 +19,6 @@ abstract class ApplicationModule
         @ApplicationContext
         @Singleton
         @JvmStatic
-        fun provideApplicationContext(application: HighwayApplication): Context = application
+        fun provideApplicationContext(application: BeaverApplication): Context = application
     }
 }
