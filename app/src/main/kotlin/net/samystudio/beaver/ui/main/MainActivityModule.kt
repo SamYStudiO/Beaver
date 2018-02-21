@@ -7,7 +7,6 @@ import dagger.android.ContributesAndroidInjector
 import net.samystudio.beaver.di.scope.PerActivity
 import net.samystudio.beaver.di.scope.PerFragment
 import net.samystudio.beaver.ui.base.activity.BaseActivityModule
-import net.samystudio.beaver.ui.base.fragment.BaseFragmentModule
 
 @Module(includes = [BaseActivityModule::class])
 abstract class MainActivityModule
@@ -16,7 +15,7 @@ abstract class MainActivityModule
     @PerActivity
     abstract fun bindActivity(activity: MainActivity): AppCompatActivity
 
-    @ContributesAndroidInjector(modules = [BaseFragmentModule::class])
+    @ContributesAndroidInjector(modules = [MainFragmentModule::class])
     @PerFragment
-    abstract fun contributeLaunchFragment(): MainFragment
+    abstract fun contributeMainFragment(): MainFragment
 }

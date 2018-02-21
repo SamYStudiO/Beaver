@@ -1,4 +1,4 @@
-package net.samystudio.beaver
+package net.samystudio.beaver.ext
 
 import android.content.Context
 import com.bumptech.glide.Glide
@@ -9,9 +9,9 @@ import com.bumptech.glide.integration.okhttp3.OkHttpLibraryGlideModule
 import com.bumptech.glide.integration.okhttp3.OkHttpUrlLoader
 import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.module.AppGlideModule
+import net.samystudio.beaver.BeaverApplication
 import net.samystudio.beaver.di.component.DaggerGlideComponent
 import okhttp3.OkHttpClient
-import timber.log.Timber
 import java.io.InputStream
 import javax.inject.Inject
 
@@ -34,7 +34,6 @@ class OkHttpGlideModule : AppGlideModule()
 
     override fun registerComponents(context: Context, glide: Glide, registry: Registry)
     {
-        Timber.d("ok")
         registry.replace(GlideUrl::class.java,
                          InputStream::class.java,
                          OkHttpUrlLoader.Factory(okHttpClient))
