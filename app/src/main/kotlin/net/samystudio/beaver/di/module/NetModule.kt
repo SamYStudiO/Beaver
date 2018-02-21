@@ -1,11 +1,6 @@
 package net.samystudio.beaver.di.module
 
 import android.app.Application
-import android.content.Context
-import com.bumptech.glide.Glide
-import com.bumptech.glide.GlideBuilder
-import com.bumptech.glide.load.model.GlideUrl
-import com.bumptech.glide.module.AppGlideModule
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -14,7 +9,6 @@ import dagger.Provides
 import io.reactivex.schedulers.Schedulers
 import net.samystudio.beaver.BuildConfig
 import net.samystudio.beaver.data.manager.SharedPreferencesManager
-import net.samystudio.beaver.di.qualifier.ApplicationContext
 import okhttp3.Cache
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
@@ -24,7 +18,6 @@ import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import timber.log.Timber
 import java.lang.reflect.Type
 import javax.inject.Singleton
 
@@ -96,17 +89,17 @@ class NetModule
                     .client(okHttpClient)
                     .build()
 
-    @Provides
+    /*@Provides
     @Singleton
-    fun providePicasso(@ApplicationContext context: Context, okHttpClient: OkHttpClient): Picasso =
+    fun provideGlide(@ApplicationContext context: Context, okHttpClient: OkHttpClient): Picasso =
             Picasso.Builder(context)
                     .downloader(OkHttp3Downloader(okHttpClient))
                     .indicatorsEnabled(BuildConfig.DEBUG)
                     .loggingEnabled(BuildConfig.DEBUG)
                     .listener { _, _, exception -> Timber.w(exception) }
-                    .build()
+                    .build()*/
 
-    @Provides
+    /*@Provides
     @Singleton
     fun provideGlide(@ApplicationContext context: Context, okHttpClient: OkHttpClient): Glide
     {
@@ -121,7 +114,7 @@ class NetModule
                 .loggingEnabled(BuildConfig.DEBUG)
                 .listener { _, _, exception -> Timber.w(exception) }
                 .build()
-    }
+    }*/
 
     private class NullOnEmptyConverterFactory : Converter.Factory()
     {

@@ -4,14 +4,23 @@ import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.util.Base64
 import android.util.Log
-import dagger.android.AndroidInjector
 import dagger.android.support.DaggerApplication
+import net.samystudio.beaver.di.component.DaggerApplicationComponent
 import timber.log.Timber
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 
 class BeaverApplication : DaggerApplication()
 {
+    private val applicationInjector = DaggerApplicationComponent.builder()
+            .application(this)
+            .build()
+
+    init
+    {
+        instance = this
+    }
+
     override fun onCreate()
     {
         super.onCreate()
@@ -21,10 +30,7 @@ class BeaverApplication : DaggerApplication()
         logKeyHash()
     }
 
-    override fun applicationInjector(): AndroidInjector<out DaggerApplication>
-    {
-        return DaggerApplicationComponent.builder().application(this).build()
-    }
+    public override fun applicationInjector() = applicationInjector
 
     private fun initFirebaseCrash()
     {
@@ -35,10 +41,8 @@ class BeaverApplication : DaggerApplication()
     {
         Timber.plant(object : Timber.DebugTree()
                      {
-                         override fun isLoggable(tag: String?, priority: Int): Boolean
-                         {
-                             return BuildConfig.DEBUG || priority >= Log.INFO
-                         }
+                         override fun isLoggable(tag: String?, priority: Int) =
+                                 BuildConfig.DEBUG || priority >= Log.INFO
                      })
     }
 
@@ -68,5 +72,10 @@ class BeaverApplication : DaggerApplication()
         {
             Timber.w(e)
         }
+    }
+
+    companion object
+    {
+        lateinit var instance: BeaverApplication
     }
 }
