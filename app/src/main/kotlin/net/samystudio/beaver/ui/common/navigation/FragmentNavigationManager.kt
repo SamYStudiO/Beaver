@@ -1,4 +1,4 @@
-@file:Suppress("MemberVisibilityCanBePrivate")
+@file:Suppress("MemberVisibilityCanBePrivate", "MemberVisibilityCanPrivate")
 
 package net.samystudio.beaver.ui.common.navigation
 
@@ -32,7 +32,6 @@ constructor(private val context: Context,
             private val fragmentContainerViewId: Int,
             @param:StateLossPolicy
             @field:StateLossPolicy
-            @get:StateLossPolicy
             var defaultStateLossPolicy: Long = STATE_LOSS_POLICY_ALLOW)
 {
 

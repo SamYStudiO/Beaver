@@ -3,7 +3,7 @@ package net.samystudio.beaver.ui.base.fragment
 import android.support.v4.app.Fragment
 import dagger.Module
 import dagger.Provides
-import net.samystudio.beaver.di.scope.PerFragment
+import net.samystudio.beaver.di.scope.FragmentScope
 import net.samystudio.beaver.ext.GlideApp
 import net.samystudio.beaver.ext.GlideRequests
 
@@ -11,6 +11,6 @@ import net.samystudio.beaver.ext.GlideRequests
 class BaseFragmentModule
 {
     @Provides
-    @PerFragment
+    @FragmentScope
     fun provideActivityGlideRequests(fragment: Fragment): GlideRequests = GlideApp.with(fragment)
 }

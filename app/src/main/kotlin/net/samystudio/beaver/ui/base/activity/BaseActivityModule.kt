@@ -10,7 +10,7 @@ import dagger.Provides
 import net.samystudio.beaver.R
 import net.samystudio.beaver.di.qualifier.ActivityContext
 import net.samystudio.beaver.di.qualifier.FragmentContainerViewId
-import net.samystudio.beaver.di.scope.PerActivity
+import net.samystudio.beaver.di.scope.ActivityScope
 import net.samystudio.beaver.ui.common.navigation.FragmentNavigationManager
 
 @Module
@@ -18,27 +18,27 @@ abstract class BaseActivityModule
 {
     @Binds
     @ActivityContext
-    @PerActivity
+    @ActivityScope
     abstract fun bindActivityContext(activity: AppCompatActivity): Context
 
     @Module
     companion object
     {
         @Provides
-        @PerActivity
+        @ActivityScope
         @FragmentContainerViewId
         @IdRes
         @JvmStatic
         fun provideFragmentContainerViewId(): Int = R.id.fragment_container
 
         @Provides
-        @PerActivity
+        @ActivityScope
         @JvmStatic
         fun provideFragmentManager(activity: AppCompatActivity): FragmentManager =
                 activity.supportFragmentManager
 
         @Provides
-        @PerActivity
+        @ActivityScope
         @JvmStatic
         fun provideFragmentNavigationManager(@ActivityContext
                                              context: Context,
