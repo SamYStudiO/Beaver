@@ -7,7 +7,7 @@ import javax.inject.Inject
 import javax.inject.Provider
 
 class ViewModelFactory
-@Inject constructor(private val creators: Map<Class<out ViewModel>, Provider<ViewModel>>) :
+@Inject constructor(private val creators: Map<Class<out ViewModel>, Provider<out ViewModel>>) :
         ViewModelProvider.Factory
 {
 
