@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 @Excludes(OkHttpLibraryGlideModule::class)
 @GlideModule
-class OkHttpGlideModule : AppGlideModule()
+class OkHttpAppGlideModule : AppGlideModule()
 {
     @Inject
     lateinit var okHttpClient: OkHttpClient

@@ -9,7 +9,7 @@ import net.samystudio.beaver.di.qualifier.ApplicationContext
 import javax.inject.Singleton
 
 @Module
-class DataModule
+class SystemServiceModule
 {
     @Provides
     @Singleton

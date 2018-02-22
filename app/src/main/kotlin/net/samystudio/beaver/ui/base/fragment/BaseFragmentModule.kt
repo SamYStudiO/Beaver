@@ -12,5 +12,5 @@ class BaseFragmentModule
 {
     @Provides
     @FragmentScope
-    fun provideActivityGlideRequests(fragment: Fragment): GlideRequests = GlideApp.with(fragment)
+    fun provideFragmentGlideRequests(fragment: Fragment): GlideRequests = GlideApp.with(fragment)
 }

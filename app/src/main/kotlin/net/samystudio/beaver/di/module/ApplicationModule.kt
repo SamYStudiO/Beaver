@@ -5,13 +5,13 @@ import android.content.Context
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
-import dagger.android.support.AndroidSupportInjectionModule
 import net.samystudio.beaver.BeaverApplication
+import net.samystudio.beaver.BuildConfig
 import net.samystudio.beaver.di.qualifier.ApplicationContext
-import net.samystudio.beaver.ui.ActivityBuildersModule
+import okhttp3.logging.HttpLoggingInterceptor
 import javax.inject.Singleton
 
-@Module(includes = [AndroidSupportInjectionModule::class, ActivityBuildersModule::class, DataModule::class, NetModule::class])
+@Module
 abstract class ApplicationModule
 {
     @Binds
@@ -22,9 +22,23 @@ abstract class ApplicationModule
     companion object
     {
         @Provides
-        @ApplicationContext
         @Singleton
+        @ApplicationContext
         @JvmStatic
         fun provideApplicationContext(application: BeaverApplication): Context = application
+
+        @Provides
+        @Singleton
+        @JvmStatic
+        fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor
+        {
+            val httpLoggingInterceptor = HttpLoggingInterceptor()
+
+            httpLoggingInterceptor.level =
+                    if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY
+                    else HttpLoggingInterceptor.Level.NONE
+
+            return httpLoggingInterceptor
+        }
     }
 }
