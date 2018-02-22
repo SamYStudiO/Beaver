@@ -37,9 +37,6 @@ abstract class BaseDialog : DaggerAppCompatDialogFragment()
     val onCancelObservable: Maybe<*>
         get() = _onCancelObservable.firstElement()
 
-    @get:LayoutRes
-    protected abstract val contentView: Int
-
     override fun onStart()
     {
         super.onStart()
@@ -122,7 +119,7 @@ abstract class BaseDialog : DaggerAppCompatDialogFragment()
         if (dialog.window != null)
             dialog.window!!.requestFeature(Window.FEATURE_NO_TITLE)
         @SuppressLint("InflateParams")
-        val view = LayoutInflater.from(context).inflate(contentView, null, false)
+        val view = LayoutInflater.from(context).inflate(getContentView(), null, false)
 
         dialog.setContentView(view)
         onDestroyViewDisposables = CompositeDisposable()
@@ -142,12 +139,14 @@ abstract class BaseDialog : DaggerAppCompatDialogFragment()
 
     override fun dismiss()
     {
-        fragmentNavigationManager.dismissDialog(this)
+        if (::fragmentNavigationManager.isInitialized)
+            fragmentNavigationManager.dismissDialog(this)
     }
 
     fun dismiss(@FragmentNavigationManager.StateLossPolicy stateLossPolicy: Long)
     {
-        fragmentNavigationManager.dismissDialog(this, stateLossPolicy)
+        if (::fragmentNavigationManager.isInitialized)
+            fragmentNavigationManager.dismissDialog(this, stateLossPolicy)
     }
 
     override fun dismissAllowingStateLoss()
@@ -168,6 +167,9 @@ abstract class BaseDialog : DaggerAppCompatDialogFragment()
         _onDismissObservable.onNext(dialog)
         _onDismissObservable.onComplete()
     }
+
+    @LayoutRes
+    protected abstract fun getContentView(): Int
 
     protected abstract fun init(savedInstanceState: Bundle?)
 }
