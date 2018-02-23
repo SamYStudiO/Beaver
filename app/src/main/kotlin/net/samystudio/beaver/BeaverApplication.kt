@@ -12,18 +12,24 @@ import java.security.NoSuchAlgorithmException
 
 class BeaverApplication : DaggerApplication()
 {
+    companion object
+    {
+        /**
+         * @hide Use injection instead.
+         */
+        lateinit var instance: BeaverApplication
+            private set
+    }
+
     private val applicationInjector = DaggerApplicationComponent.builder()
             .application(this)
             .build()
 
-    init
-    {
-        instance = this
-    }
-
     override fun onCreate()
     {
         super.onCreate()
+
+        instance = this
 
         initFirebaseCrash()
         initTimber()
@@ -75,10 +81,5 @@ class BeaverApplication : DaggerApplication()
         {
             Timber.w(e)
         }
-    }
-
-    companion object
-    {
-        lateinit var instance: BeaverApplication
     }
 }

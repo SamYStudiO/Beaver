@@ -30,8 +30,7 @@ constructor(private val context: Context,
             private val fragmentManager: FragmentManager,
             @param:IdRes @field:IdRes
             private val fragmentContainerViewId: Int,
-            @param:StateLossPolicy
-            @field:StateLossPolicy
+            @param:StateLossPolicy @field:StateLossPolicy
             var defaultStateLossPolicy: Long = STATE_LOSS_POLICY_ALLOW)
 {
 
@@ -216,9 +215,9 @@ constructor(private val context: Context,
      */
     @JvmOverloads
     fun dismissDialog(dialog: DialogFragment,
-                      @StateLossPolicy stateLossPolicy: Long = defaultStateLossPolicy) =
+                      @StateLossPolicy stateLossPolicy: Long? = defaultStateLossPolicy) =
             dismissDialog(FragmentNavigationRequest.Builder(dialog)
-                                  .stateLossPolicy(stateLossPolicy)
+                                  .stateLossPolicy(stateLossPolicy ?: defaultStateLossPolicy)
                                   .build())
 
     /**
@@ -227,7 +226,7 @@ constructor(private val context: Context,
      */
     @JvmOverloads
     fun dismissDialog(tag: String, @StateLossPolicy
-    stateLossPolicy: Long = defaultStateLossPolicy): Boolean
+    stateLossPolicy: Long? = defaultStateLossPolicy): Boolean
     {
         val dialog: DialogFragment? = fragmentManager.findFragmentByTag(tag) as DialogFragment
 
@@ -235,7 +234,7 @@ constructor(private val context: Context,
         if (dialog == null) throw IllegalArgumentException("Can't find dialog fragment with tag " + tag)
 
         return dismissDialog(FragmentNavigationRequest.Builder(dialog)
-                                     .stateLossPolicy(stateLossPolicy)
+                                     .stateLossPolicy(stateLossPolicy ?: defaultStateLossPolicy)
                                      .build())
     }
 
@@ -243,8 +242,9 @@ constructor(private val context: Context,
     {
         val dialog = fragmentNavigationRequest.fragment
 
-        if (fragmentManager.isStateSaved && fragmentNavigationRequest.getStateLossPolicy(
-                        defaultStateLossPolicy) == STATE_LOSS_POLICY_CANCEL || dialog.dialog != null && !dialog.dialog.isShowing)
+        if ((fragmentManager.isStateSaved &&
+             fragmentNavigationRequest.getStateLossPolicy(defaultStateLossPolicy) == STATE_LOSS_POLICY_CANCEL) ||
+            (dialog.dialog != null && !dialog.dialog.isShowing))
         {
             fragmentNavigationRequest.isCancelled = true
             return false
@@ -267,7 +267,8 @@ constructor(private val context: Context,
     @Retention(AnnotationRetention.SOURCE)
     @IntDef(STATE_LOSS_POLICY_IGNORE,
             STATE_LOSS_POLICY_CANCEL,
-            STATE_LOSS_POLICY_ALLOW)
+            STATE_LOSS_POLICY_ALLOW,
+            STATE_LOSS_POLICY_UNSET)
     annotation class StateLossPolicy
 
     companion object

@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import net.samystudio.beaver.R
 import net.samystudio.beaver.di.qualifier.ApplicationContext
+import net.samystudio.beaver.ext.putString
 
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -13,17 +14,17 @@ class SharedPreferencesManager @Inject constructor(@param:ApplicationContext
                                                    private val context: Context,
                                                    private val sharedPreferences: SharedPreferences)
 {
+    companion object
+    {
+        private const val API_URL = "apiUrl"
+        private const val USER_TOKEN = "userToken"
+    }
+
     var apiUrl: String
         get() = sharedPreferences.getString(API_URL, context.getString(R.string.api_url))
-        set(value) = sharedPreferences.edit().putString(API_URL, value).apply()
+        set(value) = sharedPreferences.putString(API_URL, value)
 
     var userToken: String?
         get() = sharedPreferences.getString(USER_TOKEN, null)
-        set(value) = sharedPreferences.edit().putString(USER_TOKEN, value).apply()
-
-    companion object
-    {
-        const val API_URL = "apiUrl"
-        const val USER_TOKEN = "userToken"
-    }
+        set(value) = sharedPreferences.putString(USER_TOKEN, value)
 }
