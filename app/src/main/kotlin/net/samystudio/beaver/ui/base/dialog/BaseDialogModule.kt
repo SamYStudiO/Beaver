@@ -4,7 +4,7 @@ import android.arch.lifecycle.ViewModelProvider
 import dagger.Binds
 import dagger.Module
 import net.samystudio.beaver.di.scope.FragmentScope
-import net.samystudio.beaver.utils.ViewModelFactory
+import net.samystudio.beaver.ui.common.model.ViewModelFactory
 
 @Module
 abstract class BaseDialogModule

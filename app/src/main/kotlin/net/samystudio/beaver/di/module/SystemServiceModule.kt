@@ -9,10 +9,11 @@ import net.samystudio.beaver.di.qualifier.ApplicationContext
 import javax.inject.Singleton
 
 @Module
-class SystemServiceModule
+object SystemServiceModule
 {
     @Provides
     @Singleton
+    @JvmStatic
     fun provideSharedPreferences(@ApplicationContext context: Context): SharedPreferences =
             PreferenceManager.getDefaultSharedPreferences(context)
 }

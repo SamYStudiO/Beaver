@@ -19,6 +19,9 @@ abstract class BaseActivity : DaggerAppCompatActivity(), FragmentManager.OnBackS
     protected lateinit var fragmentManager: FragmentManager
     @Inject
     protected lateinit var fragmentNavigationManager: FragmentNavigationManager
+    @get:LayoutRes
+    protected abstract val layoutViewRes: Int
+    protected abstract val defaultFragment: Class<out BaseFragment>
     private var onPauseDisposables: CompositeDisposable? = null
     private var onStopDisposables: CompositeDisposable? = null
     private val onDestroyDisposables: CompositeDisposable = CompositeDisposable()
@@ -35,14 +38,14 @@ abstract class BaseActivity : DaggerAppCompatActivity(), FragmentManager.OnBackS
     {
         super.onCreate(savedInstanceState)
 
-        setContentView(getLayoutViewRes())
+        setContentView(layoutViewRes)
         init(savedInstanceState)
 
         supportFragmentManager.addOnBackStackChangedListener(this)
 
         // don't need to instantiate fragment when restoring state
         if (savedInstanceState == null)
-            fragmentNavigationManager.showFragment(getDefaultFragment())
+            fragmentNavigationManager.showFragment(defaultFragment)
     }
 
     override fun onStart()
@@ -83,8 +86,8 @@ abstract class BaseActivity : DaggerAppCompatActivity(), FragmentManager.OnBackS
     @CallSuper
     override fun onBackStackChanged()
     {
-        if (fragmentManager.backStackEntryCount == 0) fragmentNavigationManager.showFragment(
-                getDefaultFragment())
+        if (fragmentManager.backStackEntryCount == 0)
+            fragmentNavigationManager.showFragment(defaultFragment)
     }
 
     protected fun addOnPauseDisposable(disposable: Disposable)
@@ -112,9 +115,4 @@ abstract class BaseActivity : DaggerAppCompatActivity(), FragmentManager.OnBackS
     }
 
     protected abstract fun init(savedInstanceState: Bundle?)
-
-    @LayoutRes
-    protected abstract fun getLayoutViewRes(): Int
-
-    protected abstract fun getDefaultFragment(): Class<out BaseFragment>
 }

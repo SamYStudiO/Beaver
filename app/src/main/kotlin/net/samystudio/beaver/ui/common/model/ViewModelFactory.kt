@@ -1,13 +1,15 @@
-package net.samystudio.beaver.utils
+package net.samystudio.beaver.ui.common.model
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
+import net.samystudio.beaver.di.scope.FragmentScope
 
 import javax.inject.Inject
 import javax.inject.Provider
 
+@FragmentScope
 class ViewModelFactory
-@Inject constructor(private val creators: Map<Class<out ViewModel>, Provider<out ViewModel>>) :
+@Inject constructor(private val creators: Map<Class<out ViewModel>, @JvmSuppressWildcards Provider<ViewModel>>) :
         ViewModelProvider.Factory
 {
 

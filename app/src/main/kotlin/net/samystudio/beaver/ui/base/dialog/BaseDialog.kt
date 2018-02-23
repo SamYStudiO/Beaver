@@ -2,7 +2,6 @@
 
 package net.samystudio.beaver.ui.base.dialog
 
-import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
@@ -24,6 +23,8 @@ abstract class BaseDialog : DaggerAppCompatDialogFragment()
 {
     @Inject
     protected lateinit var fragmentNavigationManager: FragmentNavigationManager
+    @get:LayoutRes
+    protected abstract val contentViewRes: Int
     private var onPauseDisposables: CompositeDisposable? = null
     private var onStopDisposables: CompositeDisposable? = null
     private var onDestroyViewDisposables: CompositeDisposable? = null
@@ -116,14 +117,18 @@ abstract class BaseDialog : DaggerAppCompatDialogFragment()
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog
     {
         val dialog = super.onCreateDialog(savedInstanceState)
+
         if (dialog.window != null)
             dialog.window!!.requestFeature(Window.FEATURE_NO_TITLE)
-        @SuppressLint("InflateParams")
-        val view = LayoutInflater.from(context).inflate(getContentView(), null, false)
 
-        dialog.setContentView(view)
+        dialog.setContentView(LayoutInflater
+                                      .from(context)
+                                      .inflate(contentViewRes, null, false))
+
         onDestroyViewDisposables = CompositeDisposable()
+
         init(savedInstanceState)
+
         return dialog
     }
 
@@ -167,9 +172,6 @@ abstract class BaseDialog : DaggerAppCompatDialogFragment()
         _onDismissObservable.onNext(dialog)
         _onDismissObservable.onComplete()
     }
-
-    @LayoutRes
-    protected abstract fun getContentView(): Int
 
     protected abstract fun init(savedInstanceState: Bundle?)
 }

@@ -46,6 +46,9 @@ class BeaverApplication : DaggerApplication()
                      })
     }
 
+    /**
+     * App key hash may be useful with Facebook for example.
+     */
     @SuppressLint("PackageManagerGetSignatures")
     private fun logKeyHash()
     {

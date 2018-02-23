@@ -18,15 +18,19 @@ import java.lang.reflect.Type
 import javax.inject.Singleton
 
 @Module
-class ApiModule
+object ApiModule
 {
+    private const val BASE_URL: String = "https://root/"
+
     @Provides
     @Singleton
+    @JvmStatic
     fun provideCache(application: Application) =
             Cache(application.cacheDir, 20L * 1024L * 1024L) //20 mo
 
     @Provides
     @Singleton
+    @JvmStatic
     fun provideOkHttpClient(cache: Cache,
                             httpLoggingInterceptor: HttpLoggingInterceptor,
                             requestInterceptor: Interceptor): OkHttpClient =
@@ -38,6 +42,7 @@ class ApiModule
 
     @Provides
     @Singleton
+    @JvmStatic
     fun provideRequestInterceptor(sharedPreferencesManager: SharedPreferencesManager): Interceptor =
             Interceptor { chain ->
                 // Request interceptor to update root url and add user token if exist.
@@ -65,6 +70,7 @@ class ApiModule
 
     @Provides
     @Singleton
+    @JvmStatic
     fun provideGson(): Gson =
             GsonBuilder()
                     .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
@@ -72,11 +78,13 @@ class ApiModule
 
     @Provides
     @Singleton
+    @JvmStatic
     fun provideGsonConverterFactory(gson: Gson): GsonConverterFactory =
             GsonConverterFactory.create(gson)
 
     @Provides
     @Singleton
+    @JvmStatic
     fun provideNullOrEmptyConverterFactory(): Converter.Factory =
             object : Converter.Factory()
             {
@@ -98,11 +106,13 @@ class ApiModule
 
     @Provides
     @Singleton
+    @JvmStatic
     fun provideRxJava2CallAdapterFactory(): RxJava2CallAdapterFactory =
             RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io())
 
     @Provides
     @Singleton
+    @JvmStatic
     fun provideRetrofit(rxJava2CallAdapterFactory: RxJava2CallAdapterFactory,
                         nullOrEmptyConverterFactory: Converter.Factory,
                         okHttpClient: OkHttpClient,
@@ -114,9 +124,4 @@ class ApiModule
                     .baseUrl(BASE_URL)
                     .client(okHttpClient)
                     .build()
-
-    companion object
-    {
-        const val BASE_URL: String = "https://root/"
-    }
 }

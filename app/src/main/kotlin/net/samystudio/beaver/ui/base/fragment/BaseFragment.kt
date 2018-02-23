@@ -24,6 +24,9 @@ abstract class BaseFragment : DaggerFragment(), HasSupportFragmentInjector
     protected lateinit var navigationManager: NavigationManager
     @Inject
     protected lateinit var fragmentNavigationManager: FragmentNavigationManager
+    @get:LayoutRes
+    protected abstract val layoutViewRes: Int
+    protected abstract val defaultTitle: String
     private var onPauseDisposables: CompositeDisposable? = null
     private var onStopDisposables: CompositeDisposable? = null
     private var onDestroyViewDisposables: CompositeDisposable? = null
@@ -34,10 +37,7 @@ abstract class BaseFragment : DaggerFragment(), HasSupportFragmentInjector
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View?
     {
-        @LayoutRes
-        val res = getLayoutViewRes()
-
-        return if (res > 0) inflater.inflate(res, container, false)
+        return if (layoutViewRes > 0) inflater.inflate(layoutViewRes, container, false)
         else null
     }
 
@@ -132,7 +132,7 @@ abstract class BaseFragment : DaggerFragment(), HasSupportFragmentInjector
         super.onActivityCreated(savedInstanceState)
 
         init(savedInstanceState)
-        titleObservable.onNext(getDefaultTitle())
+        titleObservable.onNext(defaultTitle)
     }
 
     /**
@@ -150,9 +150,4 @@ abstract class BaseFragment : DaggerFragment(), HasSupportFragmentInjector
     fun getTitleObservable(): Observable<String>? = titleObservable.toObservable()
 
     protected abstract fun init(savedInstanceState: Bundle?)
-
-    @LayoutRes
-    protected abstract fun getLayoutViewRes(): Int
-
-    abstract fun getDefaultTitle(): String
 }

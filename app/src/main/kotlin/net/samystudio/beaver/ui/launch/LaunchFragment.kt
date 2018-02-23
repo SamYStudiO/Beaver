@@ -1,16 +1,11 @@
 package net.samystudio.beaver.ui.launch
 
-import android.os.Bundle
 import net.samystudio.beaver.R
-import net.samystudio.beaver.ui.base.fragment.BaseFragment
+import net.samystudio.beaver.ui.base.fragment.BaseDataFragment
 
-class LaunchFragment : BaseFragment()
+class LaunchFragment : BaseDataFragment<LaunchViewModel>()
 {
-    override fun init(savedInstanceState: Bundle?)
-    {
-    }
-
-    override fun getLayoutViewRes(): Int = R.layout.fragment_launch
-
-    override fun getDefaultTitle(): String = ""
+    override val viewModelClass: Class<LaunchViewModel> = LaunchViewModel::class.java
+    override val layoutViewRes: Int = R.layout.fragment_launch
+    override val defaultTitle: String = ""
 }

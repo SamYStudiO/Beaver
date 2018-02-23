@@ -7,10 +7,11 @@ import okhttp3.logging.HttpLoggingInterceptor
 import javax.inject.Singleton
 
 @Module
-class GlideModule
+object GlideModule
 {
     @Provides
     @Singleton
+    @JvmStatic
     fun provideOkHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor): OkHttpClient =
             OkHttpClient.Builder().addInterceptor(httpLoggingInterceptor).build()
 }

@@ -8,9 +8,10 @@ import net.samystudio.beaver.ext.GlideApp
 import net.samystudio.beaver.ext.GlideRequests
 
 @Module
-class BaseFragmentModule
+object BaseFragmentModule
 {
     @Provides
     @FragmentScope
+    @JvmStatic
     fun provideFragmentGlideRequests(fragment: Fragment): GlideRequests = GlideApp.with(fragment)
 }
