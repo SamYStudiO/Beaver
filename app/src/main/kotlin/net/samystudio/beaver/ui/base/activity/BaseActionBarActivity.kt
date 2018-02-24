@@ -40,7 +40,7 @@ abstract class BaseActionBarActivity : BaseActivity(), FragmentManager.OnBackSta
             val currentFragment: BaseFragment? = fragmentNavigationManager.getCurrentFragment()
 
             currentFragment
-                    ?.getTitleObservable()
+                ?.titleObservable
                     ?.observeOn(AndroidSchedulers.mainThread())
                     ?.subscribe({ title -> toggleTitle(title) })
         }

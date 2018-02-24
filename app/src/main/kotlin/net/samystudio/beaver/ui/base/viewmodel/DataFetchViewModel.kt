@@ -6,15 +6,9 @@ import android.arch.lifecycle.LiveData
 
 interface DataFetchViewModel<D>
 {
+    val liveData: LiveData<D>
+
     fun fetch()
-
-    fun getLiveData(): LiveData<D>
-
     fun onFetchSuccess(data: D)
-
-    fun onFetchError()
-    {
-    }
-
-    fun onFetchError(throwable: Throwable) = throwable.printStackTrace()
+    fun onFetchError(throwable: Throwable? = null) = throwable?.printStackTrace()
 }

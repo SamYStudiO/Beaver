@@ -75,19 +75,17 @@ abstract class BaseResultDialog : BaseDialog()
                             .currentState
                             .isAtLeast(getLifecycleStateFromOrder(
                                     if (arguments != null)
-                                        arguments!!.getInt(KEY_LIFECYCLE_STATE,
-                                                           0)
-                                    else
-                                        0)))
+                                        arguments!!.getInt(KEY_LIFECYCLE_STATE, 0)
+                                    else 0)))
             {
-                val baseFragment = targetFragment as BaseFragment?
+                val baseFragment = targetFragment as BaseFragment
 
                 if (resultCode == DialogResult.RESULT_ERROR)
-                    baseFragment?.onDialogResult(targetRequestCode,
-                                                 DialogResult(resultError))
+                    baseFragment.onDialogResult(targetRequestCode,
+                                                DialogResult(resultError))
                 else
-                    baseFragment?.onDialogResult(targetRequestCode,
-                                                 DialogResult(resultCode, resultData))
+                    baseFragment.onDialogResult(targetRequestCode,
+                                                DialogResult(resultCode, resultData))
             }
         }
     }

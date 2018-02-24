@@ -10,6 +10,5 @@ fun SharedPreferences.putLong(key: String, value: Long) = edit().putLong(key, va
 fun SharedPreferences.putFloat(key: String, value: Float) = edit().putFloat(key, value).apply()
 fun SharedPreferences.putBoolean(key: String, value: Boolean) = edit().putBoolean(key,
                                                                                   value).apply()
-
 fun SharedPreferences.remove(key: String) = edit().remove(key).apply()
 fun SharedPreferences.clear() = edit().clear().apply()

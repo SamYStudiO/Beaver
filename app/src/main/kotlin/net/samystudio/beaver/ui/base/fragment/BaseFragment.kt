@@ -31,7 +31,16 @@ abstract class BaseFragment : DaggerFragment(), HasSupportFragmentInjector
     private var onStopDisposables: CompositeDisposable? = null
     private var onDestroyViewDisposables: CompositeDisposable? = null
     private val onDestroyDisposables: CompositeDisposable = CompositeDisposable()
-    private val titleObservable: BehaviorProcessor<String> = BehaviorProcessor.create()
+
+    private val _titleObservable: BehaviorProcessor<String> = BehaviorProcessor.create()
+    val titleObservable: Observable<String> = _titleObservable.toObservable()
+
+    override fun onCreate(savedInstanceState: Bundle?)
+    {
+        super.onCreate(savedInstanceState)
+
+        _titleObservable.onNext(defaultTitle)
+    }
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
@@ -46,6 +55,13 @@ abstract class BaseFragment : DaggerFragment(), HasSupportFragmentInjector
         super.onViewCreated(view, savedInstanceState)
 
         onDestroyViewDisposables = CompositeDisposable()
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?)
+    {
+        super.onActivityCreated(savedInstanceState)
+
+        init(savedInstanceState)
     }
 
     override fun onStart()
@@ -86,7 +102,7 @@ abstract class BaseFragment : DaggerFragment(), HasSupportFragmentInjector
     override fun onDestroy()
     {
         onDestroyDisposables.dispose()
-        titleObservable.onComplete()
+        _titleObservable.onComplete()
 
         super.onDestroy()
     }
@@ -95,7 +111,7 @@ abstract class BaseFragment : DaggerFragment(), HasSupportFragmentInjector
     {
         if (onPauseDisposables == null || onPauseDisposables!!.isDisposed)
             throw IllegalStateException(
-                    "Cannot add onPause disposable before onResume and after onPause")
+                "Cannot add onPause disposable before onResume and after onPause")
 
         onPauseDisposables!!.add(disposable)
     }
@@ -104,7 +120,7 @@ abstract class BaseFragment : DaggerFragment(), HasSupportFragmentInjector
     {
         if (onStopDisposables == null || onStopDisposables!!.isDisposed)
             throw IllegalStateException(
-                    "Cannot add onStop disposable before onStart and after onStop")
+                "Cannot add onStop disposable before onStart and after onStop")
 
         onStopDisposables!!.add(disposable)
     }
@@ -113,7 +129,7 @@ abstract class BaseFragment : DaggerFragment(), HasSupportFragmentInjector
     {
         if (onDestroyViewDisposables == null || onDestroyViewDisposables!!.isDisposed)
             throw IllegalStateException(
-                    "Cannot add onDestroyView disposable before onViewCreated and after onDestroyView")
+                "Cannot add onDestroyView disposable before onViewCreated and after onDestroyView")
 
         onDestroyViewDisposables!!.add(disposable)
     }
@@ -122,17 +138,9 @@ abstract class BaseFragment : DaggerFragment(), HasSupportFragmentInjector
     {
         if (onDestroyDisposables.isDisposed)
             throw IllegalStateException(
-                    "Cannot add onDestroy disposable after onDestroy")
+                "Cannot add onDestroy disposable after onDestroy")
 
         onDestroyDisposables.add(disposable)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?)
-    {
-        super.onActivityCreated(savedInstanceState)
-
-        init(savedInstanceState)
-        titleObservable.onNext(defaultTitle)
     }
 
     /**
@@ -146,8 +154,6 @@ abstract class BaseFragment : DaggerFragment(), HasSupportFragmentInjector
     fun onDialogResult(requestCode: Int, result: DialogResult)
     {
     }
-
-    fun getTitleObservable(): Observable<String>? = titleObservable.toObservable()
 
     protected abstract fun init(savedInstanceState: Bundle?)
 }
