@@ -26,7 +26,7 @@ object ApiModule
     @Singleton
     @JvmStatic
     fun provideCache(application: Application) =
-            Cache(application.cacheDir, 20L * 1024L * 1024L) //20 mo
+        Cache(application.cacheDir, 20L * 1024L * 1024L) //20 mo
 
     @Provides
     @Singleton
@@ -34,81 +34,81 @@ object ApiModule
     fun provideOkHttpClient(cache: Cache,
                             httpLoggingInterceptor: HttpLoggingInterceptor,
                             requestInterceptor: Interceptor): OkHttpClient =
-            OkHttpClient.Builder()
-                    .cache(cache)
-                    .addInterceptor(httpLoggingInterceptor)
-                    .addInterceptor(requestInterceptor)
-                    .build()
+        OkHttpClient.Builder()
+            .cache(cache)
+            .addInterceptor(httpLoggingInterceptor)
+            .addInterceptor(requestInterceptor)
+            .build()
 
     @Provides
     @Singleton
     @JvmStatic
     fun provideRequestInterceptor(sharedPreferencesManager: SharedPreferencesManager): Interceptor =
-            Interceptor { chain ->
-                // Request interceptor to update root url and add user token if exist.
-                val request = chain.request()
-                val url = request.url().url().toString()
+        Interceptor { chain ->
+            // Request interceptor to update root url and add user token if exist.
+            val request = chain.request()
+            val url = request.url().url().toString()
 
-                // rewriting url is not necessary when using a unique production
-                // server url, but in most case we'll use multiple server urls
-                // (test/prod/...) and this is the way to go if we want to update
-                // Retrofit base url at runtime
-                val httpUrl = HttpUrl.parse(url.replace(BASE_URL, sharedPreferencesManager.apiUrl))
+            // rewriting url is not necessary when using a unique production
+            // server url, but in most case we'll use multiple server urls
+            // (test/prod/...) and this is the way to go if we want to update
+            // Retrofit base url at runtime
+            val httpUrl = HttpUrl.parse(url.replace(BASE_URL, sharedPreferencesManager.apiUrl))
 
-                val newBuilder = request.newBuilder()
+            val newBuilder = request.newBuilder()
 
-                if (httpUrl != null)
-                    newBuilder.url(httpUrl)
+            if (httpUrl != null)
+                newBuilder.url(httpUrl)
 
-                val token = sharedPreferencesManager.userToken
+            val token = sharedPreferencesManager.userToken
 
-                if (token != null)
-                    newBuilder.header("Authorization", token)
+            if (token != null)
+                newBuilder.header("Authorization", token)
 
-                chain.proceed(newBuilder.build())
-            }
+            chain.proceed(newBuilder.build())
+        }
 
     @Provides
     @Singleton
     @JvmStatic
     fun provideGson(): Gson =
-            GsonBuilder()
-                    .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
-                    .create()
+        GsonBuilder()
+            .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+            .create()
 
     @Provides
     @Singleton
     @JvmStatic
     fun provideGsonConverterFactory(gson: Gson): GsonConverterFactory =
-            GsonConverterFactory.create(gson)
+        GsonConverterFactory.create(gson)
 
     @Provides
     @Singleton
     @JvmStatic
     fun provideNullOrEmptyConverterFactory(): Converter.Factory =
-            object : Converter.Factory()
+        object : Converter.Factory()
+        {
+            override fun responseBodyConverter(type: Type,
+                                               annotations: Array<out Annotation>,
+                                               retrofit: Retrofit): Converter<ResponseBody, Any?>
             {
-                override fun responseBodyConverter(type: Type,
-                                                   annotations: Array<out Annotation>,
-                                                   retrofit: Retrofit): Converter<ResponseBody, Any?>
-                {
-                    val nextResponseBodyConverter = retrofit.nextResponseBodyConverter<Any?>(
-                            this,
-                            type,
-                            annotations)
+                val nextResponseBodyConverter = retrofit.nextResponseBodyConverter<Any?>(
+                    this,
+                    type,
+                    annotations)
 
-                    return Converter { body: ResponseBody ->
-                        if (body.contentLength() == 0L) null
-                        else nextResponseBodyConverter.convert(body)
-                    }
+                return Converter { body: ResponseBody ->
+                    if (body.contentLength() == 0L) null
+                    else nextResponseBodyConverter.convert(body)
                 }
             }
+        }
 
     @Provides
     @Singleton
     @JvmStatic
     fun provideRxJava2CallAdapterFactory(): RxJava2CallAdapterFactory =
-            RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io())
+        RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io())
 
     @Provides
     @Singleton
@@ -117,11 +117,11 @@ object ApiModule
                         nullOrEmptyConverterFactory: Converter.Factory,
                         okHttpClient: OkHttpClient,
                         gsonConverterFactory: GsonConverterFactory): Retrofit =
-            Retrofit.Builder()
-                    .addCallAdapterFactory(rxJava2CallAdapterFactory)
-                    .addConverterFactory(nullOrEmptyConverterFactory)
-                    .addConverterFactory(gsonConverterFactory)
-                    .baseUrl(BASE_URL)
-                    .client(okHttpClient)
-                    .build()
+        Retrofit.Builder()
+            .addCallAdapterFactory(rxJava2CallAdapterFactory)
+            .addConverterFactory(nullOrEmptyConverterFactory)
+            .addConverterFactory(gsonConverterFactory)
+            .baseUrl(BASE_URL)
+            .client(okHttpClient)
+            .build()
 }

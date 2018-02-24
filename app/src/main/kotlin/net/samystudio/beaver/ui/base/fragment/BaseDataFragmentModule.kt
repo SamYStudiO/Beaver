@@ -24,6 +24,6 @@ abstract class BaseDataFragmentModule
         @JvmStatic
         fun provideViewModelProviders(fragment: Fragment,
                                       viewModelFactory: ViewModelFactory): ViewModelProvider =
-                ViewModelProviders.of(fragment, viewModelFactory)
+            ViewModelProviders.of(fragment, viewModelFactory)
     }
 }

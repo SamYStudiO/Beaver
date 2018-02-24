@@ -25,9 +25,9 @@ class OkHttpAppGlideModule : AppGlideModule()
     init
     {
         DaggerGlideComponent.builder()
-                .application(BeaverApplication.instance)
-                .build()
-                .inject(this)
+            .application(BeaverApplication.instance)
+            .build()
+            .inject(this)
     }
 
     override fun isManifestParsingEnabled() = false

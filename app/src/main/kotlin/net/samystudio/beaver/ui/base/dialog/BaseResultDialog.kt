@@ -70,13 +70,13 @@ abstract class BaseResultDialog : BaseDialog()
         if (targetFragment != null && targetFragment is BaseFragment)
         {
             if (ProcessLifecycleOwner
-                            .get()
-                            .lifecycle
-                            .currentState
-                            .isAtLeast(getLifecycleStateFromOrder(
-                                    if (arguments != null)
-                                        arguments!!.getInt(KEY_LIFECYCLE_STATE, 0)
-                                    else 0)))
+                    .get()
+                    .lifecycle
+                    .currentState
+                    .isAtLeast(getLifecycleStateFromOrder(
+                        if (arguments != null)
+                            arguments!!.getInt(KEY_LIFECYCLE_STATE, 0)
+                        else 0)))
             {
                 val baseFragment = targetFragment as BaseFragment
 
@@ -104,7 +104,7 @@ abstract class BaseResultDialog : BaseDialog()
         private fun getLifecycleStateFromOrder(order: Int): Lifecycle.State
         {
             return Lifecycle.State.values().firstOrNull { Lifecycle.State.DESTROYED.compareTo(it) == order }
-                   ?: Lifecycle.State.DESTROYED
+                    ?: Lifecycle.State.DESTROYED
         }
     }
 }

@@ -40,7 +40,7 @@ constructor(private val context: Context,
      */
     @Suppress("UNCHECKED_CAST")
     fun <T : Fragment> getCurrentFragment(): T? =
-            fragmentManager.findFragmentById(fragmentContainerViewId) as T
+        fragmentManager.findFragmentById(fragmentContainerViewId) as T
 
     /**
      * Show specified [Fragment] screen or [DialogFragment] from an instance and an optional bundle.
@@ -49,7 +49,7 @@ constructor(private val context: Context,
      */
     @JvmOverloads
     fun <T : Fragment> showFragment(fragment: T, bundle: Bundle? = null) =
-            showFragment(FragmentNavigationRequest(fragment, bundle))
+        showFragment(FragmentNavigationRequest(fragment, bundle))
 
     /**
      * Show specified [Fragment] screen or [DialogFragment] from a [Class] and an optional bundle.
@@ -58,7 +58,7 @@ constructor(private val context: Context,
      */
     @JvmOverloads
     fun <T : Fragment> showFragment(fragmentClass: Class<T>, bundle: Bundle? = null) =
-            showFragment(FragmentNavigationRequest(context, fragmentClass, bundle))
+        showFragment(FragmentNavigationRequest(context, fragmentClass, bundle))
 
     /**
      * Show a [Fragment] screen or a [DialogFragment] using a [FragmentNavigationRequest]. This is
@@ -68,10 +68,10 @@ constructor(private val context: Context,
      */
     @SuppressLint("CommitTransaction")
     fun <T : Fragment> showFragment(
-            fragmentNavigationRequest: FragmentNavigationRequest<T>): FragmentNavigationRequest<T>
+        fragmentNavigationRequest: FragmentNavigationRequest<T>): FragmentNavigationRequest<T>
     {
         if (fragmentManager.isStateSaved && fragmentNavigationRequest.getStateLossPolicy(
-                        defaultStateLossPolicy) == STATE_LOSS_POLICY_CANCEL)
+                defaultStateLossPolicy) == STATE_LOSS_POLICY_CANCEL)
         {
             fragmentNavigationRequest.isCancelled = true
             return fragmentNavigationRequest
@@ -79,18 +79,19 @@ constructor(private val context: Context,
 
         fragmentNavigationRequest.isCancelled = false
 
-        val transaction = fragmentNavigationRequest.prepareTransaction(fragmentManager.beginTransaction())
+        val transaction =
+            fragmentNavigationRequest.prepareTransaction(fragmentManager.beginTransaction())
 
         if (fragmentNavigationRequest.isDialog)
             transaction.add(fragmentNavigationRequest.fragment,
                             fragmentNavigationRequest.tag)
         else
             transaction
-                    .setReorderingAllowed(true)
-                    .replace(fragmentContainerViewId, fragmentNavigationRequest.fragment)
+                .setReorderingAllowed(true)
+                .replace(fragmentContainerViewId, fragmentNavigationRequest.fragment)
 
         if (fragmentManager.isStateSaved && fragmentNavigationRequest.getStateLossPolicy(
-                        defaultStateLossPolicy) == STATE_LOSS_POLICY_ALLOW)
+                defaultStateLossPolicy) == STATE_LOSS_POLICY_ALLOW)
             transaction.commitAllowingStateLoss()
         else
             transaction.commit()
@@ -116,8 +117,8 @@ constructor(private val context: Context,
         {
             if (immediate)
                 fragmentManager.popBackStackImmediate(fragmentManager
-                                                              .getBackStackEntryAt(0)
-                                                              .name,
+                                                          .getBackStackEntryAt(0)
+                                                          .name,
                                                       FragmentManager.POP_BACK_STACK_INCLUSIVE)
             else
                 fragmentManager.popBackStack(fragmentManager.getBackStackEntryAt(0).name,
@@ -216,9 +217,9 @@ constructor(private val context: Context,
     @JvmOverloads
     fun dismissDialog(dialog: DialogFragment,
                       @StateLossPolicy stateLossPolicy: Long? = defaultStateLossPolicy) =
-            dismissDialog(FragmentNavigationRequest.Builder(dialog)
-                                  .stateLossPolicy(stateLossPolicy ?: defaultStateLossPolicy)
-                                  .build())
+        dismissDialog(FragmentNavigationRequest.Builder(dialog)
+                          .stateLossPolicy(stateLossPolicy ?: defaultStateLossPolicy)
+                          .build())
 
     /**
      * @see FragmentNavigationRequest.tag
@@ -234,8 +235,8 @@ constructor(private val context: Context,
         if (dialog == null) throw IllegalArgumentException("Can't find dialog fragment with tag " + tag)
 
         return dismissDialog(FragmentNavigationRequest.Builder(dialog)
-                                     .stateLossPolicy(stateLossPolicy ?: defaultStateLossPolicy)
-                                     .build())
+                                 .stateLossPolicy(stateLossPolicy ?: defaultStateLossPolicy)
+                                 .build())
     }
 
     private fun dismissDialog(fragmentNavigationRequest: FragmentNavigationRequest<out DialogFragment>): Boolean
@@ -243,7 +244,7 @@ constructor(private val context: Context,
         val dialog = fragmentNavigationRequest.fragment
 
         if ((fragmentManager.isStateSaved &&
-             fragmentNavigationRequest.getStateLossPolicy(defaultStateLossPolicy) == STATE_LOSS_POLICY_CANCEL) ||
+                    fragmentNavigationRequest.getStateLossPolicy(defaultStateLossPolicy) == STATE_LOSS_POLICY_CANCEL) ||
             (dialog.dialog != null && !dialog.dialog.isShowing))
         {
             fragmentNavigationRequest.isCancelled = true
@@ -256,7 +257,7 @@ constructor(private val context: Context,
         transaction.remove(dialog)
 
         if (fragmentManager.isStateSaved && fragmentNavigationRequest.getStateLossPolicy(
-                        defaultStateLossPolicy) == STATE_LOSS_POLICY_ALLOW)
+                defaultStateLossPolicy) == STATE_LOSS_POLICY_ALLOW)
             transaction.commitAllowingStateLoss()
         else
             transaction.commit()

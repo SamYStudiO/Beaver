@@ -22,8 +22,8 @@ class BeaverApplication : DaggerApplication()
     }
 
     private val applicationInjector = DaggerApplicationComponent.builder()
-            .application(this)
-            .build()
+        .application(this)
+        .build()
 
     override fun onCreate()
     {
@@ -48,7 +48,7 @@ class BeaverApplication : DaggerApplication()
         Timber.plant(object : Timber.DebugTree()
                      {
                          override fun isLoggable(tag: String?, priority: Int) =
-                                 BuildConfig.DEBUG || priority >= Log.INFO
+                             BuildConfig.DEBUG || priority >= Log.INFO
                      })
     }
 

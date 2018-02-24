@@ -52,10 +52,10 @@ class FragmentNavigationRequest<T : Fragment> constructor(builder: Builder<T>)
     @FragmentNavigationManager.StateLossPolicy
     fun getStateLossPolicy(@FragmentNavigationManager.StateLossPolicy
                            defaultStateLossPolicy: Long) =
-            if (stateLossPolicy == FragmentNavigationManager.STATE_LOSS_POLICY_UNSET)
-                defaultStateLossPolicy
-            else
-                stateLossPolicy
+        if (stateLossPolicy == FragmentNavigationManager.STATE_LOSS_POLICY_UNSET)
+            defaultStateLossPolicy
+        else
+            stateLossPolicy
 
     /**
      * Tag use for different purposes (see links below).
@@ -195,16 +195,16 @@ class FragmentNavigationRequest<T : Fragment> constructor(builder: Builder<T>)
     internal fun prepareTransaction(transaction: FragmentTransaction): FragmentTransaction
     {
         transaction
-                .setCustomAnimations(enterAnimRes,
-                                     exitAnimRes,
-                                     popEnterAnimRes,
-                                     popExitAnimRes)
-                .setTransition(transition)
-                .setTransitionStyle(transitionStyle)
-                .setBreadCrumbTitle(breadCrumbTitleRes)
-                .setBreadCrumbTitle(breadCrumbTitle)
-                .setBreadCrumbShortTitle(breadCrumbShortTitleRes)
-                .setBreadCrumbShortTitle(mBreadCrumbShortTitle)
+            .setCustomAnimations(enterAnimRes,
+                                 exitAnimRes,
+                                 popEnterAnimRes,
+                                 popExitAnimRes)
+            .setTransition(transition)
+            .setTransitionStyle(transitionStyle)
+            .setBreadCrumbTitle(breadCrumbTitleRes)
+            .setBreadCrumbTitle(breadCrumbTitle)
+            .setBreadCrumbShortTitle(breadCrumbShortTitleRes)
+            .setBreadCrumbShortTitle(mBreadCrumbShortTitle)
 
         val size = sharedElementSourceView.size
 
@@ -318,7 +318,7 @@ class FragmentNavigationRequest<T : Fragment> constructor(builder: Builder<T>)
          * @see FragmentNavigationManager.STATE_LOSS_POLICY_ALLOW
          */
         fun stateLossPolicy(
-                @FragmentNavigationManager.StateLossPolicy stateLossPolicy: Long): Builder<T>
+            @FragmentNavigationManager.StateLossPolicy stateLossPolicy: Long): Builder<T>
         {
             this.stateLossPolicy = stateLossPolicy
             return this

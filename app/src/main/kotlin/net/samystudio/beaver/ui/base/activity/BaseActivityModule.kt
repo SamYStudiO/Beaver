@@ -35,7 +35,7 @@ abstract class BaseActivityModule
         @ActivityScope
         @JvmStatic
         fun provideFragmentManager(activity: AppCompatActivity): FragmentManager =
-                activity.supportFragmentManager
+            activity.supportFragmentManager
 
         @Provides
         @ActivityScope
@@ -45,9 +45,9 @@ abstract class BaseActivityModule
                                              fragmentManager: FragmentManager,
                                              @FragmentContainerViewId
                                              fragmentContainerViewId: Int) =
-                FragmentNavigationManager(
-                        context,
-                        fragmentManager,
-                        fragmentContainerViewId)
+            FragmentNavigationManager(
+                context,
+                fragmentManager,
+                fragmentContainerViewId)
     }
 }

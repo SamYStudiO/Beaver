@@ -15,5 +15,5 @@ object SystemServiceModule
     @Singleton
     @JvmStatic
     fun provideSharedPreferences(@ApplicationContext context: Context): SharedPreferences =
-            PreferenceManager.getDefaultSharedPreferences(context)
+        PreferenceManager.getDefaultSharedPreferences(context)
 }

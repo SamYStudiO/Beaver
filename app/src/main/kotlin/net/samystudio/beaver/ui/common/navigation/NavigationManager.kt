@@ -30,5 +30,5 @@ class NavigationManager @Inject constructor(@param:ApplicationContext private va
     }
 
     fun startUrl(fromActivity: FragmentActivity, url: String) =
-            fromActivity.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+        fromActivity.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
 }

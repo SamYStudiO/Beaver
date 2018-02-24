@@ -41,8 +41,8 @@ abstract class BaseActionBarActivity : BaseActivity(), FragmentManager.OnBackSta
 
             currentFragment
                 ?.titleObservable
-                    ?.observeOn(AndroidSchedulers.mainThread())
-                    ?.subscribe({ title -> toggleTitle(title) })
+                ?.observeOn(AndroidSchedulers.mainThread())
+                ?.subscribe({ title -> toggleTitle(title) })
         }
     }
 
@@ -61,7 +61,7 @@ abstract class BaseActionBarActivity : BaseActivity(), FragmentManager.OnBackSta
                 hideTitle()?.setListener(object : AnimatorListenerAdapter()
                                          {
                                              override fun onAnimationEnd(
-                                                     animation: Animator?)
+                                                 animation: Animator?)
                                              {
                                                  view.text = ""
                                              }
@@ -91,14 +91,14 @@ abstract class BaseActionBarActivity : BaseActivity(), FragmentManager.OnBackSta
     }
 
     private fun showTitle() =
-            getToolBarTitle()
-                    ?.animate()
-                    ?.alpha(1.0f)
+        getToolBarTitle()
+            ?.animate()
+            ?.alpha(1.0f)
 
     private fun hideTitle() =
-            getToolBarTitle()
-                    ?.animate()
-                    ?.alpha(0.0f)
+        getToolBarTitle()
+            ?.animate()
+            ?.alpha(0.0f)
 
     abstract fun getToolBar(): Toolbar
 

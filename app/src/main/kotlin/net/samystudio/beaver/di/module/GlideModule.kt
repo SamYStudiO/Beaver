@@ -13,5 +13,5 @@ object GlideModule
     @Singleton
     @JvmStatic
     fun provideOkHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor): OkHttpClient =
-            OkHttpClient.Builder().addInterceptor(httpLoggingInterceptor).build()
+        OkHttpClient.Builder().addInterceptor(httpLoggingInterceptor).build()
 }

@@ -36,7 +36,8 @@ class DialogResult
 
     fun hasKey(key: String) = hasBundle() && bundle!!.containsKey(key)
 
-    fun hasNonNullKey(key: String) = hasBundle() && bundle!!.containsKey(key) && bundle!!.get(key) != null
+    fun hasNonNullKey(key: String) =
+        hasBundle() && bundle!!.containsKey(key) && bundle!!.get(key) != null
 
     fun <T> getKey(key: String) = bundle?.get(key)
 
