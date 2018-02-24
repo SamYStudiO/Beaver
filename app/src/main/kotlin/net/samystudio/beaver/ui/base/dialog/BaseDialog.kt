@@ -19,6 +19,7 @@ import io.reactivex.subjects.PublishSubject
 import net.samystudio.beaver.ui.common.navigation.FragmentNavigationManager
 import javax.inject.Inject
 
+// TODO results states (save/restore), DataDialog, DateResultDialog, AutoDispose
 abstract class BaseDialog : DaggerAppCompatDialogFragment()
 {
     @Inject
@@ -29,14 +30,21 @@ abstract class BaseDialog : DaggerAppCompatDialogFragment()
     private var onStopDisposables: CompositeDisposable? = null
     private var onDestroyViewDisposables: CompositeDisposable? = null
     private val onDestroyDisposables: CompositeDisposable = CompositeDisposable()
+    private var lateShow: Boolean = false
+    private var lateShowBundle: Bundle? = null
+
     private val _onDismissObservable = PublishSubject.create<DialogInterface>()
+    val onDismissObservable: Completable = _onDismissObservable.ignoreElements()
+
     private val _onCancelObservable = PublishSubject.create<DialogInterface>()
+    val onCancelObservable: Maybe<*> = _onCancelObservable.firstElement()
 
-    val onDismissObservable: Completable
-        get() = _onDismissObservable.ignoreElements()
+    override fun onCreate(savedInstanceState: Bundle?)
+    {
+        super.onCreate(savedInstanceState)
 
-    val onCancelObservable: Maybe<*>
-        get() = _onCancelObservable.firstElement()
+        if (lateShow) show(lateShowBundle)
+    }
 
     override fun onStart()
     {
@@ -122,8 +130,8 @@ abstract class BaseDialog : DaggerAppCompatDialogFragment()
             dialog.window!!.requestFeature(Window.FEATURE_NO_TITLE)
 
         dialog.setContentView(LayoutInflater
-                                      .from(context)
-                                      .inflate(contentViewRes, null, false))
+                                  .from(context)
+                                  .inflate(contentViewRes, null, false))
 
         onDestroyViewDisposables = CompositeDisposable()
 
@@ -134,24 +142,44 @@ abstract class BaseDialog : DaggerAppCompatDialogFragment()
 
     final override fun show(fragmentManager: FragmentManager, tag: String)
     {
-        throw IllegalArgumentException("Use FragmentNavigationManager.showFragment instead")
+        throw IllegalArgumentException("Use show( Bundle? = null ) or FragmentNavigationManager.showFragment instead")
     }
 
     final override fun show(transaction: FragmentTransaction, tag: String): Int
     {
-        throw IllegalArgumentException("Use FragmentNavigationManager.showFragment instead")
+        throw IllegalArgumentException("Use show( Bundle? = null ) or FragmentNavigationManager.showFragment instead")
+    }
+
+    @JvmOverloads
+    fun show(bundle: Bundle? = null)
+    {
+        if (::fragmentNavigationManager.isInitialized)
+        {
+            lateShow = false
+            lateShowBundle = null
+            fragmentNavigationManager.showFragment(this, bundle)
+        }
+        else
+        {
+            lateShow = true
+            lateShowBundle = bundle
+        }
     }
 
     override fun dismiss()
     {
-        if (::fragmentNavigationManager.isInitialized)
-            fragmentNavigationManager.dismissDialog(this)
+        dismiss(null)
     }
 
-    fun dismiss(@FragmentNavigationManager.StateLossPolicy stateLossPolicy: Long)
+    open fun dismiss(@FragmentNavigationManager.StateLossPolicy stateLossPolicy: Long?)
     {
         if (::fragmentNavigationManager.isInitialized)
             fragmentNavigationManager.dismissDialog(this, stateLossPolicy)
+        else
+        {
+            lateShow = false
+            lateShowBundle = null
+        }
     }
 
     override fun dismissAllowingStateLoss()
@@ -169,8 +197,8 @@ abstract class BaseDialog : DaggerAppCompatDialogFragment()
 
     override fun onCancel(dialog: DialogInterface)
     {
-        _onDismissObservable.onNext(dialog)
-        _onDismissObservable.onComplete()
+        _onCancelObservable.onNext(dialog)
+        _onCancelObservable.onComplete()
     }
 
     protected abstract fun init(savedInstanceState: Bundle?)

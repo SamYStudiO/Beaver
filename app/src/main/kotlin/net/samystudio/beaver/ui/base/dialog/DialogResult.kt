@@ -5,32 +5,15 @@ package net.samystudio.beaver.ui.base.dialog
 import android.os.Bundle
 import android.support.annotation.IntDef
 
-class DialogResult
+class DialogResult @JvmOverloads constructor(@ResultCode @get:ResultCode var code: Long,
+                                             var bundle: Bundle? = null)
 {
-    @ResultCode
-    @get:ResultCode
-    var code: Long = 0
-    var bundle: Bundle? = null
-    var error: Throwable? = null
     val isOk: Boolean
         get() = code == RESULT_OK
     val isCancelled: Boolean
         get() = code == RESULT_CANCELLED
     val isError: Boolean
         get() = code == RESULT_ERROR
-
-    @JvmOverloads
-    constructor(@ResultCode code: Long, bundle: Bundle? = null)
-    {
-        this.code = code
-        this.bundle = bundle
-    }
-
-    constructor(error: Throwable?)
-    {
-        this.code = RESULT_ERROR
-        this.error = error
-    }
 
     fun hasBundle() = bundle != null
 
@@ -40,8 +23,6 @@ class DialogResult
         hasBundle() && bundle!!.containsKey(key) && bundle!!.get(key) != null
 
     fun <T> getKey(key: String) = bundle?.get(key)
-
-    fun hasError() = error != null
 
     @Retention(AnnotationRetention.SOURCE)
     @IntDef(RESULT_OK, RESULT_CANCELLED, RESULT_ERROR)
