@@ -9,5 +9,5 @@ import net.samystudio.beaver.ui.base.viewmodel.DataPushViewModel
 abstract class BaseDataFetchPushFragment<D, VM> : BaseDataFetchFragment<D, VM>()
         where VM : BaseViewModel, VM : DataFetchViewModel<D>, VM : DataPushViewModel
 {
-    abstract fun onPushedData()
+    abstract fun onPushData()
 }

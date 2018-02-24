@@ -16,7 +16,7 @@ abstract class BaseDataFetchFragment<D, VM> : BaseDataFragment<VM>()
     {
         super.init(savedInstanceState)
 
-        viewModel.liveData.observe(this, Observer { onFetchedData(it) })
+        viewModel.liveData.observe(this, Observer { onFetchData(it) })
     }
 
     fun fetch()
@@ -24,5 +24,5 @@ abstract class BaseDataFetchFragment<D, VM> : BaseDataFragment<VM>()
         viewModel.fetch()
     }
 
-    abstract fun onFetchedData(data: D?)
+    abstract fun onFetchData(data: D?)
 }

@@ -34,6 +34,9 @@ abstract class BaseFragment : DaggerFragment(), HasSupportFragmentInjector
 
     private val _titleObservable: BehaviorProcessor<String> = BehaviorProcessor.create()
     val titleObservable: Observable<String> = _titleObservable.toObservable()
+    var title: String
+        get() = _titleObservable.value
+        set(value) = _titleObservable.onNext(value)
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
