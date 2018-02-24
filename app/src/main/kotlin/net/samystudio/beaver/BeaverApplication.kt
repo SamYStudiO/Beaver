@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.util.Base64
 import android.util.Log
+import com.evernote.android.state.StateSaver
 import dagger.android.support.DaggerApplication
 import net.samystudio.beaver.di.component.DaggerApplicationComponent
 import timber.log.Timber
@@ -33,6 +34,7 @@ class BeaverApplication : DaggerApplication()
 
         initFirebaseCrash()
         initTimber()
+        initState()
         logKeyHash()
     }
 
@@ -50,6 +52,11 @@ class BeaverApplication : DaggerApplication()
                          override fun isLoggable(tag: String?, priority: Int) =
                              BuildConfig.DEBUG || priority >= Log.INFO
                      })
+    }
+
+    private fun initState()
+    {
+        StateSaver.setEnabledForAllActivitiesAndSupportFragments(this, true)
     }
 
     /**

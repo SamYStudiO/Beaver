@@ -7,5 +7,4 @@ class LaunchFragment : BaseDataFragment<LaunchViewModel>()
 {
     override val viewModelClass: Class<LaunchViewModel> = LaunchViewModel::class.java
     override val layoutViewRes: Int = R.layout.fragment_launch
-    override val defaultTitle: String = ""
 }

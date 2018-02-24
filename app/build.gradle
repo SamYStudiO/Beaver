@@ -73,6 +73,8 @@ dependencies {
     implementation "com.github.bumptech.glide:okhttp3-integration:4.6.1"
     kapt 'com.github.bumptech.glide:compiler:4.6.1'
     implementation 'com.jakewharton.timber:timber:4.6.1'
+    implementation 'com.evernote:android-state:1.2.0'
+    kapt 'com.evernote:android-state-processor:1.2.0'
 }
 
 // TODO apply plugin: 'com.google.gms.google-services'

@@ -7,6 +7,7 @@ import android.support.annotation.LayoutRes
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.evernote.android.state.State
 import dagger.android.support.DaggerFragment
 import dagger.android.support.HasSupportFragmentInjector
 import io.reactivex.Observable
@@ -26,7 +27,6 @@ abstract class BaseFragment : DaggerFragment(), HasSupportFragmentInjector
     protected lateinit var fragmentNavigationManager: FragmentNavigationManager
     @get:LayoutRes
     protected abstract val layoutViewRes: Int
-    protected abstract val defaultTitle: String
     private var onPauseDisposables: CompositeDisposable? = null
     private var onStopDisposables: CompositeDisposable? = null
     private var onDestroyViewDisposables: CompositeDisposable? = null
@@ -34,15 +34,19 @@ abstract class BaseFragment : DaggerFragment(), HasSupportFragmentInjector
 
     private val _titleObservable: BehaviorProcessor<String> = BehaviorProcessor.create()
     val titleObservable: Observable<String> = _titleObservable.toObservable()
-    var title: String
-        get() = _titleObservable.value
-        set(value) = _titleObservable.onNext(value)
+    @State
+    var title: String = ""
+        set(value)
+        {
+            field = value
+            _titleObservable.onNext(value)
+        }
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
 
-        _titleObservable.onNext(defaultTitle)
+        _titleObservable.onNext(title)
     }
 
     override fun onCreateView(inflater: LayoutInflater,
