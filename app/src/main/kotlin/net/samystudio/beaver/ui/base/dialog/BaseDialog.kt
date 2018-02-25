@@ -17,7 +17,6 @@ import io.reactivex.subjects.PublishSubject
 import net.samystudio.beaver.ui.common.navigation.FragmentNavigationManager
 import javax.inject.Inject
 
-// TODO results states (save/restore), DataDialog, DateResultDialog, AutoDispose
 abstract class BaseDialog : DaggerAppCompatDialogFragment()
 {
     @Inject
