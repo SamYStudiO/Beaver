@@ -69,6 +69,12 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:3.9.0'
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
     implementation 'io.reactivex.rxjava2:rxjava:2.1.9'
+    implementation 'com.uber.autodispose:autodispose:0.6.1'
+    implementation 'com.uber.autodispose:autodispose-android:0.6.1'
+    implementation 'com.uber.autodispose:autodispose-android-archcomponents:0.6.1'
+    implementation 'com.uber.autodispose:autodispose-kotlin:0.6.1'
+    implementation 'com.uber.autodispose:autodispose-android-kotlin:0.6.1'
+    implementation 'com.uber.autodispose:autodispose-android-archcomponents-kotlin:0.6.1'
     implementation 'com.github.bumptech.glide:glide:4.6.1'
     implementation "com.github.bumptech.glide:okhttp3-integration:4.6.1"
     kapt 'com.github.bumptech.glide:compiler:4.6.1'

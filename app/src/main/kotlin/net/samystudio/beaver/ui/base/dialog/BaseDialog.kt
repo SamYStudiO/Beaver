@@ -13,8 +13,6 @@ import android.view.Window
 import dagger.android.support.DaggerAppCompatDialogFragment
 import io.reactivex.Completable
 import io.reactivex.Maybe
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.PublishSubject
 import net.samystudio.beaver.ui.common.navigation.FragmentNavigationManager
 import javax.inject.Inject
@@ -26,10 +24,6 @@ abstract class BaseDialog : DaggerAppCompatDialogFragment()
     protected lateinit var fragmentNavigationManager: FragmentNavigationManager
     @get:LayoutRes
     protected abstract val contentViewRes: Int
-    private var onPauseDisposables: CompositeDisposable? = null
-    private var onStopDisposables: CompositeDisposable? = null
-    private var onDestroyViewDisposables: CompositeDisposable? = null
-    private val onDestroyDisposables: CompositeDisposable = CompositeDisposable()
     private var lateShow: Boolean = false
     private var lateShowBundle: Bundle? = null
 
@@ -46,80 +40,12 @@ abstract class BaseDialog : DaggerAppCompatDialogFragment()
         if (lateShow) show(lateShowBundle)
     }
 
-    override fun onStart()
-    {
-        super.onStart()
-
-        onStopDisposables = CompositeDisposable()
-    }
-
-    override fun onResume()
-    {
-        super.onResume()
-
-        onPauseDisposables = CompositeDisposable()
-    }
-
-    override fun onPause()
-    {
-        onPauseDisposables?.dispose()
-
-        super.onPause()
-    }
-
-    override fun onStop()
-    {
-        onStopDisposables?.dispose()
-
-        super.onStop()
-    }
-
-    override fun onDestroyView()
-    {
-        onDestroyViewDisposables?.dispose()
-
-        super.onDestroyView()
-    }
-
     override fun onDestroy()
     {
-        onDestroyDisposables.dispose()
         _onDismissObservable.onComplete()
         _onCancelObservable.onComplete()
 
         super.onDestroy()
-    }
-
-    protected fun addOnPauseDisposable(disposable: Disposable)
-    {
-        if (onPauseDisposables == null || onPauseDisposables!!.isDisposed)
-            throw IllegalStateException("Cannot add onPause disposable before onResume and after onPause")
-
-        onPauseDisposables!!.add(disposable)
-    }
-
-    protected fun addOnStopDisposable(disposable: Disposable)
-    {
-        if (onStopDisposables == null || onStopDisposables!!.isDisposed)
-            throw IllegalStateException("Cannot add onStop disposable before onStart and after onStop")
-
-        onStopDisposables!!.add(disposable)
-    }
-
-    protected fun addOnDestroyViewDisposable(disposable: Disposable)
-    {
-        if (onDestroyViewDisposables == null || onDestroyViewDisposables!!.isDisposed)
-            throw IllegalStateException("Cannot add onDestroyView disposable before onViewCreated and after onDestroyView")
-
-        onDestroyViewDisposables!!.add(disposable)
-    }
-
-    protected fun addOnDestroyDisposable(disposable: Disposable)
-    {
-        if (onDestroyDisposables.isDisposed)
-            throw IllegalStateException("Cannot add onDestroy disposable after onDestroy")
-
-        onDestroyDisposables.add(disposable)
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog
@@ -132,8 +58,6 @@ abstract class BaseDialog : DaggerAppCompatDialogFragment()
         dialog.setContentView(LayoutInflater
                                   .from(context)
                                   .inflate(contentViewRes, null, false))
-
-        onDestroyViewDisposables = CompositeDisposable()
 
         init(savedInstanceState)
 
