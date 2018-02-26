@@ -1,6 +1,6 @@
 @file:Suppress("unused")
 
-package net.samystudio.beaver.ui.base.fragment
+package net.samystudio.beaver.ui.base.fragment.dialog
 
 import android.arch.lifecycle.Observer
 import android.os.Bundle
@@ -8,7 +8,7 @@ import android.support.annotation.CallSuper
 import net.samystudio.beaver.ui.base.viewmodel.BaseViewModel
 import net.samystudio.beaver.ui.base.viewmodel.DataFetchViewModel
 
-abstract class BaseDataFetchFragment<D, VM> : BaseDataFragment<VM>()
+abstract class BaseDataFetchDialog<D, VM> : BaseDataDialog<VM>()
         where VM : BaseViewModel, VM : DataFetchViewModel<D>
 {
     @CallSuper

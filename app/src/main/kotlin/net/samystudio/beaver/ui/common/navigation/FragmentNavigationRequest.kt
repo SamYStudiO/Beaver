@@ -12,39 +12,40 @@ import android.support.v4.app.DialogFragment
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentTransaction
 import android.view.View
+import net.samystudio.beaver.ui.base.fragment.BaseFragment
+import net.samystudio.beaver.ui.base.fragment.dialog.BaseDialog
 import java.util.*
 
 /**
  * Advanced [Fragment] or [DialogFragment] request to use along with
- * [FragmentNavigationManager.showFragment].
+ * [FragmentNavigationManager.startFragment].
  */
-class FragmentNavigationRequest<T : Fragment> constructor(builder: Builder<T>)
+class FragmentNavigationRequest<T : BaseFragment> constructor(builder: Builder<T>)
 {
     val fragment: T
 
     /**
-     * Get [Bundle] that will be inject (or added if one already exists) to [Fragment] when request
-     * is executed.
+     * Get [Bundle] that will be inject (or added if one already exists) to [BaseFragment] when
+     * request is executed.
      *
-     * @see Fragment.setArguments
+     * @see BaseFragment.setArguments
      */
     val bundle: Bundle?
 
     /**
      * Get if this request will be added to back stack when request is executed. Note this is always
-     * false for a [DialogFragment] request.
+     * false for a [BaseDialog] request.
      */
-    val isAddedToBackStack: Boolean
+    val addToBackStack: Boolean
 
     @FragmentNavigationManager.StateLossPolicy
-    val stateLossPolicy: Long
+    val stateLossPolicy: Long?
 
     /**
      * Get which policy should be used when executing this request after
      * [android.support.v4.app.FragmentManager] state is saved.
      *
-     * @param defaultStateLossPolicy A default state loss policy to replace actual policy if it is
-     * [FragmentNavigationManager.STATE_LOSS_POLICY_UNSET]
+     * @param defaultStateLossPolicy A default state loss policy to replace actual policy if it's null
      * @see FragmentNavigationManager.STATE_LOSS_POLICY_IGNORE
      * @see FragmentNavigationManager.STATE_LOSS_POLICY_CANCEL
      * @see FragmentNavigationManager.STATE_LOSS_POLICY_ALLOW
@@ -52,10 +53,7 @@ class FragmentNavigationRequest<T : Fragment> constructor(builder: Builder<T>)
     @FragmentNavigationManager.StateLossPolicy
     fun getStateLossPolicy(@FragmentNavigationManager.StateLossPolicy
                            defaultStateLossPolicy: Long) =
-        if (stateLossPolicy == FragmentNavigationManager.STATE_LOSS_POLICY_UNSET)
-            defaultStateLossPolicy
-        else
-            stateLossPolicy
+        stateLossPolicy ?: defaultStateLossPolicy
 
     /**
      * Tag use for different purposes (see links below).
@@ -67,72 +65,69 @@ class FragmentNavigationRequest<T : Fragment> constructor(builder: Builder<T>)
     val tag: String
 
     /**
-     * @see android.support.v4.app.FragmentTransaction.setCustomAnimations
+     * @see FragmentTransaction.setCustomAnimations
      */
     @AnimatorRes
     @AnimRes
     val enterAnimRes: Int
 
     /**
-     * @see android.support.v4.app.FragmentTransaction.setCustomAnimations
+     * @see FragmentTransaction.setCustomAnimations
      */
     @AnimatorRes
     @AnimRes
     val exitAnimRes: Int
 
     /**
-     * @see android.support.v4.app.FragmentTransaction.setCustomAnimations
+     * @see FragmentTransaction.setCustomAnimations
      */
     @AnimatorRes
     @AnimRes
     val popEnterAnimRes: Int
 
     /**
-     * @see android.support.v4.app.FragmentTransaction.setCustomAnimations
+     * @see FragmentTransaction.setCustomAnimations
      */
     @AnimatorRes
     @AnimRes
     val popExitAnimRes: Int
 
     /**
-     * @see android.support.v4.app.FragmentTransaction.addSharedElement
+     * @see FragmentTransaction.addSharedElement
      */
     val sharedElementSourceView: List<View>
 
     /**
-     * @see android.support.v4.app.FragmentTransaction.addSharedElement
+     * @see FragmentTransaction.addSharedElement
      */
     val sharedElementTargetNames: List<String>
 
     /**
-     * @see android.support.v4.app.FragmentTransaction.setTransition
+     * @see FragmentTransaction.setTransition
      */
     val transition: Int
 
     /**
-     * @see android.support.v4.app.FragmentTransaction.setTransitionStyle
+     * @see FragmentTransaction.setTransitionStyle
      */
     @StyleRes
-    @get:StyleRes
     val transitionStyle: Int
 
     /**
-     * @see android.support.v4.app.FragmentTransaction.setBreadCrumbTitle
+     * @see FragmentTransaction.setBreadCrumbTitle
      */
     @StringRes
-    @get:StringRes
     val breadCrumbTitleRes: Int
 
     /**
-     * @see android.support.v4.app.FragmentTransaction.setBreadCrumbTitle
+     * @see FragmentTransaction.setBreadCrumbTitle
      */
     val breadCrumbTitle: CharSequence?
 
     /**
-     * @see android.support.v4.app.FragmentTransaction.setBreadCrumbShortTitle
+     * @see FragmentTransaction.setBreadCrumbShortTitle
      */
     @StringRes
-    @get:StringRes
     val breadCrumbShortTitleRes: Int
     private val mBreadCrumbShortTitle: CharSequence?
 
@@ -141,11 +136,13 @@ class FragmentNavigationRequest<T : Fragment> constructor(builder: Builder<T>)
      */
     var isCancelled: Boolean = false
 
+    var backStackId: Int = -1
+
     /**
-     * Get if this is a [DialogFragment] or standard [Fragment] request.
+     * Get if this is a [BaseDialog] or standard [BaseFragment] request.
      */
     val isDialog: Boolean
-        get() = fragment is DialogFragment
+        get() = fragment is BaseDialog
 
     @JvmOverloads
     constructor(fragment: T, bundle: Bundle? = null) :
@@ -162,7 +159,7 @@ class FragmentNavigationRequest<T : Fragment> constructor(builder: Builder<T>)
     {
         fragment = builder.fragment
         bundle = builder.bundle
-        isAddedToBackStack = builder.addToBackStack
+        addToBackStack = builder.addToBackStack
         stateLossPolicy = builder.stateLossPolicy
         tag = builder.tag ?: fragment.javaClass.name
         enterAnimRes = builder.enterAnimRes
@@ -188,7 +185,7 @@ class FragmentNavigationRequest<T : Fragment> constructor(builder: Builder<T>)
     }
 
     /**
-     * @see android.support.v4.app.FragmentTransaction.setBreadCrumbShortTitle
+     * @see FragmentTransaction.setBreadCrumbShortTitle
      */
     fun breadCrumbShortTitle() = mBreadCrumbShortTitle
 
@@ -214,22 +211,22 @@ class FragmentNavigationRequest<T : Fragment> constructor(builder: Builder<T>)
                                          sharedElementTargetNames[i])
         }
 
-        if (isAddedToBackStack && !isDialog)
+        if (addToBackStack && !isDialog)
             transaction.addToBackStack(tag)
 
         return transaction
     }
 
-    class Builder<T : Fragment>(val fragment: T)
+    class Builder<T : BaseFragment>(val fragment: T)
     {
         var bundle: Bundle? = null
             private set
-        var addToBackStack: Boolean = false
+        var addToBackStack: Boolean = true
             private set
         var tag: String? = null
             private set
         @FragmentNavigationManager.StateLossPolicy
-        var stateLossPolicy: Long = 0
+        var stateLossPolicy: Long? = null
             private set
         @AnimatorRes
         @AnimRes
@@ -266,17 +263,17 @@ class FragmentNavigationRequest<T : Fragment> constructor(builder: Builder<T>)
             private set
 
         /**
-         * Initiate a builder with a [Fragment] class instance.
+         * Initiate a builder with a [BaseFragment] class instance.
          */
         @Suppress("UNCHECKED_CAST")
         constructor(context: Context, fragmentClass: Class<T>) :
                 this(Fragment.instantiate(context, fragmentClass.name) as T)
 
         /**
-         * Any [Bundle] that will be inject (or added if one already exists) to [Fragment] when
+         * Any [Bundle] that will be inject (or added if one already exists) to [BaseFragment] when
          * request is executed.
          *
-         * @see Fragment.setArguments
+         * @see BaseFragment.setArguments
          */
         fun bundle(bundle: Bundle?): Builder<T>
         {
@@ -286,9 +283,9 @@ class FragmentNavigationRequest<T : Fragment> constructor(builder: Builder<T>)
 
         /**
          * Note back stack tag is automatically generated, if you want to specify one you may use
-         * [tag]. Not also this has no effect for a [DialogFragment] request.
+         * [tag]. Not also this has no effect for a [BaseDialog] request.
          *
-         * @see android.support.v4.app.FragmentTransaction.addToBackStack
+         * @see FragmentTransaction.addToBackStack
          */
         fun addToBackStack(addToBackStack: Boolean): Builder<T>
         {
@@ -317,15 +314,15 @@ class FragmentNavigationRequest<T : Fragment> constructor(builder: Builder<T>)
          * @see FragmentNavigationManager.STATE_LOSS_POLICY_CANCEL
          * @see FragmentNavigationManager.STATE_LOSS_POLICY_ALLOW
          */
-        fun stateLossPolicy(
-            @FragmentNavigationManager.StateLossPolicy stateLossPolicy: Long): Builder<T>
+        fun stateLossPolicy(@FragmentNavigationManager.StateLossPolicy
+                            stateLossPolicy: Long): Builder<T>
         {
             this.stateLossPolicy = stateLossPolicy
             return this
         }
 
         /**
-         * @see android.support.v4.app.FragmentTransaction.setCustomAnimations
+         * @see FragmentTransaction.setCustomAnimations
          */
         fun customAnimations(@AnimatorRes @AnimRes enter: Int,
                              @AnimatorRes @AnimRes exit: Int): Builder<T>
@@ -336,7 +333,7 @@ class FragmentNavigationRequest<T : Fragment> constructor(builder: Builder<T>)
         }
 
         /**
-         * @see android.support.v4.app.FragmentTransaction.setCustomAnimations
+         * @see FragmentTransaction.setCustomAnimations
          */
         fun customAnimations(@AnimatorRes @AnimRes enter: Int,
                              @AnimatorRes @AnimRes exit: Int,
@@ -353,7 +350,7 @@ class FragmentNavigationRequest<T : Fragment> constructor(builder: Builder<T>)
         /**
          * Call multiple times to add several shared elements.
          *
-         * @see android.support.v4.app.FragmentTransaction.addSharedElement
+         * @see FragmentTransaction.addSharedElement
          */
         fun sharedElement(sharedElement: View, name: String): Builder<T>
         {
@@ -363,7 +360,7 @@ class FragmentNavigationRequest<T : Fragment> constructor(builder: Builder<T>)
         }
 
         /**
-         * @see android.support.v4.app.FragmentTransaction.setTransition
+         * @see FragmentTransaction.setTransition
          */
         fun transition(transit: Int): Builder<T>
         {
@@ -372,7 +369,7 @@ class FragmentNavigationRequest<T : Fragment> constructor(builder: Builder<T>)
         }
 
         /**
-         * @see android.support.v4.app.FragmentTransaction.setTransitionStyle
+         * @see FragmentTransaction.setTransitionStyle
          */
         fun transitionStyle(@StyleRes styleRes: Int): Builder<T>
         {
@@ -381,7 +378,7 @@ class FragmentNavigationRequest<T : Fragment> constructor(builder: Builder<T>)
         }
 
         /**
-         * @see android.support.v4.app.FragmentTransaction.setBreadCrumbTitle
+         * @see FragmentTransaction.setBreadCrumbTitle
          */
         fun breadCrumbTitle(@StringRes res: Int): Builder<T>
         {
@@ -390,7 +387,7 @@ class FragmentNavigationRequest<T : Fragment> constructor(builder: Builder<T>)
         }
 
         /**
-         * @see android.support.v4.app.FragmentTransaction.setBreadCrumbTitle
+         * @see FragmentTransaction.setBreadCrumbTitle
          */
         fun breadCrumbTitle(text: CharSequence?): Builder<T>
         {
@@ -399,7 +396,7 @@ class FragmentNavigationRequest<T : Fragment> constructor(builder: Builder<T>)
         }
 
         /**
-         * @see android.support.v4.app.FragmentTransaction.setBreadCrumbShortTitle
+         * @see FragmentTransaction.setBreadCrumbShortTitle
          */
         fun breadCrumbShortTitle(@StringRes res: Int): Builder<T>
         {
@@ -408,7 +405,7 @@ class FragmentNavigationRequest<T : Fragment> constructor(builder: Builder<T>)
         }
 
         /**
-         * @see android.support.v4.app.FragmentTransaction.setBreadCrumbShortTitle
+         * @see FragmentTransaction.setBreadCrumbShortTitle
          */
         fun breadCrumbShortTitle(text: CharSequence?): Builder<T>
         {

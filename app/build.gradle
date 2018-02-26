@@ -2,6 +2,9 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'com.google.firebase.firebase-crash'
+
+setProperty("FirebaseServiceAccountFilePath", rootProject.rootDir.absolutePath + FirebaseServiceAccountFilePath)
 
 android {
     compileSdkVersion 27
@@ -41,7 +44,9 @@ android {
             def sep = "_"
             def version = variant.versionName
             def build = variant.versionCode
-            outputFileName = rootProject.name + sep + variant.buildType.name + sep + version + sep + "build" + sep + build + ".apk"
+            outputFileName = rootProject.name + sep +
+                    variant.buildType.name + sep +
+                    version + sep + "build" + sep + build + ".apk"
         }
     }
 }

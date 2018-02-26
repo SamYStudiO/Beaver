@@ -34,7 +34,7 @@ class BeaverApplication : DaggerApplication()
 
         initFirebaseCrash()
         initTimber()
-        initState()
+        initStateSaver()
         logKeyHash()
     }
 
@@ -54,13 +54,13 @@ class BeaverApplication : DaggerApplication()
                      })
     }
 
-    private fun initState()
+    private fun initStateSaver()
     {
         StateSaver.setEnabledForAllActivitiesAndSupportFragments(this, true)
     }
 
     /**
-     * App key hash may be useful with Facebook for example.
+     * App key hash, may be useful with Facebook for example.
      */
     @SuppressLint("PackageManagerGetSignatures")
     private fun logKeyHash()

@@ -8,7 +8,7 @@ import net.samystudio.beaver.ui.base.fragment.BaseFragment
 class MainActivity : BaseActivity()
 {
     override val layoutViewRes: Int = R.layout.activity_main
-    override val defaultFragment: Class<out BaseFragment> = MainFragment::class.java
+    override val defaultFragmentClass: Class<out BaseFragment> = MainFragment::class.java
 
     override fun init(savedInstanceState: Bundle?)
     {

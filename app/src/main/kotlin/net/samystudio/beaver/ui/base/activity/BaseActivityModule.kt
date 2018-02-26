@@ -11,7 +11,6 @@ import net.samystudio.beaver.R
 import net.samystudio.beaver.di.qualifier.ActivityContext
 import net.samystudio.beaver.di.qualifier.FragmentContainerViewId
 import net.samystudio.beaver.di.scope.ActivityScope
-import net.samystudio.beaver.ui.common.navigation.FragmentNavigationManager
 
 @Module
 abstract class BaseActivityModule
@@ -36,18 +35,5 @@ abstract class BaseActivityModule
         @JvmStatic
         fun provideFragmentManager(activity: AppCompatActivity): FragmentManager =
             activity.supportFragmentManager
-
-        @Provides
-        @ActivityScope
-        @JvmStatic
-        fun provideFragmentNavigationManager(@ActivityContext
-                                             context: Context,
-                                             fragmentManager: FragmentManager,
-                                             @FragmentContainerViewId
-                                             fragmentContainerViewId: Int) =
-            FragmentNavigationManager(
-                context,
-                fragmentManager,
-                fragmentContainerViewId)
     }
 }

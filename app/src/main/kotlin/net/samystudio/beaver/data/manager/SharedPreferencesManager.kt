@@ -14,12 +14,6 @@ class SharedPreferencesManager @Inject constructor(@param:ApplicationContext
                                                    private val context: Context,
                                                    private val sharedPreferences: SharedPreferences)
 {
-    companion object
-    {
-        private const val API_URL = "apiUrl"
-        private const val USER_TOKEN = "userToken"
-    }
-
     var apiUrl: String
         get() = sharedPreferences.getString(API_URL, context.getString(R.string.api_url))
         set(value) = sharedPreferences.putString(API_URL, value)
@@ -27,4 +21,10 @@ class SharedPreferencesManager @Inject constructor(@param:ApplicationContext
     var userToken: String?
         get() = sharedPreferences.getString(USER_TOKEN, null)
         set(value) = sharedPreferences.putString(USER_TOKEN, value)
+
+    companion object
+    {
+        private const val API_URL = "apiUrl"
+        private const val USER_TOKEN = "userToken"
+    }
 }
