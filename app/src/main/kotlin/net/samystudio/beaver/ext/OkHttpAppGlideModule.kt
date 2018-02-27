@@ -9,7 +9,6 @@ import com.bumptech.glide.integration.okhttp3.OkHttpLibraryGlideModule
 import com.bumptech.glide.integration.okhttp3.OkHttpUrlLoader
 import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.module.AppGlideModule
-import net.samystudio.beaver.BeaverApplication
 import net.samystudio.beaver.di.component.DaggerGlideComponent
 import okhttp3.OkHttpClient
 import java.io.InputStream
@@ -25,7 +24,6 @@ class OkHttpAppGlideModule : AppGlideModule()
     init
     {
         DaggerGlideComponent.builder()
-            .application(BeaverApplication.instance)
             .build()
             .inject(this)
     }

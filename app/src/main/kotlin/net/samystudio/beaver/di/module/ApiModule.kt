@@ -7,6 +7,7 @@ import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import io.reactivex.schedulers.Schedulers
+import net.samystudio.beaver.BuildConfig
 import net.samystudio.beaver.data.manager.SharedPreferencesManager
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
@@ -27,6 +28,20 @@ object ApiModule
     @JvmStatic
     fun provideCache(application: Application) =
         Cache(application.cacheDir, 20L * 1024L * 1024L) //20 mo
+
+    @Provides
+    @Singleton
+    @JvmStatic
+    fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor
+    {
+        val httpLoggingInterceptor = HttpLoggingInterceptor()
+
+        httpLoggingInterceptor.level =
+                if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY
+                else HttpLoggingInterceptor.Level.NONE
+
+        return httpLoggingInterceptor
+    }
 
     @Provides
     @Singleton
