@@ -1,24 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
           package="net.samystudio.beaver">
 
     <application
-        android:name="net.samystudio.beaver.BeaverApplication"
+        android:name=".BeaverApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="net.samystudio.beaver.ui.launch.LaunchActivity">
+
+        <meta-data
+            android:name="asset_statements"
+            android:resource="@string/asset_statements"/>
+
+        <activity
+            android:name=".ui.launch.LaunchActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+            <intent-filter
+                android:autoVerify="true"
+                tools:targetApi="m">
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <data
+                    android:host="samystudio.github.io"
+                    android:scheme="https"
+                    />
+            </intent-filter>
         </activity>
-        <activity android:name="net.samystudio.beaver.ui.main.MainActivity">
+
+        <activity
+            android:name=".ui.main.MainActivity"
+            android:launchMode="singleTop">
         </activity>
+
     </application>
 
 </manifest>

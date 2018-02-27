@@ -8,6 +8,6 @@
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="go fragment 2 "/>
+        android:text="go main activity"/>
 
 </android.support.constraint.ConstraintLayout>

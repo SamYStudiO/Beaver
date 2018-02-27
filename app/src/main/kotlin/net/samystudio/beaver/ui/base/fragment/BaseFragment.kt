@@ -4,9 +4,8 @@ package net.samystudio.beaver.ui.base.fragment
 
 import android.app.Activity
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.support.annotation.IntRange
+import android.support.annotation.CallSuper
 import android.support.annotation.LayoutRes
 import android.view.LayoutInflater
 import android.view.View
@@ -16,17 +15,18 @@ import dagger.android.support.DaggerFragment
 import dagger.android.support.HasSupportFragmentInjector
 import io.reactivex.Observable
 import io.reactivex.processors.BehaviorProcessor
-import net.samystudio.beaver.ui.base.activity.BaseActivity
-import net.samystudio.beaver.ui.common.navigation.ActivityNavigationManager
+import net.samystudio.beaver.ui.common.navigation.FragmentNavigation
 import net.samystudio.beaver.ui.common.navigation.FragmentNavigationManager
-import net.samystudio.beaver.ui.common.navigation.FragmentNavigationRequest
 import timber.log.Timber
 import javax.inject.Inject
 
-abstract class BaseFragment : DaggerFragment(), HasSupportFragmentInjector
+abstract class BaseFragment : DaggerFragment(), HasSupportFragmentInjector, FragmentNavigation
 {
+    /**
+     * @hide
+     */
     @Inject
-    protected lateinit var fragmentNavigationManager: FragmentNavigationManager
+    override lateinit var fragmentNavigationManager: FragmentNavigationManager
     protected val fragmentNavigationManagerIsInitialized
         get() = ::fragmentNavigationManager.isInitialized
 
@@ -67,119 +67,19 @@ abstract class BaseFragment : DaggerFragment(), HasSupportFragmentInjector
         init(savedInstanceState)
     }
 
+    override fun onResume()
+    {
+        super.onResume()
+
+        handleIntent()
+    }
+
     override fun onDestroy()
     {
         _titleObservable.onComplete()
 
         super.onDestroy()
     }
-
-    /**
-     * @see ActivityNavigationManager.startActivity
-     */
-    @JvmOverloads
-    fun startActivity(activityClass: Class<out BaseActivity>,
-                      extras: Bundle? = null,
-                      options: Bundle? = null,
-                      forResultRequestCode: Int? = null,
-                      finishCurrentActivity: Boolean = false) =
-        fragmentNavigationManager.startActivity(activityClass, extras,
-                                                options,
-                                                forResultRequestCode,
-                                                finishCurrentActivity)
-
-    /**
-     * @see ActivityNavigationManager.startActivity
-     */
-    @JvmOverloads
-    fun startActivity(intent: Intent,
-                      options: Bundle? = null,
-                      forResultRequestCode: Int? = null,
-                      finishCurrentActivity: Boolean = false) =
-        fragmentNavigationManager.startActivity(intent,
-                                                options,
-                                                forResultRequestCode,
-                                                finishCurrentActivity)
-
-    /**
-     * @see ActivityNavigationManager.startUrl
-     */
-    fun startUrl(url: String) = startUrl(Uri.parse(url))
-
-    /**
-     * @see ActivityNavigationManager.startUrl
-     */
-    fun startUrl(uri: Uri) = fragmentNavigationManager.startUrl(uri)
-
-    /**
-     * @see FragmentNavigationManager.startFragment
-     */
-    @JvmOverloads
-    fun <T : BaseFragment> startFragment(fragment: T,
-                                         bundle: Bundle? = null,
-                                         addToBackStack: Boolean = true,
-                                         forResultRequestCode: Int? = null) =
-        fragmentNavigationManager.startFragment(fragment,
-                                                bundle,
-                                                addToBackStack,
-                                                forResultRequestCode)
-
-    /**
-     * @see FragmentNavigationManager.startFragment
-     */
-    @JvmOverloads
-    fun <T : BaseFragment> startFragment(fragmentClass: Class<T>,
-                                         bundle: Bundle? = null,
-                                         addToBackStack: Boolean = true,
-                                         forResultRequestCode: Int? = null) =
-        fragmentNavigationManager.startFragment(fragmentClass,
-                                                bundle,
-                                                addToBackStack,
-                                                forResultRequestCode)
-
-    /**
-     * @see FragmentNavigationManager.startFragment
-     */
-    @JvmOverloads
-    fun <T : BaseFragment> startFragment(fragmentNavigationRequest: FragmentNavigationRequest<T>,
-                                         forResultRequestCode: Int? = null) =
-        fragmentNavigationManager.startFragment(fragmentNavigationRequest,
-                                                forResultRequestCode)
-
-    /**
-     * @see FragmentNavigationManager.clearBackStack
-     */
-    @JvmOverloads
-    fun clearBackStack(@FragmentNavigationManager.StateLossPolicy
-                       stateLossPolicy: Long = fragmentNavigationManager.defaultStateLossPolicy) =
-        fragmentNavigationManager.clearBackStack(stateLossPolicy)
-
-    /**
-     * @see FragmentNavigationManager.popBackStack
-     */
-    @JvmOverloads
-    fun popBackStack(@FragmentNavigationManager.StateLossPolicy
-                     stateLossPolicy: Long = fragmentNavigationManager.defaultStateLossPolicy) =
-        fragmentNavigationManager.popBackStack(stateLossPolicy)
-
-    /**
-     * @see FragmentNavigationManager.popBackStack
-     */
-    @JvmOverloads
-    fun popBackStack(tag: String,
-                     flags: Int,
-                     @FragmentNavigationManager.StateLossPolicy
-                     stateLossPolicy: Long = fragmentNavigationManager.defaultStateLossPolicy) =
-        fragmentNavigationManager.popBackStack(tag, flags, stateLossPolicy)
-
-    /**
-     * @see FragmentNavigationManager.popBackStack
-     */
-    @JvmOverloads
-    fun popBackStack(@IntRange(from = 1) offset: Int,
-                     @FragmentNavigationManager.StateLossPolicy
-                     stateLossPolicy: Long = fragmentNavigationManager.defaultStateLossPolicy) =
-        fragmentNavigationManager.popBackStack(offset, stateLossPolicy)
 
     /**
      * @hide
@@ -204,6 +104,15 @@ abstract class BaseFragment : DaggerFragment(), HasSupportFragmentInjector
     {
         val fragment = targetFragment as BaseFragment?
         fragment?.onActivityResult(targetRequestCode, code, intent)
+    }
+
+    @CallSuper
+    protected open fun handleIntent()
+    {
+        val intent = activity?.intent
+
+        if (intent?.action == Intent.ACTION_VIEW && !intent.data?.toString().isNullOrBlank())
+            onNewUrl(intent.data)
     }
 
     protected abstract fun init(savedInstanceState: Bundle?)

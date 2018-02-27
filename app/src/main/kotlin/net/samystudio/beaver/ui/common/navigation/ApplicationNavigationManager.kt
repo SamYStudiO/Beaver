@@ -34,5 +34,12 @@ open class ApplicationNavigationManager @Inject constructor(@param:ApplicationCo
     }
 
     fun startUrl(url: String) = startUrl(Uri.parse(url))
-    fun startUrl(uri: Uri) = context.startActivity(Intent(Intent.ACTION_VIEW, uri))
+    fun startUrl(uri: Uri)
+    {
+        val intent = Intent(Intent.ACTION_VIEW, uri)
+        intent.addCategory(Intent.CATEGORY_DEFAULT)
+        intent.addCategory(Intent.CATEGORY_BROWSABLE)
+
+        context.startActivity(intent)
+    }
 }
