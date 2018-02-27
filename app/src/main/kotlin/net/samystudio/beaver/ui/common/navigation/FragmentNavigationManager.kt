@@ -45,7 +45,7 @@ constructor(activity: AppCompatActivity,
      * [FragmentNavigationManager] instance. May be null if no request already occurred.
      */
     @Suppress("UNCHECKED_CAST")
-    fun <T : BaseFragment> getCurrentFragment(): T? =
+    fun <T : BaseFragment<*>> getCurrentFragment(): T? =
         fragmentManager.findFragmentById(fragmentContainerViewId) as T?
 
     /**
@@ -54,7 +54,7 @@ constructor(activity: AppCompatActivity,
      * @see BaseFragment.setArguments
      */
     @JvmOverloads
-    fun <T : BaseFragment> startFragment(fragment: T,
+    fun <T : BaseFragment<*>> startFragment(fragment: T,
                                          bundle: Bundle? = null,
                                          addToBackStack: Boolean = true,
                                          forResultRequestCode: Int? = null) =
@@ -69,7 +69,7 @@ constructor(activity: AppCompatActivity,
      * @see BaseFragment.setArguments
      */
     @JvmOverloads
-    fun <T : BaseFragment> startFragment(fragmentClass: Class<T>,
+    fun <T : BaseFragment<*>> startFragment(fragmentClass: Class<T>,
                                          bundle: Bundle? = null,
                                          addToBackStack: Boolean = true,
                                          forResultRequestCode: Int? = null) =
@@ -86,7 +86,7 @@ constructor(activity: AppCompatActivity,
      * @see FragmentNavigationRequest.Builder
      */
     @SuppressLint("CommitTransaction")
-    fun <T : BaseFragment> startFragment(fragmentNavigationRequest: FragmentNavigationRequest<T>,
+    fun <T : BaseFragment<*>> startFragment(fragmentNavigationRequest: FragmentNavigationRequest<T>,
                                          forResultRequestCode: Int? = null): FragmentNavigationRequest<T>
     {
         if (fragmentManager.isStateSaved && fragmentNavigationRequest.getStateLossPolicy(
@@ -98,7 +98,7 @@ constructor(activity: AppCompatActivity,
 
         fragmentNavigationRequest.isCancelled = false
 
-        val currentFragment: BaseFragment? = getCurrentFragment()
+        val currentFragment: BaseFragment<*>? = getCurrentFragment()
         if (forResultRequestCode != null && currentFragment != null)
             fragmentNavigationRequest.fragment.setTargetFragment(currentFragment,
                                                                  forResultRequestCode)
@@ -214,7 +214,7 @@ constructor(activity: AppCompatActivity,
      * @see FragmentNavigationRequest.getStateLossPolicy
      */
     @JvmOverloads
-    fun dismissDialog(dialog: BaseDialog,
+    fun dismissDialog(dialog: BaseDialog<*>,
                       @StateLossPolicy stateLossPolicy: Long? = defaultStateLossPolicy) =
         dismissDialog(FragmentNavigationRequest.Builder(dialog)
                           .stateLossPolicy(stateLossPolicy ?: defaultStateLossPolicy)
@@ -228,17 +228,17 @@ constructor(activity: AppCompatActivity,
     fun dismissDialog(tag: String, @StateLossPolicy
     stateLossPolicy: Long? = defaultStateLossPolicy): Boolean
     {
-        val dialog: BaseDialog =
-            fragmentManager.findFragmentByTag(tag) as BaseDialog? ?: return false
+        val dialog: BaseDialog<*> =
+            fragmentManager.findFragmentByTag(tag) as BaseDialog<*>? ?: return false
 
         return dismissDialog(FragmentNavigationRequest.Builder(dialog)
                                  .stateLossPolicy(stateLossPolicy ?: defaultStateLossPolicy)
                                  .build())
     }
 
-    private fun dismissDialog(fragmentNavigationRequest: FragmentNavigationRequest<out BaseDialog>): Boolean
+    private fun dismissDialog(fragmentNavigationRequest: FragmentNavigationRequest<out BaseDialog<*>>): Boolean
     {
-        val dialogFragment: BaseDialog = fragmentNavigationRequest.fragment
+        val dialogFragment: BaseDialog<*> = fragmentNavigationRequest.fragment
         val dialog: Dialog? = dialogFragment.dialog
 
         if ((fragmentManager.isStateSaved &&

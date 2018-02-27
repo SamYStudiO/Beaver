@@ -4,6 +4,7 @@ package net.samystudio.beaver.ui.base.fragment.dialog
 
 import android.app.Activity
 import android.app.Dialog
+import android.arch.lifecycle.ViewModelProvider
 import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
@@ -16,7 +17,9 @@ import io.reactivex.Completable
 import io.reactivex.Maybe
 import io.reactivex.subjects.PublishSubject
 import net.samystudio.beaver.ui.base.fragment.BaseFragment
+import net.samystudio.beaver.ui.base.viewmodel.BaseViewModel
 import net.samystudio.beaver.ui.common.navigation.FragmentNavigationManager
+import javax.inject.Inject
 
 /**
  * Same as [android.support.v4.app.DialogFragment] but derived from [BaseFragment] instead of
@@ -24,10 +27,9 @@ import net.samystudio.beaver.ui.common.navigation.FragmentNavigationManager
  *
  * @see android.support.v4.app.DialogFragment
  */
-abstract class BaseDialog : BaseFragment(), DialogInterface.OnCancelListener,
+abstract class BaseDialog<VM : BaseViewModel> : BaseFragment<VM>(), DialogInterface.OnCancelListener,
                             DialogInterface.OnDismissListener
 {
-
     private var lateShow: Boolean = false
     private var lateShowBundle: Bundle? = null
 
@@ -210,7 +212,7 @@ abstract class BaseDialog : BaseFragment(), DialogInterface.OnCancelListener,
                                       .from(context)
                                       .inflate(layoutViewRes, null, false))
 
-        init(savedInstanceState)
+        //onViewModelCreated(savedInstanceState)
 
         return dialog
     }

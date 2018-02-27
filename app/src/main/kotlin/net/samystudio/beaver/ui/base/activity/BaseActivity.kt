@@ -2,6 +2,7 @@
 
 package net.samystudio.beaver.ui.base.activity
 
+import android.arch.lifecycle.ViewModelProvider
 import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.CallSuper
@@ -9,12 +10,13 @@ import android.support.annotation.LayoutRes
 import android.support.v4.app.FragmentManager
 import dagger.android.support.DaggerAppCompatActivity
 import net.samystudio.beaver.ui.base.fragment.BaseFragment
+import net.samystudio.beaver.ui.base.viewmodel.BaseViewModel
 import net.samystudio.beaver.ui.common.navigation.FragmentNavigation
 import net.samystudio.beaver.ui.common.navigation.FragmentNavigationManager
 import javax.inject.Inject
 
-abstract class BaseActivity : DaggerAppCompatActivity(), FragmentNavigation,
-                              FragmentManager.OnBackStackChangedListener
+abstract class BaseActivity<VM : BaseViewModel> : DaggerAppCompatActivity(), FragmentNavigation,
+                                                  FragmentManager.OnBackStackChangedListener
 {
     @Inject
     protected lateinit var fragmentManager: FragmentManager
@@ -25,20 +27,25 @@ abstract class BaseActivity : DaggerAppCompatActivity(), FragmentNavigation,
     override lateinit var fragmentNavigationManager: FragmentNavigationManager
     @get:LayoutRes
     protected abstract val layoutViewRes: Int
-    protected abstract val defaultFragmentClass: Class<out BaseFragment>
+    protected abstract val defaultFragmentClass: Class<out BaseFragment<*>>
+    @Inject
+    protected lateinit var viewModelProvider: ViewModelProvider
+    protected lateinit var viewModel: VM
+    protected abstract val viewModelClass: Class<VM>
 
     final override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
 
+        viewModel = viewModelProvider.get(viewModelClass)
         setContentView(layoutViewRes)
-        init(savedInstanceState)
+        onViewModelCreated(savedInstanceState)
 
         supportFragmentManager.addOnBackStackChangedListener(this)
 
         // don't need to instantiate fragment when restoring state
         if (savedInstanceState == null)
-            fragmentNavigationManager.startFragment(defaultFragmentClass, null, false)
+            startFragment(defaultFragmentClass, null, false)
     }
 
     override fun onNewIntent(intent: Intent?)
@@ -56,7 +63,7 @@ abstract class BaseActivity : DaggerAppCompatActivity(), FragmentNavigation,
 
     override fun onBackPressed()
     {
-        val currentFragment: BaseFragment? = fragmentNavigationManager.getCurrentFragment()
+        val currentFragment: BaseFragment<*>? = fragmentNavigationManager.getCurrentFragment()
 
         if (currentFragment == null || !currentFragment.onBackPressed())
             super.onBackPressed()
@@ -66,7 +73,7 @@ abstract class BaseActivity : DaggerAppCompatActivity(), FragmentNavigation,
     override fun onBackStackChanged()
     {
         if (fragmentManager.backStackEntryCount == 0)
-            fragmentNavigationManager.startFragment(defaultFragmentClass, null, false)
+            startFragment(defaultFragmentClass, null, false)
     }
 
     @CallSuper
@@ -76,5 +83,7 @@ abstract class BaseActivity : DaggerAppCompatActivity(), FragmentNavigation,
             onNewUrl(intent.data)
     }
 
-    protected abstract fun init(savedInstanceState: Bundle?)
+    protected open fun onViewModelCreated(savedInstanceState: Bundle?)
+    {
+    }
 }

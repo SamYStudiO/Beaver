@@ -3,6 +3,7 @@
 package net.samystudio.beaver.ui.base.fragment
 
 import android.app.Activity
+import android.arch.lifecycle.ViewModelProvider
 import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.CallSuper
@@ -15,13 +16,20 @@ import dagger.android.support.DaggerFragment
 import dagger.android.support.HasSupportFragmentInjector
 import io.reactivex.Observable
 import io.reactivex.processors.BehaviorProcessor
+import net.samystudio.beaver.ui.base.viewmodel.BaseViewModel
 import net.samystudio.beaver.ui.common.navigation.FragmentNavigation
 import net.samystudio.beaver.ui.common.navigation.FragmentNavigationManager
 import timber.log.Timber
 import javax.inject.Inject
 
-abstract class BaseFragment : DaggerFragment(), HasSupportFragmentInjector, FragmentNavigation
+abstract class BaseFragment<VM : BaseViewModel> : DaggerFragment(), HasSupportFragmentInjector,
+                                                  FragmentNavigation
 {
+    @Inject
+    protected lateinit var viewModelProvider: ViewModelProvider
+    protected lateinit var viewModel: VM
+    protected abstract val viewModelClass: Class<VM>
+
     /**
      * @hide
      */
@@ -64,7 +72,9 @@ abstract class BaseFragment : DaggerFragment(), HasSupportFragmentInjector, Frag
     {
         super.onActivityCreated(savedInstanceState)
 
-        init(savedInstanceState)
+        viewModel = viewModelProvider.get(viewModelClass)
+
+        onViewModelCreated(savedInstanceState)
     }
 
     override fun onResume()
@@ -102,7 +112,7 @@ abstract class BaseFragment : DaggerFragment(), HasSupportFragmentInjector, Frag
     @JvmOverloads
     fun setResult(code: Int, intent: Intent? = null)
     {
-        val fragment = targetFragment as BaseFragment?
+        val fragment = targetFragment as BaseFragment<*>?
         fragment?.onActivityResult(targetRequestCode, code, intent)
     }
 
@@ -115,5 +125,7 @@ abstract class BaseFragment : DaggerFragment(), HasSupportFragmentInjector, Frag
             onNewUrl(intent.data)
     }
 
-    protected abstract fun init(savedInstanceState: Bundle?)
+    protected open fun onViewModelCreated(savedInstanceState: Bundle?)
+    {
+    }
 }

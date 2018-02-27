@@ -12,7 +12,7 @@ import net.samystudio.beaver.ui.base.fragment.BaseFragment
 
 abstract class BaseActionBarActivity : BaseActivity(), FragmentManager.OnBackStackChangedListener
 {
-    override fun init(savedInstanceState: Bundle?)
+    fun onViewModelCreated(savedInstanceState: Bundle?)
     {
         setSupportActionBar(getToolBar())
     }

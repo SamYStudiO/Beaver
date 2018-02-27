@@ -13,7 +13,7 @@ import javax.inject.Inject
 open class ActivityNavigationManager @Inject constructor(protected val activity: AppCompatActivity) :
     ApplicationNavigationManager(activity)
 {
-    fun startActivity(activityClass: Class<out BaseActivity>,
+    fun startActivity(activityClass: Class<out BaseActivity<*>>,
                       extras: Bundle? = null,
                       options: Bundle? = null,
                       forResultRequestCode: Int? = null,

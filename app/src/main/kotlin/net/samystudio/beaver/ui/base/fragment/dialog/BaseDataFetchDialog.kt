@@ -8,13 +8,13 @@ import android.support.annotation.CallSuper
 import net.samystudio.beaver.ui.base.viewmodel.BaseViewModel
 import net.samystudio.beaver.ui.base.viewmodel.DataFetchViewModel
 
-abstract class BaseDataFetchDialog<D, VM> : BaseDataDialog<VM>()
+abstract class BaseDataFetchDialog<D, VM> : BaseDialog<VM>()
         where VM : BaseViewModel, VM : DataFetchViewModel<D>
 {
     @CallSuper
-    override fun init(savedInstanceState: Bundle?)
+    override fun onViewModelCreated(savedInstanceState: Bundle?)
     {
-        super.init(savedInstanceState)
+        super.onViewModelCreated(savedInstanceState)
 
         viewModel.liveData.observe(this, Observer { onFetchData(it) })
     }

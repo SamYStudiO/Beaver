@@ -14,7 +14,7 @@ interface FragmentNavigation
     /**
      * @see ActivityNavigationManager.startActivity
      */
-    fun startActivity(activityClass: Class<out BaseActivity>,
+    fun startActivity(activityClass: Class<out BaseActivity<*>>,
                       extras: Bundle? = null,
                       options: Bundle? = null,
                       forResultRequestCode: Int? = null,
@@ -53,7 +53,7 @@ interface FragmentNavigation
     /**
      * @see FragmentNavigationManager.startFragment
      */
-    fun <T : BaseFragment> startFragment(fragment: T,
+    fun <T : BaseFragment<*>> startFragment(fragment: T,
                                          bundle: Bundle? = null,
                                          addToBackStack: Boolean = true,
                                          forResultRequestCode: Int? = null) =
@@ -65,7 +65,7 @@ interface FragmentNavigation
     /**
      * @see FragmentNavigationManager.startFragment
      */
-    fun <T : BaseFragment> startFragment(fragmentClass: Class<T>,
+    fun <T : BaseFragment<*>> startFragment(fragmentClass: Class<T>,
                                          bundle: Bundle? = null,
                                          addToBackStack: Boolean = true,
                                          forResultRequestCode: Int? = null) =
@@ -77,7 +77,7 @@ interface FragmentNavigation
     /**
      * @see FragmentNavigationManager.startFragment
      */
-    fun <T : BaseFragment> startFragment(fragmentNavigationRequest: FragmentNavigationRequest<T>,
+    fun <T : BaseFragment<*>> startFragment(fragmentNavigationRequest: FragmentNavigationRequest<T>,
                                          forResultRequestCode: Int? = null) =
         fragmentNavigationManager.startFragment(fragmentNavigationRequest,
                                                 forResultRequestCode)
