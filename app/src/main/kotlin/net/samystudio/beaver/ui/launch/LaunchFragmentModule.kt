@@ -1,15 +1,15 @@
 package net.samystudio.beaver.ui.launch
 
 import android.arch.lifecycle.LifecycleOwner
-import android.arch.lifecycle.ViewModel
 import android.support.v4.app.Fragment
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
-import net.samystudio.beaver.di.key.ViewModelKey
-import net.samystudio.beaver.di.qualifier.FragmentLifecycle
+import net.samystudio.beaver.di.key.FragmentViewModelKey
+import net.samystudio.beaver.di.qualifier.FragmentLevel
 import net.samystudio.beaver.di.scope.FragmentScope
 import net.samystudio.beaver.ui.base.fragment.BaseFragmentModule
+import net.samystudio.beaver.ui.base.viewmodel.BaseFragmentViewModel
 
 @Module(includes = [BaseFragmentModule::class])
 abstract class LaunchFragmentModule
@@ -20,12 +20,12 @@ abstract class LaunchFragmentModule
 
     @Binds
     @FragmentScope
-    @FragmentLifecycle
-    abstract fun bindLifeCycleOwner(fragment: LaunchFragment): LifecycleOwner
+    @FragmentLevel
+    abstract fun bindLifecycleOwner(fragment: LaunchFragment): LifecycleOwner
 
     @Binds
     @IntoMap
-    @ViewModelKey(LaunchFragmentViewModel::class)
+    @FragmentViewModelKey(LaunchFragmentViewModel::class)
     @FragmentScope
-    abstract fun bindLaunchViewModel(fragment: LaunchFragmentViewModel): ViewModel
+    abstract fun bindViewModel(viewModel: LaunchFragmentViewModel): BaseFragmentViewModel
 }

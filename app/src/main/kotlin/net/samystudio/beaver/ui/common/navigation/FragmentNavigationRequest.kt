@@ -20,7 +20,7 @@ import java.util.*
  * Advanced [Fragment] or [DialogFragment] request to use along with
  * [FragmentNavigationManager.startFragment].
  */
-class FragmentNavigationRequest<T : BaseFragment> constructor(builder: Builder<T>)
+class FragmentNavigationRequest<T : BaseFragment<*>> constructor(builder: Builder<T>)
 {
     val fragment: T
 
@@ -142,7 +142,7 @@ class FragmentNavigationRequest<T : BaseFragment> constructor(builder: Builder<T
      * Get if this is a [BaseDialog] or standard [BaseFragment] request.
      */
     val isDialog: Boolean
-        get() = fragment is BaseDialog
+        get() = fragment is BaseDialog<*>
 
     @JvmOverloads
     constructor(fragment: T, bundle: Bundle? = null) :
@@ -217,7 +217,7 @@ class FragmentNavigationRequest<T : BaseFragment> constructor(builder: Builder<T
         return transaction
     }
 
-    class Builder<T : BaseFragment>(val fragment: T)
+    class Builder<T : BaseFragment<*>>(val fragment: T)
     {
         var bundle: Bundle? = null
             private set

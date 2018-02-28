@@ -2,7 +2,7 @@
 
 package net.samystudio.beaver.ui.base.viewmodel
 
-interface ActivityViewModel
+abstract class BaseActivityViewModel : BaseViewModel()
 {
     fun onNewIntent()
     {

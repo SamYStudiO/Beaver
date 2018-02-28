@@ -9,14 +9,16 @@ import android.support.annotation.CallSuper
 import android.support.annotation.LayoutRes
 import android.support.v4.app.FragmentManager
 import dagger.android.support.DaggerAppCompatActivity
+import net.samystudio.beaver.di.qualifier.ActivityLevel
 import net.samystudio.beaver.ui.base.fragment.BaseFragment
-import net.samystudio.beaver.ui.base.viewmodel.BaseViewModel
+import net.samystudio.beaver.ui.base.viewmodel.BaseActivityViewModel
 import net.samystudio.beaver.ui.common.navigation.FragmentNavigation
 import net.samystudio.beaver.ui.common.navigation.FragmentNavigationManager
 import javax.inject.Inject
 
-abstract class BaseActivity<VM : BaseViewModel> : DaggerAppCompatActivity(), FragmentNavigation,
-                                                  FragmentManager.OnBackStackChangedListener
+abstract class BaseActivity<VM : BaseActivityViewModel> : DaggerAppCompatActivity(),
+                                                          FragmentNavigation,
+                                                          FragmentManager.OnBackStackChangedListener
 {
     @Inject
     protected lateinit var fragmentManager: FragmentManager
@@ -29,11 +31,12 @@ abstract class BaseActivity<VM : BaseViewModel> : DaggerAppCompatActivity(), Fra
     protected abstract val layoutViewRes: Int
     protected abstract val defaultFragmentClass: Class<out BaseFragment<*>>
     @Inject
+    @field:ActivityLevel
     protected lateinit var viewModelProvider: ViewModelProvider
     protected lateinit var viewModel: VM
     protected abstract val viewModelClass: Class<VM>
 
-    final override fun onCreate(savedInstanceState: Bundle?)
+    override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
 

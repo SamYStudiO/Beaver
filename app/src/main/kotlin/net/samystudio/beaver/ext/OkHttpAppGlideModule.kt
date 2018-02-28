@@ -10,7 +10,6 @@ import com.bumptech.glide.integration.okhttp3.OkHttpUrlLoader
 import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.module.AppGlideModule
 import net.samystudio.beaver.di.component.DaggerGlideComponent
-import okhttp3.OkHttpClient
 import java.io.InputStream
 import javax.inject.Inject
 
@@ -19,13 +18,11 @@ import javax.inject.Inject
 class OkHttpAppGlideModule : AppGlideModule()
 {
     @Inject
-    lateinit var okHttpClient: OkHttpClient
+    lateinit var okHttpUrlLoaderFactory: OkHttpUrlLoader.Factory
 
     init
     {
-        DaggerGlideComponent.builder()
-            .build()
-            .inject(this)
+        DaggerGlideComponent.create().inject(this)
     }
 
     override fun isManifestParsingEnabled() = false
@@ -34,6 +31,6 @@ class OkHttpAppGlideModule : AppGlideModule()
     {
         registry.replace(GlideUrl::class.java,
                          InputStream::class.java,
-                         OkHttpUrlLoader.Factory(okHttpClient))
+                         okHttpUrlLoaderFactory)
     }
 }

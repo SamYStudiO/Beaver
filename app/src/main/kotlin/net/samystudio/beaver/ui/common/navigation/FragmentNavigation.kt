@@ -6,10 +6,14 @@ import android.os.Bundle
 import android.support.annotation.IntRange
 import net.samystudio.beaver.ui.base.activity.BaseActivity
 import net.samystudio.beaver.ui.base.fragment.BaseFragment
+import net.samystudio.beaver.ui.base.fragment.dialog.BaseDialog
 
 interface FragmentNavigation
 {
     val fragmentNavigationManager: FragmentNavigationManager
+
+    fun <T : BaseFragment<*>> getCurrentFragment(): T? =
+        fragmentNavigationManager.getCurrentFragment()
 
     /**
      * @see ActivityNavigationManager.startActivity
@@ -54,9 +58,9 @@ interface FragmentNavigation
      * @see FragmentNavigationManager.startFragment
      */
     fun <T : BaseFragment<*>> startFragment(fragment: T,
-                                         bundle: Bundle? = null,
-                                         addToBackStack: Boolean = true,
-                                         forResultRequestCode: Int? = null) =
+                                            bundle: Bundle? = null,
+                                            addToBackStack: Boolean = true,
+                                            forResultRequestCode: Int? = null) =
         fragmentNavigationManager.startFragment(fragment,
                                                 bundle,
                                                 addToBackStack,
@@ -66,9 +70,9 @@ interface FragmentNavigation
      * @see FragmentNavigationManager.startFragment
      */
     fun <T : BaseFragment<*>> startFragment(fragmentClass: Class<T>,
-                                         bundle: Bundle? = null,
-                                         addToBackStack: Boolean = true,
-                                         forResultRequestCode: Int? = null) =
+                                            bundle: Bundle? = null,
+                                            addToBackStack: Boolean = true,
+                                            forResultRequestCode: Int? = null) =
         fragmentNavigationManager.startFragment(fragmentClass,
                                                 bundle,
                                                 addToBackStack,
@@ -78,7 +82,7 @@ interface FragmentNavigation
      * @see FragmentNavigationManager.startFragment
      */
     fun <T : BaseFragment<*>> startFragment(fragmentNavigationRequest: FragmentNavigationRequest<T>,
-                                         forResultRequestCode: Int? = null) =
+                                            forResultRequestCode: Int? = null) =
         fragmentNavigationManager.startFragment(fragmentNavigationRequest,
                                                 forResultRequestCode)
 
@@ -112,4 +116,19 @@ interface FragmentNavigation
                      @FragmentNavigationManager.StateLossPolicy
                      stateLossPolicy: Long = fragmentNavigationManager.defaultStateLossPolicy) =
         fragmentNavigationManager.popBackStack(offset, stateLossPolicy)
+
+    /**
+     * @see FragmentNavigationManager.dismissDialog
+     */
+    fun dismissDialog(dialog: BaseDialog<*>,
+                      @FragmentNavigationManager.StateLossPolicy
+                      stateLossPolicy: Long? = fragmentNavigationManager.defaultStateLossPolicy) =
+        fragmentNavigationManager.dismissDialog(dialog, stateLossPolicy)
+
+    /**
+     * @see FragmentNavigationManager.dismissDialog
+     */
+    fun dismissDialog(tag: String, @FragmentNavigationManager.StateLossPolicy
+    stateLossPolicy: Long? = fragmentNavigationManager.defaultStateLossPolicy): Boolean =
+        fragmentNavigationManager.dismissDialog(tag, stateLossPolicy)
 }

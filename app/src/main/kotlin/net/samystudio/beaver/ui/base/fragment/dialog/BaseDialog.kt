@@ -4,7 +4,6 @@ package net.samystudio.beaver.ui.base.fragment.dialog
 
 import android.app.Activity
 import android.app.Dialog
-import android.arch.lifecycle.ViewModelProvider
 import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
@@ -17,9 +16,8 @@ import io.reactivex.Completable
 import io.reactivex.Maybe
 import io.reactivex.subjects.PublishSubject
 import net.samystudio.beaver.ui.base.fragment.BaseFragment
-import net.samystudio.beaver.ui.base.viewmodel.BaseViewModel
+import net.samystudio.beaver.ui.base.viewmodel.BaseFragmentViewModel
 import net.samystudio.beaver.ui.common.navigation.FragmentNavigationManager
-import javax.inject.Inject
 
 /**
  * Same as [android.support.v4.app.DialogFragment] but derived from [BaseFragment] instead of
@@ -27,8 +25,9 @@ import javax.inject.Inject
  *
  * @see android.support.v4.app.DialogFragment
  */
-abstract class BaseDialog<VM : BaseViewModel> : BaseFragment<VM>(), DialogInterface.OnCancelListener,
-                            DialogInterface.OnDismissListener
+abstract class BaseDialog<VM : BaseFragmentViewModel> : BaseFragment<VM>(),
+                                                        DialogInterface.OnCancelListener,
+                                                        DialogInterface.OnDismissListener
 {
     private var lateShow: Boolean = false
     private var lateShowBundle: Bundle? = null
@@ -81,11 +80,11 @@ abstract class BaseDialog<VM : BaseViewModel> : BaseFragment<VM>(), DialogInterf
     @JvmOverloads
     fun show(bundle: Bundle? = null)
     {
-        if (fragmentNavigationManagerIsInitialized)
+        if (viewModelIsInitialized)
         {
             lateShow = false
             lateShowBundle = null
-            fragmentNavigationManager.startFragment(this, bundle)
+            viewModel.startFragment(this, bundle)
         }
         else
         {
@@ -97,8 +96,8 @@ abstract class BaseDialog<VM : BaseViewModel> : BaseFragment<VM>(), DialogInterf
     @JvmOverloads
     fun dismiss(@FragmentNavigationManager.StateLossPolicy stateLossPolicy: Long? = null)
     {
-        if (fragmentNavigationManagerIsInitialized)
-            fragmentNavigationManager.dismissDialog(this, stateLossPolicy)
+        if (viewModelIsInitialized)
+            viewModel.dismissDialog(this, stateLossPolicy)
         else
         {
             lateShow = false
@@ -118,7 +117,7 @@ abstract class BaseDialog<VM : BaseViewModel> : BaseFragment<VM>(), DialogInterf
 
         viewDestroyed = true
 
-        fragmentNavigationManager.dismissDialog(this)
+        viewModel.dismissDialog(this)
     }
 
     override fun onAttach(context: Context?)
@@ -189,8 +188,8 @@ abstract class BaseDialog<VM : BaseViewModel> : BaseFragment<VM>(), DialogInterf
      * to be implemented since the AlertDialog takes care of its own content.
      *
      *
-     * This method will be called after [.onCreate] and
-     * before [.onCreateView].  The default implementation simply instantiates
+     * This method will be called after [onCreate] and
+     * before [onCreateView].  The default implementation simply instantiates
      * and returns a [Dialog] class.
      *
      *

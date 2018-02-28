@@ -1,13 +1,13 @@
 package net.samystudio.beaver.di.key
 
-import android.arch.lifecycle.ViewModel
 import dagger.MapKey
+import net.samystudio.beaver.ui.base.viewmodel.BaseFragmentViewModel
 import kotlin.reflect.KClass
 
-@MustBeDocumented
 @Target(AnnotationTarget.FUNCTION,
         AnnotationTarget.PROPERTY_GETTER,
         AnnotationTarget.PROPERTY_SETTER)
 @Retention(AnnotationRetention.RUNTIME)
 @MapKey
-annotation class ViewModelKey(val value: KClass<out ViewModel>)
+@MustBeDocumented
+annotation class FragmentViewModelKey(val value: KClass<out BaseFragmentViewModel>)

@@ -9,10 +9,12 @@ import android.view.MenuItem
 import android.widget.TextView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import net.samystudio.beaver.ui.base.fragment.BaseFragment
+import net.samystudio.beaver.ui.base.viewmodel.BaseActivityViewModel
 
-abstract class BaseActionBarActivity : BaseActivity(), FragmentManager.OnBackStackChangedListener
+abstract class BaseActionBarActivity<VM : BaseActivityViewModel> : BaseActivity<VM>(),
+                                                                   FragmentManager.OnBackStackChangedListener
 {
-    fun onViewModelCreated(savedInstanceState: Bundle?)
+    override fun onViewModelCreated(savedInstanceState: Bundle?)
     {
         setSupportActionBar(getToolBar())
     }
@@ -21,7 +23,7 @@ abstract class BaseActionBarActivity : BaseActivity(), FragmentManager.OnBackSta
     {
         if (item.itemId == android.R.id.home)
         {
-            val currentFragment: BaseFragment? = fragmentNavigationManager.getCurrentFragment()
+            val currentFragment: BaseFragment<*>? = fragmentNavigationManager.getCurrentFragment()
             val count = supportFragmentManager.backStackEntryCount
 
             if ((currentFragment == null || !currentFragment.onOptionsItemSelected(item)) && count > 0)
@@ -37,7 +39,7 @@ abstract class BaseActionBarActivity : BaseActivity(), FragmentManager.OnBackSta
 
         if (getToolBarTitle() != null)
         {
-            val currentFragment: BaseFragment? = fragmentNavigationManager.getCurrentFragment()
+            val currentFragment: BaseFragment<*>? = fragmentNavigationManager.getCurrentFragment()
 
             currentFragment
                 ?.titleObservable
@@ -100,11 +102,11 @@ abstract class BaseActionBarActivity : BaseActivity(), FragmentManager.OnBackSta
             ?.animate()
             ?.alpha(0.0f)
 
-    abstract fun getToolBar(): Toolbar
+    protected abstract fun getToolBar(): Toolbar
 
     /**
      * Optional toolbar title view if action bar provided view can't match our needs. This view
      * will fade in/out when text change.
      */
-    abstract fun getToolBarTitle(): TextView?
+    protected abstract fun getToolBarTitle(): TextView?
 }

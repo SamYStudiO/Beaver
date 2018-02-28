@@ -4,4 +4,5 @@ import javax.inject.Qualifier
 
 @Qualifier
 @Retention(AnnotationRetention.RUNTIME)
-annotation class ActivityLifecycle
+@MustBeDocumented
+annotation class FragmentLevel

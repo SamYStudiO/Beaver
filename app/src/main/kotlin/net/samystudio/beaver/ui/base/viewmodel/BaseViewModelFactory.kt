@@ -1,14 +1,12 @@
-package net.samystudio.beaver.ui.common.model
+package net.samystudio.beaver.ui.base.viewmodel
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
-import net.samystudio.beaver.di.scope.ActivityScope
-import javax.inject.Inject
 import javax.inject.Provider
 
-@ActivityScope
-class ViewModelFactory @Inject constructor(private val creators: Map<Class<out ViewModel>,
-        @JvmSuppressWildcards Provider<ViewModel>>) : ViewModelProvider.Factory
+abstract class BaseViewModelFactory
+constructor(private val creators: Map<Class<out ViewModel>, Provider<ViewModel>>) :
+    ViewModelProvider.Factory
 {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T

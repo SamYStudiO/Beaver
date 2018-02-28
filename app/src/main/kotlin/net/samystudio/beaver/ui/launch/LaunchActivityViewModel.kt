@@ -1,6 +1,8 @@
 package net.samystudio.beaver.ui.launch
 
-import net.samystudio.beaver.ui.base.viewmodel.BaseViewModel
+import net.samystudio.beaver.di.scope.ActivityScope
+import net.samystudio.beaver.ui.base.viewmodel.BaseActivityViewModel
 import javax.inject.Inject
 
-class LaunchActivityViewModel @Inject constructor() : BaseViewModel()
+@ActivityScope
+class LaunchActivityViewModel @Inject constructor() : BaseActivityViewModel()

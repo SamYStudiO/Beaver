@@ -10,10 +10,4 @@ import javax.inject.Singleton
 interface GlideComponent
 {
     fun inject(okHttpGlideModule: OkHttpAppGlideModule)
-
-    @Component.Builder
-    interface Builder
-    {
-        fun build(): GlideComponent
-    }
 }

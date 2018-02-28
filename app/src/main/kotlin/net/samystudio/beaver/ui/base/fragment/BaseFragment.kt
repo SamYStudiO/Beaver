@@ -6,38 +6,27 @@ import android.app.Activity
 import android.arch.lifecycle.ViewModelProvider
 import android.content.Intent
 import android.os.Bundle
-import android.support.annotation.CallSuper
 import android.support.annotation.LayoutRes
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.evernote.android.state.State
 import dagger.android.support.DaggerFragment
-import dagger.android.support.HasSupportFragmentInjector
 import io.reactivex.Observable
 import io.reactivex.processors.BehaviorProcessor
-import net.samystudio.beaver.ui.base.viewmodel.BaseViewModel
-import net.samystudio.beaver.ui.common.navigation.FragmentNavigation
-import net.samystudio.beaver.ui.common.navigation.FragmentNavigationManager
-import timber.log.Timber
+import net.samystudio.beaver.di.qualifier.FragmentLevel
+import net.samystudio.beaver.ui.base.viewmodel.BaseFragmentViewModel
 import javax.inject.Inject
 
-abstract class BaseFragment<VM : BaseViewModel> : DaggerFragment(), HasSupportFragmentInjector,
-                                                  FragmentNavigation
+abstract class BaseFragment<VM : BaseFragmentViewModel> : DaggerFragment()
 {
     @Inject
+    @field:FragmentLevel
     protected lateinit var viewModelProvider: ViewModelProvider
     protected lateinit var viewModel: VM
+    protected val viewModelIsInitialized
+        get() = ::viewModel.isInitialized
     protected abstract val viewModelClass: Class<VM>
-
-    /**
-     * @hide
-     */
-    @Inject
-    override lateinit var fragmentNavigationManager: FragmentNavigationManager
-    protected val fragmentNavigationManagerIsInitialized
-        get() = ::fragmentNavigationManager.isInitialized
-
     @get:LayoutRes
     protected abstract val layoutViewRes: Int
 
@@ -62,8 +51,6 @@ abstract class BaseFragment<VM : BaseViewModel> : DaggerFragment(), HasSupportFr
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View?
     {
-        Timber.d("onCreateView: ")
-
         return if (layoutViewRes > 0) inflater.inflate(layoutViewRes, container, false)
         else null
     }
@@ -81,7 +68,7 @@ abstract class BaseFragment<VM : BaseViewModel> : DaggerFragment(), HasSupportFr
     {
         super.onResume()
 
-        handleIntent()
+        viewModel.handleIntent(activity?.intent)
     }
 
     override fun onDestroy()
@@ -114,15 +101,6 @@ abstract class BaseFragment<VM : BaseViewModel> : DaggerFragment(), HasSupportFr
     {
         val fragment = targetFragment as BaseFragment<*>?
         fragment?.onActivityResult(targetRequestCode, code, intent)
-    }
-
-    @CallSuper
-    protected open fun handleIntent()
-    {
-        val intent = activity?.intent
-
-        if (intent?.action == Intent.ACTION_VIEW && !intent.data?.toString().isNullOrBlank())
-            onNewUrl(intent.data)
     }
 
     protected open fun onViewModelCreated(savedInstanceState: Bundle?)

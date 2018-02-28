@@ -5,11 +5,11 @@ package net.samystudio.beaver.ui.base.fragment
 import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.support.annotation.CallSuper
-import net.samystudio.beaver.ui.base.viewmodel.BaseViewModel
+import net.samystudio.beaver.ui.base.viewmodel.BaseFragmentViewModel
 import net.samystudio.beaver.ui.base.viewmodel.DataFetchViewModel
 
 abstract class BaseDataFetchFragment<D, VM> : BaseFragment<VM>()
-        where VM : BaseViewModel, VM : DataFetchViewModel<D>
+        where VM : BaseFragmentViewModel, VM : DataFetchViewModel<D>
 {
     @CallSuper
     override fun onViewModelCreated(savedInstanceState: Bundle?)
