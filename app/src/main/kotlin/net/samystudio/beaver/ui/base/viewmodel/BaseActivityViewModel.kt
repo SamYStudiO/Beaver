@@ -2,13 +2,8 @@
 
 package net.samystudio.beaver.ui.base.viewmodel
 
-abstract class BaseActivityViewModel : BaseViewModel()
-{
-    fun onNewIntent()
-    {
-    }
+import net.samystudio.beaver.ui.common.navigation.FragmentNavigationManager
 
-    fun onBackPressed()
-    {
-    }
-}
+abstract class BaseActivityViewModel
+constructor(override val fragmentNavigationManager: FragmentNavigationManager) : BaseViewModel(),
+                                                                                 ViewControllerViewModel

@@ -7,7 +7,6 @@ import android.support.v4.app.FragmentManager
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
 import android.widget.TextView
-import io.reactivex.android.schedulers.AndroidSchedulers
 import net.samystudio.beaver.ui.base.fragment.BaseFragment
 import net.samystudio.beaver.ui.base.viewmodel.BaseActivityViewModel
 
@@ -33,22 +32,7 @@ abstract class BaseActionBarActivity<VM : BaseActivityViewModel> : BaseActivity<
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onBackStackChanged()
-    {
-        super.onBackStackChanged()
-
-        if (getToolBarTitle() != null)
-        {
-            val currentFragment: BaseFragment<*>? = fragmentNavigationManager.getCurrentFragment()
-
-            currentFragment
-                ?.titleObservable
-                ?.observeOn(AndroidSchedulers.mainThread())
-                ?.subscribe({ title -> toggleTitle(title) })
-        }
-    }
-
-    private fun toggleTitle(title: String?)
+    fun toggleTitle(title: String?)
     {
         val view = getToolBarTitle()
 

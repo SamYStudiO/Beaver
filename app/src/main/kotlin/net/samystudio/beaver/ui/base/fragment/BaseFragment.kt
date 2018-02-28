@@ -12,9 +12,8 @@ import android.view.View
 import android.view.ViewGroup
 import com.evernote.android.state.State
 import dagger.android.support.DaggerFragment
-import io.reactivex.Observable
-import io.reactivex.processors.BehaviorProcessor
 import net.samystudio.beaver.di.qualifier.FragmentLevel
+import net.samystudio.beaver.ui.base.activity.BaseActionBarActivity
 import net.samystudio.beaver.ui.base.viewmodel.BaseFragmentViewModel
 import javax.inject.Inject
 
@@ -23,29 +22,23 @@ abstract class BaseFragment<VM : BaseFragmentViewModel> : DaggerFragment()
     @Inject
     @field:FragmentLevel
     protected lateinit var viewModelProvider: ViewModelProvider
-    protected lateinit var viewModel: VM
-    protected val viewModelIsInitialized
-        get() = ::viewModel.isInitialized
     protected abstract val viewModelClass: Class<VM>
     @get:LayoutRes
     protected abstract val layoutViewRes: Int
+    protected val viewModelIsInitialized
+        get() = ::viewModel.isInitialized
+    lateinit var viewModel: VM
+    private var lastIntent: Intent? = null
 
-    private val _titleObservable: BehaviorProcessor<String> = BehaviorProcessor.create()
-    val titleObservable: Observable<String> = _titleObservable.toObservable()
     @State
     var title: String = ""
         set(value)
         {
             field = value
-            _titleObservable.onNext(value)
+
+            if (activity is BaseActionBarActivity<*>)
+                (activity as BaseActionBarActivity<*>).toggleTitle(value)
         }
-
-    override fun onCreate(savedInstanceState: Bundle?)
-    {
-        super.onCreate(savedInstanceState)
-
-        _titleObservable.onNext(title)
-    }
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
@@ -68,14 +61,18 @@ abstract class BaseFragment<VM : BaseFragmentViewModel> : DaggerFragment()
     {
         super.onResume()
 
-        viewModel.handleIntent(activity?.intent)
-    }
+        val intent = activity?.intent
 
-    override fun onDestroy()
-    {
-        _titleObservable.onComplete()
+        if (intent != null)
+        {
+            if (!intent.filterEquals(lastIntent))
+                viewModel.handleIntent(intent)
 
-        super.onDestroy()
+            if (intent.extras != null)
+                viewModel.handleExtras(intent.extras)
+
+            lastIntent = intent
+        }
     }
 
     /**
