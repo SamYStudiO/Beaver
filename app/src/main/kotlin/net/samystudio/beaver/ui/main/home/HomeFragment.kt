@@ -7,8 +7,10 @@ import net.samystudio.beaver.ui.base.fragment.BaseFragment
 
 class HomeFragment : BaseFragment<HomeFragmentViewModel>()
 {
-    override val viewModelClass: Class<HomeFragmentViewModel> = HomeFragmentViewModel::class.java
-    override val layoutViewRes: Int = R.layout.fragment_main
+    override val layoutViewRes: Int
+        get() = R.layout.fragment_main
+    override val viewModelClass: Class<HomeFragmentViewModel>
+        get() = HomeFragmentViewModel::class.java
 
     override fun onViewModelCreated(savedInstanceState: Bundle?)
     {

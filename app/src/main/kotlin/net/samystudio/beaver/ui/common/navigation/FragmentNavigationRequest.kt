@@ -20,7 +20,8 @@ import java.util.*
  * Advanced [Fragment] or [DialogFragment] request to use along with
  * [FragmentNavigationManager.startFragment].
  */
-class FragmentNavigationRequest<T : BaseFragment<*>> constructor(builder: Builder<T>)
+class FragmentNavigationRequest<T : BaseFragment<*>>
+constructor(builder: Builder<T>)
 {
     val fragment: T
 
@@ -144,12 +145,10 @@ class FragmentNavigationRequest<T : BaseFragment<*>> constructor(builder: Builde
     val isDialog: Boolean
         get() = fragment is BaseDialog<*>
 
-    @JvmOverloads
     constructor(fragment: T, bundle: Bundle? = null) :
             this(Builder<T>(fragment).bundle(bundle))
 
     @Suppress("UNCHECKED_CAST")
-    @JvmOverloads
     constructor(context: Context,
                 fragmentClass: Class<T>,
                 bundle: Bundle? = null) :

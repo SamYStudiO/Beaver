@@ -10,7 +10,9 @@ import net.samystudio.beaver.ui.base.activity.BaseActivity
 import javax.inject.Inject
 
 @ActivityScope
-open class ActivityNavigationManager @Inject constructor(protected val activity: AppCompatActivity) :
+open class ActivityNavigationManager
+@Inject
+constructor(protected val activity: AppCompatActivity) :
     ApplicationNavigationManager(activity)
 {
     fun startActivity(activityClass: Class<out BaseActivity<*>>,

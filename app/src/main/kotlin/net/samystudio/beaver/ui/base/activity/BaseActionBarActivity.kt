@@ -3,94 +3,75 @@ package net.samystudio.beaver.ui.base.activity
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.os.Bundle
-import android.support.v4.app.FragmentManager
 import android.support.v7.widget.Toolbar
-import android.view.MenuItem
 import android.widget.TextView
-import net.samystudio.beaver.ui.base.fragment.BaseFragment
 import net.samystudio.beaver.ui.base.viewmodel.BaseActivityViewModel
 
-abstract class BaseActionBarActivity<VM : BaseActivityViewModel> : BaseActivity<VM>(),
-                                                                   FragmentManager.OnBackStackChangedListener
+abstract class BaseActionBarActivity<VM : BaseActivityViewModel> : BaseActivity<VM>()
 {
-    override fun onViewModelCreated(savedInstanceState: Bundle?)
-    {
-        setSupportActionBar(getToolBar())
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean
-    {
-        if (item.itemId == android.R.id.home)
-        {
-            val currentFragment: BaseFragment<*>? = fragmentNavigationManager.getCurrentFragment()
-            val count = supportFragmentManager.backStackEntryCount
-
-            if ((currentFragment == null || !currentFragment.onOptionsItemSelected(item)) && count > 0)
-                return fragmentNavigationManager.popBackStack()
-        }
-
-        return super.onOptionsItemSelected(item)
-    }
-
-    fun toggleTitle(title: String?)
-    {
-        val view = getToolBarTitle()
-
-        if (view != null)
-        {
-            if (view.text == title) return
-
-            view.animate().cancel()
-
-            if (title.isNullOrBlank())
-            {
-                hideTitle()?.setListener(object : AnimatorListenerAdapter()
-                                         {
-                                             override fun onAnimationEnd(
-                                                 animation: Animator?)
-                                             {
-                                                 view.text = ""
-                                             }
-                                         })
-            }
-            else
-            {
-                if (view.text.isNullOrBlank())
-                {
-                    view.text = title
-                    showTitle()
-                }
-                else
-                {
-                    hideTitle()?.setListener(object : AnimatorListenerAdapter()
-                                             {
-                                                 override fun onAnimationEnd(animation: Animator?)
-                                                 {
-                                                     view.text = title
-                                                     showTitle()
-                                                 }
-                                             })
-                }
-            }
-        }
-        else getToolBar().title = title
-    }
-
-    private fun showTitle() =
-        getToolBarTitle()
-            ?.animate()
-            ?.alpha(1.0f)
-
-    private fun hideTitle() =
-        getToolBarTitle()
-            ?.animate()
-            ?.alpha(0.0f)
-
-    protected abstract fun getToolBar(): Toolbar
+    protected abstract val toolbar: Toolbar
 
     /**
      * Optional toolbar title view if action bar provided view can't match our needs. This view
      * will fade in/out when text change.
      */
-    protected abstract fun getToolBarTitle(): TextView?
+    protected abstract val toolbarTitle: TextView?
+
+    var animatedTitle: CharSequence?
+        get() = title
+        set(value)
+        {
+            title = value
+            toolbarTitle?.let {
+
+                if (it.text == title) return
+
+                it.animate().cancel()
+
+                if (title.isNullOrBlank())
+                {
+                    hideTitle()?.setListener(object : AnimatorListenerAdapter()
+                                             {
+                                                 override fun onAnimationEnd(animation: Animator?)
+                                                 {
+                                                     it.text = ""
+                                                 }
+                                             })
+                }
+                else
+                {
+                    if (it.text.isNullOrBlank())
+                    {
+                        it.text = title
+                        showTitle()
+                    }
+                    else
+                    {
+                        hideTitle()?.setListener(object : AnimatorListenerAdapter()
+                                                 {
+                                                     override fun onAnimationEnd(animation: Animator?)
+                                                     {
+                                                         it.text = title
+                                                         showTitle()
+                                                     }
+                                                 })
+                    }
+                }
+            }
+        }
+
+    override fun onViewModelCreated(savedInstanceState: Bundle?)
+    {
+        setSupportActionBar(toolbar)
+    }
+
+    private fun showTitle() =
+        toolbarTitle
+            ?.animate()
+            ?.alpha(1.0f)
+
+    private fun hideTitle() =
+        toolbarTitle
+            ?.animate()
+            ?.alpha(0.0f)
 }

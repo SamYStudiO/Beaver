@@ -12,8 +12,10 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-open class ApplicationNavigationManager @Inject constructor(@param:ApplicationContext
-                                                            protected val context: Context)
+open class ApplicationNavigationManager
+@Inject
+constructor(@param:ApplicationContext
+            protected val context: Context)
 {
     fun startActivity(activityClass: Class<out BaseActivity<*>>,
                       extras: Bundle? = null,

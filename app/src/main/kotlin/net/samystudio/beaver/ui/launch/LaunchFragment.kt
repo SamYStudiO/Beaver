@@ -8,9 +8,10 @@ import net.samystudio.beaver.ui.main.MainActivity
 
 class LaunchFragment : BaseFragment<LaunchFragmentViewModel>()
 {
-    override val viewModelClass: Class<LaunchFragmentViewModel> =
-        LaunchFragmentViewModel::class.java
-    override val layoutViewRes: Int = R.layout.fragment_launch
+    override val layoutViewRes: Int
+        get() = R.layout.fragment_launch
+    override val viewModelClass: Class<LaunchFragmentViewModel>
+        get() = LaunchFragmentViewModel::class.java
 
     override fun onViewModelCreated(savedInstanceState: Bundle?)
     {
@@ -23,5 +24,8 @@ class LaunchFragment : BaseFragment<LaunchFragmentViewModel>()
                                                               null,
                                                               true)
                                   })
+        button2.setOnClickListener({ viewModel.titleObservable.value = "hohoho" })
+
+        setHasOptionsMenu(true)
     }
 }

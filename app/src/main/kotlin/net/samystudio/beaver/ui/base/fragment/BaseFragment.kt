@@ -2,15 +2,12 @@
 
 package net.samystudio.beaver.ui.base.fragment
 
-import android.app.Activity
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
 import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.LayoutRes
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import com.evernote.android.state.State
+import android.view.*
 import dagger.android.support.DaggerFragment
 import net.samystudio.beaver.di.qualifier.FragmentLevel
 import net.samystudio.beaver.ui.base.activity.BaseActionBarActivity
@@ -19,26 +16,24 @@ import javax.inject.Inject
 
 abstract class BaseFragment<VM : BaseFragmentViewModel> : DaggerFragment()
 {
+    @get:LayoutRes
+    protected abstract val layoutViewRes: Int
     @Inject
     @field:FragmentLevel
     protected lateinit var viewModelProvider: ViewModelProvider
+
     protected abstract val viewModelClass: Class<VM>
-    @get:LayoutRes
-    protected abstract val layoutViewRes: Int
     protected val viewModelIsInitialized
         get() = ::viewModel.isInitialized
     lateinit var viewModel: VM
-    private var lastIntent: Intent? = null
+    private var savedInstanceState: Bundle? = null
 
-    @State
-    var title: String = ""
-        set(value)
-        {
-            field = value
+    override fun onCreate(savedInstanceState: Bundle?)
+    {
+        super.onCreate(savedInstanceState)
 
-            if (activity is BaseActionBarActivity<*>)
-                (activity as BaseActionBarActivity<*>).toggleTitle(value)
-        }
+        this.savedInstanceState = savedInstanceState
+    }
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
@@ -53,54 +48,56 @@ abstract class BaseFragment<VM : BaseFragmentViewModel> : DaggerFragment()
         super.onActivityCreated(savedInstanceState)
 
         viewModel = viewModelProvider.get(viewModelClass)
+        viewModel.titleObservable.observe(this, Observer {
+            if (activity is BaseActionBarActivity<*>)
+                (activity as BaseActionBarActivity<*>).animatedTitle = it
+            else
+                activity?.title = it
+        })
 
         onViewModelCreated(savedInstanceState)
+    }
+
+    protected open fun onViewModelCreated(savedInstanceState: Bundle?)
+    {
     }
 
     override fun onResume()
     {
         super.onResume()
 
-        val intent = activity?.intent
-
-        if (intent != null)
-        {
-            if (!intent.filterEquals(lastIntent))
-                viewModel.handleIntent(intent)
-
-            if (intent.extras != null)
-                viewModel.handleExtras(intent.extras)
-
-            lastIntent = intent
-        }
+        viewModel.handleRestoreState(activity!!.intent, savedInstanceState, arguments)
     }
 
-    /**
-     * @hide
-     */
+    override fun onPrepareOptionsMenu(menu: Menu?)
+    {
+        viewModel.handleReady()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle)
+    {
+        super.onSaveInstanceState(outState)
+
+        viewModel.handleSaveInstanceState(outState)
+    }
+
     fun onBackPressed(): Boolean
     {
-        setResult(Activity.RESULT_CANCELED, null)
-
-        return consumeOnBackPressed()
+        return viewModel.handleBackPressed()
     }
 
-    /**
-     * Override this to catch back key pressed.
-     *
-     * @return true if you consume event, this means no more parent will catch this event, false
-     * if you want parent to handle this event.
-     */
-    open fun consumeOnBackPressed() = false
-
-    @JvmOverloads
-    fun setResult(code: Int, intent: Intent? = null)
+    override fun onOptionsItemSelected(item: MenuItem): Boolean
     {
-        val fragment = targetFragment as BaseFragment<*>?
-        fragment?.onActivityResult(targetRequestCode, code, intent)
+        return viewModel.handleOptionsItemSelected(item)
     }
 
-    protected open fun onViewModelCreated(savedInstanceState: Bundle?)
+    open fun willConsumeOptionsItem(item: MenuItem): Boolean
     {
+        return viewModel.willConsumeOptionsItem(item)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
+    {
+        viewModel.handleActivityResult(requestCode, requestCode, data)
     }
 }

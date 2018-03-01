@@ -32,8 +32,8 @@ class FragmentNavigationManager
  */
 @Inject
 constructor(activity: AppCompatActivity,
-            private val fragmentManager: FragmentManager,
-            @FragmentContainerViewId @IdRes
+            val fragmentManager: FragmentManager,
+            @param:FragmentContainerViewId @IdRes
             private val fragmentContainerViewId: Int) :
     ActivityNavigationManager(activity)
 {
@@ -53,11 +53,10 @@ constructor(activity: AppCompatActivity,
      *
      * @see BaseFragment.setArguments
      */
-    @JvmOverloads
     fun <T : BaseFragment<*>> startFragment(fragment: T,
-                                         bundle: Bundle? = null,
-                                         addToBackStack: Boolean = true,
-                                         forResultRequestCode: Int? = null) =
+                                            bundle: Bundle? = null,
+                                            addToBackStack: Boolean = true,
+                                            forResultRequestCode: Int? = null) =
         startFragment(FragmentNavigationRequest.Builder(fragment)
                           .addToBackStack(addToBackStack)
                           .bundle(bundle)
@@ -68,11 +67,10 @@ constructor(activity: AppCompatActivity,
      *
      * @see BaseFragment.setArguments
      */
-    @JvmOverloads
     fun <T : BaseFragment<*>> startFragment(fragmentClass: Class<T>,
-                                         bundle: Bundle? = null,
-                                         addToBackStack: Boolean = true,
-                                         forResultRequestCode: Int? = null) =
+                                            bundle: Bundle? = null,
+                                            addToBackStack: Boolean = true,
+                                            forResultRequestCode: Int? = null) =
         startFragment(FragmentNavigationRequest.Builder(context, fragmentClass)
                           .addToBackStack(addToBackStack)
                           .bundle(bundle)
@@ -87,7 +85,7 @@ constructor(activity: AppCompatActivity,
      */
     @SuppressLint("CommitTransaction")
     fun <T : BaseFragment<*>> startFragment(fragmentNavigationRequest: FragmentNavigationRequest<T>,
-                                         forResultRequestCode: Int? = null): FragmentNavigationRequest<T>
+                                            forResultRequestCode: Int? = null): FragmentNavigationRequest<T>
     {
         if (fragmentManager.isStateSaved && fragmentNavigationRequest.getStateLossPolicy(
                 defaultStateLossPolicy) == STATE_LOSS_POLICY_CANCEL)
@@ -129,7 +127,6 @@ constructor(activity: AppCompatActivity,
      *
      * @see FragmentManager.popBackStack
      */
-    @JvmOverloads
     fun clearBackStack(@StateLossPolicy stateLossPolicy: Long = defaultStateLossPolicy): Boolean
     {
         if (fragmentManager.isStateSaved && stateLossPolicy != STATE_LOSS_POLICY_IGNORE)
@@ -151,7 +148,6 @@ constructor(activity: AppCompatActivity,
      *
      * @see FragmentManager.popBackStack
      */
-    @JvmOverloads
     fun popBackStack(@StateLossPolicy stateLossPolicy: Long = defaultStateLossPolicy): Boolean
     {
         if (fragmentManager.isStateSaved && stateLossPolicy != STATE_LOSS_POLICY_IGNORE)
@@ -172,7 +168,6 @@ constructor(activity: AppCompatActivity,
      *
      * @see FragmentManager.popBackStack
      */
-    @JvmOverloads
     fun popBackStack(tag: String,
                      flags: Int,
                      @StateLossPolicy stateLossPolicy: Long = defaultStateLossPolicy): Boolean
@@ -196,7 +191,6 @@ constructor(activity: AppCompatActivity,
      * Request is ignored (return false) if state loss policy is different than
      * [STATE_LOSS_POLICY_IGNORE] and fragment manager state is saved.
      */
-    @JvmOverloads
     fun popBackStack(@IntRange(from = 1) offset: Int,
                      @StateLossPolicy stateLossPolicy: Long = defaultStateLossPolicy): Boolean
     {
@@ -213,7 +207,6 @@ constructor(activity: AppCompatActivity,
     /**
      * @see FragmentNavigationRequest.getStateLossPolicy
      */
-    @JvmOverloads
     fun dismissDialog(dialog: BaseDialog<*>,
                       @StateLossPolicy stateLossPolicy: Long? = defaultStateLossPolicy) =
         dismissDialog(FragmentNavigationRequest.Builder(dialog)
@@ -224,7 +217,6 @@ constructor(activity: AppCompatActivity,
      * @see FragmentNavigationRequest.tag
      * @see FragmentNavigationRequest.getStateLossPolicy
      */
-    @JvmOverloads
     fun dismissDialog(tag: String, @StateLossPolicy
     stateLossPolicy: Long? = defaultStateLossPolicy): Boolean
     {

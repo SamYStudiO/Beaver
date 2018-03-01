@@ -6,5 +6,11 @@ import net.samystudio.beaver.ui.common.navigation.FragmentNavigationManager
 import javax.inject.Inject
 
 @FragmentScope
-class HomeFragmentViewModel @Inject constructor(fragmentNavigationManager: FragmentNavigationManager) :
+class HomeFragmentViewModel
+@Inject
+constructor(fragmentNavigationManager: FragmentNavigationManager) :
     BaseFragmentViewModel(fragmentNavigationManager)
+{
+    override val defaultTitle: String?
+        get() = "yop"
+}

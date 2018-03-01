@@ -6,7 +6,7 @@ import android.arch.lifecycle.LiveData
 
 interface DataFetchViewModel<D>
 {
-    val liveData: LiveData<D>
+    val data: LiveData<D>
 
     fun fetch()
     fun onFetchSuccess(data: D)

@@ -29,14 +29,14 @@ abstract class BaseDialog<VM : BaseFragmentViewModel> : BaseFragment<VM>(),
                                                         DialogInterface.OnCancelListener,
                                                         DialogInterface.OnDismissListener
 {
-    private var lateShow: Boolean = false
-    private var lateShowBundle: Bundle? = null
-
-    private val _onDismissObservable = PublishSubject.create<DialogInterface>()
+    private val _onDismissObservable = PublishSubject.create<Unit>()
     val onDismissObservable: Completable = _onDismissObservable.ignoreElements()
 
-    private val _onCancelObservable = PublishSubject.create<DialogInterface>()
-    val onCancelObservable: Maybe<*> = _onCancelObservable.firstElement()
+    private val _onCancelObservable = PublishSubject.create<Unit>()
+    val onCancelObservable: Maybe<Unit> = _onCancelObservable.firstElement()
+
+    private var lateShow: Boolean = false
+    private var lateShowBundle: Bundle? = null
     private var style = STYLE_NORMAL
     private var viewDestroyed: Boolean = false
     private var dismissed: Boolean = false
@@ -77,7 +77,6 @@ abstract class BaseDialog<VM : BaseFragmentViewModel> : BaseFragment<VM>(),
             this.theme = theme
     }
 
-    @JvmOverloads
     fun show(bundle: Bundle? = null)
     {
         if (viewModelIsInitialized)
@@ -93,7 +92,6 @@ abstract class BaseDialog<VM : BaseFragmentViewModel> : BaseFragment<VM>(),
         }
     }
 
-    @JvmOverloads
     fun dismiss(@FragmentNavigationManager.StateLossPolicy stateLossPolicy: Long? = null)
     {
         if (viewModelIsInitialized)
@@ -218,9 +216,9 @@ abstract class BaseDialog<VM : BaseFragmentViewModel> : BaseFragment<VM>(),
 
     override fun onCancel(dialog: DialogInterface)
     {
-        setResult(Activity.RESULT_CANCELED, null)
+        viewModel.setResult(Activity.RESULT_CANCELED, null)
 
-        _onCancelObservable.onNext(dialog)
+        _onCancelObservable.onNext(Unit)
         _onCancelObservable.onComplete()
     }
 
@@ -229,7 +227,6 @@ abstract class BaseDialog<VM : BaseFragmentViewModel> : BaseFragment<VM>(),
         if (!viewDestroyed)
             dismissInternal()
 
-        _onDismissObservable.onNext(dialog)
         _onDismissObservable.onComplete()
     }
 

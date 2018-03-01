@@ -1,16 +1,56 @@
-package net.samystudio.beaver.ui.common.navigation
+@file:Suppress("unused", "MemberVisibilityCanBePrivate", "UNUSED_PARAMETER")
+
+package net.samystudio.beaver.ui.base.viewmodel
 
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.support.annotation.IntRange
+import android.support.v4.app.FragmentManager
+import android.view.MenuItem
 import net.samystudio.beaver.ui.base.activity.BaseActivity
 import net.samystudio.beaver.ui.base.fragment.BaseFragment
 import net.samystudio.beaver.ui.base.fragment.dialog.BaseDialog
+import net.samystudio.beaver.ui.common.navigation.ActivityNavigationManager
+import net.samystudio.beaver.ui.common.navigation.FragmentNavigationManager
+import net.samystudio.beaver.ui.common.navigation.FragmentNavigationRequest
 
-interface FragmentNavigation
+abstract class BaseViewControllerViewModel
+constructor(val fragmentNavigationManager: FragmentNavigationManager) : BaseViewModel()
 {
-    val fragmentNavigationManager: FragmentNavigationManager
+    val fragmentManager: FragmentManager
+        get() = fragmentNavigationManager.fragmentManager
+
+    /**
+     * arguments is always null with activities view model
+     */
+    open fun handleRestoreState(intent: Intent,
+                                savedInstanceState: Bundle?,
+                                arguments: Bundle? = null)
+    {
+    }
+
+    open fun handleReady()
+    {
+    }
+
+    open fun handleBackPressed(): Boolean
+    {
+        return false
+    }
+
+    open fun handleOptionsItemSelected(item: MenuItem): Boolean
+    {
+        return false
+    }
+
+    fun handleActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
+    {
+    }
+
+    open fun handleSaveInstanceState(outState: Bundle)
+    {
+    }
 
     fun <T : BaseFragment<*>> getCurrentFragment(): T? =
         fragmentNavigationManager.getCurrentFragment()

@@ -10,6 +10,7 @@ import javax.inject.Provider
 @Suppress("UNCHECKED_CAST")
 @FragmentScope
 class FragmentViewModelFactory
-@Inject constructor(creators: Map<Class<out BaseFragmentViewModel>,
+@Inject
+constructor(creators: Map<Class<out BaseFragmentViewModel>,
         @JvmSuppressWildcards Provider<BaseFragmentViewModel>>) :
     BaseViewModelFactory(creators as Map<Class<out ViewModel>, Provider<ViewModel>>)
