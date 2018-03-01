@@ -1,4 +1,4 @@
-@file:Suppress("unused", "MemberVisibilityCanBePrivate", "UNUSED_PARAMETER")
+@file:Suppress("MemberVisibilityCanBePrivate", "UNUSED_PARAMETER")
 
 package net.samystudio.beaver.ui.base.viewmodel
 

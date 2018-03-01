@@ -1,5 +1,3 @@
-@file:Suppress("unused", "MemberVisibilityCanBePrivate")
-
 package net.samystudio.beaver.ui.common.navigation
 
 import android.content.Intent

@@ -7,7 +7,10 @@ import android.arch.lifecycle.ViewModelProvider
 import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.LayoutRes
-import android.view.*
+import android.view.LayoutInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import dagger.android.support.DaggerFragment
 import net.samystudio.beaver.di.qualifier.FragmentLevel
 import net.samystudio.beaver.ui.base.activity.BaseActionBarActivity
@@ -67,10 +70,6 @@ abstract class BaseFragment<VM : BaseFragmentViewModel> : DaggerFragment()
         super.onResume()
 
         viewModel.handleRestoreState(activity!!.intent, savedInstanceState, arguments)
-    }
-
-    override fun onPrepareOptionsMenu(menu: Menu?)
-    {
         viewModel.handleReady()
     }
 

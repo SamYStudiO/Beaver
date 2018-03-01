@@ -1,5 +1,3 @@
-@file:Suppress("unused", "MemberVisibilityCanBePrivate", "UNUSED_PARAMETER")
-
 package net.samystudio.beaver.ui.base.viewmodel
 
 import android.arch.lifecycle.MutableLiveData
@@ -41,12 +39,14 @@ constructor(fragmentNavigationManager: FragmentNavigationManager) :
 
     fun setResult(code: Int, intent: Intent? = null)
     {
-        val fragment = getCurrentFragment() as BaseFragment<*>?
-        fragment?.targetFragment?.onActivityResult(fragment.targetRequestCode, code, intent)
+        val currentFragment: BaseFragment<*>? = getCurrentFragment()
+        currentFragment?.targetFragment?.onActivityResult(currentFragment.targetRequestCode,
+                                                          code,
+                                                          intent)
     }
 
     companion object
     {
-        const val TITLE_OBSERVABLE: String = "BaseFragmentViewModel:titleObservable"
+        private const val TITLE_OBSERVABLE: String = "BaseFragmentViewModel:titleObservable"
     }
 }

@@ -1,5 +1,3 @@
-@file:Suppress("unused")
-
 package net.samystudio.beaver.ui.base.fragment.dialog
 
 import android.arch.lifecycle.Observer

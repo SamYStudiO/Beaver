@@ -6,7 +6,6 @@ import android.arch.lifecycle.ViewModelProvider
 import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.LayoutRes
-import android.view.Menu
 import android.view.MenuItem
 import dagger.android.support.DaggerAppCompatActivity
 import net.samystudio.beaver.di.qualifier.ActivityLevel
@@ -50,13 +49,7 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : DaggerAppCompatActivit
         super.onResume()
 
         viewModel.handleRestoreState(intent, savedInstanceState)
-    }
-
-    override fun onPrepareOptionsMenu(menu: Menu?): Boolean
-    {
         viewModel.handleReady()
-
-        return super.onPrepareOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean

@@ -1,5 +1,3 @@
-@file:Suppress("MemberVisibilityCanBePrivate", "MemberVisibilityCanPrivate")
-
 package net.samystudio.beaver.ui.common.navigation
 
 import android.annotation.SuppressLint

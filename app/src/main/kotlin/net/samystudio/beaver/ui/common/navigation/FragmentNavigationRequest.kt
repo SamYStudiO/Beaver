@@ -1,4 +1,4 @@
-@file:Suppress("unused", "MemberVisibilityCanBePrivate")
+@file:Suppress("MemberVisibilityCanBePrivate", "unused")
 
 package net.samystudio.beaver.ui.common.navigation
 
@@ -136,8 +136,6 @@ constructor(builder: Builder<T>)
      * Get if this request was cancelled when last executed.
      */
     var isCancelled: Boolean = false
-
-    var backStackId: Int = -1
 
     /**
      * Get if this is a [BaseDialog] or standard [BaseFragment] request.
