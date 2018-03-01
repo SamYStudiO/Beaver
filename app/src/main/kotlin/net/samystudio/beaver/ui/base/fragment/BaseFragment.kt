@@ -90,7 +90,7 @@ abstract class BaseFragment<VM : BaseFragmentViewModel> : DaggerFragment()
         return viewModel.handleOptionsItemSelected(item)
     }
 
-    open fun willConsumeOptionsItem(item: MenuItem): Boolean
+    fun willConsumeOptionsItem(item: MenuItem): Boolean
     {
         return viewModel.willConsumeOptionsItem(item)
     }
