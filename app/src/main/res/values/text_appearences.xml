@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="TextAppearance.AppCompat.Small">
+        <item name="android:textSize">@dimen/text_small</item>
+    </style>
+
+    <style name="TextAppearance.AppCompat.Normal">
+        <item name="android:textSize">@dimen/text_normal</item>
+    </style>
+
+    <style name="TextAppearance.AppCompat.Medium">
+        <item name="android:textSize">@dimen/text_medium</item>
+    </style>
+
+    <style name="TextAppearance.AppCompat.Large">
+        <item name="android:textSize">@dimen/text_large</item>
+    </style>
+
+</resources>
