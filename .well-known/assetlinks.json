@@ -1,9 +1,0 @@
-[{
-  "relation": ["delegate_permission/common.handle_all_urls"],
-  "target": {
-    "namespace": "android_app",
-    "package_name": "net.samystudio.beaver",
-    "sha256_cert_fingerprints":
-    ["98:D8:DD:4A:E0:8F:45:1B:6E:59:BB:02:77:99:8E:71:51:77:32:C1:E5:C5:6A:75:BB:4F:1F:9F:91:B7:36:78"]
-  }
-}]
