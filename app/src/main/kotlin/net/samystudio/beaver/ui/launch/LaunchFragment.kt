@@ -1,6 +1,7 @@
 package net.samystudio.beaver.ui.launch
 
 import android.os.Bundle
+import com.crashlytics.android.Crashlytics
 import kotlinx.android.synthetic.main.fragment_launch.*
 import net.samystudio.beaver.R
 import net.samystudio.beaver.ui.base.fragment.BaseFragment
@@ -24,7 +25,10 @@ class LaunchFragment : BaseFragment<LaunchFragmentViewModel>()
                                                               null,
                                                               true)
                                   })
-        button2.setOnClickListener({ viewModel.titleObservable.value = "hohoho" })
+        button2.setOnClickListener({
+                                       /*viewModel.titleObservable.value = "hohoho"*/Crashlytics.getInstance()
+                                       .crash()
+                                   })
 
         setHasOptionsMenu(true)
     }

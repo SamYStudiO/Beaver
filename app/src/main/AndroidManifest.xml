@@ -51,8 +51,9 @@
             android:resource="@string/asset_statements"/>
 
         <meta-data
-            android:name="io.fabric.ApiKey"
-            android:value="${crashlytics_key}"/>
+            android:name="firebase_crashlytics_collection_enabled"
+            android:value="${crashlyticsEnabled}"/>
+
     </application>
 
 </manifest>

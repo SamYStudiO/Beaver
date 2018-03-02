@@ -4,7 +4,10 @@ import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.util.Base64
 import android.util.Log
+import com.crashlytics.android.Crashlytics
+import com.crashlytics.android.core.CrashlyticsCore
 import dagger.android.support.DaggerApplication
+import io.fabric.sdk.android.Fabric
 import net.samystudio.beaver.di.component.DaggerApplicationComponent
 import timber.log.Timber
 import java.security.MessageDigest
@@ -18,21 +21,27 @@ class BeaverApplication : DaggerApplication()
 
     override fun onCreate()
     {
+        initCrashReport()
+
         super.onCreate()
 
-        initFirebaseCrash()
-        initTimber()
+        initLogging()
         logKeyHash()
     }
 
     public override fun applicationInjector() = applicationInjector
 
-    private fun initFirebaseCrash()
+    private fun initCrashReport()
     {
-        // TODO FirebaseCrash.setCrashCollectionEnabled(!BuildConfig.DEBUG)
+        Fabric.with(this,
+                    Crashlytics.Builder()
+                        .core(CrashlyticsCore.Builder()
+                                  .disabled(BuildConfig.DEBUG)
+                                  .build())
+                        .build())
     }
 
-    private fun initTimber()
+    private fun initLogging()
     {
         Timber.plant(object : Timber.DebugTree()
                      {
