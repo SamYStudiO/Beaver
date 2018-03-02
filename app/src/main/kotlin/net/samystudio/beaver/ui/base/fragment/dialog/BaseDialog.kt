@@ -7,7 +7,6 @@ import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
-import android.support.annotation.IntDef
 import android.support.annotation.StyleRes
 import android.view.LayoutInflater
 import android.view.Window
@@ -16,6 +15,7 @@ import io.reactivex.Completable
 import io.reactivex.Maybe
 import io.reactivex.subjects.PublishSubject
 import net.samystudio.beaver.ui.base.fragment.BaseFragment
+import net.samystudio.beaver.ui.base.fragment.dialog.BaseDialog.Style.*
 import net.samystudio.beaver.ui.base.viewmodel.BaseFragmentViewModel
 import net.samystudio.beaver.ui.common.navigation.FragmentNavigationManager
 
@@ -60,13 +60,13 @@ abstract class BaseDialog<VM : BaseFragmentViewModel> : BaseFragment<VM>(),
      * attributes yourself.  Calling this after the fragment's Dialog is
      * created will have no effect.
      *
-     * @param style Selects a standard style: may be [STYLE_NORMAL],
-     * [STYLE_NO_TITLE], [STYLE_NO_FRAME], or
-     * [STYLE_NO_INPUT].
+     * @param style Selects a standard style: may be [Style.STYLE_NORMAL],
+     * [Style.STYLE_NO_TITLE], [Style.STYLE_NO_FRAME], or
+     * [Style.STYLE_NO_INPUT].
      * @param theme Optional custom theme.  If 0, an appropriate theme (based
      * on the style) will be selected for you.
      */
-    fun setStyle(@DialogStyle style: Long, @StyleRes theme: Int)
+    fun setStyle(style: Style, @StyleRes theme: Int)
     {
         this.style = style
 
@@ -92,7 +92,7 @@ abstract class BaseDialog<VM : BaseFragmentViewModel> : BaseFragment<VM>(),
         }
     }
 
-    fun dismiss(@FragmentNavigationManager.StateLossPolicy stateLossPolicy: Long? = null)
+    fun dismiss(stateLossPolicy: FragmentNavigationManager.StateLossPolicy? = null)
     {
         if (viewModelIsInitialized)
             viewModel.dismissDialog(this, stateLossPolicy)
@@ -138,7 +138,8 @@ abstract class BaseDialog<VM : BaseFragmentViewModel> : BaseFragment<VM>(),
 
         if (savedInstanceState != null)
         {
-            style = savedInstanceState.getLong(SAVED_STYLE, STYLE_NORMAL)
+            style = valueOf(savedInstanceState.getString(SAVED_STYLE,
+                                                         STYLE_NORMAL.name))
             theme = savedInstanceState.getInt(SAVED_THEME, 0)
             cancelable = savedInstanceState.getBoolean(SAVED_CANCELABLE, true)
         }
@@ -152,31 +153,27 @@ abstract class BaseDialog<VM : BaseFragmentViewModel> : BaseFragment<VM>(),
 
         dialog?.let {
 
-            setupDialog(it, style)
+            when (style)
+            {
+                STYLE_NO_INPUT ->
+                {
+                    it.window?.addFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
+                                                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+                    it.requestWindowFeature(Window.FEATURE_NO_TITLE)
+                }
+
+                STYLE_NO_FRAME,
+                STYLE_NO_TITLE -> it.requestWindowFeature(Window.FEATURE_NO_TITLE)
+                else           ->
+                {
+                }
+            }
 
             // TODO check return scope (let or onGetLayoutInflater ???)
-            return dialog?.context?.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+            return it.context?.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         }
 
         return context?.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-    }
-
-    /**
-     * @hide
-     */
-    fun setupDialog(dialog: Dialog, style: Long)
-    {
-        when (style)
-        {
-            STYLE_NO_INPUT                 ->
-            {
-                dialog.window?.addFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
-                                                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
-                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-            }
-
-            STYLE_NO_FRAME, STYLE_NO_TITLE -> dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        }
     }
 
     /**
@@ -209,8 +206,6 @@ abstract class BaseDialog<VM : BaseFragmentViewModel> : BaseFragment<VM>(),
                                       .from(context)
                                       .inflate(layoutViewRes, null, false))
 
-        //onViewModelCreated(savedInstanceState)
-
         return dialog
     }
 
@@ -239,9 +234,7 @@ abstract class BaseDialog<VM : BaseFragmentViewModel> : BaseFragment<VM>(),
         if (view != null)
         {
             if (view.parent != null)
-            {
                 throw IllegalStateException("DialogFragment can not be attached to a container view")
-            }
 
             dialog?.setContentView(view)
         }
@@ -282,7 +275,7 @@ abstract class BaseDialog<VM : BaseFragmentViewModel> : BaseFragment<VM>(),
                 outState.putBundle(SAVED_DIALOG_STATE_TAG, dialogState)
         }
         if (style != STYLE_NORMAL)
-            outState.putLong(SAVED_STYLE, style)
+            outState.putString(SAVED_STYLE, style.name)
 
         if (theme != 0)
             outState.putInt(SAVED_THEME, theme)
@@ -325,39 +318,35 @@ abstract class BaseDialog<VM : BaseFragmentViewModel> : BaseFragment<VM>(),
         super.onDestroy()
     }
 
-    companion object
+    enum class Style
     {
-        @IntDef(STYLE_NORMAL,
-                STYLE_NO_TITLE,
-                STYLE_NO_FRAME,
-                STYLE_NO_INPUT)
-        @Retention(AnnotationRetention.SOURCE)
-        private annotation class DialogStyle
-
         /**
          * Style for [setStyle]: a basic, normal dialog.
          */
-        const val STYLE_NORMAL = 0L
+        STYLE_NORMAL,
 
         /**
          * Style for [setStyle]: don't include a title area.
          */
-        const val STYLE_NO_TITLE = 1L
+        STYLE_NO_TITLE,
 
         /**
          * Style for [setStyle]: don't draw
          * any frame at all; the view hierarchy returned by [onCreateView]
          * is entirely responsible for drawing the dialog.
          */
-        const val STYLE_NO_FRAME = 2L
+        STYLE_NO_FRAME,
 
         /**
          * Style for [setStyle]: like
          * [STYLE_NO_FRAME], but also disables all input to the dialog.
          * The user can not touch it, and its window will not receive input focus.
          */
-        const val STYLE_NO_INPUT = 3L
+        STYLE_NO_INPUT
+    }
 
+    companion object
+    {
         private const val SAVED_DIALOG_STATE_TAG = "android:savedDialogState"
         private const val SAVED_STYLE = "android:style"
         private const val SAVED_THEME = "android:theme"

@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.app.Dialog
 import android.os.Bundle
 import android.support.annotation.IdRes
-import android.support.annotation.IntDef
 import android.support.annotation.IntRange
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentTransaction
@@ -35,8 +34,7 @@ constructor(activity: AppCompatActivity,
             private val fragmentContainerViewId: Int) :
     ActivityNavigationManager(activity)
 {
-    @StateLossPolicy
-    var defaultStateLossPolicy: Long = STATE_LOSS_POLICY_ALLOW
+    var defaultStateLossPolicy: StateLossPolicy = StateLossPolicy.POLICY_ALLOW
 
     /**
      * Get current [BaseFragment] screen from container view id specified when building this
@@ -86,7 +84,7 @@ constructor(activity: AppCompatActivity,
                                             forResultRequestCode: Int? = null): FragmentNavigationRequest<T>
     {
         if (fragmentManager.isStateSaved && fragmentNavigationRequest.getStateLossPolicy(
-                defaultStateLossPolicy) == STATE_LOSS_POLICY_CANCEL)
+                defaultStateLossPolicy) == StateLossPolicy.POLICY_CANCEL)
         {
             fragmentNavigationRequest.isCancelled = true
             return fragmentNavigationRequest
@@ -111,7 +109,7 @@ constructor(activity: AppCompatActivity,
                 .replace(fragmentContainerViewId, fragmentNavigationRequest.fragment)
 
         if (fragmentManager.isStateSaved && fragmentNavigationRequest.getStateLossPolicy(
-                defaultStateLossPolicy) == STATE_LOSS_POLICY_ALLOW)
+                defaultStateLossPolicy) == StateLossPolicy.POLICY_ALLOW)
             transaction.commitAllowingStateLoss()
         else
             transaction.commit()
@@ -121,13 +119,13 @@ constructor(activity: AppCompatActivity,
 
     /**
      * Pop all stack from [FragmentManager], ignoring request (return false) if state loss policy is
-     * different than [STATE_LOSS_POLICY_IGNORE] and fragment manager state is saved.
+     * different than [StateLossPolicy.POLICY_IGNORE] and fragment manager state is saved.
      *
      * @see FragmentManager.popBackStack
      */
-    fun clearBackStack(@StateLossPolicy stateLossPolicy: Long = defaultStateLossPolicy): Boolean
+    fun clearBackStack(stateLossPolicy: StateLossPolicy = defaultStateLossPolicy): Boolean
     {
-        if (fragmentManager.isStateSaved && stateLossPolicy != STATE_LOSS_POLICY_IGNORE)
+        if (fragmentManager.isStateSaved && stateLossPolicy != StateLossPolicy.POLICY_IGNORE)
             return false
 
         if (fragmentManager.backStackEntryCount > 0)
@@ -142,13 +140,13 @@ constructor(activity: AppCompatActivity,
 
     /**
      * Pop stack from [FragmentManager], ignoring request (return false) if state loss policy is
-     * different than [STATE_LOSS_POLICY_IGNORE] and fragment manager state is saved.
+     * different than [StateLossPolicy.POLICY_IGNORE] and fragment manager state is saved.
      *
      * @see FragmentManager.popBackStack
      */
-    fun popBackStack(@StateLossPolicy stateLossPolicy: Long = defaultStateLossPolicy): Boolean
+    fun popBackStack(stateLossPolicy: StateLossPolicy = defaultStateLossPolicy): Boolean
     {
-        if (fragmentManager.isStateSaved && stateLossPolicy != STATE_LOSS_POLICY_IGNORE)
+        if (fragmentManager.isStateSaved && stateLossPolicy != StateLossPolicy.POLICY_IGNORE)
             return false
 
         if (fragmentManager.backStackEntryCount > 0)
@@ -162,15 +160,15 @@ constructor(activity: AppCompatActivity,
 
     /**
      * Pop stack from [FragmentManager], ignoring request (return false) if state loss policy is
-     * different than [STATE_LOSS_POLICY_IGNORE] and fragment manager state is saved.
+     * different than [StateLossPolicy.POLICY_IGNORE] and fragment manager state is saved.
      *
      * @see FragmentManager.popBackStack
      */
     fun popBackStack(tag: String,
                      flags: Int,
-                     @StateLossPolicy stateLossPolicy: Long = defaultStateLossPolicy): Boolean
+                     stateLossPolicy: StateLossPolicy = defaultStateLossPolicy): Boolean
     {
-        if (fragmentManager.isStateSaved && stateLossPolicy != STATE_LOSS_POLICY_IGNORE)
+        if (fragmentManager.isStateSaved && stateLossPolicy != StateLossPolicy.POLICY_IGNORE)
             return false
 
         if (fragmentManager.findFragmentByTag(tag) != null)
@@ -187,12 +185,12 @@ constructor(activity: AppCompatActivity,
      * use this with the offset you want to go back. A offset of 1 is equivalent to [popBackStack]
      * (it only go back one screen back from current one).
      * Request is ignored (return false) if state loss policy is different than
-     * [STATE_LOSS_POLICY_IGNORE] and fragment manager state is saved.
+     * [StateLossPolicy.POLICY_IGNORE] and fragment manager state is saved.
      */
     fun popBackStack(@IntRange(from = 1) offset: Int,
-                     @StateLossPolicy stateLossPolicy: Long = defaultStateLossPolicy): Boolean
+                     stateLossPolicy: StateLossPolicy = defaultStateLossPolicy): Boolean
     {
-        if (fragmentManager.isStateSaved && stateLossPolicy != STATE_LOSS_POLICY_IGNORE)
+        if (fragmentManager.isStateSaved && stateLossPolicy != StateLossPolicy.POLICY_IGNORE)
             return false
 
         val count = fragmentManager.backStackEntryCount
@@ -206,7 +204,7 @@ constructor(activity: AppCompatActivity,
      * @see FragmentNavigationRequest.getStateLossPolicy
      */
     fun dismissDialog(dialog: BaseDialog<*>,
-                      @StateLossPolicy stateLossPolicy: Long? = defaultStateLossPolicy) =
+                      stateLossPolicy: StateLossPolicy? = defaultStateLossPolicy) =
         dismissDialog(FragmentNavigationRequest.Builder(dialog)
                           .stateLossPolicy(stateLossPolicy ?: defaultStateLossPolicy)
                           .build())
@@ -215,8 +213,8 @@ constructor(activity: AppCompatActivity,
      * @see FragmentNavigationRequest.tag
      * @see FragmentNavigationRequest.getStateLossPolicy
      */
-    fun dismissDialog(tag: String, @StateLossPolicy
-    stateLossPolicy: Long? = defaultStateLossPolicy): Boolean
+    fun dismissDialog(tag: String,
+                      stateLossPolicy: StateLossPolicy? = defaultStateLossPolicy): Boolean
     {
         val dialog: BaseDialog<*> =
             fragmentManager.findFragmentByTag(tag) as BaseDialog<*>? ?: return false
@@ -232,7 +230,8 @@ constructor(activity: AppCompatActivity,
         val dialog: Dialog? = dialogFragment.dialog
 
         if ((fragmentManager.isStateSaved &&
-                    fragmentNavigationRequest.getStateLossPolicy(defaultStateLossPolicy) == STATE_LOSS_POLICY_CANCEL) ||
+                    fragmentNavigationRequest.getStateLossPolicy(
+                        defaultStateLossPolicy) == StateLossPolicy.POLICY_CANCEL) ||
             (dialog != null && !dialog.isShowing))
         {
             fragmentNavigationRequest.isCancelled = true
@@ -245,7 +244,7 @@ constructor(activity: AppCompatActivity,
         transaction.remove(dialogFragment)
 
         if (fragmentManager.isStateSaved && fragmentNavigationRequest.getStateLossPolicy(
-                defaultStateLossPolicy) == STATE_LOSS_POLICY_ALLOW)
+                defaultStateLossPolicy) == StateLossPolicy.POLICY_ALLOW)
             transaction.commitAllowingStateLoss()
         else
             transaction.commit()
@@ -253,30 +252,24 @@ constructor(activity: AppCompatActivity,
         return true
     }
 
-    @Retention(AnnotationRetention.SOURCE)
-    @IntDef(STATE_LOSS_POLICY_IGNORE,
-            STATE_LOSS_POLICY_CANCEL,
-            STATE_LOSS_POLICY_ALLOW)
-    annotation class StateLossPolicy
-
-    companion object
+    enum class StateLossPolicy
     {
         /**
          * Policy indicating to allow request if [FragmentManager] state is already saved, request
          * will use [FragmentTransaction.commitAllowingStateLoss] if request is clearing or popping
          * back stack this will be ignore since there is no way to pop back stack allowing state loss.
          */
-        const val STATE_LOSS_POLICY_ALLOW = 0L
+        POLICY_ALLOW,
 
         /**
          * Policy indicating to cancel request if [FragmentManager] state is already saved.
          */
-        const val STATE_LOSS_POLICY_CANCEL = 1L
+        POLICY_CANCEL,
 
         /**
          * Policy indicating to ignore [FragmentManager] state, request will use
          * [FragmentTransaction.commit] regardless of current state.
          */
-        const val STATE_LOSS_POLICY_IGNORE = 2L
+        POLICY_IGNORE
     }
 }

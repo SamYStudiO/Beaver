@@ -39,21 +39,16 @@ constructor(builder: Builder<T>)
      */
     val addToBackStack: Boolean
 
-    @FragmentNavigationManager.StateLossPolicy
-    val stateLossPolicy: Long?
+    val stateLossPolicy: FragmentNavigationManager.StateLossPolicy?
 
     /**
      * Get which policy should be used when executing this request after
      * [android.support.v4.app.FragmentManager] state is saved.
      *
      * @param defaultStateLossPolicy A default state loss policy to replace actual policy if it's null
-     * @see FragmentNavigationManager.STATE_LOSS_POLICY_IGNORE
-     * @see FragmentNavigationManager.STATE_LOSS_POLICY_CANCEL
-     * @see FragmentNavigationManager.STATE_LOSS_POLICY_ALLOW
+     * @see FragmentNavigationManager.StateLossPolicy
      */
-    @FragmentNavigationManager.StateLossPolicy
-    fun getStateLossPolicy(@FragmentNavigationManager.StateLossPolicy
-                           defaultStateLossPolicy: Long) =
+    fun getStateLossPolicy(defaultStateLossPolicy: FragmentNavigationManager.StateLossPolicy) =
         stateLossPolicy ?: defaultStateLossPolicy
 
     /**
@@ -222,8 +217,7 @@ constructor(builder: Builder<T>)
             private set
         var tag: String? = null
             private set
-        @FragmentNavigationManager.StateLossPolicy
-        var stateLossPolicy: Long? = null
+        var stateLossPolicy: FragmentNavigationManager.StateLossPolicy? = null
             private set
         @AnimatorRes
         @AnimRes
@@ -307,12 +301,9 @@ constructor(builder: Builder<T>)
          * Specify which policy should be used when executing this request after
          * [android.support.v4.app.FragmentManager] state is saved.
          *
-         * @see FragmentNavigationManager.STATE_LOSS_POLICY_IGNORE
-         * @see FragmentNavigationManager.STATE_LOSS_POLICY_CANCEL
-         * @see FragmentNavigationManager.STATE_LOSS_POLICY_ALLOW
+         * @see FragmentNavigationManager.StateLossPolicy
          */
-        fun stateLossPolicy(@FragmentNavigationManager.StateLossPolicy
-                            stateLossPolicy: Long): Builder<T>
+        fun stateLossPolicy(stateLossPolicy: FragmentNavigationManager.StateLossPolicy): Builder<T>
         {
             this.stateLossPolicy = stateLossPolicy
             return this

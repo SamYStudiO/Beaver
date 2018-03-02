@@ -129,15 +129,15 @@ constructor(val fragmentNavigationManager: FragmentNavigationManager) : BaseView
     /**
      * @see FragmentNavigationManager.clearBackStack
      */
-    fun clearBackStack(@FragmentNavigationManager.StateLossPolicy
-                       stateLossPolicy: Long = fragmentNavigationManager.defaultStateLossPolicy) =
+    fun clearBackStack(stateLossPolicy: FragmentNavigationManager.StateLossPolicy =
+                           fragmentNavigationManager.defaultStateLossPolicy) =
         fragmentNavigationManager.clearBackStack(stateLossPolicy)
 
     /**
      * @see FragmentNavigationManager.popBackStack
      */
-    fun popBackStack(@FragmentNavigationManager.StateLossPolicy
-                     stateLossPolicy: Long = fragmentNavigationManager.defaultStateLossPolicy) =
+    fun popBackStack(stateLossPolicy: FragmentNavigationManager.StateLossPolicy =
+                         fragmentNavigationManager.defaultStateLossPolicy) =
         fragmentNavigationManager.popBackStack(stateLossPolicy)
 
     /**
@@ -145,30 +145,31 @@ constructor(val fragmentNavigationManager: FragmentNavigationManager) : BaseView
      */
     fun popBackStack(tag: String,
                      flags: Int,
-                     @FragmentNavigationManager.StateLossPolicy
-                     stateLossPolicy: Long = fragmentNavigationManager.defaultStateLossPolicy) =
+                     stateLossPolicy: FragmentNavigationManager.StateLossPolicy =
+                         fragmentNavigationManager.defaultStateLossPolicy) =
         fragmentNavigationManager.popBackStack(tag, flags, stateLossPolicy)
 
     /**
      * @see FragmentNavigationManager.popBackStack
      */
     fun popBackStack(@IntRange(from = 1) offset: Int,
-                     @FragmentNavigationManager.StateLossPolicy
-                     stateLossPolicy: Long = fragmentNavigationManager.defaultStateLossPolicy) =
+                     stateLossPolicy: FragmentNavigationManager.StateLossPolicy =
+                         fragmentNavigationManager.defaultStateLossPolicy) =
         fragmentNavigationManager.popBackStack(offset, stateLossPolicy)
 
     /**
      * @see FragmentNavigationManager.dismissDialog
      */
     fun dismissDialog(dialog: BaseDialog<*>,
-                      @FragmentNavigationManager.StateLossPolicy
-                      stateLossPolicy: Long? = fragmentNavigationManager.defaultStateLossPolicy) =
+                      stateLossPolicy: FragmentNavigationManager.StateLossPolicy? =
+                          fragmentNavigationManager.defaultStateLossPolicy) =
         fragmentNavigationManager.dismissDialog(dialog, stateLossPolicy)
 
     /**
      * @see FragmentNavigationManager.dismissDialog
      */
-    fun dismissDialog(tag: String, @FragmentNavigationManager.StateLossPolicy
-    stateLossPolicy: Long? = fragmentNavigationManager.defaultStateLossPolicy): Boolean =
+    fun dismissDialog(tag: String,
+                      stateLossPolicy: FragmentNavigationManager.StateLossPolicy? =
+                          fragmentNavigationManager.defaultStateLossPolicy) =
         fragmentNavigationManager.dismissDialog(tag, stateLossPolicy)
 }
