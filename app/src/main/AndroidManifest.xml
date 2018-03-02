@@ -21,10 +21,6 @@
         android:theme="@style/AppTheme"
         tools:targetApi="n">
 
-        <meta-data
-            android:name="asset_statements"
-            android:resource="@string/asset_statements"/>
-
         <activity
             android:name=".ui.launch.LaunchActivity">
             <intent-filter>
@@ -41,8 +37,7 @@
 
                 <data
                     android:host="samystudio.github.io"
-                    android:scheme="https"
-                    />
+                    android:scheme="https"/>
             </intent-filter>
         </activity>
 
@@ -51,6 +46,13 @@
             android:launchMode="singleTop">
         </activity>
 
+        <meta-data
+            android:name="asset_statements"
+            android:resource="@string/asset_statements"/>
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="${crashlytics_key}"/>
     </application>
 
 </manifest>
