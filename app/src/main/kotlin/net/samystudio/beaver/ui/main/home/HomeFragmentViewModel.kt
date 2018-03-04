@@ -1,13 +1,14 @@
 package net.samystudio.beaver.ui.main.home
 
+import android.accounts.AccountManager
 import android.app.Application
 import android.arch.lifecycle.MutableLiveData
 import io.reactivex.android.schedulers.AndroidSchedulers
+import net.samystudio.beaver.data.local.SharedPreferencesManager
 import net.samystudio.beaver.data.model.Home
 import net.samystudio.beaver.data.remote.HomeApiManager
 import net.samystudio.beaver.di.scope.FragmentScope
 import net.samystudio.beaver.ui.base.viewmodel.BaseFragmentViewModel
-import net.samystudio.beaver.ui.common.navigation.FragmentNavigationManager
 import net.samystudio.beaver.ui.main.MainActivityViewModel
 import javax.inject.Inject
 
@@ -15,10 +16,11 @@ import javax.inject.Inject
 class HomeFragmentViewModel
 @Inject
 constructor(application: Application,
-            fragmentNavigationManager: FragmentNavigationManager,
+            accountManager: AccountManager,
+            sharedPreferencesManager: SharedPreferencesManager,
             activityViewModel: MainActivityViewModel,
             private val homeApiManager: HomeApiManager) :
-    BaseFragmentViewModel(application, fragmentNavigationManager, activityViewModel)
+    BaseFragmentViewModel(application, accountManager, sharedPreferencesManager, activityViewModel)
 {
     override val defaultTitle: String?
         get() = "home"

@@ -13,7 +13,6 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentTransaction
 import android.view.View
 import net.samystudio.beaver.ui.base.fragment.BaseFragment
-import net.samystudio.beaver.ui.base.fragment.dialog.BaseDialog
 import java.util.*
 
 /**
@@ -34,29 +33,15 @@ constructor(builder: Builder<T>)
     val bundle: Bundle?
 
     /**
-     * Get if this request will be added to back stack when request is executed. Note this is always
-     * false for a [BaseDialog] request.
+     * Get if this request will be added to back stack when request is executed.
      */
     val addToBackStack: Boolean
-
-    val stateLossPolicy: FragmentNavigationManager.StateLossPolicy?
-
-    /**
-     * Get which policy should be used when executing this request after
-     * [android.support.v4.app.FragmentManager] state is saved.
-     *
-     * @param defaultStateLossPolicy A default state loss policy to replace actual policy if it's null
-     * @see FragmentNavigationManager.StateLossPolicy
-     */
-    fun getStateLossPolicy(defaultStateLossPolicy: FragmentNavigationManager.StateLossPolicy) =
-        stateLossPolicy ?: defaultStateLossPolicy
 
     /**
      * Tag use for different purposes (see links below).
      *
      * @see android.support.v4.app.FragmentManager.findFragmentByTag
      * @see FragmentNavigationManager.popBackStack
-     * @see FragmentNavigationManager.dismissDialog
      */
     val tag: String
 
@@ -127,17 +112,6 @@ constructor(builder: Builder<T>)
     val breadCrumbShortTitleRes: Int
     private val mBreadCrumbShortTitle: CharSequence?
 
-    /**
-     * Get if this request was cancelled when last executed.
-     */
-    var isCancelled: Boolean = false
-
-    /**
-     * Get if this is a [BaseDialog] or standard [BaseFragment] request.
-     */
-    val isDialog: Boolean
-        get() = fragment is BaseDialog<*>
-
     constructor(fragment: T, bundle: Bundle? = null) :
             this(Builder<T>(fragment).bundle(bundle))
 
@@ -152,7 +126,6 @@ constructor(builder: Builder<T>)
         fragment = builder.fragment
         bundle = builder.bundle
         addToBackStack = builder.addToBackStack
-        stateLossPolicy = builder.stateLossPolicy
         tag = builder.tag ?: fragment.javaClass.name
         enterAnimRes = builder.enterAnimRes
         exitAnimRes = builder.exitAnimRes
@@ -203,7 +176,7 @@ constructor(builder: Builder<T>)
                                          sharedElementTargetNames[i])
         }
 
-        if (addToBackStack && !isDialog)
+        if (addToBackStack)
             transaction.addToBackStack(tag)
 
         return transaction
@@ -216,8 +189,6 @@ constructor(builder: Builder<T>)
         var addToBackStack: Boolean = true
             private set
         var tag: String? = null
-            private set
-        var stateLossPolicy: FragmentNavigationManager.StateLossPolicy? = null
             private set
         @AnimatorRes
         @AnimRes
@@ -274,7 +245,7 @@ constructor(builder: Builder<T>)
 
         /**
          * Note back stack tag is automatically generated, if you want to specify one you may use
-         * [tag]. Not also this has no effect for a [BaseDialog] request.
+         * [tag].
          *
          * @see FragmentTransaction.addToBackStack
          */
@@ -289,23 +260,10 @@ constructor(builder: Builder<T>)
          *
          * @see android.support.v4.app.FragmentManager.findFragmentByTag
          * @see FragmentNavigationManager.popBackStack
-         * @see FragmentNavigationManager.dismissDialog
          */
         fun tag(tag: String?): Builder<T>
         {
             this.tag = tag
-            return this
-        }
-
-        /**
-         * Specify which policy should be used when executing this request after
-         * [android.support.v4.app.FragmentManager] state is saved.
-         *
-         * @see FragmentNavigationManager.StateLossPolicy
-         */
-        fun stateLossPolicy(stateLossPolicy: FragmentNavigationManager.StateLossPolicy): Builder<T>
-        {
-            this.stateLossPolicy = stateLossPolicy
             return this
         }
 

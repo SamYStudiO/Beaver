@@ -2,6 +2,7 @@
 
 package net.samystudio.beaver.ui.base.activity
 
+import android.app.FragmentManager
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
 import android.content.Intent
@@ -10,13 +11,20 @@ import android.support.annotation.LayoutRes
 import android.view.MenuItem
 import dagger.android.support.DaggerAppCompatActivity
 import net.samystudio.beaver.di.qualifier.ActivityLevel
+import net.samystudio.beaver.ui.base.fragment.BaseFragment
 import net.samystudio.beaver.ui.base.viewmodel.BaseActivityViewModel
+import net.samystudio.beaver.ui.common.navigation.FragmentNavigationManager
 import javax.inject.Inject
 
-abstract class BaseActivity<VM : BaseActivityViewModel> : DaggerAppCompatActivity()
+abstract class BaseActivity<VM : BaseActivityViewModel> : DaggerAppCompatActivity(),
+                                                          FragmentManager.OnBackStackChangedListener
 {
+    abstract val defaultFragmentClass: Class<out BaseFragment<*>>
+    abstract val defaultFragmentBundle: Bundle?
     @get:LayoutRes
     protected abstract val layoutViewRes: Int
+    @Inject
+    protected lateinit var fragmentNavigationManager: FragmentNavigationManager
     @Inject
     @field:ActivityLevel
     protected lateinit var viewModelProvider: ViewModelProvider
@@ -30,7 +38,7 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : DaggerAppCompatActivit
 
         this.savedInstanceState = savedInstanceState
         viewModel = viewModelProvider.get(viewModelClass)
-        viewModel.result.observe(this, Observer {
+        viewModel.resultObservable.observe(this, Observer {
             it?.let {
                 setResult(it.code, it.intent)
                 if (it.finish)
@@ -38,6 +46,7 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : DaggerAppCompatActivit
             }
         })
         setContentView(layoutViewRes)
+        fragmentManager.addOnBackStackChangedListener(this)
         onViewModelCreated(savedInstanceState)
     }
 
@@ -62,7 +71,16 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : DaggerAppCompatActivit
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean
     {
-        if (viewModel.handleOptionsItemSelected(item)) return true
+        val currentFragment: BaseFragment<*>? = fragmentNavigationManager.getCurrentFragment()
+
+        if (currentFragment == null || !currentFragment.willConsumeOptionsItem(item))
+        {
+            when (item.itemId)
+            {
+                android.R.id.home ->
+                    if (fragmentNavigationManager.clearBackStack()) return true
+            }
+        }
 
         return super.onOptionsItemSelected(item)
     }
@@ -76,7 +94,9 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : DaggerAppCompatActivit
 
     override fun onBackPressed()
     {
-        if (!viewModel.handleBackPressed())
+        val currentFragment: BaseFragment<*>? = fragmentNavigationManager.getCurrentFragment()
+
+        if (currentFragment == null || !currentFragment.onBackPressed())
             super.onBackPressed()
     }
 
@@ -85,5 +105,15 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : DaggerAppCompatActivit
         super.onActivityResult(requestCode, resultCode, data)
 
         viewModel.handleActivityResult(requestCode, resultCode, data)
+    }
+
+    override fun onBackStackChanged()
+    {
+        val currentFragment: BaseFragment<*>? = fragmentNavigationManager.getCurrentFragment()
+
+        if (currentFragment == null)
+            fragmentNavigationManager.startFragment(defaultFragmentClass,
+                                                    defaultFragmentBundle,
+                                                    false)
     }
 }

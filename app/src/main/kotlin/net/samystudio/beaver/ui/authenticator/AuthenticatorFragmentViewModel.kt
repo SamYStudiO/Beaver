@@ -13,19 +13,17 @@ import net.samystudio.beaver.di.scope.FragmentScope
 import net.samystudio.beaver.ext.getCurrentAccount
 import net.samystudio.beaver.ext.invalidateCurrentAuthToken
 import net.samystudio.beaver.ui.base.viewmodel.BaseFragmentViewModel
-import net.samystudio.beaver.ui.common.navigation.FragmentNavigationManager
 import javax.inject.Inject
 
 @FragmentScope
 class AuthenticatorFragmentViewModel
 @Inject
 constructor(application: Application,
-            fragmentNavigationManager: FragmentNavigationManager,
+            accountManager: AccountManager,
+            sharedPreferencesManager: SharedPreferencesManager,
             activityViewModel: AuthenticatorActivityViewModel,
-            private val accountManager: AccountManager,
-            private val authenticatorApiManager: AuthenticatorApiManager,
-            private val sharedPreferencesManager: SharedPreferencesManager) :
-    BaseFragmentViewModel(application, fragmentNavigationManager, activityViewModel)
+            private val authenticatorApiManager: AuthenticatorApiManager) :
+    BaseFragmentViewModel(application, accountManager, sharedPreferencesManager, activityViewModel)
 {
     override val defaultTitle: String?
         get() = "account"
