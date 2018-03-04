@@ -69,7 +69,7 @@ abstract class BaseFragment<VM : BaseFragmentViewModel> : DaggerFragment()
     {
         super.onResume()
 
-        viewModel.handleRestoreState(activity!!.intent, savedInstanceState, arguments)
+        viewModel.handleState(activity!!.intent, savedInstanceState, arguments)
         viewModel.handleReady()
     }
 

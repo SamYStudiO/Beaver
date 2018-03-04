@@ -7,7 +7,7 @@ import net.samystudio.beaver.ui.main.home.HomeFragment
 import net.samystudio.beaver.ui.main.home.HomeFragmentModule
 
 @Module
-abstract class FragmentBuildersModule
+abstract class MainActivityFragmentBuilderModule
 {
     @ContributesAndroidInjector(modules = [HomeFragmentModule::class])
     @FragmentScope

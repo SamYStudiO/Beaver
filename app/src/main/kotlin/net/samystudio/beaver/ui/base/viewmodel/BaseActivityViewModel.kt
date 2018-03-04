@@ -1,5 +1,7 @@
 package net.samystudio.beaver.ui.base.viewmodel
 
+import android.app.Application
+import android.arch.lifecycle.MutableLiveData
 import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.CallSuper
@@ -9,12 +11,16 @@ import net.samystudio.beaver.ui.base.fragment.BaseFragment
 import net.samystudio.beaver.ui.common.navigation.FragmentNavigationManager
 
 abstract class BaseActivityViewModel
-constructor(fragmentNavigationManager: FragmentNavigationManager) :
-    BaseViewControllerViewModel(fragmentNavigationManager),
+constructor(application: Application, fragmentNavigationManager: FragmentNavigationManager) :
+    BaseViewControllerViewModel(application, fragmentNavigationManager),
     FragmentManager.OnBackStackChangedListener
 {
     abstract val defaultFragmentClass: Class<out BaseFragment<*>>
     abstract val defaultFragmentBundle: Bundle?
+    /**
+     * @hide
+     */
+    val result: MutableLiveData<Result> = MutableLiveData()
 
     init
     {
@@ -23,15 +29,10 @@ constructor(fragmentNavigationManager: FragmentNavigationManager) :
     }
 
     @CallSuper
-    override fun handleRestoreState(intent: Intent, savedInstanceState: Bundle?, arguments: Bundle?)
+    override fun handleState(intent: Intent, savedInstanceState: Bundle?, arguments: Bundle?)
     {
         if (intent.action == Intent.ACTION_VIEW && !intent.data?.toString().isNullOrBlank())
             onNewUrl(intent.data)
-    }
-
-    override fun handleReady()
-    {
-        onBackStackChanged()
     }
 
     override fun handleBackPressed(): Boolean
@@ -53,14 +54,17 @@ constructor(fragmentNavigationManager: FragmentNavigationManager) :
             when (item.itemId)
             {
                 android.R.id.home ->
-                {
-                    clearBackStack()
-                    return true
-                }
+                    return clearBackStack()
             }
         }
 
         return false
+    }
+
+    @CallSuper
+    override fun setResult(code: Int, intent: Intent?, finish: Boolean)
+    {
+        result.value = Result(code, intent, finish)
     }
 
     override fun onBackStackChanged()
@@ -76,4 +80,9 @@ constructor(fragmentNavigationManager: FragmentNavigationManager) :
         super.onCleared()
         fragmentManager.removeOnBackStackChangedListener(this)
     }
+
+    /**
+     * @hide
+     */
+    data class Result(var code: Int, var intent: Intent?, var finish: Boolean)
 }

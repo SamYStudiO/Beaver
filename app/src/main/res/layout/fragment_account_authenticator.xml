@@ -6,16 +6,23 @@
     android:layout_height="match_parent">
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/singin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="go main activity"/>
+        android:text="singin"/>
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/sinup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="change title"
-        app:layout_constraintTop_toBottomOf="@id/button"/>
+        android:text="signup"
+        app:layout_constraintTop_toBottomOf="@id/singin"/>
+
+    <Button
+        android:id="@+id/invalidateToken"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="invalidate token"
+        app:layout_constraintTop_toBottomOf="@id/sinup"/>
 
 </android.support.constraint.ConstraintLayout>

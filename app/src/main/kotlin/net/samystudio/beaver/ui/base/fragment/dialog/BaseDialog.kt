@@ -29,6 +29,7 @@ abstract class BaseDialog<VM : BaseFragmentViewModel> : BaseFragment<VM>(),
                                                         DialogInterface.OnCancelListener,
                                                         DialogInterface.OnDismissListener
 {
+    // TODO not working with loss state
     private val _onDismissObservable = PublishSubject.create<Unit>()
     val onDismissObservable: Completable = _onDismissObservable.ignoreElements()
 

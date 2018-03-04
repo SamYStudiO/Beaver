@@ -2,6 +2,7 @@
 
 package net.samystudio.beaver.ui.base.viewmodel
 
+import android.app.Application
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -16,17 +17,21 @@ import net.samystudio.beaver.ui.common.navigation.FragmentNavigationManager
 import net.samystudio.beaver.ui.common.navigation.FragmentNavigationRequest
 
 abstract class BaseViewControllerViewModel
-constructor(val fragmentNavigationManager: FragmentNavigationManager) : BaseViewModel()
+constructor(application: Application,
+            val fragmentNavigationManager: FragmentNavigationManager) : BaseViewModel(application)
 {
     val fragmentManager: FragmentManager
         get() = fragmentNavigationManager.fragmentManager
 
     /**
-     * arguments is always null with activities view model
+     * This is called from view onResume, so may be called several time during view lifecycle. You should
+     * make sure you've not already consume these parameters, in some circumstance it could lead to
+     * unexpected behaviours.
+     * arguments is always null with activity view models.
      */
-    open fun handleRestoreState(intent: Intent,
-                                savedInstanceState: Bundle?,
-                                arguments: Bundle? = null)
+    open fun handleState(intent: Intent,
+                         savedInstanceState: Bundle?,
+                         arguments: Bundle? = null)
     {
     }
 
@@ -44,13 +49,18 @@ constructor(val fragmentNavigationManager: FragmentNavigationManager) : BaseView
         return false
     }
 
-    fun handleActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
+    open fun handleActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
     {
     }
 
     open fun handleSaveInstanceState(outState: Bundle)
     {
     }
+
+    /**
+     * @see android.app.Activity.setResult
+     */
+    abstract fun setResult(code: Int, intent: Intent?, finish: Boolean = true)
 
     fun <T : BaseFragment<*>> getCurrentFragment(): T? =
         fragmentNavigationManager.getCurrentFragment()
@@ -90,7 +100,7 @@ constructor(val fragmentNavigationManager: FragmentNavigationManager) : BaseView
      */
     fun startUrl(uri: Uri) = fragmentNavigationManager.startUrl(uri)
 
-    fun onNewUrl(uri: Uri)
+    open fun onNewUrl(uri: Uri)
     {
     }
 

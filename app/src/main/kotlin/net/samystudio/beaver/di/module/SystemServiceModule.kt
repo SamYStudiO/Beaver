@@ -1,5 +1,6 @@
 package net.samystudio.beaver.di.module
 
+import android.accounts.AccountManager
 import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
@@ -16,4 +17,10 @@ object SystemServiceModule
     @JvmStatic
     fun provideSharedPreferences(@ApplicationContext context: Context): SharedPreferences =
         PreferenceManager.getDefaultSharedPreferences(context)
+
+    @Provides
+    @Singleton
+    @JvmStatic
+    fun provideAccountManager(@ApplicationContext context: Context): AccountManager =
+        AccountManager.get(context)
 }

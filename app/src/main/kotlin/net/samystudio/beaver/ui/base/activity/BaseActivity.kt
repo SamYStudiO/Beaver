@@ -2,6 +2,7 @@
 
 package net.samystudio.beaver.ui.base.activity
 
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
 import android.content.Intent
 import android.os.Bundle
@@ -29,6 +30,13 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : DaggerAppCompatActivit
 
         this.savedInstanceState = savedInstanceState
         viewModel = viewModelProvider.get(viewModelClass)
+        viewModel.result.observe(this, Observer {
+            it?.let {
+                setResult(it.code, it.intent)
+                if (it.finish)
+                    finish()
+            }
+        })
         setContentView(layoutViewRes)
         onViewModelCreated(savedInstanceState)
     }
@@ -48,7 +56,7 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : DaggerAppCompatActivit
     {
         super.onResume()
 
-        viewModel.handleRestoreState(intent, savedInstanceState)
+        viewModel.handleState(intent, savedInstanceState)
         viewModel.handleReady()
     }
 

@@ -1,5 +1,6 @@
 package net.samystudio.beaver.di.module
 
+import android.accounts.AccountManager
 import android.app.Application
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
@@ -8,7 +9,8 @@ import dagger.Module
 import dagger.Provides
 import io.reactivex.schedulers.Schedulers
 import net.samystudio.beaver.BuildConfig
-import net.samystudio.beaver.data.manager.SharedPreferencesManager
+import net.samystudio.beaver.data.local.SharedPreferencesManager
+import net.samystudio.beaver.data.remote.AuthenticatorApiInterface
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Converter
@@ -19,7 +21,7 @@ import java.lang.reflect.Type
 import javax.inject.Singleton
 
 @Module
-object ApiModule
+object NetworkModule
 {
     private const val BASE_URL: String = "https://root/"
 
@@ -27,7 +29,7 @@ object ApiModule
     @Singleton
     @JvmStatic
     fun provideCache(application: Application) =
-        Cache(application.cacheDir, 20L * 1024L * 1024L) //20 mo
+        Cache(application.cacheDir, 20L * 1024 * 1024) //20 mo
 
     @Provides
     @Singleton
@@ -51,23 +53,24 @@ object ApiModule
                             requestInterceptor: Interceptor): OkHttpClient =
         OkHttpClient.Builder()
             .cache(cache)
-            .addInterceptor(httpLoggingInterceptor)
             .addInterceptor(requestInterceptor)
+            .addInterceptor(httpLoggingInterceptor)
             .build()
 
     @Provides
     @Singleton
     @JvmStatic
-    fun provideRequestInterceptor(sharedPreferencesManager: SharedPreferencesManager): Interceptor =
+    fun provideRequestInterceptor(sharedPreferencesManager: SharedPreferencesManager,
+                                  accountManager: AccountManager): Interceptor =
         Interceptor { chain ->
             // Request interceptor to update root url and add user token if exist.
+
             val request = chain.request()
             val url = request.url().url().toString()
 
-            // rewriting url is not necessary when using a unique production
-            // server url, but in most case we'll use multiple server urls
-            // (test/prod/...) and this is the way to go if we want to update
-            // Retrofit base url at runtime
+            // rewriting url is not necessary when using a unique production server url, but in most
+            // case we'll use multiple server urls  (test/prod/...) and this is the way to go if we
+            // want to update Retrofit base url at runtime
             val httpUrl = HttpUrl.parse(url.replace(BASE_URL, sharedPreferencesManager.apiUrl))
 
             val newBuilder = request.newBuilder()
@@ -75,10 +78,31 @@ object ApiModule
             if (httpUrl != null)
                 newBuilder.url(httpUrl)
 
-            val token = sharedPreferencesManager.userToken
+            /*val account = accountManager.getCurrentAccount(BuildConfig.APPLICATION_ID,
+                                                           sharedPreferencesManager.accountName)
 
-            if (token != null)
-                newBuilder.header("Authorization", token)
+            if (account != null && !url.contains("signIn"))
+            {
+                try
+                {
+                    val token = accountManager.blockingGetAuthToken(account,
+                                                                    AuthenticatorActivity.DEFAULT_AUTH_TOKEN_TYPE,
+                                                                    false)
+
+                    if (!token.isNullOrBlank())
+                        newBuilder.header("Authorization", token)
+
+                    else throw AuthorizationException()
+                }
+                catch (authenticatorException: AuthenticatorException)
+                {
+                    throw AuthorizationException(authenticatorException)
+                }
+                catch (operationCanceledException: OperationCanceledException)
+                {
+                    throw AuthorizationException(operationCanceledException)
+                }
+            }*/
 
             chain.proceed(newBuilder.build())
         }
@@ -139,4 +163,10 @@ object ApiModule
             .baseUrl(BASE_URL)
             .client(okHttpClient)
             .build()
+
+    @Provides
+    @Singleton
+    @JvmStatic
+    fun provideAuthenticatorApiInterface(retrofit: Retrofit): AuthenticatorApiInterface =
+        retrofit.create(AuthenticatorApiInterface::class.java)
 }

@@ -21,12 +21,14 @@ class BeaverApplication : DaggerApplication()
 
     override fun onCreate()
     {
-        initCrashReport()
-
         super.onCreate()
 
+        initCrashReport()
         initLogging()
         logKeyHash()
+
+        // Launch screen timeout
+        Thread.sleep(1000)
     }
 
     public override fun applicationInjector() = applicationInjector

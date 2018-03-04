@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="color_primary">#3F51B5</color>
-    <color name="color_primary_dark">#303F9F</color>
-    <color name="color_accent">#FF4081</color>
+    <color name="primary">#3F51B5</color>
+    <color name="primary_dark">#303F9F</color>
+    <color name="accent">#FF4081</color>
 
-    <color name="text_color">#666666</color>
-    <color name="text_color_inverse">#E6E6E6</color>
+    <color name="text">#666666</color>
+    <color name="text_inverse">#E6E6E6</color>
 
     <color name="divider">#999999</color>
 </resources>

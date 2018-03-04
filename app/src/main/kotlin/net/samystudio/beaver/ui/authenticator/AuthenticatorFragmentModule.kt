@@ -1,4 +1,4 @@
-package net.samystudio.beaver.ui.launch
+package net.samystudio.beaver.ui.authenticator
 
 import android.arch.lifecycle.LifecycleOwner
 import android.support.v4.app.Fragment
@@ -12,20 +12,20 @@ import net.samystudio.beaver.ui.base.fragment.BaseFragmentModule
 import net.samystudio.beaver.ui.base.viewmodel.BaseFragmentViewModel
 
 @Module(includes = [BaseFragmentModule::class])
-abstract class LaunchFragmentModule
+abstract class AuthenticatorFragmentModule
 {
     @Binds
     @FragmentScope
-    abstract fun bindFragment(fragment: LaunchFragment): Fragment
+    abstract fun bindFragment(fragment: AuthenticatorFragment): Fragment
 
     @Binds
     @FragmentScope
     @FragmentLevel
-    abstract fun bindLifecycleOwner(fragment: LaunchFragment): LifecycleOwner
+    abstract fun bindLifecycleOwner(fragment: AuthenticatorFragment): LifecycleOwner
 
     @Binds
     @IntoMap
-    @FragmentViewModelKey(LaunchFragmentViewModel::class)
+    @FragmentViewModelKey(AuthenticatorFragmentViewModel::class)
     @FragmentScope
-    abstract fun bindViewModel(viewModel: LaunchFragmentViewModel): BaseFragmentViewModel
+    abstract fun bindViewModel(viewModel: AuthenticatorFragmentViewModel): BaseFragmentViewModel
 }

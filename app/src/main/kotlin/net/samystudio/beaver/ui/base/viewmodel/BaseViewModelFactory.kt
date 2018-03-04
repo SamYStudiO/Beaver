@@ -25,7 +25,7 @@ constructor(private val creators: Map<Class<out ViewModel>, Provider<ViewModel>>
             }
         }
 
-        if (creator == null) throw IllegalArgumentException("unknown model class " + modelClass)
+        if (creator == null) throw IllegalArgumentException("unknown model class $modelClass")
 
         try
         {

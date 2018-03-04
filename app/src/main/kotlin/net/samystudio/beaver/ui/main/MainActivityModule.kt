@@ -11,7 +11,7 @@ import net.samystudio.beaver.di.scope.ActivityScope
 import net.samystudio.beaver.ui.base.activity.BaseActivityModule
 import net.samystudio.beaver.ui.base.viewmodel.BaseActivityViewModel
 
-@Module(includes = [BaseActivityModule::class, FragmentBuildersModule::class])
+@Module(includes = [BaseActivityModule::class, MainActivityFragmentBuilderModule::class])
 abstract class MainActivityModule
 {
     @Binds

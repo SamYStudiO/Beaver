@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <string name="api_url">https://www.google.com</string>
-
+    <string name="api_url">https://samystudio.github.io/beaver/api/</string>
 </resources>
