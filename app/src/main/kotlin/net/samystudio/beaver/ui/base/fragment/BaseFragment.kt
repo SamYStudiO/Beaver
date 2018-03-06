@@ -22,7 +22,8 @@ import net.samystudio.beaver.ui.base.viewmodel.BaseFragmentViewModel
 import net.samystudio.beaver.ui.common.navigation.FragmentNavigationManager
 import javax.inject.Inject
 
-abstract class BaseFragment<VM : BaseFragmentViewModel> : DaggerAppCompatDialogFragment()
+abstract class BaseFragment<VM : BaseFragmentViewModel> : DaggerAppCompatDialogFragment(),
+                                                          DialogInterface.OnShowListener
 {
     @get:LayoutRes
     protected abstract val layoutViewRes: Int
@@ -85,6 +86,8 @@ abstract class BaseFragment<VM : BaseFragmentViewModel> : DaggerAppCompatDialogF
             }
         })
 
+        if (showsDialog) dialog.setOnShowListener(this)
+
         onViewModelCreated(savedInstanceState)
     }
 
@@ -132,6 +135,55 @@ abstract class BaseFragment<VM : BaseFragmentViewModel> : DaggerAppCompatDialogF
         viewModel.handleActivityResult(requestCode, requestCode, data)
     }
 
+    override fun onShow(dialog: DialogInterface?)
+    {
+        activity?.let {
+            if (it is DialogListener)
+                it.onDialogShow(targetRequestCode)
+        }
+
+        targetFragment?.let {
+            if (it is DialogListener)
+                it.onDialogShow(targetRequestCode)
+        }
+    }
+
+    override fun onCancel(dialog: DialogInterface?)
+    {
+        super.onCancel(dialog)
+
+        activity?.let {
+            if (it is DialogListener)
+                it.onDialogCancel(targetRequestCode)
+        }
+
+        targetFragment?.let {
+            if (it is DialogListener)
+                it.onDialogCancel(targetRequestCode)
+        }
+
+        setResult(Activity.RESULT_CANCELED, null)
+        finish()
+    }
+
+    override fun onDismiss(dialog: DialogInterface?)
+    {
+        super.onDismiss(dialog)
+
+        if (!viewDestroyed)
+        {
+            activity?.let {
+                if (it is DialogListener)
+                    it.onDialogDismiss(targetRequestCode)
+            }
+
+            targetFragment?.let {
+                if (it is DialogListener)
+                    it.onDialogDismiss(targetRequestCode)
+            }
+        }
+    }
+
     /**
      * @see [android.app.Activity.setResult]
      */
@@ -159,41 +211,5 @@ abstract class BaseFragment<VM : BaseFragmentViewModel> : DaggerAppCompatDialogF
         super.onDestroy()
 
         viewDestroyed = true
-    }
-
-    override fun onDismiss(dialog: DialogInterface?)
-    {
-        super.onDismiss(dialog)
-
-        if (!viewDestroyed)
-        {
-            activity?.let {
-                if (it is DialogListener)
-                    it.onDismissDialog(targetRequestCode)
-            }
-
-            targetFragment?.let {
-                if (it is DialogListener)
-                    it.onDismissDialog(targetRequestCode)
-            }
-        }
-    }
-
-    override fun onCancel(dialog: DialogInterface?)
-    {
-        super.onCancel(dialog)
-
-        activity?.let {
-            if (it is DialogListener)
-                it.onCancelDialog(targetRequestCode)
-        }
-
-        targetFragment?.let {
-            if (it is DialogListener)
-                it.onCancelDialog(targetRequestCode)
-        }
-
-        setResult(Activity.RESULT_CANCELED, null)
-        finish()
     }
 }

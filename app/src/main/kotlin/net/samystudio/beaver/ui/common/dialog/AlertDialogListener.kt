@@ -28,14 +28,14 @@ interface AlertDialogListener : DialogListener
     /**
      * @see android.content.DialogInterface.OnClickListener.onClick
      */
-    fun onClick(requestCode: Int, which: Int)
+    fun onDialogClick(requestCode: Int, which: Int)
     {
     }
 
     /**
      * @see android.content.DialogInterface.OnMultiChoiceClickListener.onClick
      */
-    fun onClick(requestCode: Int, which: Int, checked: Boolean)
+    fun onDialogClick(requestCode: Int, which: Int, checked: Boolean)
     {
     }
 }

@@ -35,7 +35,7 @@ open class AlertDialog : BaseFragment<AlertDialogViewModel>(),
                     DialogInterface.BUTTON_POSITIVE -> it.onDialogPositive(targetRequestCode)
                     DialogInterface.BUTTON_NEGATIVE -> it.onDialogNegative(targetRequestCode)
                     DialogInterface.BUTTON_NEUTRAL  -> it.onDialogNeutral(targetRequestCode)
-                    else                            -> it.onClick(targetRequestCode, which)
+                    else                            -> it.onDialogClick(targetRequestCode, which)
                 }
             }
         }
@@ -48,7 +48,7 @@ open class AlertDialog : BaseFragment<AlertDialogViewModel>(),
                     DialogInterface.BUTTON_POSITIVE -> it.onDialogPositive(targetRequestCode)
                     DialogInterface.BUTTON_NEGATIVE -> it.onDialogNegative(targetRequestCode)
                     DialogInterface.BUTTON_NEUTRAL  -> it.onDialogNeutral(targetRequestCode)
-                    else                            -> it.onClick(targetRequestCode, which)
+                    else                            -> it.onDialogClick(targetRequestCode, which)
                 }
             }
         }
@@ -58,13 +58,13 @@ open class AlertDialog : BaseFragment<AlertDialogViewModel>(),
     {
         activity?.let {
             if (it is AlertDialogListener)
-                it.onClick(targetRequestCode, which, isChecked)
+                it.onDialogClick(targetRequestCode, which, isChecked)
         }
 
         targetFragment?.let {
             if (it is AlertDialogListener)
             {
-                it.onClick(targetRequestCode, which, isChecked)
+                it.onDialogClick(targetRequestCode, which, isChecked)
             }
         }
     }
