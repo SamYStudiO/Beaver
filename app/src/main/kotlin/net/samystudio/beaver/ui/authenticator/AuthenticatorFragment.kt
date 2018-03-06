@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.view.View
 import kotlinx.android.synthetic.main.fragment_account_authenticator.*
 import net.samystudio.beaver.R
-import net.samystudio.beaver.ui.base.fragment.BaseFragment
+import net.samystudio.beaver.ui.base.fragment.BaseDataFragment
 
-class AuthenticatorFragment : BaseFragment<AuthenticatorFragmentViewModel>()
+class AuthenticatorFragment : BaseDataFragment<AuthenticatorFragmentViewModel>()
 {
     override val layoutViewRes: Int
         get() = R.layout.fragment_account_authenticator

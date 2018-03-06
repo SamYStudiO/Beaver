@@ -19,7 +19,7 @@ import java.util.*
  * Advanced [Fragment] or [DialogFragment] request to use along with
  * [FragmentNavigationManager.startFragment].
  */
-class FragmentNavigationRequest<T : BaseFragment<*>>
+class FragmentNavigationRequest<T : BaseFragment>
 constructor(builder: Builder<T>)
 {
     val fragment: T
@@ -182,7 +182,7 @@ constructor(builder: Builder<T>)
         return transaction
     }
 
-    class Builder<T : BaseFragment<*>>(val fragment: T)
+    class Builder<T : BaseFragment>(val fragment: T)
     {
         var bundle: Bundle? = null
             private set

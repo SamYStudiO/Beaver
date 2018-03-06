@@ -8,7 +8,7 @@ import net.samystudio.beaver.ui.main.MainActivity
 
 class AuthenticatorActivity : BaseActivity<AuthenticatorActivityViewModel>()
 {
-    override val defaultFragmentClass: Class<out BaseFragment<*>>
+    override val defaultFragmentClass: Class<out BaseFragment>
         get() = AuthenticatorFragment::class.java
     override val defaultFragmentBundle: Bundle?
         get() = null

@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 class MainActivity : BaseActivity<MainActivityViewModel>()
 {
-    override val defaultFragmentClass: Class<out BaseFragment<*>>
+    override val defaultFragmentClass: Class<out BaseFragment>
         get() = HomeFragment::class.java
     override val defaultFragmentBundle: Bundle?
         get() = null

@@ -22,7 +22,7 @@ class OkHttpAppGlideModule : AppGlideModule()
 
     init
     {
-        BeaverApplication.INSTANCE
+        BeaverApplication.instance
             .applicationInjector()
             .glideComponentBuilder().build()
             .inject(this)

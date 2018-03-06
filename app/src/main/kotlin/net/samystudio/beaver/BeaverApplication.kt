@@ -21,7 +21,7 @@ class BeaverApplication : DaggerApplication()
 
     init
     {
-        INSTANCE = this
+        instance = this
     }
 
     override fun onCreate()
@@ -95,6 +95,6 @@ class BeaverApplication : DaggerApplication()
          *
          * @hide
          */
-        lateinit var INSTANCE: BeaverApplication
+        lateinit var instance: BeaverApplication
     }
 }

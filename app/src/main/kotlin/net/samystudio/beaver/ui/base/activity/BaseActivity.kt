@@ -19,12 +19,12 @@ import javax.inject.Inject
 abstract class BaseActivity<VM : BaseActivityViewModel> : DaggerAppCompatActivity(),
                                                           FragmentManager.OnBackStackChangedListener
 {
-    abstract val defaultFragmentClass: Class<out BaseFragment<*>>
+    abstract val defaultFragmentClass: Class<out BaseFragment>
     abstract val defaultFragmentBundle: Bundle?
     @get:LayoutRes
     protected abstract val layoutViewRes: Int
     @Inject
-    protected lateinit var fragmentNavigationManager: FragmentNavigationManager
+    lateinit var fragmentNavigationManager: FragmentNavigationManager
     @Inject
     @field:ActivityLevel
     protected lateinit var viewModelProvider: ViewModelProvider
@@ -71,7 +71,7 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : DaggerAppCompatActivit
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean
     {
-        val currentFragment: BaseFragment<*>? = fragmentNavigationManager.getCurrentFragment()
+        val currentFragment: BaseFragment? = fragmentNavigationManager.getCurrentFragment()
 
         if (currentFragment == null || !currentFragment.willConsumeOptionsItem(item))
         {
@@ -94,7 +94,7 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : DaggerAppCompatActivit
 
     override fun onBackPressed()
     {
-        val currentFragment: BaseFragment<*>? = fragmentNavigationManager.getCurrentFragment()
+        val currentFragment: BaseFragment? = fragmentNavigationManager.getCurrentFragment()
 
         if (currentFragment == null || !currentFragment.onBackPressed())
             super.onBackPressed()
@@ -109,7 +109,7 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : DaggerAppCompatActivit
 
     override fun onBackStackChanged()
     {
-        val currentFragment: BaseFragment<*>? = fragmentNavigationManager.getCurrentFragment()
+        val currentFragment: BaseFragment? = fragmentNavigationManager.getCurrentFragment()
 
         if (currentFragment == null)
             fragmentNavigationManager.startFragment(defaultFragmentClass,

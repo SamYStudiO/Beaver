@@ -3,39 +3,30 @@
 package net.samystudio.beaver.ui.base.fragment
 
 import android.app.Activity
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProvider
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.LayoutRes
+import android.support.v7.app.AppCompatActivity
+import android.support.v7.app.AppCompatDialogFragment
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import com.evernote.android.state.State
-import dagger.android.support.DaggerAppCompatDialogFragment
-import net.samystudio.beaver.di.qualifier.FragmentLevel
-import net.samystudio.beaver.ui.base.activity.BaseActionBarActivity
+import net.samystudio.beaver.R
+import net.samystudio.beaver.ui.base.activity.BaseActivity
 import net.samystudio.beaver.ui.base.dialog.DialogListener
-import net.samystudio.beaver.ui.base.viewmodel.BaseFragmentViewModel
 import net.samystudio.beaver.ui.common.navigation.FragmentNavigationManager
-import javax.inject.Inject
 
-abstract class BaseFragment<VM : BaseFragmentViewModel> : DaggerAppCompatDialogFragment(),
-                                                          DialogInterface.OnShowListener
+abstract class BaseFragment : AppCompatDialogFragment(),
+                              DialogInterface.OnShowListener
 {
     @get:LayoutRes
     protected abstract val layoutViewRes: Int
-    @Inject
-    protected lateinit var fragmentNavigationManager: FragmentNavigationManager
-    @Inject
-    @field:FragmentLevel
-    protected lateinit var viewModelProvider: ViewModelProvider
-    protected abstract val viewModelClass: Class<VM>
-    lateinit var viewModel: VM
+    protected open lateinit var fragmentNavigationManager: FragmentNavigationManager
     protected var viewDestroyed: Boolean = false
-    private var savedInstanceState: Bundle? = null
+    protected var savedInstanceState: Bundle? = null
     @State
     private var resultCode: Int = Activity.RESULT_CANCELED
     @State
@@ -67,47 +58,15 @@ abstract class BaseFragment<VM : BaseFragmentViewModel> : DaggerAppCompatDialogF
     {
         super.onActivityCreated(savedInstanceState)
 
-        viewModel = viewModelProvider.get(viewModelClass)
-        viewModel.titleObservable.observe(this, Observer {
-            if (showsDialog) dialog.setTitle(it)
-            else
-            {
-                if (activity is BaseActionBarActivity<*>)
-                    (activity as BaseActionBarActivity<*>).animatedTitle = it
-                else
-                    activity?.title = it
-            }
-        })
-        viewModel.resultObservable.observe(this, Observer {
-            it?.let {
-                setResult(it.code, it.intent)
-                if (it.finish)
-                    finish()
-            }
-        })
+        if (!::fragmentNavigationManager.isInitialized)
+        {
+            fragmentNavigationManager = (activity as? BaseActivity<*>)?.fragmentNavigationManager ?:
+                    FragmentNavigationManager(activity as AppCompatActivity,
+                                              fragmentManager!!,
+                                              R.id.fragment_container)
+        }
 
         if (showsDialog) dialog.setOnShowListener(this)
-
-        onViewModelCreated(savedInstanceState)
-    }
-
-    protected open fun onViewModelCreated(savedInstanceState: Bundle?)
-    {
-    }
-
-    override fun onResume()
-    {
-        super.onResume()
-
-        viewModel.handleState(activity!!.intent, savedInstanceState, arguments)
-        viewModel.handleReady()
-    }
-
-    override fun onSaveInstanceState(outState: Bundle)
-    {
-        super.onSaveInstanceState(outState)
-
-        viewModel.handleSaveInstanceState(outState)
     }
 
     open fun onBackPressed(): Boolean
@@ -128,11 +87,6 @@ abstract class BaseFragment<VM : BaseFragmentViewModel> : DaggerAppCompatDialogF
     open fun willConsumeOptionsItem(item: MenuItem): Boolean
     {
         return false
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
-    {
-        viewModel.handleActivityResult(requestCode, requestCode, data)
     }
 
     override fun onShow(dialog: DialogInterface?)

@@ -13,7 +13,7 @@ import net.samystudio.beaver.ext.GlideRequests
 import net.samystudio.beaver.ui.base.viewmodel.FragmentViewModelFactory
 
 @Module
-abstract class BaseFragmentModule
+abstract class BaseDataFragmentModule
 {
     @Binds
     @FragmentScope

@@ -10,11 +10,11 @@ import net.samystudio.beaver.data.remote.HomeApiInterface
 import net.samystudio.beaver.di.key.FragmentViewModelKey
 import net.samystudio.beaver.di.qualifier.FragmentLevel
 import net.samystudio.beaver.di.scope.FragmentScope
-import net.samystudio.beaver.ui.base.fragment.BaseFragmentModule
+import net.samystudio.beaver.ui.base.fragment.BaseDataFragmentModule
 import net.samystudio.beaver.ui.base.viewmodel.BaseFragmentViewModel
 import retrofit2.Retrofit
 
-@Module(includes = [BaseFragmentModule::class])
+@Module(includes = [BaseDataFragmentModule::class])
 abstract class HomeFragmentModule
 {
     @Binds

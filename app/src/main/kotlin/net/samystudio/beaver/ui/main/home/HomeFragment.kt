@@ -6,13 +6,11 @@ import kotlinx.android.synthetic.main.fragment_home.*
 import net.samystudio.beaver.R
 import net.samystudio.beaver.di.qualifier.FragmentLevel
 import net.samystudio.beaver.ext.GlideRequests
-import net.samystudio.beaver.ui.base.fragment.BaseFragment
+import net.samystudio.beaver.ui.base.fragment.BaseDataFragment
 import net.samystudio.beaver.ui.common.dialog.AlertDialog
-import net.samystudio.beaver.ui.common.dialog.AlertDialogListener
 import javax.inject.Inject
 
-class HomeFragment : BaseFragment<HomeFragmentViewModel>(),
-                     AlertDialogListener
+class HomeFragment : BaseDataFragment<HomeFragmentViewModel>()
 {
     override val layoutViewRes: Int
         get() = R.layout.fragment_home

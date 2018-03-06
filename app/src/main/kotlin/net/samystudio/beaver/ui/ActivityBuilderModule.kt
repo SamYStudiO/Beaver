@@ -11,7 +11,6 @@ import net.samystudio.beaver.ui.main.MainActivityModule
 @Module
 abstract class ActivityBuilderModule
 {
-
     @ContributesAndroidInjector(modules = [MainActivityModule::class])
     @ActivityScope
     abstract fun contributeMainActivity(): MainActivity

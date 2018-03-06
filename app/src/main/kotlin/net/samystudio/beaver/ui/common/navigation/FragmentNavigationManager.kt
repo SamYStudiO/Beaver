@@ -33,7 +33,7 @@ constructor(activity: AppCompatActivity,
      * [FragmentNavigationManager] instance. May be null if no request already occurred.
      */
     @Suppress("UNCHECKED_CAST")
-    fun <T : BaseFragment<*>> getCurrentFragment(): T? =
+    fun <T : BaseFragment> getCurrentFragment(): T? =
         fragmentManager.findFragmentById(fragmentContainerViewId) as T?
 
     /**
@@ -41,10 +41,10 @@ constructor(activity: AppCompatActivity,
      *
      * @see BaseFragment.setArguments
      */
-    fun <T : BaseFragment<*>> startFragment(fragment: T,
-                                            bundle: Bundle? = null,
-                                            addToBackStack: Boolean = true,
-                                            forResultRequestCode: Int? = null) =
+    fun <T : BaseFragment> startFragment(fragment: T,
+                                         bundle: Bundle? = null,
+                                         addToBackStack: Boolean = true,
+                                         forResultRequestCode: Int? = null) =
         startFragment(FragmentNavigationRequest.Builder(fragment)
                           .addToBackStack(addToBackStack)
                           .bundle(bundle)
@@ -55,10 +55,10 @@ constructor(activity: AppCompatActivity,
      *
      * @see BaseFragment.setArguments
      */
-    fun <T : BaseFragment<*>> startFragment(fragmentClass: Class<T>,
-                                            bundle: Bundle? = null,
-                                            addToBackStack: Boolean = true,
-                                            forResultRequestCode: Int? = null) =
+    fun <T : BaseFragment> startFragment(fragmentClass: Class<T>,
+                                         bundle: Bundle? = null,
+                                         addToBackStack: Boolean = true,
+                                         forResultRequestCode: Int? = null) =
         startFragment(FragmentNavigationRequest.Builder(context, fragmentClass)
                           .addToBackStack(addToBackStack)
                           .bundle(bundle)
@@ -72,10 +72,10 @@ constructor(activity: AppCompatActivity,
      * @see FragmentNavigationRequest.Builder
      */
     @SuppressLint("CommitTransaction")
-    fun <T : BaseFragment<*>> startFragment(fragmentNavigationRequest: FragmentNavigationRequest<T>,
-                                            forResultRequestCode: Int? = null): FragmentNavigationRequest<T>
+    fun <T : BaseFragment> startFragment(fragmentNavigationRequest: FragmentNavigationRequest<T>,
+                                         forResultRequestCode: Int? = null): FragmentNavigationRequest<T>
     {
-        val currentFragment: BaseFragment<*>? = getCurrentFragment()
+        val currentFragment: BaseFragment? = getCurrentFragment()
 
         if (forResultRequestCode != null && currentFragment != null)
             fragmentNavigationRequest.fragment.setTargetFragment(currentFragment,

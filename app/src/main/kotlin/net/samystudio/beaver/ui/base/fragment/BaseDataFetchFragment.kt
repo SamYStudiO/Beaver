@@ -6,7 +6,7 @@ import android.support.annotation.CallSuper
 import net.samystudio.beaver.ui.base.viewmodel.BaseFragmentViewModel
 import net.samystudio.beaver.ui.base.viewmodel.DataFetchViewModel
 
-abstract class BaseDataFetchFragment<D, VM> : BaseFragment<VM>()
+abstract class BaseDataFetchFragment<D, VM> : BaseDataFragment<VM>()
         where VM : BaseFragmentViewModel, VM : DataFetchViewModel<D>
 {
     @CallSuper

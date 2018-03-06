@@ -13,14 +13,12 @@ import net.samystudio.beaver.ui.base.fragment.BaseFragment
 import java.util.*
 import android.support.v7.app.AlertDialog as AndroidAlertDialog
 
-open class AlertDialog : BaseFragment<AlertDialogViewModel>(),
+open class AlertDialog : BaseFragment(),
                          DialogInterface.OnClickListener,
                          DialogInterface.OnMultiChoiceClickListener
 {
     override val layoutViewRes: Int
         get() = 0
-    override val viewModelClass: Class<AlertDialogViewModel>
-        get() = AlertDialogViewModel::class.java
 
     override fun onCreateDialog(savedInstanceState: Bundle?): AndroidAlertDialog =
         Builder(context!!, arguments?.getParcelable(PARAMS) as? Params).build(this, theme).create()
@@ -335,7 +333,7 @@ open class AlertDialog : BaseFragment<AlertDialogViewModel>(),
          * [AlertDialogListener].
          */
         fun newInstance(builder: Builder,
-                        targetFragment: BaseFragment<*>? = null,
+                        targetFragment: BaseFragment? = null,
                         targetRequestCode: Int = 0): AlertDialog
         {
             val dialog = AlertDialog()
