@@ -1,23 +1,28 @@
+@file:Suppress("ProtectedInFinal")
+
 package net.samystudio.beaver
 
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.util.Base64
-import android.util.Log
-import com.crashlytics.android.Crashlytics
-import com.crashlytics.android.core.CrashlyticsCore
 import dagger.android.support.DaggerApplication
 import io.fabric.sdk.android.Fabric
 import net.samystudio.beaver.di.component.DaggerApplicationComponent
 import timber.log.Timber
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
+import javax.inject.Inject
 
 class BeaverApplication : DaggerApplication()
 {
     private val applicationInjector = DaggerApplicationComponent.builder()
         .application(this)
         .build()
+
+    @Inject
+    protected lateinit var fabric: Fabric
+    @Inject
+    protected lateinit var timberTree: Timber.Tree
 
     init
     {
@@ -28,8 +33,7 @@ class BeaverApplication : DaggerApplication()
     {
         super.onCreate()
 
-        initCrashReport()
-        initLogging()
+        Timber.plant(timberTree)
         logKeyHash()
 
         // Launch screen timeout
@@ -37,25 +41,6 @@ class BeaverApplication : DaggerApplication()
     }
 
     public override fun applicationInjector() = applicationInjector
-
-    private fun initCrashReport()
-    {
-        Fabric.with(this,
-                    Crashlytics.Builder()
-                        .core(CrashlyticsCore.Builder()
-                                  .disabled(BuildConfig.DEBUG)
-                                  .build())
-                        .build())
-    }
-
-    private fun initLogging()
-    {
-        Timber.plant(object : Timber.DebugTree()
-                     {
-                         override fun isLoggable(tag: String?, priority: Int) =
-                             BuildConfig.DEBUG || priority >= Log.INFO
-                     })
-    }
 
     /**
      * App key hash, may be useful with Facebook for example.
