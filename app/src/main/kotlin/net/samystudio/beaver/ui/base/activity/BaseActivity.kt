@@ -10,7 +10,7 @@ import android.os.Bundle
 import android.support.annotation.LayoutRes
 import android.view.MenuItem
 import dagger.android.support.DaggerAppCompatActivity
-import net.samystudio.beaver.di.qualifier.ActivityLevel
+import net.samystudio.beaver.di.qualifier.ActivityContext
 import net.samystudio.beaver.ui.base.fragment.BaseFragment
 import net.samystudio.beaver.ui.base.viewmodel.BaseActivityViewModel
 import net.samystudio.beaver.ui.common.navigation.FragmentNavigationManager
@@ -26,7 +26,7 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : DaggerAppCompatActivit
     @Inject
     lateinit var fragmentNavigationManager: FragmentNavigationManager
     @Inject
-    @field:ActivityLevel
+    @field:ActivityContext
     protected lateinit var viewModelProvider: ViewModelProvider
     protected abstract val viewModelClass: Class<VM>
     lateinit var viewModel: VM

@@ -7,7 +7,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.multibindings.IntoMap
 import net.samystudio.beaver.di.key.ActivityViewModelKey
-import net.samystudio.beaver.di.qualifier.ActivityLevel
+import net.samystudio.beaver.di.qualifier.ActivityContext
 import net.samystudio.beaver.di.scope.ActivityScope
 import net.samystudio.beaver.ext.EmailValidator
 import net.samystudio.beaver.ext.PasswordValidator
@@ -23,7 +23,7 @@ abstract class AuthenticatorActivityModule
 
     @Binds
     @ActivityScope
-    @ActivityLevel
+    @ActivityContext
     abstract fun bindLifecycleOwner(activity: AuthenticatorActivity): LifecycleOwner
 
     @Binds

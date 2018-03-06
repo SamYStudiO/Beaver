@@ -8,7 +8,7 @@ import dagger.Provides
 import dagger.multibindings.IntoMap
 import net.samystudio.beaver.data.remote.HomeApiInterface
 import net.samystudio.beaver.di.key.FragmentViewModelKey
-import net.samystudio.beaver.di.qualifier.FragmentLevel
+import net.samystudio.beaver.di.qualifier.FragmentContext
 import net.samystudio.beaver.di.scope.FragmentScope
 import net.samystudio.beaver.ui.base.fragment.BaseDataFragmentModule
 import net.samystudio.beaver.ui.base.viewmodel.BaseFragmentViewModel
@@ -23,7 +23,7 @@ abstract class HomeFragmentModule
 
     @Binds
     @FragmentScope
-    @FragmentLevel
+    @FragmentContext
     abstract fun bindLifecycleOwner(fragment: HomeFragment): LifecycleOwner
 
     @Binds

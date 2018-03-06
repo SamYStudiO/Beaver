@@ -9,6 +9,10 @@ import dagger.Provides
 import net.samystudio.beaver.di.qualifier.ApplicationContext
 import javax.inject.Singleton
 
+/**
+ * All kind of data provided by Android system.
+ * Mostly singleton retrieved using [android.content.Context.getSystemService].
+ */
 @Module
 object SystemServiceModule
 {

@@ -11,7 +11,6 @@ import dagger.Module
 import dagger.Provides
 import net.samystudio.beaver.R
 import net.samystudio.beaver.di.qualifier.ActivityContext
-import net.samystudio.beaver.di.qualifier.ActivityLevel
 import net.samystudio.beaver.di.qualifier.FragmentContainerViewId
 import net.samystudio.beaver.di.scope.ActivityScope
 import net.samystudio.beaver.ext.GlideApp
@@ -28,7 +27,7 @@ abstract class BaseActivityModule
 
     @Binds
     @ActivityScope
-    @ActivityLevel
+    @ActivityContext
     abstract fun bindViewModelFactory(viewModelFactory: ActivityViewModelFactory): ViewModelProvider.Factory
 
     @Module
@@ -49,16 +48,16 @@ abstract class BaseActivityModule
 
         @Provides
         @ActivityScope
-        @ActivityLevel
+        @ActivityContext
         @JvmStatic
         fun provideViewModelProvider(activity: AppCompatActivity,
-                                     @ActivityLevel
+                                     @ActivityContext
                                      viewModelFactory: ViewModelProvider.Factory): ViewModelProvider =
             ViewModelProviders.of(activity, viewModelFactory)
 
         @Provides
         @ActivityScope
-        @ActivityLevel
+        @ActivityContext
         @JvmStatic
         fun provideGlideRequests(activity: AppCompatActivity): GlideRequests =
             GlideApp.with(activity)

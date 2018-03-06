@@ -4,7 +4,7 @@ import android.arch.lifecycle.Observer
 import android.os.Bundle
 import kotlinx.android.synthetic.main.fragment_home.*
 import net.samystudio.beaver.R
-import net.samystudio.beaver.di.qualifier.FragmentLevel
+import net.samystudio.beaver.di.qualifier.FragmentContext
 import net.samystudio.beaver.ext.GlideRequests
 import net.samystudio.beaver.ui.base.fragment.BaseDataFragment
 import net.samystudio.beaver.ui.common.dialog.AlertDialog
@@ -18,7 +18,7 @@ class HomeFragment : BaseDataFragment<HomeFragmentViewModel>()
         get() = HomeFragmentViewModel::class.java
 
     @Inject
-    @field:FragmentLevel
+    @field:FragmentContext
     protected lateinit var glide: GlideRequests
 
     override fun onViewModelCreated(savedInstanceState: Bundle?)

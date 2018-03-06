@@ -3,7 +3,7 @@ package net.samystudio.beaver.ui.main
 import android.arch.lifecycle.Observer
 import android.os.Bundle
 import net.samystudio.beaver.R
-import net.samystudio.beaver.di.qualifier.ActivityLevel
+import net.samystudio.beaver.di.qualifier.ActivityContext
 import net.samystudio.beaver.ext.GlideRequests
 import net.samystudio.beaver.ui.authenticator.AuthenticatorActivity
 import net.samystudio.beaver.ui.base.activity.BaseActivity
@@ -23,7 +23,7 @@ class MainActivity : BaseActivity<MainActivityViewModel>()
         get() = MainActivityViewModel::class.java
 
     @Inject
-    @field:ActivityLevel
+    @field:ActivityContext
     protected lateinit var glide: GlideRequests
 
     override fun onCreate(savedInstanceState: Bundle?)

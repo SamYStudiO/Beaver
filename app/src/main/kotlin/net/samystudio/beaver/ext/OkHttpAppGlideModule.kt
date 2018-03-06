@@ -1,3 +1,5 @@
+@file:Suppress("ProtectedInFinal")
+
 package net.samystudio.beaver.ext
 
 import android.content.Context
@@ -18,7 +20,7 @@ import javax.inject.Inject
 class OkHttpAppGlideModule : AppGlideModule()
 {
     @Inject
-    lateinit var okHttpUrlLoaderFactory: OkHttpUrlLoader.Factory
+    protected lateinit var okHttpUrlLoaderFactory: OkHttpUrlLoader.Factory
 
     init
     {

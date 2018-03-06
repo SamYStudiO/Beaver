@@ -6,7 +6,7 @@ import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
 import net.samystudio.beaver.di.key.FragmentViewModelKey
-import net.samystudio.beaver.di.qualifier.FragmentLevel
+import net.samystudio.beaver.di.qualifier.FragmentContext
 import net.samystudio.beaver.di.scope.FragmentScope
 import net.samystudio.beaver.ui.base.fragment.BaseDataFragmentModule
 import net.samystudio.beaver.ui.base.viewmodel.BaseFragmentViewModel
@@ -20,7 +20,7 @@ abstract class AuthenticatorFragmentModule
 
     @Binds
     @FragmentScope
-    @FragmentLevel
+    @FragmentContext
     abstract fun bindLifecycleOwner(fragment: AuthenticatorFragment): LifecycleOwner
 
     @Binds

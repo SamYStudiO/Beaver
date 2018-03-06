@@ -5,4 +5,4 @@ import javax.inject.Qualifier
 @Qualifier
 @Retention(AnnotationRetention.RUNTIME)
 @MustBeDocumented
-annotation class ActivityLevel
+annotation class FragmentContext

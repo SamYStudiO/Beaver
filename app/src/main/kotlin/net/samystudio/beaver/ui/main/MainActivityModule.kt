@@ -6,7 +6,7 @@ import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
 import net.samystudio.beaver.di.key.ActivityViewModelKey
-import net.samystudio.beaver.di.qualifier.ActivityLevel
+import net.samystudio.beaver.di.qualifier.ActivityContext
 import net.samystudio.beaver.di.scope.ActivityScope
 import net.samystudio.beaver.ui.base.activity.BaseActivityModule
 import net.samystudio.beaver.ui.base.viewmodel.BaseActivityViewModel
@@ -20,7 +20,7 @@ abstract class MainActivityModule
 
     @Binds
     @ActivityScope
-    @ActivityLevel
+    @ActivityContext
     abstract fun bindLifecycleOwner(activity: MainActivity): LifecycleOwner
 
     @Binds

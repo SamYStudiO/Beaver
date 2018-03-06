@@ -11,7 +11,7 @@ import io.reactivex.schedulers.Schedulers
 import net.samystudio.beaver.BuildConfig
 import net.samystudio.beaver.data.local.SharedPreferencesManager
 import net.samystudio.beaver.data.remote.AuthenticatorApiInterface
-import net.samystudio.beaver.di.qualifier.ApplicationLevel
+import net.samystudio.beaver.di.qualifier.ApplicationContext
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Converter
@@ -48,7 +48,7 @@ object NetworkModule
 
     @Provides
     @Singleton
-    @ApplicationLevel
+    @ApplicationContext
     @JvmStatic
     fun provideOkHttpClient(cache: Cache,
                             httpLoggingInterceptor: HttpLoggingInterceptor,
@@ -156,7 +156,7 @@ object NetworkModule
     @JvmStatic
     fun provideRetrofit(rxJava2CallAdapterFactory: RxJava2CallAdapterFactory,
                         nullOrEmptyConverterFactory: Converter.Factory,
-                        @ApplicationLevel okHttpClient: OkHttpClient,
+                        @ApplicationContext okHttpClient: OkHttpClient,
                         gsonConverterFactory: GsonConverterFactory): Retrofit =
         Retrofit.Builder()
             .addCallAdapterFactory(rxJava2CallAdapterFactory)

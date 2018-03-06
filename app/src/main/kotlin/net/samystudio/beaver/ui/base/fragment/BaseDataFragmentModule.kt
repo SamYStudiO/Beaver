@@ -6,7 +6,7 @@ import android.support.v4.app.Fragment
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
-import net.samystudio.beaver.di.qualifier.FragmentLevel
+import net.samystudio.beaver.di.qualifier.FragmentContext
 import net.samystudio.beaver.di.scope.FragmentScope
 import net.samystudio.beaver.ext.GlideApp
 import net.samystudio.beaver.ext.GlideRequests
@@ -17,7 +17,7 @@ abstract class BaseDataFragmentModule
 {
     @Binds
     @FragmentScope
-    @FragmentLevel
+    @FragmentContext
     abstract fun bindViewModelFactory(viewModelFactory: FragmentViewModelFactory): ViewModelProvider.Factory
 
     @Module
@@ -25,16 +25,16 @@ abstract class BaseDataFragmentModule
     {
         @Provides
         @FragmentScope
-        @FragmentLevel
+        @FragmentContext
         @JvmStatic
         fun provideViewModelProvider(fragment: Fragment,
-                                     @FragmentLevel
+                                     @FragmentContext
                                      viewModelFactory: ViewModelProvider.Factory): ViewModelProvider =
             ViewModelProviders.of(fragment, viewModelFactory)
 
         @Provides
         @FragmentScope
-        @FragmentLevel
+        @FragmentContext
         @JvmStatic
         fun provideGlideRequests(fragment: Fragment): GlideRequests =
             GlideApp.with(fragment)

@@ -14,7 +14,7 @@ import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.HasSupportFragmentInjector
-import net.samystudio.beaver.di.qualifier.FragmentLevel
+import net.samystudio.beaver.di.qualifier.FragmentContext
 import net.samystudio.beaver.ui.base.activity.BaseActionBarActivity
 import net.samystudio.beaver.ui.base.viewmodel.BaseFragmentViewModel
 import net.samystudio.beaver.ui.common.navigation.FragmentNavigationManager
@@ -29,7 +29,7 @@ abstract class BaseDataFragment<VM : BaseFragmentViewModel> : BaseFragment(),
     @Inject
     final override lateinit var fragmentNavigationManager: FragmentNavigationManager
     @Inject
-    @field:FragmentLevel
+    @field:FragmentContext
     protected lateinit var viewModelProvider: ViewModelProvider
     protected abstract val viewModelClass: Class<VM>
     lateinit var viewModel: VM
