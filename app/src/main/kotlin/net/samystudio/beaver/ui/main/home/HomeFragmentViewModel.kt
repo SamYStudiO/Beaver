@@ -4,10 +4,13 @@ import android.accounts.AccountManager
 import android.app.Application
 import android.arch.lifecycle.MutableLiveData
 import io.reactivex.android.schedulers.AndroidSchedulers
+import net.samystudio.beaver.BuildConfig
 import net.samystudio.beaver.data.local.SharedPreferencesManager
 import net.samystudio.beaver.data.model.Home
 import net.samystudio.beaver.data.remote.HomeApiManager
 import net.samystudio.beaver.di.scope.FragmentScope
+import net.samystudio.beaver.ext.getCurrentAccount
+import net.samystudio.beaver.ui.authenticator.AuthenticatorActivity
 import net.samystudio.beaver.ui.base.viewmodel.BaseFragmentViewModel
 import net.samystudio.beaver.ui.main.MainActivityViewModel
 import javax.inject.Inject
@@ -41,5 +44,21 @@ constructor(application: Application,
                            { throwable ->
                                throwable.printStackTrace()
                            })
+    }
+
+    fun invalidateToken()
+    {
+        val account =
+            accountManager.getCurrentAccount(net.samystudio.beaver.BuildConfig.APPLICATION_ID,
+                                             sharedPreferencesManager.accountName)
+
+        if (account != null)
+        {
+            accountManager.invalidateAuthToken(BuildConfig.APPLICATION_ID,
+                                               accountManager.peekAuthToken(account,
+                                                                            AuthenticatorActivity.DEFAULT_AUTH_TOKEN_TYPE))
+
+            accountStatusObservable.value = false
+        }
     }
 }

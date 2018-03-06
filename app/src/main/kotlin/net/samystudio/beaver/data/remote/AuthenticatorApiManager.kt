@@ -9,7 +9,7 @@ class AuthenticatorApiManager
 @Inject constructor(private val authenticatorApiInterface: AuthenticatorApiInterface)
 {
     fun signIn(email: String, password: String): Single<String> =
-        authenticatorApiInterface.signIn(email, password).onErrorReturnItem("valid token")
+        authenticatorApiInterface.signIn(email, password).onErrorReturnItem("toctoctoken")
 
     fun signUp(email: String,
                password: String) =

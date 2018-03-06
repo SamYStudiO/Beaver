@@ -10,7 +10,7 @@ import net.samystudio.beaver.di.qualifier.FragmentLevel
 import net.samystudio.beaver.di.scope.FragmentScope
 import net.samystudio.beaver.ext.GlideApp
 import net.samystudio.beaver.ext.GlideRequests
-import net.samystudio.beaver.ui.common.viewmodel.FragmentViewModelFactory
+import net.samystudio.beaver.ui.base.viewmodel.FragmentViewModelFactory
 
 @Module
 abstract class BaseFragmentModule

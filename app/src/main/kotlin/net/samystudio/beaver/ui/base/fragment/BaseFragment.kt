@@ -2,8 +2,10 @@
 
 package net.samystudio.beaver.ui.base.fragment
 
+import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.LayoutRes
@@ -11,9 +13,11 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import com.evernote.android.state.State
 import dagger.android.support.DaggerAppCompatDialogFragment
 import net.samystudio.beaver.di.qualifier.FragmentLevel
 import net.samystudio.beaver.ui.base.activity.BaseActionBarActivity
+import net.samystudio.beaver.ui.base.dialog.DialogListener
 import net.samystudio.beaver.ui.base.viewmodel.BaseFragmentViewModel
 import net.samystudio.beaver.ui.common.navigation.FragmentNavigationManager
 import javax.inject.Inject
@@ -29,7 +33,12 @@ abstract class BaseFragment<VM : BaseFragmentViewModel> : DaggerAppCompatDialogF
     protected lateinit var viewModelProvider: ViewModelProvider
     protected abstract val viewModelClass: Class<VM>
     lateinit var viewModel: VM
+    protected var viewDestroyed: Boolean = false
     private var savedInstanceState: Bundle? = null
+    @State
+    private var resultCode: Int = Activity.RESULT_CANCELED
+    @State
+    private var resultIntent: Intent? = null
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
@@ -46,16 +55,27 @@ abstract class BaseFragment<VM : BaseFragmentViewModel> : DaggerAppCompatDialogF
         else null
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?)
+    {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewDestroyed = false
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?)
     {
         super.onActivityCreated(savedInstanceState)
 
         viewModel = viewModelProvider.get(viewModelClass)
         viewModel.titleObservable.observe(this, Observer {
-            if (activity is BaseActionBarActivity<*>)
-                (activity as BaseActionBarActivity<*>).animatedTitle = it
+            if (showsDialog) dialog.setTitle(it)
             else
-                activity?.title = it
+            {
+                if (activity is BaseActionBarActivity<*>)
+                    (activity as BaseActionBarActivity<*>).animatedTitle = it
+                else
+                    activity?.title = it
+            }
         })
         viewModel.resultObservable.observe(this, Observer {
             it?.let {
@@ -87,7 +107,7 @@ abstract class BaseFragment<VM : BaseFragmentViewModel> : DaggerAppCompatDialogF
         viewModel.handleSaveInstanceState(outState)
     }
 
-    fun onBackPressed(): Boolean
+    open fun onBackPressed(): Boolean
     {
         return false
     }
@@ -117,19 +137,63 @@ abstract class BaseFragment<VM : BaseFragmentViewModel> : DaggerAppCompatDialogF
      */
     fun setResult(code: Int, intent: Intent?)
     {
-        val currentFragment: BaseFragment<*>? = fragmentNavigationManager.getCurrentFragment()
-        currentFragment?.targetFragment?.onActivityResult(currentFragment.targetRequestCode,
-                                                          code,
-                                                          intent)
+        resultCode = code
+        resultIntent = intent
     }
 
     /**
-     * Same as [android.app.Activity.finish], if fragment is a dialog it will be dismissed otherwise
-     * [android.support.v4.app.FragmentManager] stack will pop.
+     * Same as [android.app.Activity.finish], if [BaseFragment] is a dialog it will be dismissed
+     * otherwise [android.support.v4.app.FragmentManager] stack will pop. Don't use dismiss or
+     * popBackStack manually if you want to trigger result to target [BaseFragment].
      */
     open fun finish()
     {
+        targetFragment?.onActivityResult(targetRequestCode, resultCode, resultIntent)
+
         if (showsDialog) dismiss()
         else fragmentNavigationManager.popBackStack()
+    }
+
+    override fun onDestroy()
+    {
+        super.onDestroy()
+
+        viewDestroyed = true
+    }
+
+    override fun onDismiss(dialog: DialogInterface?)
+    {
+        super.onDismiss(dialog)
+
+        if (!viewDestroyed)
+        {
+            activity?.let {
+                if (it is DialogListener)
+                    it.onDismissDialog(targetRequestCode)
+            }
+
+            targetFragment?.let {
+                if (it is DialogListener)
+                    it.onDismissDialog(targetRequestCode)
+            }
+        }
+    }
+
+    override fun onCancel(dialog: DialogInterface?)
+    {
+        super.onCancel(dialog)
+
+        activity?.let {
+            if (it is DialogListener)
+                it.onCancelDialog(targetRequestCode)
+        }
+
+        targetFragment?.let {
+            if (it is DialogListener)
+                it.onCancelDialog(targetRequestCode)
+        }
+
+        setResult(Activity.RESULT_CANCELED, null)
+        finish()
     }
 }

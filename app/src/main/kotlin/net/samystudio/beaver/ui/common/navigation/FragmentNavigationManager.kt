@@ -12,8 +12,7 @@ import net.samystudio.beaver.ui.base.fragment.BaseFragment
 import javax.inject.Inject
 
 /**
- * Navigation manager for [BaseFragment]. It is strongly recommended to do all fragment request
- * here.
+ * Navigation manager for [BaseFragment]. It is strongly recommended to do all fragment request here.
  */
 @ActivityScope
 class FragmentNavigationManager

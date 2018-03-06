@@ -17,7 +17,7 @@ import net.samystudio.beaver.di.scope.ActivityScope
 import net.samystudio.beaver.di.scope.FragmentScope
 import net.samystudio.beaver.ext.GlideApp
 import net.samystudio.beaver.ext.GlideRequests
-import net.samystudio.beaver.ui.common.viewmodel.ActivityViewModelFactory
+import net.samystudio.beaver.ui.base.viewmodel.ActivityViewModelFactory
 
 @Module
 abstract class BaseActivityModule
