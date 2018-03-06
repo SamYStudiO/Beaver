@@ -10,6 +10,9 @@ import net.samystudio.beaver.BuildConfig
 import net.samystudio.beaver.di.qualifier.ApplicationContext
 import javax.inject.Singleton
 
+/**
+ * https://firebase.google.com/docs/crashlytics/
+ */
 @Module
 object CrashlyticsModule
 {

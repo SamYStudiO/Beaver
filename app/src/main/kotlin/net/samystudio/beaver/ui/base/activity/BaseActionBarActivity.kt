@@ -17,6 +17,11 @@ abstract class BaseActionBarActivity<VM : BaseActivityViewModel> : BaseActivity<
      */
     protected abstract val toolbarTitle: TextView?
 
+    /**
+     * Change title and try to fade in/out if possible.
+     *
+     * @see setTitle
+     */
     var animatedTitle: CharSequence?
         get() = title
         set(value)
@@ -60,8 +65,10 @@ abstract class BaseActionBarActivity<VM : BaseActivityViewModel> : BaseActivity<
             }
         }
 
-    override fun onViewModelCreated(savedInstanceState: Bundle?)
+    override fun onCreate(savedInstanceState: Bundle?)
     {
+        super.onCreate(savedInstanceState)
+
         setSupportActionBar(toolbar)
     }
 

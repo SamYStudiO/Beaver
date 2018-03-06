@@ -1,5 +1,9 @@
 package net.samystudio.beaver.ui.base.dialog
 
+/**
+ * Dialog listener for Dialog events, only activities and fragments will received these events if
+ * they implement this interface, there is no point to implement it with any other object.
+ */
 interface DialogListener
 {
     /**

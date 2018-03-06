@@ -33,7 +33,9 @@ abstract class BaseViewControllerViewModel : BaseViewModel(), OnAccountsUpdateLi
     /**
      * This is called from view onResume, so may be called several time during view lifecycle. You
      * should make sure you've not already consume these parameters otherwise in some circumstance
-     * it could lead to unexpected behaviours.
+     * it could lead to unexpected behaviours (for example a [android.widget.Toast] popping though
+     * it already has been consumed).
+     *
      * [arguments] is always null with activity view models.
      */
     open fun handleState(intent: Intent,

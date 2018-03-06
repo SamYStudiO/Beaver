@@ -4,6 +4,9 @@ import android.app.Activity
 import android.content.ContextWrapper
 import android.view.View
 
+/**
+ * Get [Activity] from a [View], may return null depending of [View] state.
+ */
 val View.activity: Activity?
     get()
     {

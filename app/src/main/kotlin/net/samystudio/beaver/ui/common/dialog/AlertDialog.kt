@@ -13,6 +13,9 @@ import net.samystudio.beaver.ui.base.fragment.BaseFragment
 import java.util.*
 import android.support.v7.app.AlertDialog as AndroidAlertDialog
 
+/**
+ * AlertDialog using [android.support.v4.app.DialogFragment].
+ */
 open class AlertDialog : BaseFragment(),
                          DialogInterface.OnClickListener,
                          DialogInterface.OnMultiChoiceClickListener

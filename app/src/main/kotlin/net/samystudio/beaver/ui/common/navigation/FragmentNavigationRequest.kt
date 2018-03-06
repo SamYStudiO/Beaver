@@ -8,7 +8,6 @@ import android.support.annotation.AnimRes
 import android.support.annotation.AnimatorRes
 import android.support.annotation.StringRes
 import android.support.annotation.StyleRes
-import android.support.v4.app.DialogFragment
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentTransaction
 import android.view.View
@@ -16,8 +15,7 @@ import net.samystudio.beaver.ui.base.fragment.BaseFragment
 import java.util.*
 
 /**
- * Advanced [Fragment] or [DialogFragment] request to use along with
- * [FragmentNavigationManager.startFragment].
+ * Advanced [Fragment] request to use along with [FragmentNavigationManager.startFragment].
  */
 class FragmentNavigationRequest<T : BaseFragment>
 constructor(builder: Builder<T>)

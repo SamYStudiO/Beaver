@@ -22,6 +22,8 @@ constructor() : BaseActivityViewModel()
 
         if (authenticatorResponse == null)
         {
+            // Android system send use a AccountAuthenticatorResponse that we need to fill, so the
+            // account may be created from the system, @see handleFinish()
             authenticatorResponse =
                     intent.getParcelableExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE)
 

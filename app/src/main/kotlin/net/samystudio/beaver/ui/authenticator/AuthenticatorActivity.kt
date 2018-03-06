@@ -6,6 +6,9 @@ import net.samystudio.beaver.ui.base.activity.BaseActivity
 import net.samystudio.beaver.ui.base.fragment.BaseFragment
 import net.samystudio.beaver.ui.main.MainActivity
 
+/**
+ * Activity for sign in/up fragment(s)
+ */
 class AuthenticatorActivity : BaseActivity<AuthenticatorActivityViewModel>()
 {
     override val defaultFragmentClass: Class<out BaseFragment>
@@ -28,6 +31,8 @@ class AuthenticatorActivity : BaseActivity<AuthenticatorActivityViewModel>()
     {
         viewModel.handleFinish()
 
+        // If we come for example from Android "Users & accounts" settings we may have no
+        // MainActivity running so we may need to start it.
         if (isTaskRoot) fragmentNavigationManager.startActivity(MainActivity::class.java)
 
         super.finish()

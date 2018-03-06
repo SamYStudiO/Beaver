@@ -28,7 +28,10 @@ class MainActivity : BaseActivity<MainActivityViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
+        // We set launch screen theme from manifest, we need to get back to our Theme to remove
+        // launch screen.
         setTheme(R.style.AppTheme)
+
         super.onCreate(savedInstanceState)
     }
 
