@@ -13,7 +13,7 @@ class AuthenticatorActivity : BaseActivity<AuthenticatorActivityViewModel>()
     override val defaultFragmentBundle: Bundle?
         get() = null
     override val layoutViewRes: Int
-        get() = R.layout.activity_account_authenticator
+        get() = R.layout.activity_authenticator
     override val viewModelClass: Class<AuthenticatorActivityViewModel>
         get() = AuthenticatorActivityViewModel::class.java
 
