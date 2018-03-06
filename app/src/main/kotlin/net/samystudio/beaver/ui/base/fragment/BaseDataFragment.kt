@@ -45,11 +45,17 @@ abstract class BaseDataFragment<VM : BaseFragmentViewModel> : BaseFragment(),
         super.onAttach(context)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?)
+    override fun onCreate(savedInstanceState: Bundle?)
     {
-        super.onActivityCreated(savedInstanceState)
+        super.onCreate(savedInstanceState)
 
         viewModel = viewModelProvider.get(viewModelClass)
+        viewModel.handleCreate()
+        onViewModelCreated(savedInstanceState)
+    }
+
+    protected open fun onViewModelCreated(savedInstanceState: Bundle?)
+    {
         viewModel.titleObservable.observe(this, Observer {
             if (showsDialog) dialog.setTitle(it)
             else
@@ -67,12 +73,6 @@ abstract class BaseDataFragment<VM : BaseFragmentViewModel> : BaseFragment(),
                     finish()
             }
         })
-
-        onViewModelCreated(savedInstanceState)
-    }
-
-    protected open fun onViewModelCreated(savedInstanceState: Bundle?)
-    {
     }
 
     override fun onResume()

@@ -5,7 +5,6 @@ package net.samystudio.beaver.ui.base.viewmodel
 import android.accounts.Account
 import android.accounts.AccountManager
 import android.accounts.OnAccountsUpdateListener
-import android.app.Application
 import android.arch.lifecycle.MutableLiveData
 import android.content.Intent
 import android.os.Bundle
@@ -14,28 +13,28 @@ import net.samystudio.beaver.BuildConfig
 import net.samystudio.beaver.data.local.SharedPreferencesManager
 import net.samystudio.beaver.ext.getCurrentAccount
 import net.samystudio.beaver.ui.authenticator.AuthenticatorActivity
-import timber.log.Timber
+import javax.inject.Inject
 
-abstract class BaseViewControllerViewModel
-constructor(application: Application,
-            val accountManager: AccountManager,
-            val sharedPreferencesManager: SharedPreferencesManager) : BaseViewModel(application),
-                                                                      OnAccountsUpdateListener
+abstract class BaseViewControllerViewModel : BaseViewModel(), OnAccountsUpdateListener
 {
+    @Inject
+    protected lateinit var accountManager: AccountManager
+    @Inject
+    protected lateinit var sharedPreferencesManager: SharedPreferencesManager
     val resultObservable: MutableLiveData<Result> = MutableLiveData()
     val accountStatusObservable: MutableLiveData<Boolean> = MutableLiveData()
 
-    init
+    @CallSuper
+    open fun handleCreate()
     {
-        @Suppress("LeakingThis")
         accountManager.addOnAccountsUpdatedListener(this, null, true)
     }
 
     /**
-     * This is called from view onResume, so may be called several time during view lifecycle. You should
-     * make sure you've not already consume these parameters, in some circumstance it could lead to
-     * unexpected behaviours.
-     * arguments is always null with activity view models.
+     * This is called from view onResume, so may be called several time during view lifecycle. You
+     * should make sure you've not already consume these parameters otherwise in some circumstance
+     * it could lead to unexpected behaviours.
+     * [arguments] is always null with activity view models.
      */
     open fun handleState(intent: Intent,
                          savedInstanceState: Bundle?,
@@ -43,10 +42,13 @@ constructor(application: Application,
     {
     }
 
+    /**
+     * View model is up and ready, all kind of params (intent, savedInstanceState, arguments) should
+     * be handle now. Called right after [handleState]
+     */
     @CallSuper
     open fun handleReady()
     {
-        Timber.d("handleReady: ")
     }
 
     open fun handleActivityResult(requestCode: Int, resultCode: Int, data: Intent?)

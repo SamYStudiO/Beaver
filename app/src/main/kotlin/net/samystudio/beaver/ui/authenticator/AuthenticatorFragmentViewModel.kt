@@ -3,11 +3,9 @@ package net.samystudio.beaver.ui.authenticator
 import android.accounts.Account
 import android.accounts.AccountManager
 import android.app.Activity
-import android.app.Application
 import android.os.Bundle
 import io.reactivex.android.schedulers.AndroidSchedulers
 import net.samystudio.beaver.BuildConfig
-import net.samystudio.beaver.data.local.SharedPreferencesManager
 import net.samystudio.beaver.data.remote.AuthenticatorApiManager
 import net.samystudio.beaver.di.scope.FragmentScope
 import net.samystudio.beaver.ext.getCurrentAccount
@@ -18,12 +16,9 @@ import javax.inject.Inject
 @FragmentScope
 class AuthenticatorFragmentViewModel
 @Inject
-constructor(application: Application,
-            accountManager: AccountManager,
-            sharedPreferencesManager: SharedPreferencesManager,
-            activityViewModel: AuthenticatorActivityViewModel,
+constructor(activityViewModel: AuthenticatorActivityViewModel,
             private val authenticatorApiManager: AuthenticatorApiManager) :
-    BaseFragmentViewModel(application, accountManager, sharedPreferencesManager, activityViewModel)
+    BaseFragmentViewModel(activityViewModel)
 {
     override val defaultTitle: String?
         get() = "account"

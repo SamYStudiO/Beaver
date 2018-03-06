@@ -2,6 +2,7 @@ package net.samystudio.beaver.ui.main.home
 
 import android.arch.lifecycle.Observer
 import android.os.Bundle
+import android.view.View
 import kotlinx.android.synthetic.main.fragment_home.*
 import net.samystudio.beaver.R
 import net.samystudio.beaver.di.qualifier.FragmentContext
@@ -27,6 +28,11 @@ class HomeFragment : BaseDataFragment<HomeFragmentViewModel>()
             if (home != null)
                 data.text = home.data
         })
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?)
+    {
+        super.onViewCreated(view, savedInstanceState)
 
         invalidate.setOnClickListener({
 

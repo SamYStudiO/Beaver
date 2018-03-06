@@ -2,10 +2,8 @@ package net.samystudio.beaver.ui.authenticator
 
 import android.accounts.AccountAuthenticatorResponse
 import android.accounts.AccountManager
-import android.app.Application
 import android.content.Intent
 import android.os.Bundle
-import net.samystudio.beaver.data.local.SharedPreferencesManager
 import net.samystudio.beaver.di.scope.ActivityScope
 import net.samystudio.beaver.ui.base.viewmodel.BaseActivityViewModel
 import javax.inject.Inject
@@ -13,10 +11,7 @@ import javax.inject.Inject
 @ActivityScope
 class AuthenticatorActivityViewModel
 @Inject
-constructor(application: Application,
-            accountManager: AccountManager,
-            sharedPreferencesManager: SharedPreferencesManager) :
-    BaseActivityViewModel(application, accountManager, sharedPreferencesManager)
+constructor() : BaseActivityViewModel()
 {
     private var authenticatorResponse: AccountAuthenticatorResponse? = null
     private var resultBundle: Bundle? = null

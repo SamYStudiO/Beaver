@@ -7,6 +7,7 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
 import android.content.Intent
 import android.os.Bundle
+import android.support.annotation.CallSuper
 import android.support.annotation.LayoutRes
 import android.view.MenuItem
 import dagger.android.support.DaggerAppCompatActivity
@@ -36,8 +37,18 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : DaggerAppCompatActivit
     {
         super.onCreate(savedInstanceState)
 
+        setContentView(layoutViewRes)
+        fragmentManager.addOnBackStackChangedListener(this)
         this.savedInstanceState = savedInstanceState
+
         viewModel = viewModelProvider.get(viewModelClass)
+        viewModel.handleCreate()
+        onViewModelCreated(savedInstanceState)
+    }
+
+    @CallSuper
+    protected open fun onViewModelCreated(savedInstanceState: Bundle?)
+    {
         viewModel.resultObservable.observe(this, Observer {
             it?.let {
                 setResult(it.code, it.intent)
@@ -45,13 +56,6 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : DaggerAppCompatActivit
                     finish()
             }
         })
-        setContentView(layoutViewRes)
-        fragmentManager.addOnBackStackChangedListener(this)
-        onViewModelCreated(savedInstanceState)
-    }
-
-    protected open fun onViewModelCreated(savedInstanceState: Bundle?)
-    {
     }
 
     override fun onNewIntent(intent: Intent)
