@@ -9,9 +9,10 @@ import net.samystudio.beaver.di.qualifier.FragmentContext
 import net.samystudio.beaver.ext.GlideRequests
 import net.samystudio.beaver.ui.base.fragment.BaseDataFragment
 import net.samystudio.beaver.ui.common.dialog.AlertDialog
+import net.samystudio.beaver.ui.common.dialog.AlertDialogListener
 import javax.inject.Inject
 
-class HomeFragment : BaseDataFragment<HomeFragmentViewModel>()
+class HomeFragment : BaseDataFragment<HomeFragmentViewModel>(), AlertDialogListener
 {
     override val layoutViewRes: Int
         get() = R.layout.fragment_home
@@ -38,7 +39,7 @@ class HomeFragment : BaseDataFragment<HomeFragmentViewModel>()
 
                                           AlertDialog.newInstance(AlertDialog.Builder(context!!)
                                                                       .title("title")
-                                                                      .message("message")
+                                                                      .items(R.array.api_urls)
                                                                       .positiveButton("ok"),
                                                                   this, 11)
                                               .showNow(fragmentManager,

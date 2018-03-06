@@ -1,4 +1,4 @@
-@file:Suppress("ProtectedInFinal")
+@file:Suppress("ProtectedInFinal", "unused")
 
 package net.samystudio.beaver
 

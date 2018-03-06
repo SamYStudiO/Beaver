@@ -86,6 +86,11 @@ open class AlertDialog : BaseFragment(),
                 positiveButton = params.positiveButtonText
                 negativeButton = params.negativeButtonText
                 neutralButtonText = params.neutralButtonText
+                items = params.items
+                checkedItem = params.checkedItem
+                checkedItems = params.checkedItems
+                multiChoice = params.multiChoice
+                singleChoice = params.singleChoice
                 cancelable = params.cancelable
             }
         }
@@ -272,7 +277,7 @@ open class AlertDialog : BaseFragment(),
                       val negativeButtonText: CharSequence?,
                       val neutralButtonText: CharSequence?,
                       val items: Array<CharSequence>?,
-                      val checkedItem: Int?,
+                      val checkedItem: Int,
                       val checkedItems: BooleanArray?,
                       val multiChoice: Boolean,
                       val singleChoice: Boolean,
@@ -312,7 +317,7 @@ open class AlertDialog : BaseFragment(),
             result = 31 * result + (negativeButtonText?.hashCode() ?: 0)
             result = 31 * result + (neutralButtonText?.hashCode() ?: 0)
             result = 31 * result + (items?.let { Arrays.hashCode(it) } ?: 0)
-            result = 31 * result + (checkedItem ?: 0)
+            result = 31 * result + checkedItem
             result = 31 * result + (checkedItems?.let { Arrays.hashCode(it) } ?: 0)
             result = 31 * result + multiChoice.hashCode()
             result = 31 * result + singleChoice.hashCode()
