@@ -6,10 +6,11 @@ import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import net.samystudio.beaver.BeaverApplication
+import net.samystudio.beaver.di.component.GlideComponent
 import net.samystudio.beaver.di.qualifier.ApplicationContext
 import javax.inject.Singleton
 
-@Module
+@Module(subcomponents = [GlideComponent::class])
 abstract class ApplicationModule
 {
     @Binds

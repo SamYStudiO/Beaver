@@ -109,6 +109,8 @@ open class AlertDialog : BaseFragment<AlertDialogViewModel>(),
         private var cancelable: Boolean = true
 
         /**
+         * If not set [AlertDialog.getTheme] will be used
+         *
          * @see [AndroidAlertDialog.Builder.mTheme]
          */
         fun theme(@StyleRes themeResId: Int) = apply { this.themeResId = themeResId }

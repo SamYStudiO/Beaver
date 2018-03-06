@@ -3,10 +3,13 @@ package net.samystudio.beaver.ui.main
 import android.arch.lifecycle.Observer
 import android.os.Bundle
 import net.samystudio.beaver.R
+import net.samystudio.beaver.di.qualifier.ActivityLevel
+import net.samystudio.beaver.ext.GlideRequests
 import net.samystudio.beaver.ui.authenticator.AuthenticatorActivity
 import net.samystudio.beaver.ui.base.activity.BaseActivity
 import net.samystudio.beaver.ui.base.fragment.BaseFragment
 import net.samystudio.beaver.ui.main.home.HomeFragment
+import javax.inject.Inject
 
 class MainActivity : BaseActivity<MainActivityViewModel>()
 {
@@ -18,6 +21,10 @@ class MainActivity : BaseActivity<MainActivityViewModel>()
         get() = R.layout.activity_main
     override val viewModelClass: Class<MainActivityViewModel>
         get() = MainActivityViewModel::class.java
+
+    @Inject
+    @field:ActivityLevel
+    protected lateinit var glide: GlideRequests
 
     override fun onCreate(savedInstanceState: Bundle?)
     {

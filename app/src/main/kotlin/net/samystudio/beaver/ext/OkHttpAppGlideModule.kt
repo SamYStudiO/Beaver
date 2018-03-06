@@ -9,7 +9,7 @@ import com.bumptech.glide.integration.okhttp3.OkHttpLibraryGlideModule
 import com.bumptech.glide.integration.okhttp3.OkHttpUrlLoader
 import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.module.AppGlideModule
-import net.samystudio.beaver.di.component.DaggerGlideComponent
+import net.samystudio.beaver.BeaverApplication
 import java.io.InputStream
 import javax.inject.Inject
 
@@ -22,7 +22,10 @@ class OkHttpAppGlideModule : AppGlideModule()
 
     init
     {
-        DaggerGlideComponent.create().inject(this)
+        BeaverApplication.INSTANCE
+            .applicationInjector()
+            .glideComponentBuilder().build()
+            .inject(this)
     }
 
     override fun isManifestParsingEnabled() = false

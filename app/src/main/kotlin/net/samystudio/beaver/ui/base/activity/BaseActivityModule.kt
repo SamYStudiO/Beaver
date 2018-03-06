@@ -14,7 +14,6 @@ import net.samystudio.beaver.di.qualifier.ActivityContext
 import net.samystudio.beaver.di.qualifier.ActivityLevel
 import net.samystudio.beaver.di.qualifier.FragmentContainerViewId
 import net.samystudio.beaver.di.scope.ActivityScope
-import net.samystudio.beaver.di.scope.FragmentScope
 import net.samystudio.beaver.ext.GlideApp
 import net.samystudio.beaver.ext.GlideRequests
 import net.samystudio.beaver.ui.base.viewmodel.ActivityViewModelFactory
@@ -58,7 +57,7 @@ abstract class BaseActivityModule
             ViewModelProviders.of(activity, viewModelFactory)
 
         @Provides
-        @FragmentScope
+        @ActivityScope
         @ActivityLevel
         @JvmStatic
         fun provideGlideRequests(activity: AppCompatActivity): GlideRequests =
