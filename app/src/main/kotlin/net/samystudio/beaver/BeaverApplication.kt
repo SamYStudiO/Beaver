@@ -36,7 +36,8 @@ class BeaverApplication : DaggerApplication()
         Timber.plant(timberTree)
         logKeyHash()
 
-        // Launch screen timeout
+        // Launch screen timeout, this is not material guideline compliant but client is king and
+        // most want it displayed longer ^^
         Thread.sleep(1000)
     }
 

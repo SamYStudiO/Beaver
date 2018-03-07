@@ -4,7 +4,6 @@ import android.arch.lifecycle.MutableLiveData
 import io.reactivex.android.schedulers.AndroidSchedulers
 import net.samystudio.beaver.BuildConfig
 import net.samystudio.beaver.data.model.Home
-import net.samystudio.beaver.data.remote.HomeApiManager
 import net.samystudio.beaver.di.scope.FragmentScope
 import net.samystudio.beaver.ext.getCurrentAccount
 import net.samystudio.beaver.ui.authenticator.AuthenticatorActivity
@@ -19,7 +18,7 @@ constructor(activityViewModel: MainActivityViewModel,
             private val homeApiManager: HomeApiManager) :
     BaseFragmentViewModel(activityViewModel)
 {
-    override val defaultTitle: String?
+    override val title: String?
         get() = "home"
 
     val homeObservable: MutableLiveData<Home> = MutableLiveData()
@@ -52,7 +51,7 @@ constructor(activityViewModel: MainActivityViewModel,
                                                accountManager.peekAuthToken(account,
                                                                             AuthenticatorActivity.DEFAULT_AUTH_TOKEN_TYPE))
 
-            accountStatusObservable.value = false
+            _accountStatusObservable.value = false
         }
     }
 }

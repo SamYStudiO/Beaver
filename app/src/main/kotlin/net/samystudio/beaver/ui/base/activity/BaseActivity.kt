@@ -32,6 +32,9 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : DaggerAppCompatActivit
     protected abstract val viewModelClass: Class<VM>
     lateinit var viewModel: VM
     private var savedInstanceState: Bundle? = null
+    private var requestCode: Int? = null
+    private var resultCode: Int? = null
+    private var resultData: Intent? = null
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
@@ -49,6 +52,7 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : DaggerAppCompatActivit
     @CallSuper
     protected open fun onViewModelCreated(savedInstanceState: Bundle?)
     {
+        viewModel.titleObservable.observe(this, Observer { it -> title = it })
         viewModel.resultObservable.observe(this, Observer {
             it?.let {
                 setResult(it.code, it.intent)
@@ -69,14 +73,16 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : DaggerAppCompatActivit
     {
         super.onActivityResult(requestCode, resultCode, data)
 
-        viewModel.handleActivityResult(requestCode, resultCode, data)
+        this.requestCode = requestCode
+        this.resultCode = resultCode
+        this.resultData = data
     }
 
     override fun onResume()
     {
         super.onResume()
 
-        viewModel.handleState(intent, savedInstanceState)
+        viewModel.handleState(intent, savedInstanceState, requestCode, resultCode, resultData)
         viewModel.handleReady()
     }
 

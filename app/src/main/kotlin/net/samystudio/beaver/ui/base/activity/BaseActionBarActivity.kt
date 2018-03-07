@@ -17,59 +17,54 @@ abstract class BaseActionBarActivity<VM : BaseActivityViewModel> : BaseActivity<
      */
     protected abstract val toolbarTitle: TextView?
 
-    /**
-     * Change title and try to fade in/out if possible.
-     *
-     * @see setTitle
-     */
-    var animatedTitle: CharSequence?
-        get() = title
-        set(value)
-        {
-            title = value
-            toolbarTitle?.let {
-
-                if (it.text == title) return
-
-                it.animate().cancel()
-
-                if (title.isNullOrBlank())
-                {
-                    hideTitle()?.setListener(object : AnimatorListenerAdapter()
-                                             {
-                                                 override fun onAnimationEnd(animation: Animator?)
-                                                 {
-                                                     it.text = ""
-                                                 }
-                                             })
-                }
-                else
-                {
-                    if (it.text.isNullOrBlank())
-                    {
-                        it.text = title
-                        showTitle()
-                    }
-                    else
-                    {
-                        hideTitle()?.setListener(object : AnimatorListenerAdapter()
-                                                 {
-                                                     override fun onAnimationEnd(animation: Animator?)
-                                                     {
-                                                         it.text = title
-                                                         showTitle()
-                                                     }
-                                                 })
-                    }
-                }
-            }
-        }
-
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
 
         setSupportActionBar(toolbar)
+    }
+
+    override fun setTitle(title: CharSequence?)
+    {
+        super.setTitle(title)
+
+        // try to fade in/out title if possible
+        toolbarTitle?.let {
+
+            if (it.text == title) return
+
+            it.animate().cancel()
+
+            if (title.isNullOrBlank())
+            {
+                hideTitle()?.setListener(object : AnimatorListenerAdapter()
+                                         {
+                                             override fun onAnimationEnd(animation: Animator?)
+                                             {
+                                                 it.text = ""
+                                             }
+                                         })
+            }
+            else
+            {
+                if (it.text.isNullOrBlank())
+                {
+                    it.text = title
+                    showTitle()
+                }
+                else
+                {
+                    hideTitle()?.setListener(object : AnimatorListenerAdapter()
+                                             {
+                                                 override fun onAnimationEnd(animation: Animator?)
+                                                 {
+                                                     it.text = title
+                                                     showTitle()
+                                                 }
+                                             })
+                }
+            }
+        }
     }
 
     private fun showTitle() =
