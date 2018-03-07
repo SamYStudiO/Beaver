@@ -75,6 +75,12 @@ abstract class BaseDataFragment<VM : BaseFragmentViewModel> : BaseFragment(),
         })
     }
 
+    @CallSuper
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
+    {
+        viewModel.handleActivityResult(requestCode, requestCode, data)
+    }
+
     override fun onResume()
     {
         super.onResume()
@@ -88,11 +94,5 @@ abstract class BaseDataFragment<VM : BaseFragmentViewModel> : BaseFragment(),
         super.onSaveInstanceState(outState)
 
         viewModel.handleSaveInstanceState(outState)
-    }
-
-    @CallSuper
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
-    {
-        viewModel.handleActivityResult(requestCode, requestCode, data)
     }
 }

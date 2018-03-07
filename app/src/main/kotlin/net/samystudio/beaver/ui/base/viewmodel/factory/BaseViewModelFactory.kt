@@ -1,4 +1,4 @@
-package net.samystudio.beaver.ui.base.viewmodel
+package net.samystudio.beaver.ui.base.viewmodel.factory
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider

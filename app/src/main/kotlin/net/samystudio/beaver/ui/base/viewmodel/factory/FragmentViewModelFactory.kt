@@ -3,7 +3,6 @@ package net.samystudio.beaver.ui.base.viewmodel.factory
 import android.arch.lifecycle.ViewModel
 import net.samystudio.beaver.di.scope.FragmentScope
 import net.samystudio.beaver.ui.base.viewmodel.BaseFragmentViewModel
-import net.samystudio.beaver.ui.base.viewmodel.BaseViewModelFactory
 import javax.inject.Inject
 import javax.inject.Provider
 

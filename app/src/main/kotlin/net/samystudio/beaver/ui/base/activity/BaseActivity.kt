@@ -65,6 +65,13 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : DaggerAppCompatActivit
         setIntent(intent)
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
+    {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        viewModel.handleActivityResult(requestCode, resultCode, data)
+    }
+
     override fun onResume()
     {
         super.onResume()
@@ -102,13 +109,6 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : DaggerAppCompatActivit
 
         if (currentFragment == null || !currentFragment.onBackPressed())
             super.onBackPressed()
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
-    {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        viewModel.handleActivityResult(requestCode, resultCode, data)
     }
 
     override fun onBackStackChanged()
