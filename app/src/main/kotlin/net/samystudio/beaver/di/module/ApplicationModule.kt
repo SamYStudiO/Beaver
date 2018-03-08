@@ -16,7 +16,8 @@ import javax.inject.Singleton
 @Module(subcomponents = [GlideComponent::class],
         includes = [CrashlyticsModule::class, TimberModule::class,
             AndroidSupportInjectionModule::class, ActivityBuilderModule::class,
-            ServiceBuilderModule::class, SystemServiceModule::class, NetworkModule::class])
+            ServiceBuilderModule::class, SystemServiceModule::class, NetworkModule::class,
+            FirebaseModule::class])
 abstract class ApplicationModule
 {
     @Binds

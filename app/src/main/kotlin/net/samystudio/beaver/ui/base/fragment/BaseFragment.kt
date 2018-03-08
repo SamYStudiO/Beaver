@@ -14,14 +14,18 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import com.evernote.android.state.State
+import com.google.firebase.analytics.FirebaseAnalytics
 import net.samystudio.beaver.R
 import net.samystudio.beaver.ui.base.activity.BaseActivity
 import net.samystudio.beaver.ui.base.dialog.DialogListener
 import net.samystudio.beaver.ui.common.navigation.FragmentNavigationManager
+import javax.inject.Inject
 
 abstract class BaseFragment : AppCompatDialogFragment(),
                               DialogInterface.OnShowListener
 {
+    @Inject
+    protected lateinit var firebaseAnalytics: FirebaseAnalytics
     @get:LayoutRes
     protected abstract val layoutViewRes: Int
     protected open lateinit var fragmentNavigationManager: FragmentNavigationManager
@@ -67,6 +71,13 @@ abstract class BaseFragment : AppCompatDialogFragment(),
         }
 
         if (showsDialog) dialog.setOnShowListener(this)
+    }
+
+    override fun onResume()
+    {
+        super.onResume()
+
+        firebaseAnalytics.setCurrentScreen(activity!!, javaClass.simpleName, javaClass.simpleName)
     }
 
     open fun onBackPressed(): Boolean

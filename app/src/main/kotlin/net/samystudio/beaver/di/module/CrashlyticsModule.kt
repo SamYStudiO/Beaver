@@ -33,7 +33,6 @@ object CrashlyticsModule
     @Provides
     @Singleton
     @JvmStatic
-    fun provideFabric(@ApplicationContext
-                      context: Context, crashlytics: Crashlytics): Fabric =
+    fun provideFabric(@ApplicationContext context: Context, crashlytics: Crashlytics): Fabric =
         Fabric.with(context, crashlytics)
 }
