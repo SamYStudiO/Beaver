@@ -30,18 +30,10 @@ abstract class BaseFragment : AppCompatDialogFragment(),
     protected abstract val layoutViewRes: Int
     protected open lateinit var fragmentNavigationManager: FragmentNavigationManager
     protected var viewDestroyed: Boolean = false
-    protected var savedInstanceState: Bundle? = null
     @State
     private var resultCode: Int = Activity.RESULT_CANCELED
     @State
     private var resultIntent: Intent? = null
-
-    override fun onCreate(savedInstanceState: Bundle?)
-    {
-        super.onCreate(savedInstanceState)
-
-        this.savedInstanceState = savedInstanceState
-    }
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,

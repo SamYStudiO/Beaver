@@ -16,9 +16,13 @@ constructor() : BaseActivityViewModel()
     private var authenticatorResponse: AccountAuthenticatorResponse? = null
     private var resultBundle: Bundle? = null
 
-    override fun handleState(intent: Intent, savedInstanceState: Bundle?, arguments: Bundle?)
+    override fun handleState(intent: Intent,
+                             savedInstanceState: Bundle?,
+                             requestCode: Int?,
+                             resultCode: Int?,
+                             data: Intent?)
     {
-        super.handleState(intent, savedInstanceState, arguments)
+        super.handleState(intent, savedInstanceState, requestCode, resultCode, data)
 
         if (authenticatorResponse == null)
         {

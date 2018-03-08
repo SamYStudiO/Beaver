@@ -6,7 +6,6 @@ import android.app.Activity
 import android.os.Bundle
 import io.reactivex.android.schedulers.AndroidSchedulers
 import net.samystudio.beaver.BuildConfig
-import net.samystudio.beaver.data.remote.AuthenticatorApiManager
 import net.samystudio.beaver.di.scope.FragmentScope
 import net.samystudio.beaver.ext.getCurrentAccount
 import net.samystudio.beaver.ext.invalidateCurrentAuthToken
@@ -20,7 +19,7 @@ constructor(activityViewModel: AuthenticatorActivityViewModel,
             private val authenticatorApiManager: AuthenticatorApiManager) :
     BaseFragmentViewModel(activityViewModel)
 {
-    override val defaultTitle: String?
+    override val title: String?
         get() = "account"
 
     fun signIn(email: String, password: String)
