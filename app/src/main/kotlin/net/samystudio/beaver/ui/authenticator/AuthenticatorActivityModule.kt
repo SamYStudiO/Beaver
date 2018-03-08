@@ -1,13 +1,11 @@
 package net.samystudio.beaver.ui.authenticator
 
-import android.arch.lifecycle.LifecycleOwner
 import android.support.v7.app.AppCompatActivity
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.multibindings.IntoMap
 import net.samystudio.beaver.di.key.ActivityViewModelKey
-import net.samystudio.beaver.di.qualifier.ActivityContext
 import net.samystudio.beaver.di.scope.ActivityScope
 import net.samystudio.beaver.ext.EmailValidator
 import net.samystudio.beaver.ext.PasswordValidator
@@ -20,11 +18,6 @@ abstract class AuthenticatorActivityModule
     @Binds
     @ActivityScope
     abstract fun bindActivity(activity: AuthenticatorActivity): AppCompatActivity
-
-    @Binds
-    @ActivityScope
-    @ActivityContext
-    abstract fun bindLifecycleOwner(activity: AuthenticatorActivity): LifecycleOwner
 
     @Binds
     @IntoMap

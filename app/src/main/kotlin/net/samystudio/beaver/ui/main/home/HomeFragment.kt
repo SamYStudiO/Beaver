@@ -45,7 +45,7 @@ class HomeFragment : BaseDataFragment<HomeFragmentViewModel>(), AlertDialogListe
                                               .showNow(fragmentManager,
                                                        AlertDialog::class.java.name)
 
-                                          //viewModel.invalidateToken()
+                                          //viewModel.invalidate()
                                       })
     }
 }

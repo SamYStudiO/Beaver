@@ -37,12 +37,4 @@ class AuthenticatorActivity : BaseActivity<AuthenticatorActivityViewModel>()
 
         super.finish()
     }
-
-    // Would be great in AccountManager extension but can't add companion in extension for now
-    companion object
-    {
-        const val KEY_AUTH_TOKEN_TYPE = "authTokenType"
-        const val KEY_FEATURES = "features"
-        const val DEFAULT_AUTH_TOKEN_TYPE = "defaultAuthTokenType"
-    }
 }

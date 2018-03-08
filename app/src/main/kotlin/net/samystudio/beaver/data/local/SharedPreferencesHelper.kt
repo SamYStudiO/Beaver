@@ -10,7 +10,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class SharedPreferencesManager
+class SharedPreferencesHelper
 @Inject
 constructor(@param:ApplicationContext
             private val context: Context,

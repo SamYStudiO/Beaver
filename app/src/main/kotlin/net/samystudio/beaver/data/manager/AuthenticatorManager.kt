@@ -1,9 +1,10 @@
-package net.samystudio.beaver.data.remote
+package net.samystudio.beaver.data.manager
 
 import android.accounts.*
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import net.samystudio.beaver.data.remote.AuthenticatorApiInterface
 import net.samystudio.beaver.di.qualifier.ApplicationContext
 import net.samystudio.beaver.ui.authenticator.AuthenticatorActivity
 import javax.inject.Inject
@@ -75,7 +76,7 @@ class AuthenticatorManager
         intent.putExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE, response)
         intent.putExtra(AccountManager.KEY_ACCOUNT_NAME, account.name)
         intent.putExtra(AccountManager.KEY_ACCOUNT_TYPE, account.type)
-        intent.putExtra(AuthenticatorActivity.KEY_AUTH_TOKEN_TYPE, authTokenType)
+        intent.putExtra(UserManager.KEY_AUTH_TOKEN_TYPE, authTokenType)
         intent.putExtra(AccountManager.KEY_USERDATA, options)
 
         val bundle = Bundle()
@@ -105,9 +106,9 @@ class AuthenticatorManager
     {
         val intent = Intent(context, AuthenticatorActivity::class.java)
         intent.putExtra(AccountManager.KEY_ACCOUNT_TYPE, accountType)
-        intent.putExtra(AuthenticatorActivity.KEY_AUTH_TOKEN_TYPE,
+        intent.putExtra(UserManager.KEY_AUTH_TOKEN_TYPE,
                         authTokenType)
-        intent.putExtra(AuthenticatorActivity.KEY_FEATURES, requiredFeatures)
+        intent.putExtra(UserManager.KEY_FEATURES, requiredFeatures)
         intent.putExtra(AccountManager.KEY_USERDATA, options)
         intent.putExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE, response)
 

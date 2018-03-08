@@ -39,7 +39,7 @@ class MainActivity : BaseActivity<MainActivityViewModel>()
     {
         super.onViewModelCreated(savedInstanceState)
 
-        viewModel.accountStatusObservable.observe(this, Observer { connected ->
+        viewModel.userStatusObservable.observe(this, Observer { connected ->
 
             connected?.let {
                 if (connected)

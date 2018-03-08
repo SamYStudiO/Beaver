@@ -1,5 +1,6 @@
 package net.samystudio.beaver.di.module
 
+import android.accounts.Account
 import android.accounts.AccountManager
 import android.app.Application
 import com.google.gson.FieldNamingPolicy
@@ -9,7 +10,8 @@ import dagger.Module
 import dagger.Provides
 import io.reactivex.schedulers.Schedulers
 import net.samystudio.beaver.BuildConfig
-import net.samystudio.beaver.data.local.SharedPreferencesManager
+import net.samystudio.beaver.data.local.SharedPreferencesHelper
+import net.samystudio.beaver.data.manager.UserManager
 import net.samystudio.beaver.data.remote.AuthenticatorApiInterface
 import net.samystudio.beaver.di.qualifier.ApplicationContext
 import okhttp3.*
@@ -62,7 +64,7 @@ object NetworkModule
     @Provides
     @Singleton
     @JvmStatic
-    fun provideRequestInterceptor(sharedPreferencesManager: SharedPreferencesManager,
+    fun provideRequestInterceptor(sharedPreferencesHelper: SharedPreferencesHelper,
                                   accountManager: AccountManager): Interceptor =
         Interceptor { chain ->
             // Request interceptor to update root url and add user token if exist.
@@ -73,38 +75,31 @@ object NetworkModule
             // rewriting url is not necessary when using a unique production server url, but in most
             // case we'll use multiple server urls  (test/prod/...) and this is the way to go if we
             // want to update Retrofit base url at runtime
-            val httpUrl = HttpUrl.parse(url.replace(BASE_URL, sharedPreferencesManager.apiUrl))
-
+            val httpUrl = HttpUrl.parse(url.replace(BASE_URL, sharedPreferencesHelper.apiUrl))
             val newBuilder = request.newBuilder()
 
             if (httpUrl != null)
                 newBuilder.url(httpUrl)
 
-            /*val account = accountManager.getCurrentAccount(BuildConfig.APPLICATION_ID,
-                                                           sharedPreferencesManager.accountName)
+            // TODO for now we can't use UserManager (otherwise we'll get Dagger dependency cycle
+            // error), so fall back with AccountManager
+            val accountName = sharedPreferencesHelper.accountName
+            val accounts: Array<Account> =
+                accountManager.getAccountsByType(BuildConfig.APPLICATION_ID)
+            var currentAccount: Account? = if (accounts.isEmpty()) null else accounts[0]
 
-            if (account != null && !url.contains("signIn"))
+            if (accountName != null)
             {
-                try
-                {
-                    val token = accountManager.blockingGetAuthToken(account,
-                                                                    AuthenticatorActivity.DEFAULT_AUTH_TOKEN_TYPE,
-                                                                    false)
+                accounts.forEach { account ->
+                    if (accountName == account.name)
+                        currentAccount = account
+                }
+            }
 
-                    if (!token.isNullOrBlank())
-                        newBuilder.header("Authorization", token)
-
-                    else throw AuthorizationException()
-                }
-                catch (authenticatorException: AuthenticatorException)
-                {
-                    throw AuthorizationException(authenticatorException)
-                }
-                catch (operationCanceledException: OperationCanceledException)
-                {
-                    throw AuthorizationException(operationCanceledException)
-                }
-            }*/
+            // let's add token if we got one
+            if (currentAccount != null)
+                accountManager.peekAuthToken(currentAccount, UserManager.DEFAULT_AUTH_TOKEN_TYPE)
+                    ?.let { newBuilder.header("Authorization", it) }
 
             chain.proceed(newBuilder.build())
         }

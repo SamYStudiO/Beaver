@@ -19,6 +19,6 @@ class AuthenticatorFragment : BaseDataFragment<AuthenticatorFragmentViewModel>()
 
         singin.setOnClickListener({ viewModel.signIn("hello", "world") })
         sinup.setOnClickListener({ viewModel.signUp("hello", "world") })
-        invalidateToken.setOnClickListener({ viewModel.invalidateToken() })
+        invalidateToken.setOnClickListener({ })
     }
 }

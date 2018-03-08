@@ -2,35 +2,30 @@
 
 package net.samystudio.beaver.ui.base.viewmodel
 
-import android.accounts.Account
-import android.accounts.AccountManager
-import android.accounts.OnAccountsUpdateListener
 import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.LiveDataReactiveStreams
 import android.arch.lifecycle.MutableLiveData
 import android.content.Intent
 import android.os.Bundle
-import android.support.annotation.CallSuper
-import net.samystudio.beaver.BuildConfig
-import net.samystudio.beaver.data.local.SharedPreferencesManager
-import net.samystudio.beaver.ext.getCurrentAccount
-import net.samystudio.beaver.ui.authenticator.AuthenticatorActivity
+import io.reactivex.BackpressureStrategy
+import net.samystudio.beaver.data.manager.UserManager
 import javax.inject.Inject
 
-abstract class BaseViewControllerViewModel : BaseViewModel(), OnAccountsUpdateListener
+abstract class BaseViewControllerViewModel : BaseViewModel()
 {
     @Inject
-    protected lateinit var accountManager: AccountManager
-    @Inject
-    protected lateinit var sharedPreferencesManager: SharedPreferencesManager
+    protected lateinit var userManager: UserManager
     protected val _resultObservable: MutableLiveData<Result> = MutableLiveData()
     val resultObservable: LiveData<Result> = _resultObservable
-    protected val _accountStatusObservable: MutableLiveData<Boolean> = MutableLiveData()
-    val accountStatusObservable: LiveData<Boolean> = _accountStatusObservable
+    protected val _userStatusObservable: MutableLiveData<Boolean> = MutableLiveData()
+    lateinit var userStatusObservable: LiveData<Boolean>
+        private set
 
-    @CallSuper
     open fun handleCreate()
     {
-        accountManager.addOnAccountsUpdatedListener(this, null, true)
+        userStatusObservable =
+                LiveDataReactiveStreams.fromPublisher(userManager.statusObservable.toFlowable(
+                    BackpressureStrategy.LATEST))
     }
 
     open fun handleActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
@@ -65,7 +60,6 @@ abstract class BaseViewControllerViewModel : BaseViewModel(), OnAccountsUpdateLi
      * View model is up and ready, all kind of params (intent, savedInstanceState, arguments) should
      * be handle now. Called right after [handleState].
      */
-    @CallSuper
     open fun handleReady()
     {
     }
@@ -74,29 +68,12 @@ abstract class BaseViewControllerViewModel : BaseViewModel(), OnAccountsUpdateLi
     {
     }
 
-    override fun onAccountsUpdated(accounts: Array<out Account>?)
-    {
-        val account = accountManager.getCurrentAccount(BuildConfig.APPLICATION_ID,
-                                                       sharedPreferencesManager.accountName)
-
-
-        _accountStatusObservable.value = account != null &&
-                accountManager.peekAuthToken(account,
-                                             AuthenticatorActivity.DEFAULT_AUTH_TOKEN_TYPE) != null
-    }
-
     /**
      * @see android.app.Activity.setResult
      */
     fun setResult(code: Int, intent: Intent?, finish: Boolean = true)
     {
         _resultObservable.value = Result(code, intent, finish)
-    }
-
-    override fun onCleared()
-    {
-        super.onCleared()
-        accountManager.removeOnAccountsUpdatedListener(this)
     }
 
     data class Result(var code: Int, var intent: Intent?, var finish: Boolean)
