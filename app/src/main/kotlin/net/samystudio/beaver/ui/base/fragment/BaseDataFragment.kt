@@ -10,6 +10,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.CallSuper
 import android.support.v4.app.Fragment
+import com.google.firebase.analytics.FirebaseAnalytics
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.AndroidSupportInjection
@@ -27,6 +28,8 @@ abstract class BaseDataFragment<VM : BaseFragmentViewModel> : BaseFragment(),
     protected lateinit var childFragmentInjector: DispatchingAndroidInjector<Fragment>
     @Inject
     final override lateinit var fragmentNavigationManager: FragmentNavigationManager
+    @Inject
+    final override lateinit var firebaseAnalytics: FirebaseAnalytics
     @Inject
     @field:FragmentContext
     protected lateinit var viewModelProvider: ViewModelProvider

@@ -19,16 +19,14 @@ import net.samystudio.beaver.R
 import net.samystudio.beaver.ui.base.activity.BaseActivity
 import net.samystudio.beaver.ui.base.dialog.DialogListener
 import net.samystudio.beaver.ui.common.navigation.FragmentNavigationManager
-import javax.inject.Inject
 
 abstract class BaseFragment : AppCompatDialogFragment(),
                               DialogInterface.OnShowListener
 {
-    @Inject
-    protected lateinit var firebaseAnalytics: FirebaseAnalytics
     @get:LayoutRes
     protected abstract val layoutViewRes: Int
     protected open lateinit var fragmentNavigationManager: FragmentNavigationManager
+    protected open lateinit var firebaseAnalytics: FirebaseAnalytics
     protected var viewDestroyed: Boolean = false
     @State
     private var resultCode: Int = Activity.RESULT_CANCELED
@@ -61,6 +59,9 @@ abstract class BaseFragment : AppCompatDialogFragment(),
                                               fragmentManager!!,
                                               R.id.fragment_container)
         }
+
+        if (!::firebaseAnalytics.isInitialized)
+            firebaseAnalytics = FirebaseAnalytics.getInstance(context)
 
         if (showsDialog) dialog.setOnShowListener(this)
     }
