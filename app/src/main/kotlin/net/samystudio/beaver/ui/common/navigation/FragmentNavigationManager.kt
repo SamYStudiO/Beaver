@@ -6,25 +6,20 @@ import android.support.annotation.IdRes
 import android.support.annotation.IntRange
 import android.support.v4.app.FragmentManager
 import android.support.v7.app.AppCompatActivity
-import net.samystudio.beaver.di.qualifier.FragmentContainerViewId
-import net.samystudio.beaver.di.scope.ActivityScope
 import net.samystudio.beaver.ui.base.fragment.BaseFragment
-import javax.inject.Inject
 
 /**
  * Navigation manager for [BaseFragment]. It is strongly recommended to do all fragment request here.
  */
-@ActivityScope
 class FragmentNavigationManager
 /**
  * @param fragmentContainerViewId The fragment container view id used to display [BaseFragment]
  * screens. Usually a [android.widget.FrameLayout] from your MainActivity layout place between your
  * [android.support.v7.widget.Toolbar] and eventually a bottom navigation or any kind of footer.
  */
-@Inject
 constructor(activity: AppCompatActivity,
             private val fragmentManager: FragmentManager,
-            @param:FragmentContainerViewId @IdRes
+            @IdRes
             private val fragmentContainerViewId: Int) :
     ActivityNavigationManager(activity)
 {

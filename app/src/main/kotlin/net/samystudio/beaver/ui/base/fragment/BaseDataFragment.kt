@@ -15,6 +15,7 @@ import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.HasSupportFragmentInjector
+import net.samystudio.beaver.di.qualifier.ActivityContext
 import net.samystudio.beaver.di.qualifier.FragmentContext
 import net.samystudio.beaver.ui.base.viewmodel.BaseFragmentViewModel
 import net.samystudio.beaver.ui.common.navigation.FragmentNavigationManager
@@ -27,7 +28,11 @@ abstract class BaseDataFragment<VM : BaseFragmentViewModel> : BaseFragment(),
     @Inject
     protected lateinit var childFragmentInjector: DispatchingAndroidInjector<Fragment>
     @Inject
+    @field:ActivityContext
     final override lateinit var fragmentNavigationManager: FragmentNavigationManager
+    @Inject
+    @field:FragmentContext
+    final override lateinit var childFragmentNavigationManager: FragmentNavigationManager
     @Inject
     final override lateinit var firebaseAnalytics: FirebaseAnalytics
     @Inject

@@ -16,6 +16,7 @@ import net.samystudio.beaver.di.scope.ActivityScope
 import net.samystudio.beaver.ext.GlideApp
 import net.samystudio.beaver.ext.GlideRequests
 import net.samystudio.beaver.ui.base.viewmodel.factory.ActivityViewModelFactory
+import net.samystudio.beaver.ui.common.navigation.FragmentNavigationManager
 
 @Module
 abstract class BaseActivityModule
@@ -42,9 +43,21 @@ abstract class BaseActivityModule
 
         @Provides
         @ActivityScope
+        @ActivityContext
         @JvmStatic
         fun provideFragmentManager(activity: AppCompatActivity): FragmentManager =
             activity.supportFragmentManager
+
+        @Provides
+        @ActivityScope
+        @JvmStatic
+        fun provideFragmentNavigationManager(activity: AppCompatActivity,
+                                             @ActivityContext
+                                             fragmentManager: FragmentManager,
+                                             @FragmentContainerViewId
+                                             @IdRes
+                                             fragmentContainerViewId: Int): FragmentNavigationManager =
+            FragmentNavigationManager(activity, fragmentManager, fragmentContainerViewId)
 
         @Provides
         @ActivityScope

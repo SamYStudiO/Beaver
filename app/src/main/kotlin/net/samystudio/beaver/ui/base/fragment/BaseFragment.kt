@@ -26,6 +26,7 @@ abstract class BaseFragment : AppCompatDialogFragment(),
     @get:LayoutRes
     protected abstract val layoutViewRes: Int
     protected open lateinit var fragmentNavigationManager: FragmentNavigationManager
+    protected open lateinit var childFragmentNavigationManager: FragmentNavigationManager
     protected open lateinit var firebaseAnalytics: FirebaseAnalytics
     protected var viewDestroyed: Boolean = false
     @State
@@ -52,11 +53,22 @@ abstract class BaseFragment : AppCompatDialogFragment(),
     {
         super.onActivityCreated(savedInstanceState)
 
+        // In most case we'll extends BaseDataFragment and get these initialized with injection, but
+        // if we want really simple fragment screen with no data (less boilerplate), we have to
+        // initialize these manually.
         if (!::fragmentNavigationManager.isInitialized)
         {
             fragmentNavigationManager = (activity as? BaseActivity<*>)?.fragmentNavigationManager ?:
                     FragmentNavigationManager(activity as AppCompatActivity,
                                               fragmentManager!!,
+                                              R.id.fragment_container)
+        }
+
+        if (!::childFragmentNavigationManager.isInitialized)
+        {
+            childFragmentNavigationManager =
+                    FragmentNavigationManager(activity as AppCompatActivity,
+                                              childFragmentManager,
                                               R.id.fragment_container)
         }
 
@@ -73,6 +85,12 @@ abstract class BaseFragment : AppCompatDialogFragment(),
         firebaseAnalytics.setCurrentScreen(activity!!, javaClass.simpleName, javaClass.simpleName)
     }
 
+    /**
+     * Parent [Activity] wil call this when [Activity.onBackPressed] is called to check if we want
+     * to handle this event. Returning true will cancel activity default behaviour, returning false
+     * will let [Activity] handle this event.
+     * Note: will not be called if [getShowsDialog] is true.
+     */
     open fun onBackPressed(): Boolean
     {
         return false
@@ -87,6 +105,7 @@ abstract class BaseFragment : AppCompatDialogFragment(),
      * Get if specified item will be consume from [onOptionsItemSelected], no more action is
      * required here, you'll consume action in [onOptionsItemSelected] and should return the same
      * [Boolean] from both method with the same item.
+     * Note: will not be called if [getShowsDialog] is true.
      */
     open fun willConsumeOptionsItem(item: MenuItem): Boolean
     {

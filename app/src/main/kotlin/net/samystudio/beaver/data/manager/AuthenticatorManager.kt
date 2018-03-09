@@ -12,7 +12,8 @@ import javax.inject.Singleton
 
 @Singleton
 class AuthenticatorManager
-@Inject constructor(@param:ApplicationContext private val context: Context,
+@Inject
+constructor(@param:ApplicationContext private val context: Context,
                     private val accountManager: AccountManager,
                     private val authenticatorInterface: AuthenticatorApiInterface) :
     AbstractAccountAuthenticator(context)

@@ -14,9 +14,10 @@ import javax.inject.Singleton
 
 @Singleton
 class UserManager
-@Inject constructor(private val accountManager: AccountManager,
-                    private val sharedPreferencesHelper: SharedPreferencesHelper,
-                    private val authenticatorApiInterface: AuthenticatorApiInterface) :
+@Inject
+constructor(private val accountManager: AccountManager,
+            private val sharedPreferencesHelper: SharedPreferencesHelper,
+            private val authenticatorApiInterface: AuthenticatorApiInterface) :
     OnAccountsUpdateListener
 {
     private val _statusObservable: BehaviorSubject<Boolean> = BehaviorSubject.create()
