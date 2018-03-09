@@ -37,7 +37,7 @@ class BeaverApplication : DaggerApplication()
         logKeyHash()
 
         // Launch screen timeout, this is not material guideline compliant but client is king and
-        // most want it displayed longer ^^
+        // most want it displayed longer, just remove if client is material compliant ^^
         Thread.sleep(1000)
     }
 
