@@ -2,9 +2,9 @@ package net.samystudio.beaver.ui.main
 
 import android.arch.lifecycle.Observer
 import android.os.Bundle
+import com.bumptech.glide.RequestManager
 import net.samystudio.beaver.R
 import net.samystudio.beaver.di.qualifier.ActivityContext
-import net.samystudio.beaver.ext.GlideRequests
 import net.samystudio.beaver.ui.authenticator.AuthenticatorActivity
 import net.samystudio.beaver.ui.base.activity.BaseActivity
 import net.samystudio.beaver.ui.base.fragment.BaseFragment
@@ -24,7 +24,7 @@ class MainActivity : BaseActivity<MainActivityViewModel>()
 
     @Inject
     @field:ActivityContext
-    protected lateinit var glide: GlideRequests
+    protected lateinit var glide: RequestManager
 
     override fun onCreate(savedInstanceState: Bundle?)
     {

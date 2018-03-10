@@ -13,8 +13,6 @@ interface ApplicationComponent : AndroidInjector<BeaverApplication>
 {
     override fun inject(application: BeaverApplication)
 
-    fun glideComponentBuilder(): GlideComponent.Builder
-
     @Component.Builder
     interface Builder
     {

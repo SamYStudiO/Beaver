@@ -8,6 +8,8 @@ import android.content.Context
 import android.support.annotation.IdRes
 import android.support.v4.app.FragmentManager
 import android.support.v7.app.AppCompatActivity
+import com.bumptech.glide.Glide
+import com.bumptech.glide.RequestManager
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -15,8 +17,6 @@ import net.samystudio.beaver.R
 import net.samystudio.beaver.di.qualifier.ActivityContext
 import net.samystudio.beaver.di.qualifier.FragmentContainerViewId
 import net.samystudio.beaver.di.scope.ActivityScope
-import net.samystudio.beaver.ext.GlideApp
-import net.samystudio.beaver.ext.GlideRequests
 import net.samystudio.beaver.ui.base.viewmodel.factory.ActivityViewModelFactory
 import net.samystudio.beaver.ui.common.navigation.FragmentNavigationManager
 
@@ -75,7 +75,7 @@ abstract class BaseActivityModule
         @ActivityScope
         @ActivityContext
         @JvmStatic
-        fun provideGlideRequests(activity: AppCompatActivity): GlideRequests =
-            GlideApp.with(activity)
+        fun provideGlideRequests(activity: AppCompatActivity): RequestManager =
+            Glide.with(activity)
     }
 }

@@ -24,11 +24,6 @@ class BeaverApplication : DaggerApplication()
     @Inject
     protected lateinit var timberTree: Timber.Tree
 
-    init
-    {
-        instance = this
-    }
-
     override fun onCreate()
     {
         super.onCreate()
@@ -71,15 +66,5 @@ class BeaverApplication : DaggerApplication()
         {
             Timber.w(e)
         }
-    }
-
-    companion object
-    {
-        /**
-         * Use injection instead, this is a requirement for Glide module.
-         *
-         * @hide
-         */
-        lateinit var instance: BeaverApplication
     }
 }

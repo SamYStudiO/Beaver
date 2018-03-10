@@ -3,10 +3,10 @@ package net.samystudio.beaver.ui.main.home
 import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.view.View
+import com.bumptech.glide.RequestManager
 import kotlinx.android.synthetic.main.fragment_home.*
 import net.samystudio.beaver.R
 import net.samystudio.beaver.di.qualifier.FragmentContext
-import net.samystudio.beaver.ext.GlideRequests
 import net.samystudio.beaver.ui.base.fragment.BaseDataFragment
 import net.samystudio.beaver.ui.common.dialog.AlertDialog
 import net.samystudio.beaver.ui.common.dialog.AlertDialogListener
@@ -21,7 +21,7 @@ class HomeFragment : BaseDataFragment<HomeFragmentViewModel>(), AlertDialogListe
 
     @Inject
     @field:FragmentContext
-    protected lateinit var glide: GlideRequests
+    protected lateinit var glide: RequestManager
 
     override fun onViewModelCreated(savedInstanceState: Bundle?)
     {
