@@ -54,14 +54,13 @@ class BeaverApplication : DaggerApplication()
 
         try
         {
-            val info = packageManager.getPackageInfo(packageName,
-                                                     PackageManager.GET_SIGNATURES)
+            val info = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)
+
             for (signature in info.signatures)
             {
                 val md = MessageDigest.getInstance("SHA")
                 md.update(signature.toByteArray())
-                Timber.d("logKeyHash: %s",
-                         Base64.encodeToString(md.digest(), Base64.DEFAULT))
+                Timber.d("logKeyHash: %s", Base64.encodeToString(md.digest(), Base64.DEFAULT))
             }
         }
         catch (e: PackageManager.NameNotFoundException)
