@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package net.samystudio.beaver.ui.main
 
 import android.support.v7.app.AppCompatActivity

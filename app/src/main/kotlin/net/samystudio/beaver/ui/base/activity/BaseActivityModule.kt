@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package net.samystudio.beaver.ui.base.activity
 
 import android.arch.lifecycle.ViewModelProvider
