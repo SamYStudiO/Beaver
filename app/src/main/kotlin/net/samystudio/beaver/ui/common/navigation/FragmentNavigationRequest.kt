@@ -235,11 +235,7 @@ constructor(builder: Builder<T>)
          *
          * @see BaseFragment.setArguments
          */
-        fun bundle(bundle: Bundle?): Builder<T>
-        {
-            this.bundle = bundle
-            return this
-        }
+        fun bundle(bundle: Bundle?): Builder<T> = apply { this.bundle = bundle }
 
         /**
          * Note back stack tag is automatically generated, if you want to specify one you may use
@@ -247,11 +243,8 @@ constructor(builder: Builder<T>)
          *
          * @see FragmentTransaction.addToBackStack
          */
-        fun addToBackStack(addToBackStack: Boolean): Builder<T>
-        {
-            this.addToBackStack = addToBackStack
-            return this
-        }
+        fun addToBackStack(addToBackStack: Boolean): Builder<T> =
+            apply { this.addToBackStack = addToBackStack }
 
         /**
          * Tag use for different purposes :
@@ -259,21 +252,15 @@ constructor(builder: Builder<T>)
          * @see android.support.v4.app.FragmentManager.findFragmentByTag
          * @see FragmentNavigationManager.popBackStack
          */
-        fun tag(tag: String?): Builder<T>
-        {
-            this.tag = tag
-            return this
-        }
+        fun tag(tag: String?): Builder<T> = apply { this.tag = tag }
 
         /**
          * @see FragmentTransaction.setCustomAnimations
          */
         fun customAnimations(@AnimatorRes @AnimRes enter: Int,
-                             @AnimatorRes @AnimRes exit: Int): Builder<T>
-        {
+                             @AnimatorRes @AnimRes exit: Int): Builder<T> = apply {
             this.enterAnimRes = enter
             this.exitAnimRes = exit
-            return this
         }
 
         /**
@@ -282,13 +269,11 @@ constructor(builder: Builder<T>)
         fun customAnimations(@AnimatorRes @AnimRes enter: Int,
                              @AnimatorRes @AnimRes exit: Int,
                              @AnimatorRes @AnimRes popEnter: Int,
-                             @AnimatorRes @AnimRes popExit: Int): Builder<T>
-        {
+                             @AnimatorRes @AnimRes popExit: Int): Builder<T> = apply {
             this.enterAnimRes = enter
             this.exitAnimRes = exit
             this.popEnterAnimRes = popEnter
             this.popExitAnimRes = popExit
-            return this
         }
 
         /**
@@ -296,66 +281,44 @@ constructor(builder: Builder<T>)
          *
          * @see FragmentTransaction.addSharedElement
          */
-        fun sharedElement(sharedElement: View, name: String): Builder<T>
-        {
+        fun sharedElement(sharedElement: View, name: String): Builder<T> = apply {
             this.sharedElementSourceView.add(sharedElement)
             this.sharedElementTargetNames.add(name)
-            return this
         }
 
         /**
          * @see FragmentTransaction.setTransition
          */
-        fun transition(transit: Int): Builder<T>
-        {
-            this.transition = transit
-            return this
-        }
+        fun transition(transit: Int): Builder<T> = apply { this.transition = transit }
 
         /**
          * @see FragmentTransaction.setTransitionStyle
          */
-        fun transitionStyle(@StyleRes styleRes: Int): Builder<T>
-        {
-            this.transitionStyle = styleRes
-            return this
-        }
+        fun transitionStyle(@StyleRes styleRes: Int): Builder<T> =
+            apply { this.transitionStyle = styleRes }
 
         /**
          * @see FragmentTransaction.setBreadCrumbTitle
          */
-        fun breadCrumbTitle(@StringRes res: Int): Builder<T>
-        {
-            this.breadCrumbShortTitleRes = res
-            return this
-        }
+        fun breadCrumbTitle(@StringRes res: Int): Builder<T> =
+            apply { this.breadCrumbShortTitleRes = res }
 
         /**
          * @see FragmentTransaction.setBreadCrumbTitle
          */
-        fun breadCrumbTitle(text: CharSequence?): Builder<T>
-        {
-            this.breadCrumbTitle = text
-            return this
-        }
+        fun breadCrumbTitle(text: CharSequence?): Builder<T> = apply { this.breadCrumbTitle = text }
 
         /**
          * @see FragmentTransaction.setBreadCrumbShortTitle
          */
-        fun breadCrumbShortTitle(@StringRes res: Int): Builder<T>
-        {
-            this.breadCrumbShortTitleRes = res
-            return this
-        }
+        fun breadCrumbShortTitle(@StringRes res: Int): Builder<T> =
+            apply { this.breadCrumbShortTitleRes = res }
 
         /**
          * @see FragmentTransaction.setBreadCrumbShortTitle
          */
-        fun breadCrumbShortTitle(text: CharSequence?): Builder<T>
-        {
-            this.breadCrumbShortTitle = text
-            return this
-        }
+        fun breadCrumbShortTitle(text: CharSequence?): Builder<T> =
+            apply { this.breadCrumbShortTitle = text }
 
         fun build() = FragmentNavigationRequest(this)
     }
