@@ -2,7 +2,6 @@ package net.samystudio.beaver.ui.base.viewmodel
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.annotation.CallSuper
 
 abstract class BaseFragmentViewModel
 constructor(protected val activityViewModel: BaseActivityViewModel) : BaseViewControllerViewModel()
@@ -26,16 +25,15 @@ constructor(protected val activityViewModel: BaseActivityViewModel) : BaseViewCo
      *
      * @param argument [Bundle] same as [android.support.v4.app.Fragment.getArguments].
      * @param savedInstanceState [Bundle] same as [android.support.v4.app.Fragment.onCreate].
-     * @param requestCode same as [android.support.v4.app.Fragment.onActivityResult].
+     * @param resultRequestCode same as [android.support.v4.app.Fragment.onActivityResult].
      * @param resultCode same as [android.support.v4.app.Fragment.onActivityResult].
-     * @param data same as [android.support.v4.app.Fragment.onActivityResult].
+     * @param resultData same as [android.support.v4.app.Fragment.onActivityResult].
      */
-    @CallSuper
     open fun handleState(argument: Bundle?,
                          savedInstanceState: Bundle?,
-                         requestCode: Int?,
+                         resultRequestCode: Int?,
                          resultCode: Int?,
-                         data: Intent?)
+                         resultData: Intent?)
     {
     }
 }

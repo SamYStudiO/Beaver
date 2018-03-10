@@ -18,11 +18,11 @@ constructor() : BaseActivityViewModel()
 
     override fun handleState(intent: Intent,
                              savedInstanceState: Bundle?,
-                             requestCode: Int?,
+                             resultRequestCode: Int?,
                              resultCode: Int?,
-                             data: Intent?)
+                             resultData: Intent?)
     {
-        super.handleState(intent, savedInstanceState, requestCode, resultCode, data)
+        super.handleState(intent, savedInstanceState, resultRequestCode, resultCode, resultData)
 
         if (authenticatorResponse == null)
         {

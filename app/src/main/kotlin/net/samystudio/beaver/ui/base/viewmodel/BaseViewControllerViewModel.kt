@@ -29,32 +29,8 @@ abstract class BaseViewControllerViewModel : BaseViewModel()
     }
 
     /**
-     * This is called from view onResume, so may be called several time during view lifecycle. You
-     * should make sure you've not already consume these parameters otherwise in some circumstance
-     * it could lead to unexpected behaviours (for example a [android.widget.Toast] popping though
-     * it already has been consumed).
-     *
-     * @param intent [Intent] from activity container, same as [android.app.Activity.getIntent].
-     * @param savedInstanceState [Bundle] from activity or fragment container.
-     * @param arguments [Bundle] from fragment container, same as
-     * [android.support.v4.app.Fragment.getArguments], always null if container is an activity.
-     * [requestCode] is always null with activity view models.
-     * @param requestCode same as onActivityResult
-     * @param resultCode same as onActivityResult
-     * @param data same as onActivityResult
-     */
-    open fun handleState(intent: Intent,
-                         savedInstanceState: Bundle?,
-                         arguments: Bundle?,
-                         requestCode: Int?,
-                         resultCode: Int?,
-                         data: Intent?)
-    {
-    }
-
-    /**
      * View model is up and ready, all kind of params (intent, savedInstanceState, arguments) should
-     * be handled now. Called right after [handleState].
+     * be handled now.
      */
     open fun handleReady()
     {

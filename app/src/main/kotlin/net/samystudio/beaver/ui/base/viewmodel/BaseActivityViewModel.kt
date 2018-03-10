@@ -28,16 +28,16 @@ abstract class BaseActivityViewModel : BaseViewControllerViewModel()
      *
      * @param intent [Intent] same as [android.app.Activity.getIntent].
      * @param savedInstanceState [Bundle] same as [android.app.Activity.onCreate].
-     * @param requestCode same as [android.app.Activity.onActivityResult].
+     * @param resultRequestCode same as [android.app.Activity.onActivityResult].
      * @param resultCode same as [android.app.Activity.onActivityResult].
-     * @param data same as [android.app.Activity.onActivityResult].
+     * @param resultData same as [android.app.Activity.onActivityResult].
      */
     @CallSuper
     open fun handleState(intent: Intent,
                          savedInstanceState: Bundle?,
-                         requestCode: Int?,
+                         resultRequestCode: Int?,
                          resultCode: Int?,
-                         data: Intent?)
+                         resultData: Intent?)
     {
         _titleObservable.value = savedInstanceState?.getString(TITLE_OBSERVABLE, null)
     }
