@@ -21,6 +21,9 @@ abstract class BaseViewControllerViewModel : BaseViewModel()
     lateinit var userStatusObservable: LiveData<Boolean>
         private set
 
+    /**
+     * At this point you can us injected members.
+     */
     open fun handleCreate()
     {
         userStatusObservable =
