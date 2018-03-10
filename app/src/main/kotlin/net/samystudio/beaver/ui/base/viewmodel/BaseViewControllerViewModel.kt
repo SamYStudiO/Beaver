@@ -28,10 +28,6 @@ abstract class BaseViewControllerViewModel : BaseViewModel()
                     BackpressureStrategy.LATEST))
     }
 
-    open fun handleActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
-    {
-    }
-
     /**
      * This is called from view onResume, so may be called several time during view lifecycle. You
      * should make sure you've not already consume these parameters otherwise in some circumstance
@@ -58,7 +54,7 @@ abstract class BaseViewControllerViewModel : BaseViewModel()
 
     /**
      * View model is up and ready, all kind of params (intent, savedInstanceState, arguments) should
-     * be handle now. Called right after [handleState].
+     * be handled now. Called right after [handleState].
      */
     open fun handleReady()
     {

@@ -25,6 +25,7 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : DaggerAppCompatActivit
     @get:LayoutRes
     protected abstract val layoutViewRes: Int
     @Inject
+    @field:ActivityContext
     lateinit var fragmentNavigationManager: FragmentNavigationManager
     @Inject
     @field:ActivityContext
@@ -32,7 +33,7 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : DaggerAppCompatActivit
     protected abstract val viewModelClass: Class<VM>
     lateinit var viewModel: VM
     private var savedInstanceState: Bundle? = null
-    private var requestCode: Int? = null
+    private var resultRequestCode: Int? = null
     private var resultCode: Int? = null
     private var resultData: Intent? = null
 
@@ -73,7 +74,7 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : DaggerAppCompatActivit
     {
         super.onActivityResult(requestCode, resultCode, data)
 
-        this.requestCode = requestCode
+        this.resultRequestCode = requestCode
         this.resultCode = resultCode
         this.resultData = data
     }
@@ -82,7 +83,7 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : DaggerAppCompatActivit
     {
         super.onResume()
 
-        viewModel.handleState(intent, savedInstanceState, requestCode, resultCode, resultData)
+        viewModel.handleState(intent, savedInstanceState, resultRequestCode, resultCode, resultData)
         viewModel.handleReady()
     }
 

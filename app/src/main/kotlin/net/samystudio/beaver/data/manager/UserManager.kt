@@ -63,8 +63,7 @@ constructor(private val accountManager: AccountManager,
     private fun getCurrentAccount(): Account?
     {
         val accountName = sharedPreferencesHelper.accountName
-        val accounts: Array<Account> =
-            accountManager.getAccountsByType(BuildConfig.APPLICATION_ID)
+        val accounts = accountManager.getAccountsByType(BuildConfig.APPLICATION_ID)
 
         if (accountName != null)
         {

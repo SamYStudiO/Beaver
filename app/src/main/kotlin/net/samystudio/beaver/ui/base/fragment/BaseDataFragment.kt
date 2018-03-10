@@ -41,7 +41,7 @@ abstract class BaseDataFragment<VM : BaseFragmentViewModel> : BaseFragment(),
     protected abstract val viewModelClass: Class<VM>
     lateinit var viewModel: VM
     private var savedInstanceState: Bundle? = null
-    private var requestCode: Int? = null
+    private var resultRequestCode: Int? = null
     private var resultCode: Int? = null
     private var resultData: Intent? = null
 
@@ -80,7 +80,7 @@ abstract class BaseDataFragment<VM : BaseFragmentViewModel> : BaseFragment(),
     @CallSuper
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
     {
-        this.requestCode = requestCode
+        this.resultRequestCode = requestCode
         this.resultCode = resultCode
         this.resultData = data
     }
@@ -89,7 +89,11 @@ abstract class BaseDataFragment<VM : BaseFragmentViewModel> : BaseFragment(),
     {
         super.onResume()
 
-        viewModel.handleState(arguments, savedInstanceState, requestCode, resultCode, resultData)
+        viewModel.handleState(arguments,
+                              savedInstanceState,
+                              resultRequestCode,
+                              resultCode,
+                              resultData)
         viewModel.handleReady()
     }
 

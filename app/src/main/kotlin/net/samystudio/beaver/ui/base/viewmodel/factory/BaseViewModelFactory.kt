@@ -11,7 +11,7 @@ constructor(private val creators: Map<Class<out ViewModel>, Provider<ViewModel>>
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T
     {
-        var creator: Provider<out ViewModel>? = creators[modelClass]
+        var creator = creators[modelClass]
 
         if (creator == null)
         {

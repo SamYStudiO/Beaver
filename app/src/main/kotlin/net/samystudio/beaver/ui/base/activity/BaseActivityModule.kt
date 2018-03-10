@@ -50,6 +50,7 @@ abstract class BaseActivityModule
 
         @Provides
         @ActivityScope
+        @ActivityContext
         @JvmStatic
         fun provideFragmentNavigationManager(activity: AppCompatActivity,
                                              @ActivityContext
