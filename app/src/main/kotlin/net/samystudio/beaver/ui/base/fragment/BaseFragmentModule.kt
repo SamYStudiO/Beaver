@@ -25,7 +25,8 @@ abstract class BaseFragmentModule
     @Binds
     @FragmentScope
     @FragmentContext
-    abstract fun bindViewModelFactory(viewModelFactory: FragmentViewModelFactory): ViewModelProvider.Factory
+    abstract fun bindViewModelFactory(
+        viewModelFactory: FragmentViewModelFactory): ViewModelProvider.Factory
 
     @Module
     companion object

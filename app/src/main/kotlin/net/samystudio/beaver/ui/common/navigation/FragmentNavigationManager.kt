@@ -67,8 +67,9 @@ constructor(activity: AppCompatActivity,
      * @see FragmentNavigationRequest.Builder
      */
     @SuppressLint("CommitTransaction")
-    fun <T : BaseSimpleFragment> startFragment(fragmentNavigationRequest: FragmentNavigationRequest<T>,
-                                               forResultRequestCode: Int? = null): FragmentNavigationRequest<T>
+    fun <T : BaseSimpleFragment> startFragment(
+        fragmentNavigationRequest: FragmentNavigationRequest<T>,
+        forResultRequestCode: Int? = null): FragmentNavigationRequest<T>
     {
         val currentFragment: BaseSimpleFragment? = getCurrentFragment()
 

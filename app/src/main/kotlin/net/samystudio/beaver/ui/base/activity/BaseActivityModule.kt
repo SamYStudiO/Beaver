@@ -31,7 +31,8 @@ abstract class BaseActivityModule
     @Binds
     @ActivityScope
     @ActivityContext
-    abstract fun bindViewModelFactory(viewModelFactory: ActivityViewModelFactory): ViewModelProvider.Factory
+    abstract fun bindViewModelFactory(
+        viewModelFactory: ActivityViewModelFactory): ViewModelProvider.Factory
 
     @Module
     companion object
