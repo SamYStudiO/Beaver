@@ -8,7 +8,7 @@ import io.reactivex.Single
 import io.reactivex.subjects.BehaviorSubject
 import net.samystudio.beaver.BuildConfig
 import net.samystudio.beaver.data.local.SharedPreferencesHelper
-import net.samystudio.beaver.data.remote.AuthenticatorApiInterface
+import net.samystudio.beaver.data.remote.api.AuthenticatorApiInterface
 import javax.inject.Inject
 import javax.inject.Singleton
 

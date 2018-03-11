@@ -9,14 +9,14 @@ import android.os.Parcelable
 import android.support.annotation.*
 import android.util.TypedValue
 import kotlinx.android.parcel.Parcelize
-import net.samystudio.beaver.ui.base.fragment.BaseFragment
+import net.samystudio.beaver.ui.base.fragment.BaseSimpleFragment
 import java.util.*
 import android.support.v7.app.AlertDialog as AndroidAlertDialog
 
 /**
  * AlertDialog using [android.support.v4.app.DialogFragment].
  */
-open class AlertDialog : BaseFragment(),
+open class AlertDialog : BaseSimpleFragment(),
                          DialogInterface.OnClickListener,
                          DialogInterface.OnMultiChoiceClickListener
 {
@@ -269,6 +269,15 @@ open class AlertDialog : BaseFragment(),
                     setSingleChoiceItems(items, checkedItem, dialog)
                 setCancelable(cancelable)
             }
+
+        /**
+         * @see newInstance
+         */
+        fun create(targetFragment: BaseSimpleFragment? = null,
+                   targetRequestCode: Int = 0): AlertDialog
+        {
+            return newInstance(this, targetFragment, targetRequestCode)
+        }
     }
 
     @Parcelize
@@ -334,14 +343,14 @@ open class AlertDialog : BaseFragment(),
         /**
          * Create a new Alert dialog instance.
          * If you want to get result from dialog or received events ([AlertDialogListener]), you
-         * must passed target [BaseFragment] calling this dialog and that target need to implement
+         * must passed target [BaseSimpleFragment] calling this dialog and that target need to implement
          * [AlertDialogListener]. Additionally if you open several dialogs you may pass
          * [targetRequestCode] to then identify which dialog your result or events come from.
          * Note you may receive events as well from activity host if activity implements
          * [AlertDialogListener].
          */
         fun newInstance(builder: Builder,
-                        targetFragment: BaseFragment? = null,
+                        targetFragment: BaseSimpleFragment? = null,
                         targetRequestCode: Int = 0): AlertDialog
         {
             val dialog = AlertDialog()

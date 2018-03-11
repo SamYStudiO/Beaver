@@ -7,13 +7,13 @@ import net.samystudio.beaver.R
 import net.samystudio.beaver.di.qualifier.ActivityContext
 import net.samystudio.beaver.ui.authenticator.AuthenticatorActivity
 import net.samystudio.beaver.ui.base.activity.BaseActivity
-import net.samystudio.beaver.ui.base.fragment.BaseFragment
+import net.samystudio.beaver.ui.base.fragment.BaseSimpleFragment
 import net.samystudio.beaver.ui.main.home.HomeFragment
 import javax.inject.Inject
 
 class MainActivity : BaseActivity<MainActivityViewModel>()
 {
-    override val defaultFragmentClass: Class<out BaseFragment>
+    override val defaultFragmentClass: Class<out BaseSimpleFragment>
         get() = HomeFragment::class.java
     override val defaultFragmentBundle: Bundle?
         get() = null

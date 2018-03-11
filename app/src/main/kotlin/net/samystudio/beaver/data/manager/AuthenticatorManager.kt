@@ -4,7 +4,7 @@ import android.accounts.*
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import net.samystudio.beaver.data.remote.AuthenticatorApiInterface
+import net.samystudio.beaver.data.remote.api.AuthenticatorApiInterface
 import net.samystudio.beaver.di.qualifier.ApplicationContext
 import net.samystudio.beaver.ui.authenticator.AuthenticatorActivity
 import javax.inject.Inject

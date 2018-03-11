@@ -1,3 +1,3 @@
 package net.samystudio.beaver.data.model
 
-data class Home(var data: String?)
+data class Home(var content: String?)

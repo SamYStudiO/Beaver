@@ -12,7 +12,7 @@ import io.reactivex.schedulers.Schedulers
 import net.samystudio.beaver.BuildConfig
 import net.samystudio.beaver.data.local.SharedPreferencesHelper
 import net.samystudio.beaver.data.manager.UserManager
-import net.samystudio.beaver.data.remote.AuthenticatorApiInterface
+import net.samystudio.beaver.data.remote.api.AuthenticatorApiInterface
 import net.samystudio.beaver.di.qualifier.ApplicationContext
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor

@@ -1,11 +1,13 @@
 package net.samystudio.beaver.ui.main.home
 
-import android.arch.lifecycle.MutableLiveData
-import io.reactivex.android.schedulers.AndroidSchedulers
+import android.arch.lifecycle.LiveData
 import net.samystudio.beaver.data.model.Home
-import net.samystudio.beaver.data.remote.HomeApiInterface
+import net.samystudio.beaver.data.remote.DataRequestState
+import net.samystudio.beaver.data.remote.api.HomeApiInterface
 import net.samystudio.beaver.di.scope.FragmentScope
 import net.samystudio.beaver.ui.base.viewmodel.BaseFragmentViewModel
+import net.samystudio.beaver.ui.base.viewmodel.DataFetchViewModel
+import net.samystudio.beaver.ui.common.viewmodel.RxSingleLiveData
 import net.samystudio.beaver.ui.main.MainActivityViewModel
 import javax.inject.Inject
 
@@ -13,22 +15,18 @@ import javax.inject.Inject
 class HomeFragmentViewModel
 @Inject
 constructor(activityViewModel: MainActivityViewModel,
-            private val homeApiManager: HomeApiInterface) :
-    BaseFragmentViewModel(activityViewModel)
+            homeApiManager: HomeApiInterface) :
+    BaseFragmentViewModel(activityViewModel), DataFetchViewModel<Home>
 {
+    private val _dataFetchObservable: RxSingleLiveData<Home> =
+        RxSingleLiveData(homeApiManager.home())
+    override val dataFetchObservable: LiveData<DataRequestState<Home>> =
+        _dataFetchObservable.apply { disposables.add(this) }
     override val title: String?
         get() = "home"
 
-    val homeObservable: MutableLiveData<Home> = MutableLiveData()
-
-    override fun handleReady()
+    override fun refreshData()
     {
-        super.handleReady()
-
-        if (homeObservable.value == null)
-            homeApiManager.home()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ home -> homeObservable.value = home },
-                           { throwable -> throwable.printStackTrace() })
+        _dataFetchObservable.refresh()
     }
 }

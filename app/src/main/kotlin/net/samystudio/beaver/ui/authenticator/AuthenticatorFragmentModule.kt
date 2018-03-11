@@ -8,10 +8,10 @@ import dagger.Module
 import dagger.multibindings.IntoMap
 import net.samystudio.beaver.di.key.FragmentViewModelKey
 import net.samystudio.beaver.di.scope.FragmentScope
-import net.samystudio.beaver.ui.base.fragment.BaseDataFragmentModule
+import net.samystudio.beaver.ui.base.fragment.BaseFragmentModule
 import net.samystudio.beaver.ui.base.viewmodel.BaseFragmentViewModel
 
-@Module(includes = [BaseDataFragmentModule::class])
+@Module(includes = [BaseFragmentModule::class])
 abstract class AuthenticatorFragmentModule
 {
     @Binds

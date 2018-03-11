@@ -6,14 +6,14 @@ import android.support.annotation.IdRes
 import android.support.annotation.IntRange
 import android.support.v4.app.FragmentManager
 import android.support.v7.app.AppCompatActivity
-import net.samystudio.beaver.ui.base.fragment.BaseFragment
+import net.samystudio.beaver.ui.base.fragment.BaseSimpleFragment
 
 /**
- * Navigation manager for [BaseFragment]. It is strongly recommended to do all fragment request here.
+ * Navigation manager for [BaseSimpleFragment]. It is strongly recommended to do all fragment request here.
  */
 class FragmentNavigationManager
 /**
- * @param fragmentContainerViewId The fragment container view id used to display [BaseFragment]
+ * @param fragmentContainerViewId The fragment container view id used to display [BaseSimpleFragment]
  * screens. Usually a [android.widget.FrameLayout] from your MainActivity layout place between your
  * [android.support.v7.widget.Toolbar] and eventually a bottom navigation or any kind of footer.
  */
@@ -24,36 +24,36 @@ constructor(activity: AppCompatActivity,
     ActivityNavigationManager(activity)
 {
     /**
-     * Get current [BaseFragment] screen from container view id specified when building this
+     * Get current [BaseSimpleFragment] screen from container view id specified when building this
      * [FragmentNavigationManager] instance. May be null if no request already occurred.
      */
     @Suppress("UNCHECKED_CAST")
-    fun <T : BaseFragment> getCurrentFragment(): T? =
+    fun <T : BaseSimpleFragment> getCurrentFragment(): T? =
         fragmentManager.findFragmentById(fragmentContainerViewId) as T?
 
     /**
-     * Show specified [BaseFragment] screen from an instance and an optional bundle.
+     * Show specified [BaseSimpleFragment] screen from an instance and an optional bundle.
      *
-     * @see BaseFragment.setArguments
+     * @see BaseSimpleFragment.setArguments
      */
-    fun <T : BaseFragment> startFragment(fragment: T,
-                                         bundle: Bundle? = null,
-                                         addToBackStack: Boolean = true,
-                                         forResultRequestCode: Int? = null) =
+    fun <T : BaseSimpleFragment> startFragment(fragment: T,
+                                               bundle: Bundle? = null,
+                                               addToBackStack: Boolean = true,
+                                               forResultRequestCode: Int? = null) =
         startFragment(FragmentNavigationRequest.Builder(fragment)
                           .addToBackStack(addToBackStack)
                           .bundle(bundle)
                           .build(), forResultRequestCode)
 
     /**
-     * Show specified [BaseFragment] screen from a [Class] and an optional bundle.
+     * Show specified [BaseSimpleFragment] screen from a [Class] and an optional bundle.
      *
-     * @see BaseFragment.setArguments
+     * @see BaseSimpleFragment.setArguments
      */
-    fun <T : BaseFragment> startFragment(fragmentClass: Class<T>,
-                                         bundle: Bundle? = null,
-                                         addToBackStack: Boolean = true,
-                                         forResultRequestCode: Int? = null) =
+    fun <T : BaseSimpleFragment> startFragment(fragmentClass: Class<T>,
+                                               bundle: Bundle? = null,
+                                               addToBackStack: Boolean = true,
+                                               forResultRequestCode: Int? = null) =
         startFragment(FragmentNavigationRequest.Builder(context, fragmentClass)
                           .addToBackStack(addToBackStack)
                           .bundle(bundle)
@@ -61,16 +61,16 @@ constructor(activity: AppCompatActivity,
                       forResultRequestCode)
 
     /**
-     * Show a [BaseFragment] screen using a [FragmentNavigationRequest]. This is
+     * Show a [BaseSimpleFragment] screen using a [FragmentNavigationRequest]. This is
      * an advanced way with more parameters.
      *
      * @see FragmentNavigationRequest.Builder
      */
     @SuppressLint("CommitTransaction")
-    fun <T : BaseFragment> startFragment(fragmentNavigationRequest: FragmentNavigationRequest<T>,
-                                         forResultRequestCode: Int? = null): FragmentNavigationRequest<T>
+    fun <T : BaseSimpleFragment> startFragment(fragmentNavigationRequest: FragmentNavigationRequest<T>,
+                                               forResultRequestCode: Int? = null): FragmentNavigationRequest<T>
     {
-        val currentFragment: BaseFragment? = getCurrentFragment()
+        val currentFragment: BaseSimpleFragment? = getCurrentFragment()
 
         if (forResultRequestCode != null && currentFragment != null)
             fragmentNavigationRequest.fragment.setTargetFragment(currentFragment,

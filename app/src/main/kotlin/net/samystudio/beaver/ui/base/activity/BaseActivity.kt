@@ -12,7 +12,7 @@ import android.support.annotation.LayoutRes
 import android.view.MenuItem
 import dagger.android.support.DaggerAppCompatActivity
 import net.samystudio.beaver.di.qualifier.ActivityContext
-import net.samystudio.beaver.ui.base.fragment.BaseFragment
+import net.samystudio.beaver.ui.base.fragment.BaseSimpleFragment
 import net.samystudio.beaver.ui.base.viewmodel.BaseActivityViewModel
 import net.samystudio.beaver.ui.common.navigation.FragmentNavigationManager
 import javax.inject.Inject
@@ -20,7 +20,7 @@ import javax.inject.Inject
 abstract class BaseActivity<VM : BaseActivityViewModel> : DaggerAppCompatActivity(),
                                                           FragmentManager.OnBackStackChangedListener
 {
-    abstract val defaultFragmentClass: Class<out BaseFragment>
+    abstract val defaultFragmentClass: Class<out BaseSimpleFragment>
     abstract val defaultFragmentBundle: Bundle?
     @get:LayoutRes
     protected abstract val layoutViewRes: Int
@@ -89,7 +89,7 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : DaggerAppCompatActivit
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean
     {
-        val currentFragment: BaseFragment? = fragmentNavigationManager.getCurrentFragment()
+        val currentFragment: BaseSimpleFragment? = fragmentNavigationManager.getCurrentFragment()
 
         if (currentFragment == null || !currentFragment.willConsumeOptionsItem(item))
         {
@@ -112,7 +112,7 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : DaggerAppCompatActivit
 
     override fun onBackPressed()
     {
-        val currentFragment: BaseFragment? = fragmentNavigationManager.getCurrentFragment()
+        val currentFragment: BaseSimpleFragment? = fragmentNavigationManager.getCurrentFragment()
 
         if (currentFragment == null || !currentFragment.onBackPressed())
             super.onBackPressed()
@@ -120,7 +120,7 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : DaggerAppCompatActivit
 
     override fun onBackStackChanged()
     {
-        val currentFragment: BaseFragment? = fragmentNavigationManager.getCurrentFragment()
+        val currentFragment: BaseSimpleFragment? = fragmentNavigationManager.getCurrentFragment()
 
         if (currentFragment == null)
             fragmentNavigationManager.startFragment(defaultFragmentClass,

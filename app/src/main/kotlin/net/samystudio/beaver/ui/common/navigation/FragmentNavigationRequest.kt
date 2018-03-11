@@ -11,22 +11,22 @@ import android.support.annotation.StyleRes
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentTransaction
 import android.view.View
-import net.samystudio.beaver.ui.base.fragment.BaseFragment
+import net.samystudio.beaver.ui.base.fragment.BaseSimpleFragment
 import java.util.*
 
 /**
  * Advanced [Fragment] request to use along with [FragmentNavigationManager.startFragment].
  */
-class FragmentNavigationRequest<T : BaseFragment>
+class FragmentNavigationRequest<T : BaseSimpleFragment>
 constructor(builder: Builder<T>)
 {
     val fragment: T
 
     /**
-     * Get [Bundle] that will be inject (or added if one already exists) to [BaseFragment] when
+     * Get [Bundle] that will be inject (or added if one already exists) to [BaseSimpleFragment] when
      * request is executed.
      *
-     * @see BaseFragment.setArguments
+     * @see BaseSimpleFragment.setArguments
      */
     val bundle: Bundle?
 
@@ -180,7 +180,7 @@ constructor(builder: Builder<T>)
         return transaction
     }
 
-    class Builder<T : BaseFragment>(val fragment: T)
+    class Builder<T : BaseSimpleFragment>(val fragment: T)
     {
         var bundle: Bundle? = null
             private set
@@ -223,17 +223,17 @@ constructor(builder: Builder<T>)
             private set
 
         /**
-         * Initiate a builder with a [BaseFragment] class instance.
+         * Initiate a builder with a [BaseSimpleFragment] class instance.
          */
         @Suppress("UNCHECKED_CAST")
         constructor(context: Context, fragmentClass: Class<T>) :
                 this(Fragment.instantiate(context, fragmentClass.name) as T)
 
         /**
-         * Any [Bundle] that will be inject (or added if one already exists) to [BaseFragment] when
+         * Any [Bundle] that will be inject (or added if one already exists) to [BaseSimpleFragment] when
          * request is executed.
          *
-         * @see BaseFragment.setArguments
+         * @see BaseSimpleFragment.setArguments
          */
         fun bundle(bundle: Bundle?): Builder<T> = apply { this.bundle = bundle }
 

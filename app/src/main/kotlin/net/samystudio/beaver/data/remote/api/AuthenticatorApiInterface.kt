@@ -1,4 +1,4 @@
-package net.samystudio.beaver.data.remote
+package net.samystudio.beaver.data.remote.api
 
 import io.reactivex.Single
 import retrofit2.http.Field

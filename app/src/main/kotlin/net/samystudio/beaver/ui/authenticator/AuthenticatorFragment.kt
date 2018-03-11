@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.View
 import kotlinx.android.synthetic.main.fragment_authenticator.*
 import net.samystudio.beaver.R
-import net.samystudio.beaver.ui.base.fragment.BaseDataFragment
+import net.samystudio.beaver.ext.genericErrorDialog
+import net.samystudio.beaver.ui.base.fragment.BaseDataPushFragment
+import net.samystudio.beaver.ui.common.dialog.AlertDialog
 
-class AuthenticatorFragment : BaseDataFragment<AuthenticatorFragmentViewModel>()
+class AuthenticatorFragment : BaseDataPushFragment<AuthenticatorFragmentViewModel>()
 {
     override val layoutViewRes: Int
         get() = R.layout.fragment_authenticator
@@ -20,5 +22,24 @@ class AuthenticatorFragment : BaseDataFragment<AuthenticatorFragmentViewModel>()
         singin.setOnClickListener({ viewModel.signIn("hello", "world") })
         sinup.setOnClickListener({ viewModel.signUp("hello", "world") })
         invalidateToken.setOnClickListener({ })
+    }
+
+    override fun dataPushStart()
+    {
+        // TODO show loader
+    }
+
+    override fun dataPushSuccess()
+    {
+    }
+
+    override fun dataPushError(throwable: Throwable)
+    {
+        genericErrorDialog(context!!).showNow(fragmentManager, AlertDialog::class.java.name)
+    }
+
+    override fun dataPushTerminate()
+    {
+        // TODO hide loader
     }
 }

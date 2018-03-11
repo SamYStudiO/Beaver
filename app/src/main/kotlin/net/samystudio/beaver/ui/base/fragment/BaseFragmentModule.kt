@@ -20,7 +20,7 @@ import net.samystudio.beaver.ui.base.viewmodel.factory.FragmentViewModelFactory
 import net.samystudio.beaver.ui.common.navigation.FragmentNavigationManager
 
 @Module
-abstract class BaseDataFragmentModule
+abstract class BaseFragmentModule
 {
     @Binds
     @FragmentScope
