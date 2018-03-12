@@ -5,9 +5,9 @@ import android.os.Bundle
 import com.bumptech.glide.RequestManager
 import net.samystudio.beaver.R
 import net.samystudio.beaver.di.qualifier.ActivityContext
-import net.samystudio.beaver.ui.authenticator.AuthenticatorActivity
 import net.samystudio.beaver.ui.base.activity.BaseActivity
 import net.samystudio.beaver.ui.base.fragment.BaseSimpleFragment
+import net.samystudio.beaver.ui.main.authenticator.AuthenticatorFragment
 import net.samystudio.beaver.ui.main.home.HomeFragment
 import javax.inject.Inject
 
@@ -39,14 +39,24 @@ class MainActivity : BaseActivity<MainActivityViewModel>()
     {
         super.onViewModelCreated(savedInstanceState)
 
-        viewModel.userStatusObservable.observe(this, Observer { connected ->
+        viewModel.requestAuthenticatorObservable.observe(this, Observer {
 
-            connected?.let {
-                if (connected)
+            // getGenericErrorDialog(this)
+            AuthenticatorFragment.newInstance(MainActivityViewModel.AUTHENTICATOR_REQUEST_CODE)
+                .showNow(supportFragmentManager, AuthenticatorFragment::class.java.name)
+        })
+
+        viewModel.userStatusObservable.observe(this, Observer {
+
+            /*it?.let {
+                if (it)
                     onBackStackChanged()
                 else
-                    fragmentNavigationManager.startActivity(AuthenticatorActivity::class.java)
-            }
+                    AuthenticatorFragment().showNow(supportFragmentManager,
+                                                    AuthenticatorFragment::class.java.name)
+            }*/
         })
+
+        onBackStackChanged()
     }
 }

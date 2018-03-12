@@ -38,6 +38,10 @@ abstract class BaseSimpleFragment : AppCompatDialogFragment(),
     private var resultCode: Int = Activity.RESULT_CANCELED
     @State
     private var resultIntent: Intent? = null
+    var targetActivity: Boolean = false
+        private set
+    var targetActivityRequestCode: Int = 0
+        private set
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
@@ -166,6 +170,12 @@ abstract class BaseSimpleFragment : AppCompatDialogFragment(),
         }
     }
 
+    fun setTargetActivity(requestCode: Int)
+    {
+        targetActivity = true
+        targetActivityRequestCode = requestCode
+    }
+
     /**
      * @see [android.app.Activity.setResult]
      */
@@ -182,6 +192,11 @@ abstract class BaseSimpleFragment : AppCompatDialogFragment(),
      */
     open fun finish()
     {
+        val activity = activity
+
+        if (targetActivity && activity is BaseActivity<*>)
+            activity.onActivityResult(targetActivityRequestCode, resultCode, resultIntent)
+
         targetFragment?.onActivityResult(targetRequestCode, resultCode, resultIntent)
 
         if (showsDialog) dismiss()

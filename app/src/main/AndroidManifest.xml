@@ -48,8 +48,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.authenticator.AuthenticatorActivity"/>
-
         <service
             android:name=".data.service.AuthenticatorService"
             android:process=":authenticator"

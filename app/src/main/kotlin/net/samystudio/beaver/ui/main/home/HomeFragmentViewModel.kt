@@ -29,4 +29,9 @@ constructor(activityViewModel: MainActivityViewModel,
     {
         _dataFetchObservable.refresh()
     }
+
+    fun requestAuthenticator()
+    {
+        (activityViewModel as MainActivityViewModel).requestAuthenticator()
+    }
 }

@@ -1,8 +1,9 @@
-package net.samystudio.beaver.ui.authenticator
+package net.samystudio.beaver.ui.main.authenticator
 
 import android.accounts.AccountManager
 import android.app.Activity
 import android.arch.lifecycle.LiveData
+import android.content.Intent
 import android.os.Bundle
 import io.reactivex.android.schedulers.AndroidSchedulers
 import net.samystudio.beaver.BuildConfig
@@ -11,19 +12,20 @@ import net.samystudio.beaver.di.scope.FragmentScope
 import net.samystudio.beaver.ui.base.viewmodel.BaseFragmentViewModel
 import net.samystudio.beaver.ui.base.viewmodel.DataPushViewModel
 import net.samystudio.beaver.ui.common.viewmodel.RxCompletableCommand
+import net.samystudio.beaver.ui.main.MainActivityViewModel
 import javax.inject.Inject
 
 @FragmentScope
 class AuthenticatorFragmentViewModel
 @Inject
-constructor(activityViewModel: AuthenticatorActivityViewModel) :
+constructor(activityViewModel: MainActivityViewModel) :
     BaseFragmentViewModel(activityViewModel), DataPushViewModel
 {
     private val _dataPushObservable: RxCompletableCommand = RxCompletableCommand()
     override val dataPushObservable: LiveData<CommandRequestState> =
         _dataPushObservable.apply { disposables.add(this) }
     override val title: String?
-        get() = "account"
+        get() = null
 
     fun signIn(email: String, password: String)
     {
@@ -51,14 +53,11 @@ constructor(activityViewModel: AuthenticatorActivityViewModel) :
     {
         val bundle = Bundle()
         bundle.putString(AccountManager.KEY_ACCOUNT_NAME, email)
-        bundle.putString(AccountManager.KEY_ACCOUNT_TYPE,
-                         BuildConfig.APPLICATION_ID)
+        bundle.putString(AccountManager.KEY_ACCOUNT_TYPE, BuildConfig.APPLICATION_ID)
         bundle.putString(AccountManager.KEY_PASSWORD, password)
 
-        (activityViewModel as AuthenticatorActivityViewModel)
-            .setAuthenticatorResult(bundle)
-
-        // just to close activity
-        activityViewModel.setResult(Activity.RESULT_OK, null)
+        val intent = Intent()
+        intent.putExtras(bundle)
+        setResult(Activity.RESULT_OK, intent)
     }
 }

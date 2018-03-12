@@ -36,6 +36,7 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : DaggerAppCompatActivit
     private var resultRequestCode: Int? = null
     private var resultCode: Int? = null
     private var resultData: Intent? = null
+    private var resumed: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
@@ -70,21 +71,24 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : DaggerAppCompatActivit
         setIntent(intent)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
+    public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
     {
         super.onActivityResult(requestCode, resultCode, data)
 
         this.resultRequestCode = requestCode
         this.resultCode = resultCode
         this.resultData = data
+
+        if (resumed) handleResume()
     }
 
     override fun onResume()
     {
         super.onResume()
 
-        viewModel.handleState(intent, savedInstanceState, resultRequestCode, resultCode, resultData)
-        viewModel.handleReady()
+        resumed = true
+
+        handleResume()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean
@@ -126,5 +130,21 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : DaggerAppCompatActivit
             fragmentNavigationManager.startFragment(defaultFragmentClass,
                                                     defaultFragmentBundle,
                                                     false)
+    }
+
+    override fun onPause()
+    {
+        super.onPause()
+
+        resumed = false
+    }
+
+    private fun handleResume()
+    {
+        viewModel.handleState(intent, savedInstanceState, resultRequestCode, resultCode, resultData)
+        viewModel.handleReady()
+        this.resultRequestCode = null
+        this.resultCode = null
+        this.resultData = null
     }
 }

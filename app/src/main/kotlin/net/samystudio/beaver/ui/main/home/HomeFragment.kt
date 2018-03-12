@@ -7,7 +7,7 @@ import kotlinx.android.synthetic.main.fragment_home.*
 import net.samystudio.beaver.R
 import net.samystudio.beaver.data.model.Home
 import net.samystudio.beaver.di.qualifier.FragmentContext
-import net.samystudio.beaver.ext.genericErrorDialog
+import net.samystudio.beaver.ext.getGenericErrorDialog
 import net.samystudio.beaver.ui.base.fragment.BaseDataFetchFragment
 import net.samystudio.beaver.ui.common.dialog.AlertDialog
 import net.samystudio.beaver.ui.common.dialog.AlertDialogListener
@@ -30,13 +30,15 @@ class HomeFragment : BaseDataFetchFragment<HomeFragmentViewModel, Home>(), Alert
 
         invalidate.setOnClickListener({
 
-                                          AlertDialog.Builder(context!!)
+                                          /*AlertDialog.Builder(context!!)
                                               .title("title")
                                               .items(R.array.api_urls)
                                               .positiveButton("ok")
                                               .create(this, 11)
                                               .showNow(fragmentManager,
-                                                       AlertDialog::class.java.name)
+                                                       AlertDialog::class.java.name)*/
+
+                                          viewModel.requestAuthenticator()
 
                                           //viewModel.invalidate()
                                       })
@@ -54,7 +56,7 @@ class HomeFragment : BaseDataFetchFragment<HomeFragmentViewModel, Home>(), Alert
 
     override fun dataFetchError(throwable: Throwable)
     {
-        genericErrorDialog(context!!).showNow(fragmentManager, AlertDialog::class.java.name)
+        getGenericErrorDialog(context!!).showNow(fragmentManager, AlertDialog::class.java.name)
     }
 
     override fun dataFetchTerminate()

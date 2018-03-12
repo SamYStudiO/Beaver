@@ -6,7 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import net.samystudio.beaver.data.remote.api.AuthenticatorApiInterface
 import net.samystudio.beaver.di.qualifier.ApplicationContext
-import net.samystudio.beaver.ui.authenticator.AuthenticatorActivity
+import net.samystudio.beaver.ui.main.MainActivity
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -73,12 +73,12 @@ constructor(@param:ApplicationContext private val context: Context,
             return result
         }
 
-        val intent = Intent(context, AuthenticatorActivity::class.java)
+        val intent = Intent(context, MainActivity::class.java)
         intent.putExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE, response)
         intent.putExtra(AccountManager.KEY_ACCOUNT_NAME, account.name)
         intent.putExtra(AccountManager.KEY_ACCOUNT_TYPE, account.type)
-        intent.putExtra(UserManager.KEY_AUTH_TOKEN_TYPE, authTokenType)
         intent.putExtra(AccountManager.KEY_USERDATA, options)
+        intent.putExtra(UserManager.KEY_AUTH_TOKEN_TYPE, authTokenType)
 
         val bundle = Bundle()
         bundle.putParcelable(AccountManager.KEY_INTENT, intent)
@@ -105,13 +105,12 @@ constructor(@param:ApplicationContext private val context: Context,
                             requiredFeatures: Array<out String>?,
                             options: Bundle): Bundle?
     {
-        val intent = Intent(context, AuthenticatorActivity::class.java)
-        intent.putExtra(AccountManager.KEY_ACCOUNT_TYPE, accountType)
-        intent.putExtra(UserManager.KEY_AUTH_TOKEN_TYPE,
-                        authTokenType)
-        intent.putExtra(UserManager.KEY_FEATURES, requiredFeatures)
-        intent.putExtra(AccountManager.KEY_USERDATA, options)
+        val intent = Intent(context, MainActivity::class.java)
         intent.putExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE, response)
+        intent.putExtra(AccountManager.KEY_ACCOUNT_TYPE, accountType)
+        intent.putExtra(AccountManager.KEY_USERDATA, options)
+        intent.putExtra(UserManager.KEY_AUTH_TOKEN_TYPE, authTokenType)
+        intent.putExtra(UserManager.KEY_FEATURES, requiredFeatures)
 
         val bundle = Bundle()
         bundle.putParcelable(AccountManager.KEY_INTENT, intent)

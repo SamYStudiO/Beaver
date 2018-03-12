@@ -1,6 +1,6 @@
 @file:Suppress("unused")
 
-package net.samystudio.beaver.ui.authenticator
+package net.samystudio.beaver.ui.main.authenticator
 
 import android.support.v4.app.Fragment
 import dagger.Binds

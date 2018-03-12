@@ -19,9 +19,9 @@ constructor(protected val activityViewModel: BaseActivityViewModel) : BaseViewCo
     /**
      * Convenient method to handle all [android.support.v4.app.Fragment] parameters at once.
      * This is called from view onResume, so may be called several time during view lifecycle. You
-     * should make sure you've not already consume these parameters otherwise in some circumstance
-     * it could lead to unexpected behaviours (for example a [android.widget.Toast] popping though
-     * it already has been consumed).
+     * should make sure you've not already consume [argument] and [savedInstanceState] parameters
+     * otherwise in some circumstance it could lead to unexpected behaviours (for example a
+     * [android.widget.Toast] popping though it already has been consumed).
      *
      * @param argument [Bundle] same as [android.support.v4.app.Fragment.getArguments].
      * @param savedInstanceState [Bundle] same as [android.support.v4.app.Fragment.onCreate].
