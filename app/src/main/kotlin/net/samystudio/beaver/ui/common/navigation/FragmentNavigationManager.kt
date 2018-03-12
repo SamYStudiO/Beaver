@@ -19,7 +19,7 @@ class FragmentNavigationManager
  */
 constructor(activity: AppCompatActivity,
             private val fragmentManager: FragmentManager,
-            @IdRes
+            @param:IdRes @field:IdRes
             private val fragmentContainerViewId: Int) :
     ActivityNavigationManager(activity)
 {
