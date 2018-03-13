@@ -176,6 +176,12 @@ abstract class BaseSimpleFragment : AppCompatDialogFragment(),
         targetActivityRequestCode = requestCode
     }
 
+    fun removeTargetActivity()
+    {
+        targetActivity = false
+        targetActivityRequestCode = 0
+    }
+
     /**
      * @see [android.app.Activity.setResult]
      */

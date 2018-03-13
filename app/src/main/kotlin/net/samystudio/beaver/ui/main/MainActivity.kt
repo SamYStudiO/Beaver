@@ -39,9 +39,8 @@ class MainActivity : BaseActivity<MainActivityViewModel>()
     {
         super.onViewModelCreated(savedInstanceState)
 
-        viewModel.requestAuthenticatorObservable.observe(this, Observer {
+        viewModel.requestAuthenticatorCommand.observe(this, Observer {
 
-            // getGenericErrorDialog(this)
             AuthenticatorFragment.newInstance(MainActivityViewModel.AUTHENTICATOR_REQUEST_CODE)
                 .showNow(supportFragmentManager, AuthenticatorFragment::class.java.name)
         })

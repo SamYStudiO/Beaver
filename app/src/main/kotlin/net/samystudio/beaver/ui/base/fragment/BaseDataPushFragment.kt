@@ -15,7 +15,7 @@ abstract class BaseDataPushFragment<VM> :
     {
         super.onViewModelCreated(savedInstanceState)
 
-        viewModel.dataPushObservable.observe(this, Observer {
+        viewModel.dataPushCommand.observe(this, Observer {
             it?.let {
                 when (it)
                 {

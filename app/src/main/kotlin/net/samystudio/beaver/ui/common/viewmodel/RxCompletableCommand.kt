@@ -11,10 +11,10 @@ class RxCompletableCommand : Command<CommandRequestState>(), Disposable
 {
     private var disposable: Disposable? = null
 
-    fun execute(completable: Completable)
+    fun call(completable: Completable)
     {
         if (disposable != null && !disposable!!.isDisposed)
-            throw IllegalStateException("Cannot execute a command while another is in progress")
+            throw IllegalStateException("Cannot call a command while another is in progress")
 
         disposable = completable
             .observeOn(AndroidSchedulers.mainThread())

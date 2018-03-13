@@ -55,7 +55,7 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : DaggerAppCompatActivit
     protected open fun onViewModelCreated(savedInstanceState: Bundle?)
     {
         viewModel.titleObservable.observe(this, Observer { it -> title = it })
-        viewModel.resultObservable.observe(this, Observer {
+        viewModel.resultCommand.observe(this, Observer {
             it?.let {
                 setResult(it.code, it.intent)
                 if (it.finish)

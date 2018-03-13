@@ -69,7 +69,7 @@ abstract class BaseFragment<VM : BaseFragmentViewModel> : BaseSimpleFragment(),
     @CallSuper
     protected open fun onViewModelCreated(savedInstanceState: Bundle?)
     {
-        viewModel.resultObservable.observe(this, Observer {
+        viewModel.resultCommand.observe(this, Observer {
             it?.let {
                 setResult(it.code, it.intent)
                 if (it.finish)

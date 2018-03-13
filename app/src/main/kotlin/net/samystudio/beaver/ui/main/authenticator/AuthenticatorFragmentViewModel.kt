@@ -21,15 +21,15 @@ class AuthenticatorFragmentViewModel
 constructor(activityViewModel: MainActivityViewModel) :
     BaseFragmentViewModel(activityViewModel), DataPushViewModel
 {
-    private val _dataPushObservable: RxCompletableCommand = RxCompletableCommand()
-    override val dataPushObservable: LiveData<CommandRequestState> =
-        _dataPushObservable.apply { disposables.add(this) }
+    private val _dataPushCommand: RxCompletableCommand = RxCompletableCommand()
+    override val dataPushCommand: LiveData<CommandRequestState> =
+        _dataPushCommand.apply { disposables.add(this) }
     override val title: String?
         get() = null
 
     fun signIn(email: String, password: String)
     {
-        _dataPushObservable.execute(
+        _dataPushCommand.call(
             userManager
                 .signIn(email, password)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -40,7 +40,7 @@ constructor(activityViewModel: MainActivityViewModel) :
 
     fun signUp(email: String, password: String)
     {
-        _dataPushObservable.execute(
+        _dataPushCommand.call(
             userManager
                 .signUp(email, password)
                 .observeOn(AndroidSchedulers.mainThread())

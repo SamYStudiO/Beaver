@@ -7,5 +7,5 @@ import net.samystudio.beaver.data.remote.CommandRequestState
 
 interface DataPushViewModel
 {
-    val dataPushObservable: LiveData<CommandRequestState>
+    val dataPushCommand: LiveData<CommandRequestState>
 }

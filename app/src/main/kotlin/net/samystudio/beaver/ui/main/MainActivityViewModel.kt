@@ -16,7 +16,7 @@ class MainActivityViewModel
 constructor() : BaseActivityViewModel()
 {
     private var authenticatorResponse: AccountAuthenticatorResponse? = null
-    val requestAuthenticatorObservable: TriggerCommand = TriggerCommand()
+    val requestAuthenticatorCommand: TriggerCommand = TriggerCommand()
 
     override fun handleState(intent: Intent,
                              savedInstanceState: Bundle?,
@@ -60,7 +60,7 @@ constructor() : BaseActivityViewModel()
 
     fun requestAuthenticator()
     {
-        requestAuthenticatorObservable.call()
+        requestAuthenticatorCommand.call()
     }
 
     companion object
