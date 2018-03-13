@@ -79,6 +79,9 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : DaggerAppCompatActivit
         this.resultCode = resultCode
         this.resultData = data
 
+        // This is a rare case only happening due to our way of handling result from dialogs using
+        // onActivityResult, plus we're using DialogFragment so activity will not pause/resume when
+        // opening one. Anyway we need to notify view model if we already resumed.
         if (resumed) handleResume()
     }
 
