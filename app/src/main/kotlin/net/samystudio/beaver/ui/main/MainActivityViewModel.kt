@@ -7,7 +7,7 @@ import android.content.Intent
 import android.os.Bundle
 import net.samystudio.beaver.di.scope.ActivityScope
 import net.samystudio.beaver.ui.base.viewmodel.BaseActivityViewModel
-import net.samystudio.beaver.ui.common.viewmodel.CommandLiveData
+import net.samystudio.beaver.ui.common.viewmodel.TriggerCommand
 import javax.inject.Inject
 
 @ActivityScope
@@ -16,7 +16,7 @@ class MainActivityViewModel
 constructor() : BaseActivityViewModel()
 {
     private var authenticatorResponse: AccountAuthenticatorResponse? = null
-    val requestAuthenticatorObservable: CommandLiveData<Nothing> = CommandLiveData()
+    val requestAuthenticatorObservable: TriggerCommand = TriggerCommand()
 
     override fun handleState(intent: Intent,
                              savedInstanceState: Bundle?,

@@ -5,7 +5,7 @@ import net.samystudio.beaver.ui.common.dialog.AlertDialog
 
 fun getGenericErrorDialog(context: Context): AlertDialog =
     AlertDialog.Builder(context)
-        .title("Error")
-        .message("error")
-        .positiveButton("ok")
+        .title("Generic title")
+        .message("Generic message")
+        .positiveButton("Ok")
         .create()

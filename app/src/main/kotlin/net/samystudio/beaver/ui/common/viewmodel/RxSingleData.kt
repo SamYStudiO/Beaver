@@ -8,7 +8,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import net.samystudio.beaver.data.remote.DataRequestState
 
-class RxSingleLiveData<T>
+class RxSingleData<T>
 constructor(single: Single<T>? = null) : LiveData<DataRequestState<T>>(), Disposable
 {
     var single: Single<T>? = single

@@ -9,7 +9,7 @@ import android.support.annotation.MainThread
 import timber.log.Timber
 import java.util.concurrent.atomic.AtomicBoolean
 
-open class CommandLiveData<T> : MutableLiveData<T>()
+open class Command<T> : MutableLiveData<T>()
 {
     private val pending: AtomicBoolean = AtomicBoolean(false)
 
@@ -32,11 +32,5 @@ open class CommandLiveData<T> : MutableLiveData<T>()
     {
         pending.set(true)
         super.setValue(t)
-    }
-
-    @MainThread
-    fun call()
-    {
-        value = null
     }
 }
