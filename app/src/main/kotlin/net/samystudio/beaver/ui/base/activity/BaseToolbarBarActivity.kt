@@ -7,7 +7,7 @@ import android.support.v7.widget.Toolbar
 import android.widget.TextView
 import net.samystudio.beaver.ui.base.viewmodel.BaseActivityViewModel
 
-abstract class BaseActionBarActivity<VM : BaseActivityViewModel> : BaseActivity<VM>()
+abstract class BaseToolbarBarActivity<VM : BaseActivityViewModel> : BaseActivity<VM>()
 {
     protected abstract val toolbar: Toolbar
 
