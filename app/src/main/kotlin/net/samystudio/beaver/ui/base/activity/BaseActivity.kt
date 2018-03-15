@@ -13,11 +13,13 @@ import android.view.MenuItem
 import dagger.android.support.DaggerAppCompatActivity
 import net.samystudio.beaver.di.qualifier.ActivityContext
 import net.samystudio.beaver.ui.base.fragment.BaseSimpleFragment
+import net.samystudio.beaver.ui.common.navigation.NavigationController
 import net.samystudio.beaver.ui.base.viewmodel.BaseActivityViewModel
 import net.samystudio.beaver.ui.common.navigation.FragmentNavigationManager
 import javax.inject.Inject
 
 abstract class BaseActivity<VM : BaseActivityViewModel> : DaggerAppCompatActivity(),
+                                                          NavigationController,
                                                           FragmentManager.OnBackStackChangedListener
 {
     abstract val defaultFragmentClass: Class<out BaseSimpleFragment>
@@ -26,7 +28,7 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : DaggerAppCompatActivit
     protected abstract val layoutViewRes: Int
     @Inject
     @field:ActivityContext
-    lateinit var fragmentNavigationManager: FragmentNavigationManager
+    override lateinit var fragmentNavigationManager: FragmentNavigationManager
     @Inject
     @field:ActivityContext
     protected lateinit var viewModelProvider: ViewModelProvider
@@ -62,6 +64,8 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : DaggerAppCompatActivit
                     finish()
             }
         })
+        viewModel.navigationCommand.observe(this,
+                                            Observer { it?.let { handleNavigationRequest(it) } })
     }
 
     override fun onNewIntent(intent: Intent)

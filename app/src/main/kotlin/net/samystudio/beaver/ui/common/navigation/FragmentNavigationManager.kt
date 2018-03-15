@@ -9,7 +9,8 @@ import android.support.v7.app.AppCompatActivity
 import net.samystudio.beaver.ui.base.fragment.BaseSimpleFragment
 
 /**
- * Navigation manager for [BaseSimpleFragment]. It is strongly recommended to do all fragment request here.
+ * Navigation manager for [BaseSimpleFragment]. It is strongly recommended to do all fragment
+ * request here.
  */
 class FragmentNavigationManager
 /**
@@ -40,10 +41,8 @@ constructor(activity: AppCompatActivity,
                                                bundle: Bundle? = null,
                                                addToBackStack: Boolean = true,
                                                forResultRequestCode: Int? = null) =
-        startFragment(FragmentNavigationRequest.Builder(fragment)
-                          .addToBackStack(addToBackStack)
-                          .bundle(bundle)
-                          .build(), forResultRequestCode)
+        startFragment(NavigationRequest.FragmentRequest(fragment, bundle, addToBackStack,
+                                                        forResultRequestCode))
 
     /**
      * Show specified [BaseSimpleFragment] screen from a [Class] and an optional bundle.
@@ -54,28 +53,26 @@ constructor(activity: AppCompatActivity,
                                                bundle: Bundle? = null,
                                                addToBackStack: Boolean = true,
                                                forResultRequestCode: Int? = null) =
-        startFragment(FragmentNavigationRequest.Builder(context, fragmentClass)
-                          .addToBackStack(addToBackStack)
-                          .bundle(bundle)
-                          .build(),
-                      forResultRequestCode)
+        startFragment(
+            NavigationRequest.FragmentRequest(context, fragmentClass, bundle, addToBackStack,
+                                              forResultRequestCode))
 
     /**
-     * Show a [BaseSimpleFragment] screen using a [FragmentNavigationRequest]. This is
+     * Show a [BaseSimpleFragment] screen using a [NavigationRequest.FragmentRequest]. This is
      * an advanced way with more parameters.
      *
-     * @see FragmentNavigationRequest.Builder
+     * @see NavigationRequest.FragmentRequest
      */
     @SuppressLint("CommitTransaction")
     fun <T : BaseSimpleFragment> startFragment(
-        fragmentNavigationRequest: FragmentNavigationRequest<T>,
-        forResultRequestCode: Int? = null): FragmentNavigationRequest<T>
+        fragmentNavigationRequest: NavigationRequest.FragmentRequest<T>): NavigationRequest.FragmentRequest<T>
     {
         val currentFragment: BaseSimpleFragment? = getCurrentFragment()
 
-        if (forResultRequestCode != null && currentFragment != null)
-            fragmentNavigationRequest.fragment.setTargetFragment(currentFragment,
-                                                                 forResultRequestCode)
+        fragmentNavigationRequest.forResultRequestCode?.let {
+
+            fragmentNavigationRequest.fragment.setTargetFragment(currentFragment, it)
+        }
 
         val transaction =
             fragmentNavigationRequest.prepareTransaction(fragmentManager.beginTransaction())
@@ -150,5 +147,16 @@ constructor(activity: AppCompatActivity,
         return if (count <= offset) clearBackStack()
         else popBackStack(fragmentManager.getBackStackEntryAt(count - offset).name,
                           FragmentManager.POP_BACK_STACK_INCLUSIVE)
+    }
+
+    fun popBackStack(backStackRequest: NavigationRequest.BackStackRequest): Boolean
+    {
+        return when
+        {
+            !backStackRequest.tag.isNullOrBlank() -> popBackStack(backStackRequest.tag!!,
+                                                                  backStackRequest.flags)
+            backStackRequest.offset != null       -> popBackStack(backStackRequest.offset)
+            else                                  -> popBackStack()
+        }
     }
 }

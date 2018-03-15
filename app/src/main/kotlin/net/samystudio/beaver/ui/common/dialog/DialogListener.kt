@@ -1,4 +1,4 @@
-package net.samystudio.beaver.ui.base.dialog
+package net.samystudio.beaver.ui.common.dialog
 
 /**
  * Dialog listener for Dialog events, only activities and fragments will received these events if

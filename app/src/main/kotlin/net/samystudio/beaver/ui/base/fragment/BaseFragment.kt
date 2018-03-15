@@ -17,12 +17,14 @@ import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.HasSupportFragmentInjector
 import net.samystudio.beaver.di.qualifier.ActivityContext
 import net.samystudio.beaver.di.qualifier.FragmentContext
+import net.samystudio.beaver.ui.common.navigation.NavigationController
 import net.samystudio.beaver.ui.base.viewmodel.BaseFragmentViewModel
 import net.samystudio.beaver.ui.common.navigation.FragmentNavigationManager
 import javax.inject.Inject
 
 abstract class BaseFragment<VM : BaseFragmentViewModel> : BaseSimpleFragment(),
                                                           HasSupportFragmentInjector,
+                                                          NavigationController,
                                                           DialogInterface.OnShowListener
 {
     @Inject
@@ -76,6 +78,8 @@ abstract class BaseFragment<VM : BaseFragmentViewModel> : BaseSimpleFragment(),
                     finish()
             }
         })
+        viewModel.navigationCommand.observe(this,
+                                            Observer { it?.let { handleNavigationRequest(it) } })
     }
 
     @CallSuper

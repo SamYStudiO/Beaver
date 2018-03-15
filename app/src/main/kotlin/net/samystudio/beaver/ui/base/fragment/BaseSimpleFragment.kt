@@ -17,7 +17,7 @@ import com.evernote.android.state.State
 import com.google.firebase.analytics.FirebaseAnalytics
 import net.samystudio.beaver.R
 import net.samystudio.beaver.ui.base.activity.BaseActivity
-import net.samystudio.beaver.ui.base.dialog.DialogListener
+import net.samystudio.beaver.ui.common.dialog.DialogListener
 import net.samystudio.beaver.ui.common.navigation.FragmentNavigationManager
 
 /**
