@@ -13,9 +13,9 @@ import android.view.MenuItem
 import dagger.android.support.DaggerAppCompatActivity
 import net.samystudio.beaver.di.qualifier.ActivityContext
 import net.samystudio.beaver.ui.base.fragment.BaseSimpleFragment
-import net.samystudio.beaver.ui.common.navigation.NavigationController
 import net.samystudio.beaver.ui.base.viewmodel.BaseActivityViewModel
 import net.samystudio.beaver.ui.common.navigation.FragmentNavigationManager
+import net.samystudio.beaver.ui.common.navigation.NavigationController
 import javax.inject.Inject
 
 abstract class BaseActivity<VM : BaseActivityViewModel> : DaggerAppCompatActivity(),
@@ -34,11 +34,6 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : DaggerAppCompatActivit
     protected lateinit var viewModelProvider: ViewModelProvider
     protected abstract val viewModelClass: Class<VM>
     lateinit var viewModel: VM
-    private var savedInstanceState: Bundle? = null
-    private var resultRequestCode: Int? = null
-    private var resultCode: Int? = null
-    private var resultData: Intent? = null
-    private var resumed: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
@@ -46,10 +41,10 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : DaggerAppCompatActivit
 
         setContentView(layoutViewRes)
         fragmentManager.addOnBackStackChangedListener(this)
-        this.savedInstanceState = savedInstanceState
 
         viewModel = viewModelProvider.get(viewModelClass)
-        viewModel.handleCreate()
+        viewModel.handleCreate(savedInstanceState)
+        viewModel.handleIntent(intent)
         onViewModelCreated(savedInstanceState)
     }
 
@@ -73,29 +68,21 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : DaggerAppCompatActivit
         super.onNewIntent(intent)
 
         setIntent(intent)
+        viewModel.handleIntent(intent)
     }
 
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
     {
         super.onActivityResult(requestCode, resultCode, data)
 
-        this.resultRequestCode = requestCode
-        this.resultCode = resultCode
-        this.resultData = data
-
-        // This is a rare case only happening due to our way of handling result from dialogs using
-        // onActivityResult, plus we're using DialogFragment so activity will not pause/resume when
-        // opening one. Anyway we need to notify view model if we already resumed.
-        if (resumed) handleResume()
+        viewModel.handleResult(requestCode, resultCode, data)
     }
 
     override fun onResume()
     {
         super.onResume()
 
-        resumed = true
-
-        handleResume()
+        viewModel.handleReady()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean
@@ -137,21 +124,5 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : DaggerAppCompatActivit
             fragmentNavigationManager.startFragment(defaultFragmentClass,
                                                     defaultFragmentBundle,
                                                     false)
-    }
-
-    override fun onPause()
-    {
-        super.onPause()
-
-        resumed = false
-    }
-
-    private fun handleResume()
-    {
-        viewModel.handleState(intent, savedInstanceState, resultRequestCode, resultCode, resultData)
-        viewModel.handleReady()
-        this.resultRequestCode = null
-        this.resultCode = null
-        this.resultData = null
     }
 }

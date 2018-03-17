@@ -4,7 +4,6 @@ package net.samystudio.beaver.ui.base.viewmodel
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.LiveDataReactiveStreams
-import android.arch.lifecycle.MutableLiveData
 import android.content.Intent
 import android.os.Bundle
 import io.reactivex.BackpressureStrategy
@@ -19,25 +18,25 @@ abstract class BaseViewControllerViewModel : BaseViewModel()
     protected lateinit var userManager: UserManager
     protected val _resultCommand: Command<Result> = Command()
     val resultCommand: LiveData<Result> = _resultCommand
-    protected val _userStatusObservable: MutableLiveData<Boolean> = MutableLiveData()
-    lateinit var userStatusObservable: LiveData<Boolean>
-        private set
+    val userStatusObservable: LiveData<Boolean> by lazy {
+        LiveDataReactiveStreams.fromPublisher(
+            userManager.statusObservable.toFlowable(BackpressureStrategy.LATEST))
+    }
     protected val _navigationCommand: Command<NavigationRequest> = Command()
     val navigationCommand: LiveData<NavigationRequest> = _navigationCommand
 
-    /**
-     * At this point you can us injected members.
-     */
-    open fun handleCreate()
+    open fun handleCreate(savedInstanceState: Bundle?)
     {
-        userStatusObservable =
-                LiveDataReactiveStreams.fromPublisher(userManager.statusObservable.toFlowable(
-                    BackpressureStrategy.LATEST))
+    }
+
+    open fun handleResult(requestCode: Int?, code: Int?, data: Intent?)
+    {
     }
 
     /**
      * View model is up and ready, all kind of params (intent, savedInstanceState, arguments) should
-     * be handled now.
+     * be handled now. Note: this may be called several times since it's called from
+     * [android.support.v4.app.Fragment.onResume].
      */
     open fun handleReady()
     {

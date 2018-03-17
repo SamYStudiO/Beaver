@@ -19,27 +19,15 @@ abstract class BaseActivityViewModel : BaseViewControllerViewModel()
             _titleObservable.value = value
         }
 
-    /**
-     * Convenient method to handle all [android.app.Activity] parameters at once.
-     * This is called from view onResume, so may be called several time during view lifecycle. You
-     * should make sure you've not already consume [intent] and [savedInstanceState] parameters
-     * otherwise in some circumstance it could lead to unexpected behaviours (for example a
-     * [android.widget.Toast] popping though it already has been consumed).
-     *
-     * @param intent [Intent] same as [android.app.Activity.getIntent].
-     * @param savedInstanceState [Bundle] same as [android.app.Activity.onCreate].
-     * @param resultRequestCode same as [android.app.Activity.onActivityResult].
-     * @param resultCode same as [android.app.Activity.onActivityResult].
-     * @param resultData same as [android.app.Activity.onActivityResult].
-     */
-    @CallSuper
-    open fun handleState(intent: Intent,
-                         savedInstanceState: Bundle?,
-                         resultRequestCode: Int?,
-                         resultCode: Int?,
-                         resultData: Intent?)
+    override fun handleCreate(savedInstanceState: Bundle?)
     {
+        super.handleCreate(savedInstanceState)
+
         _titleObservable.value = savedInstanceState?.getString(TITLE_OBSERVABLE, null)
+    }
+
+    open fun handleIntent(intent: Intent)
+    {
     }
 
     @CallSuper

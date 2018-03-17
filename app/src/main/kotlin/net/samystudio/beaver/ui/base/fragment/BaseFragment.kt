@@ -17,9 +17,9 @@ import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.HasSupportFragmentInjector
 import net.samystudio.beaver.di.qualifier.ActivityContext
 import net.samystudio.beaver.di.qualifier.FragmentContext
-import net.samystudio.beaver.ui.common.navigation.NavigationController
 import net.samystudio.beaver.ui.base.viewmodel.BaseFragmentViewModel
 import net.samystudio.beaver.ui.common.navigation.FragmentNavigationManager
+import net.samystudio.beaver.ui.common.navigation.NavigationController
 import javax.inject.Inject
 
 abstract class BaseFragment<VM : BaseFragmentViewModel> : BaseSimpleFragment(),
@@ -42,10 +42,6 @@ abstract class BaseFragment<VM : BaseFragmentViewModel> : BaseSimpleFragment(),
     protected lateinit var viewModelProvider: ViewModelProvider
     protected abstract val viewModelClass: Class<VM>
     lateinit var viewModel: VM
-    private var savedInstanceState: Bundle? = null
-    private var resultRequestCode: Int? = null
-    private var resultCode: Int? = null
-    private var resultData: Intent? = null
 
     override fun supportFragmentInjector(): AndroidInjector<Fragment>?
     {
@@ -62,9 +58,9 @@ abstract class BaseFragment<VM : BaseFragmentViewModel> : BaseSimpleFragment(),
     {
         super.onCreate(savedInstanceState)
 
-        this.savedInstanceState = savedInstanceState
         viewModel = viewModelProvider.get(viewModelClass)
-        viewModel.handleCreate()
+        viewModel.handleCreate(savedInstanceState)
+        arguments?.let { viewModel.handleArguments(it) }
         onViewModelCreated(savedInstanceState)
     }
 
@@ -85,20 +81,13 @@ abstract class BaseFragment<VM : BaseFragmentViewModel> : BaseSimpleFragment(),
     @CallSuper
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
     {
-        this.resultRequestCode = requestCode
-        this.resultCode = resultCode
-        this.resultData = data
+        viewModel.handleResult(requestCode, resultCode, data)
     }
 
     override fun onResume()
     {
         super.onResume()
 
-        viewModel.handleState(arguments,
-                              savedInstanceState,
-                              resultRequestCode,
-                              resultCode,
-                              resultData)
         viewModel.handleReady()
     }
 
