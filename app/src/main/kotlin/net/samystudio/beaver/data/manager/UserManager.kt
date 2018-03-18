@@ -4,11 +4,9 @@ import android.accounts.Account
 import android.accounts.AccountManager
 import android.accounts.OnAccountsUpdateListener
 import io.reactivex.Observable
-import io.reactivex.Single
 import io.reactivex.subjects.BehaviorSubject
 import net.samystudio.beaver.BuildConfig
 import net.samystudio.beaver.data.local.SharedPreferencesHelper
-import net.samystudio.beaver.data.remote.api.AuthenticatorApiInterface
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -16,8 +14,7 @@ import javax.inject.Singleton
 class UserManager
 @Inject
 constructor(private val accountManager: AccountManager,
-            private val sharedPreferencesHelper: SharedPreferencesHelper,
-            private val authenticatorApiInterface: AuthenticatorApiInterface) :
+            private val sharedPreferencesHelper: SharedPreferencesHelper) :
     OnAccountsUpdateListener
 {
     private val _statusObservable: BehaviorSubject<Boolean> = BehaviorSubject.create()
@@ -39,21 +36,7 @@ constructor(private val accountManager: AccountManager,
             _statusObservable.onNext(connect)
     }
 
-    fun signIn(email: String, password: String): Single<String>
-    {
-        return authenticatorApiInterface.signIn(email, password)
-            .doOnSuccess({ token -> onNewToken(email, password, token) })
-            .doOnError({ onNewToken(email, password, "toctoc") })
-            .onErrorReturnItem("toctoc")
-    }
-
-    fun signUp(email: String, password: String): Single<String>
-    {
-        return authenticatorApiInterface.signUp(email, password)
-            .doOnSuccess({ token -> onNewToken(email, password, token) })
-    }
-
-    fun invalidate()
+    fun invalidateToken()
     {
         accountManager.invalidateAuthToken(BuildConfig.APPLICATION_ID,
                                            accountManager.peekAuthToken(getCurrentAccount(),
@@ -76,7 +59,7 @@ constructor(private val accountManager: AccountManager,
         return if (accounts.isEmpty()) null else accounts[0]
     }
 
-    private fun onNewToken(email: String, password: String, token: String)
+    fun onNewToken(email: String, password: String, token: String)
     {
         var account =
             getCurrentAccount()

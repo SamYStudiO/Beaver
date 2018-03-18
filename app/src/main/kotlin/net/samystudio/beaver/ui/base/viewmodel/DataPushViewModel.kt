@@ -3,9 +3,9 @@
 package net.samystudio.beaver.ui.base.viewmodel
 
 import android.arch.lifecycle.LiveData
-import net.samystudio.beaver.data.remote.CommandRequestState
+import net.samystudio.beaver.data.remote.CompletableRequestState
 
 interface DataPushViewModel
 {
-    val dataPushCommand: LiveData<CommandRequestState>
+    val dataPushCompletable: LiveData<CompletableRequestState>
 }

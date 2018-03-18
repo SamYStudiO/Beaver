@@ -52,15 +52,15 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : DaggerAppCompatActivit
     protected open fun onViewModelCreated(savedInstanceState: Bundle?)
     {
         viewModel.titleObservable.observe(this, Observer { it -> title = it })
-        viewModel.resultCommand.observe(this, Observer {
+        viewModel.resultEvent.observe(this, Observer {
             it?.let {
                 setResult(it.code, it.intent)
                 if (it.finish)
                     finish()
             }
         })
-        viewModel.navigationCommand.observe(this,
-                                            Observer { it?.let { handleNavigationRequest(it) } })
+        viewModel.navigationEvent.observe(this,
+                                          Observer { it?.let { handleNavigationRequest(it) } })
     }
 
     override fun onNewIntent(intent: Intent)

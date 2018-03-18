@@ -1,7 +1,5 @@
 package net.samystudio.beaver.di.module
 
-import android.accounts.Account
-import android.accounts.AccountManager
 import android.app.Application
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
@@ -65,7 +63,7 @@ object NetworkModule
     @Singleton
     @JvmStatic
     fun provideRequestInterceptor(sharedPreferencesHelper: SharedPreferencesHelper,
-                                  accountManager: AccountManager): Interceptor =
+                                  userManager: UserManager): Interceptor =
         Interceptor { chain ->
             // Request interceptor to update root url and add user token if exist.
 
@@ -81,25 +79,8 @@ object NetworkModule
             if (httpUrl != null)
                 newBuilder.url(httpUrl)
 
-            // TODO for now we can't use UserManager (otherwise we'll get Dagger dependency cycle
-            // error), so fall back with AccountManager
-            val accountName = sharedPreferencesHelper.accountName
-            val accounts: Array<Account> =
-                accountManager.getAccountsByType(BuildConfig.APPLICATION_ID)
-            var currentAccount: Account? = if (accounts.isEmpty()) null else accounts[0]
-
-            if (accountName != null)
-            {
-                accounts.forEach { account ->
-                    if (accountName == account.name)
-                        currentAccount = account
-                }
-            }
-
             // let's add token if we got one
-            if (currentAccount != null)
-                accountManager.peekAuthToken(currentAccount, UserManager.DEFAULT_AUTH_TOKEN_TYPE)
-                    ?.let { newBuilder.header("Authorization", it) }
+            userManager.token?.let { newBuilder.header("Authorization", it) }
 
             chain.proceed(newBuilder.build())
         }

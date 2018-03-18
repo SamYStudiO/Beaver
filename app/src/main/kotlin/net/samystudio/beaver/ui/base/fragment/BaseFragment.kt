@@ -67,15 +67,15 @@ abstract class BaseFragment<VM : BaseFragmentViewModel> : BaseSimpleFragment(),
     @CallSuper
     protected open fun onViewModelCreated(savedInstanceState: Bundle?)
     {
-        viewModel.resultCommand.observe(this, Observer {
+        viewModel.resultEvent.observe(this, Observer {
             it?.let {
                 setResult(it.code, it.intent)
                 if (it.finish)
                     finish()
             }
         })
-        viewModel.navigationCommand.observe(this,
-                                            Observer { it?.let { handleNavigationRequest(it) } })
+        viewModel.navigationEvent.observe(this,
+                                          Observer { it?.let { handleNavigationRequest(it) } })
     }
 
     @CallSuper

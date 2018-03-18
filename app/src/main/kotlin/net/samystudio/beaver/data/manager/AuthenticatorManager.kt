@@ -47,15 +47,10 @@ constructor(@param:ApplicationContext private val context: Context,
 
         if (authToken.isNullOrBlank())
         {
-            val password = accountManager.getPassword(account)
-
-            if (password != null)
-            {
+            accountManager.getPassword(account)?.let {
                 try
                 {
-                    authToken =
-                            authenticatorInterface.signIn(account.name, password)
-                                .blockingGet()
+                    authToken = authenticatorInterface.signIn(account.name, it).blockingGet()
                 }
                 catch (e: Throwable)
                 {
@@ -64,13 +59,14 @@ constructor(@param:ApplicationContext private val context: Context,
             }
         }
 
+        val bundle = Bundle()
+
         if (!authToken.isNullOrBlank())
         {
-            val result = Bundle()
-            result.putString(AccountManager.KEY_ACCOUNT_NAME, account.name)
-            result.putString(AccountManager.KEY_ACCOUNT_TYPE, account.type)
-            result.putString(AccountManager.KEY_AUTHTOKEN, authToken)
-            return result
+            bundle.putString(AccountManager.KEY_ACCOUNT_NAME, account.name)
+            bundle.putString(AccountManager.KEY_ACCOUNT_TYPE, account.type)
+            bundle.putString(AccountManager.KEY_AUTHTOKEN, authToken)
+            return bundle
         }
 
         val intent = Intent(context, MainActivity::class.java)
@@ -80,7 +76,6 @@ constructor(@param:ApplicationContext private val context: Context,
         intent.putExtra(AccountManager.KEY_USERDATA, options)
         intent.putExtra(UserManager.KEY_AUTH_TOKEN_TYPE, authTokenType)
 
-        val bundle = Bundle()
         bundle.putParcelable(AccountManager.KEY_INTENT, intent)
 
         return bundle

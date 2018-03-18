@@ -4,7 +4,7 @@ package net.samystudio.beaver.ui.base.fragment
 
 import android.arch.lifecycle.Observer
 import android.os.Bundle
-import net.samystudio.beaver.data.remote.CommandRequestState
+import net.samystudio.beaver.data.remote.CompletableRequestState
 import net.samystudio.beaver.ui.base.viewmodel.BaseFragmentViewModel
 import net.samystudio.beaver.ui.base.viewmodel.DataPushViewModel
 
@@ -15,17 +15,17 @@ abstract class BaseDataPushFragment<VM> :
     {
         super.onViewModelCreated(savedInstanceState)
 
-        viewModel.dataPushCommand.observe(this, Observer {
+        viewModel.dataPushCompletable.observe(this, Observer {
             it?.let {
                 when (it)
                 {
-                    is CommandRequestState.Start    -> dataPushStart()
-                    is CommandRequestState.Complete ->
+                    is CompletableRequestState.Start    -> dataPushStart()
+                    is CompletableRequestState.Complete ->
                     {
                         dataPushSuccess()
                         dataPushTerminate()
                     }
-                    is CommandRequestState.Error    ->
+                    is CompletableRequestState.Error    ->
                     {
                         dataPushError(it.error)
                         dataPushTerminate()

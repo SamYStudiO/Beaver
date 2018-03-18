@@ -22,7 +22,7 @@ class HomeFragment : BaseDataFetchFragment<HomeFragmentViewModel, Home>(), Alert
 
     @Inject
     @field:FragmentContext
-    protected lateinit var glide: RequestManager
+    lateinit var glide: RequestManager
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?)
     {
@@ -40,7 +40,7 @@ class HomeFragment : BaseDataFetchFragment<HomeFragmentViewModel, Home>(), Alert
 
                                           viewModel.requestAuthenticator()
 
-                                          //viewModel.invalidate()
+                                          //viewModel.invalidateToken()
                                       })
     }
 

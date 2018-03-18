@@ -5,48 +5,56 @@ import android.app.Activity
 import android.arch.lifecycle.LiveData
 import android.content.Intent
 import android.os.Bundle
-import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.Observable
 import net.samystudio.beaver.BuildConfig
-import net.samystudio.beaver.data.remote.CommandRequestState
+import net.samystudio.beaver.data.remote.CompletableRequestState
+import net.samystudio.beaver.data.remote.api.AuthenticatorApiInterfaceManager
 import net.samystudio.beaver.di.scope.FragmentScope
 import net.samystudio.beaver.ui.base.viewmodel.BaseFragmentViewModel
 import net.samystudio.beaver.ui.base.viewmodel.DataPushViewModel
-import net.samystudio.beaver.ui.common.viewmodel.RxCompletableCommand
+import net.samystudio.beaver.ui.common.viewmodel.CompletableRequestLiveData
 import net.samystudio.beaver.ui.main.MainActivityViewModel
 import javax.inject.Inject
 
 @FragmentScope
 class AuthenticatorFragmentViewModel
 @Inject
-constructor(activityViewModel: MainActivityViewModel) :
+constructor(activityViewModel: MainActivityViewModel,
+            private val authenticatorApiInterfaceManager: AuthenticatorApiInterfaceManager) :
     BaseFragmentViewModel(activityViewModel), DataPushViewModel
 {
-    private val _dataPushCommand: RxCompletableCommand = RxCompletableCommand()
-    override val dataPushCommand: LiveData<CommandRequestState> =
-        _dataPushCommand.apply { disposables.add(this) }
+    private val _dataPushCompletable: CompletableRequestLiveData = CompletableRequestLiveData()
+    override val dataPushCompletable: LiveData<CompletableRequestState> = _dataPushCompletable
     override val title: String?
         get() = null
 
-    fun signIn(email: String, password: String)
+    fun <T : AuthenticatorUserFlow> addUserFlow(observable: Observable<T>)
     {
-        _dataPushCommand.call(
-            userManager
-                .signIn(email, password)
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSuccess({ handleSignResult(email, password) })
-                .toCompletable()
-        )
-    }
-
-    fun signUp(email: String, password: String)
-    {
-        _dataPushCommand.call(
-            userManager
-                .signUp(email, password)
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSuccess({ handleSignResult(email, password) })
-                .toCompletable()
-        )
+        disposables.add(observable.flatMap { userFlow ->
+            when (userFlow)
+            {
+                is AuthenticatorUserFlow.SignIn ->
+                    _dataPushCompletable.bind(
+                        authenticatorApiInterfaceManager.signIn(userFlow.email,
+                                                                userFlow.password)).doOnNext(
+                        {
+                            if (it is CompletableRequestState.Complete)
+                                handleSignResult(userFlow.email, userFlow.password)
+                        })
+                is AuthenticatorUserFlow.SignUp ->
+                    _dataPushCompletable.bind(
+                        authenticatorApiInterfaceManager.signUp(userFlow.email,
+                                                                userFlow.password)).doOnNext(
+                        {
+                            if (it is CompletableRequestState.Complete)
+                                handleSignResult(userFlow.email, userFlow.password)
+                        })
+                else                            ->
+                    Observable.just(Observable.error<Unit> {
+                        IllegalArgumentException("Unknown user flow ${userFlow.javaClass.name}.")
+                    })
+            }
+        }.subscribe())
     }
 
     private fun handleSignResult(email: String, password: String)

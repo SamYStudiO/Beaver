@@ -9,21 +9,21 @@ import android.os.Bundle
 import io.reactivex.BackpressureStrategy
 import net.samystudio.beaver.data.manager.UserManager
 import net.samystudio.beaver.ui.common.navigation.NavigationRequest
-import net.samystudio.beaver.ui.common.viewmodel.Command
+import net.samystudio.beaver.ui.common.viewmodel.SingleLiveEvent
 import javax.inject.Inject
 
 abstract class BaseViewControllerViewModel : BaseViewModel()
 {
     @Inject
     protected lateinit var userManager: UserManager
-    protected val _resultCommand: Command<Result> = Command()
-    val resultCommand: LiveData<Result> = _resultCommand
+    protected val _resultEvent: SingleLiveEvent<Result> by lazy { SingleLiveEvent<Result>() }
+    val resultEvent: LiveData<Result> = _resultEvent
     val userStatusObservable: LiveData<Boolean> by lazy {
         LiveDataReactiveStreams.fromPublisher(
             userManager.statusObservable.toFlowable(BackpressureStrategy.LATEST))
     }
-    protected val _navigationCommand: Command<NavigationRequest> = Command()
-    val navigationCommand: LiveData<NavigationRequest> = _navigationCommand
+    protected val _navigationEvent: SingleLiveEvent<NavigationRequest> = SingleLiveEvent()
+    val navigationEvent: LiveData<NavigationRequest> = _navigationEvent
 
     open fun handleCreate(savedInstanceState: Bundle?)
     {
@@ -48,7 +48,7 @@ abstract class BaseViewControllerViewModel : BaseViewModel()
 
     fun navigationRequest(navigationRequest: NavigationRequest)
     {
-        _navigationCommand.value = navigationRequest
+        _navigationEvent.value = navigationRequest
     }
 
     /**
@@ -56,7 +56,7 @@ abstract class BaseViewControllerViewModel : BaseViewModel()
      */
     fun setResult(code: Int, intent: Intent?, finish: Boolean = true)
     {
-        _resultCommand.value = Result(code, intent, finish)
+        _resultEvent.value = Result(code, intent, finish)
     }
 
     data class Result(var code: Int, var intent: Intent?, var finish: Boolean)

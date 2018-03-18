@@ -24,7 +24,7 @@ class MainActivity : BaseActivity<MainActivityViewModel>()
 
     @Inject
     @field:ActivityContext
-    protected lateinit var glide: RequestManager
+    lateinit var glide: RequestManager
 
     override fun onCreate(savedInstanceState: Bundle?)
     {

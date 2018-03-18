@@ -3,6 +3,7 @@ package net.samystudio.beaver.ui.main.authenticator
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.view.View
+import com.jakewharton.rxbinding2.view.clicks
 import kotlinx.android.synthetic.main.fragment_authenticator.*
 import net.samystudio.beaver.R
 import net.samystudio.beaver.ext.getGenericErrorDialog
@@ -20,9 +21,10 @@ class AuthenticatorFragment : BaseDataPushFragment<AuthenticatorFragmentViewMode
     {
         super.onViewCreated(view, savedInstanceState)
 
-        singin.setOnClickListener({ viewModel.signIn("hello", "world") })
-        sinup.setOnClickListener({ viewModel.signUp("hello", "world") })
-        invalidateToken.setOnClickListener({ })
+        viewModel.addUserFlow(
+            signIn.clicks().map { AuthenticatorUserFlow.SignIn("hello", "world") })
+        viewModel.addUserFlow(
+            signUp.clicks().map { AuthenticatorUserFlow.SignUp("hello", "world") })
     }
 
     override fun dataPushStart()

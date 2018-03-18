@@ -7,23 +7,23 @@
     android:padding="@dimen/screen_padding">
 
     <Button
-        android:id="@+id/singin"
+        android:id="@+id/signIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="singin"/>
 
     <Button
-        android:id="@+id/sinup"
+        android:id="@+id/signUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="signup"
-        app:layout_constraintTop_toBottomOf="@id/singin"/>
+        app:layout_constraintTop_toBottomOf="@id/signIn"/>
 
     <Button
         android:id="@+id/invalidateToken"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="invalidate token"
-        app:layout_constraintTop_toBottomOf="@id/sinup"/>
+        app:layout_constraintTop_toBottomOf="@id/signUp"/>
 
 </android.support.constraint.ConstraintLayout>

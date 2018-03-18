@@ -4,10 +4,9 @@ import android.accounts.AccountAuthenticatorResponse
 import android.accounts.AccountManager
 import android.app.Activity
 import android.content.Intent
-import android.os.Bundle
 import net.samystudio.beaver.di.scope.ActivityScope
 import net.samystudio.beaver.ui.base.viewmodel.BaseActivityViewModel
-import net.samystudio.beaver.ui.common.viewmodel.TriggerCommand
+import net.samystudio.beaver.ui.common.viewmodel.CommandLiveEvent
 import javax.inject.Inject
 
 @ActivityScope
@@ -16,15 +15,11 @@ class MainActivityViewModel
 constructor() : BaseActivityViewModel()
 {
     private var authenticatorResponse: AccountAuthenticatorResponse? = null
-    val requestAuthenticatorCommand: TriggerCommand = TriggerCommand()
+    val requestAuthenticatorCommand: CommandLiveEvent = CommandLiveEvent()
 
-    override fun handleState(intent: Intent,
-                             savedInstanceState: Bundle?,
-                             resultRequestCode: Int?,
-                             resultCode: Int?,
-                             resultData: Intent?)
+    override fun handleIntent(intent: Intent)
     {
-        super.handleState(intent, savedInstanceState, resultRequestCode, resultCode, resultData)
+        super.handleIntent(intent)
 
         if (authenticatorResponse == null)
         {
@@ -35,12 +30,17 @@ constructor() : BaseActivityViewModel()
 
             authenticatorResponse?.onRequestContinued()
         }
+    }
+
+    override fun handleResult(requestCode: Int?, code: Int?, data: Intent?)
+    {
+        super.handleResult(requestCode, code, data)
 
         authenticatorResponse?.let {
-            if (resultRequestCode == AUTHENTICATOR_REQUEST_CODE)
+            if (requestCode == AUTHENTICATOR_REQUEST_CODE)
             {
-                if (resultCode == Activity.RESULT_OK)
-                    it.onResult(resultData?.extras)
+                if (code == Activity.RESULT_OK)
+                    it.onResult(data?.extras)
                 else
                     it.onError(AccountManager.ERROR_CODE_CANCELED, "canceled")
 
