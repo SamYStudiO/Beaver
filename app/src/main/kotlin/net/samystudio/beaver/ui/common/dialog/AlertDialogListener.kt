@@ -1,8 +1,8 @@
 package net.samystudio.beaver.ui.common.dialog
 
 /**
- * AlertDialog listener for Dialog events, only activities and fragments will received these events
- * if they implement this interface, there is no point to implement it with any other object.
+ * AlertDialog listener for Dialog events, only activities and controllers will received these
+ * events if they implement this interface, there is no point to implement it with any other object.
  */
 interface AlertDialogListener : DialogListener
 {

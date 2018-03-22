@@ -1,13 +1,14 @@
-package net.samystudio.beaver.data.remote.api
+package net.samystudio.beaver.data.manager
 
 import io.reactivex.Observable
 import net.samystudio.beaver.data.model.Home
 import net.samystudio.beaver.data.remote.DataRequestState
-import net.samystudio.beaver.di.scope.FragmentScope
+import net.samystudio.beaver.data.remote.api.HomeApiInterface
+import net.samystudio.beaver.di.scope.ControllerScope
 import javax.inject.Inject
 
-@FragmentScope
-class HomeApiInterfaceManager
+@ControllerScope
+class HomeRepositoryManager
 @Inject
 constructor(private val homeApiInterface: HomeApiInterface)
 {

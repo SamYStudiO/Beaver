@@ -1,19 +1,17 @@
-@file:Suppress("unused", "MemberVisibilityCanBePrivate", "UNUSED_PARAMETER")
-
-package net.samystudio.beaver.ui.base.fragment
+package net.samystudio.beaver.ui.base.controller
 
 import android.arch.lifecycle.Observer
-import android.os.Bundle
 import net.samystudio.beaver.data.remote.CompletableRequestState
-import net.samystudio.beaver.ui.base.viewmodel.BaseFragmentViewModel
+import net.samystudio.beaver.ui.base.viewmodel.BaseControllerViewModel
+import net.samystudio.beaver.ui.base.viewmodel.DataFetchViewModel
 import net.samystudio.beaver.ui.base.viewmodel.DataPushViewModel
 
-abstract class BaseDataPushFragment<VM> :
-    BaseFragment<VM>() where VM : BaseFragmentViewModel, VM : DataPushViewModel
+abstract class BaseDataFetchPushFragment<VM, D> :
+    BaseDataFetchController<VM, D>() where VM : BaseControllerViewModel, VM : DataFetchViewModel<D>, VM : DataPushViewModel
 {
-    override fun onViewModelCreated(savedInstanceState: Bundle?)
+    override fun onViewModelCreated()
     {
-        super.onViewModelCreated(savedInstanceState)
+        super.onViewModelCreated()
 
         viewModel.dataPushCompletable.observe(this, Observer {
             it?.let {

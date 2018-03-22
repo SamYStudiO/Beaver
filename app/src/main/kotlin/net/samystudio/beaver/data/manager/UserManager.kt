@@ -20,7 +20,9 @@ constructor(private val accountManager: AccountManager,
     private val _statusObservable: BehaviorSubject<Boolean> = BehaviorSubject.create()
     val statusObservable: Observable<Boolean> = _statusObservable
     val token: String?
-        get() = accountManager.peekAuthToken(getCurrentAccount(), DEFAULT_AUTH_TOKEN_TYPE)
+        get() = getCurrentAccount()?.let {
+            accountManager.peekAuthToken(it, DEFAULT_AUTH_TOKEN_TYPE)
+        }
 
     init
     {

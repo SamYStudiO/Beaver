@@ -1,4 +1,4 @@
-@file:Suppress("MemberVisibilityCanBePrivate", "UNUSED_PARAMETER", "PropertyName")
+@file:Suppress("MemberVisibilityCanBePrivate", "PropertyName")
 
 package net.samystudio.beaver.ui.base.viewmodel
 
@@ -6,9 +6,10 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.LiveDataReactiveStreams
 import android.content.Intent
 import android.os.Bundle
+import android.support.annotation.CallSuper
+import com.evernote.android.state.StateSaver
 import io.reactivex.BackpressureStrategy
 import net.samystudio.beaver.data.manager.UserManager
-import net.samystudio.beaver.ui.common.navigation.NavigationRequest
 import net.samystudio.beaver.ui.common.viewmodel.SingleLiveEvent
 import javax.inject.Inject
 
@@ -22,10 +23,12 @@ abstract class BaseViewControllerViewModel : BaseViewModel()
         LiveDataReactiveStreams.fromPublisher(
             userManager.statusObservable.toFlowable(BackpressureStrategy.LATEST))
     }
-    protected val _navigationEvent: SingleLiveEvent<NavigationRequest> = SingleLiveEvent()
-    val navigationEvent: LiveData<NavigationRequest> = _navigationEvent
 
-    open fun handleCreate(savedInstanceState: Bundle?)
+    open fun handleCreate()
+    {
+    }
+
+    open fun handleIntent(intent: Intent)
     {
     }
 
@@ -33,22 +36,24 @@ abstract class BaseViewControllerViewModel : BaseViewModel()
     {
     }
 
+    @CallSuper
+    open fun handleRestoreInstanceState(savedInstanceState: Bundle)
+    {
+        StateSaver.restoreInstanceState(this, savedInstanceState)
+    }
+
     /**
      * View model is up and ready, all kind of params (intent, savedInstanceState, arguments) should
-     * be handled now. Note: this may be called several times since it's called from
-     * [android.support.v4.app.Fragment.onResume].
+     * be handled now.
      */
     open fun handleReady()
     {
     }
 
+    @CallSuper
     open fun handleSaveInstanceState(outState: Bundle)
     {
-    }
-
-    fun navigationRequest(navigationRequest: NavigationRequest)
-    {
-        _navigationEvent.value = navigationRequest
+        StateSaver.saveInstanceState(this, outState)
     }
 
     /**

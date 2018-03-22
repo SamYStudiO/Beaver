@@ -1,55 +1,58 @@
-@file:Suppress("unused", "MemberVisibilityCanBePrivate")
-
 package net.samystudio.beaver.ui.base.activity
 
-import android.app.FragmentManager
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
 import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.CallSuper
 import android.support.annotation.LayoutRes
-import android.view.MenuItem
-import dagger.android.support.DaggerAppCompatActivity
-import net.samystudio.beaver.di.qualifier.ActivityContext
-import net.samystudio.beaver.ui.base.fragment.BaseSimpleFragment
+import android.support.v7.app.AppCompatActivity
+import butterknife.ButterKnife
+import com.bluelinelabs.conductor.Router
+import com.bluelinelabs.conductor.RouterTransaction
+import com.evernote.android.state.StateSaver
+import dagger.android.AndroidInjection
+import net.samystudio.beaver.ui.base.controller.BaseController
 import net.samystudio.beaver.ui.base.viewmodel.BaseActivityViewModel
-import net.samystudio.beaver.ui.common.navigation.FragmentNavigationManager
-import net.samystudio.beaver.ui.common.navigation.NavigationController
+import net.samystudio.beaver.ui.main.home.HomeController
 import javax.inject.Inject
 
-abstract class BaseActivity<VM : BaseActivityViewModel> : DaggerAppCompatActivity(),
-                                                          NavigationController,
-                                                          FragmentManager.OnBackStackChangedListener
+abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity()
 {
-    abstract val defaultFragmentClass: Class<out BaseSimpleFragment>
-    abstract val defaultFragmentBundle: Bundle?
     @get:LayoutRes
     protected abstract val layoutViewRes: Int
     @Inject
-    @field:ActivityContext
-    override lateinit var fragmentNavigationManager: FragmentNavigationManager
-    @Inject
-    @field:ActivityContext
     protected lateinit var viewModelProvider: ViewModelProvider
     protected abstract val viewModelClass: Class<VM>
+    @Inject
+    lateinit var router: Router
     lateinit var viewModel: VM
+    /**
+     * For dagger only.
+     * @hide
+     */
+    var saveInstanceState: Bundle? = null
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
-
         setContentView(layoutViewRes)
-        fragmentManager.addOnBackStackChangedListener(this)
+        ButterKnife.bind(this)
+        saveInstanceState = savedInstanceState
+        AndroidInjection.inject(this)
+        saveInstanceState = null
 
         viewModel = viewModelProvider.get(viewModelClass)
-        viewModel.handleCreate(savedInstanceState)
+        viewModel.handleCreate()
         viewModel.handleIntent(intent)
-        onViewModelCreated(savedInstanceState)
+        onViewModelCreated()
+
+        if (!router.hasRootController())
+            router.setRoot(RouterTransaction.with(HomeController()))
     }
 
     @CallSuper
-    protected open fun onViewModelCreated(savedInstanceState: Bundle?)
+    protected open fun onViewModelCreated()
     {
         viewModel.titleObservable.observe(this, Observer { it -> title = it })
         viewModel.resultEvent.observe(this, Observer {
@@ -59,8 +62,6 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : DaggerAppCompatActivit
                     finish()
             }
         })
-        viewModel.navigationEvent.observe(this,
-                                          Observer { it?.let { handleNavigationRequest(it) } })
     }
 
     override fun onNewIntent(intent: Intent)
@@ -69,6 +70,7 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : DaggerAppCompatActivit
 
         setIntent(intent)
         viewModel.handleIntent(intent)
+        router.backstack.forEach { (it.controller() as? BaseController<*>)?.onNewIntent(intent) }
     }
 
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
@@ -78,6 +80,16 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : DaggerAppCompatActivit
         viewModel.handleResult(requestCode, resultCode, data)
     }
 
+    override fun onRestoreInstanceState(savedInstanceState: Bundle?)
+    {
+        super.onRestoreInstanceState(savedInstanceState)
+
+        StateSaver.restoreInstanceState(this, savedInstanceState)
+
+        if (savedInstanceState != null)
+            viewModel.handleRestoreInstanceState(savedInstanceState)
+    }
+
     override fun onResume()
     {
         super.onResume()
@@ -85,44 +97,20 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : DaggerAppCompatActivit
         viewModel.handleReady()
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean
+    override fun onBackPressed()
     {
-        val currentFragment: BaseSimpleFragment? = fragmentNavigationManager.getCurrentFragment()
-
-        if (currentFragment == null || !currentFragment.willConsumeOptionsItem(item))
+        if (!router.handleBack())
         {
-            when (item.itemId)
-            {
-                android.R.id.home ->
-                    if (fragmentNavigationManager.clearBackStack()) return true
-            }
+            super.onBackPressed()
         }
-
-        return super.onOptionsItemSelected(item)
     }
 
     override fun onSaveInstanceState(outState: Bundle)
     {
         super.onSaveInstanceState(outState)
 
+        StateSaver.saveInstanceState(this, outState)
+
         viewModel.handleSaveInstanceState(outState)
-    }
-
-    override fun onBackPressed()
-    {
-        val currentFragment: BaseSimpleFragment? = fragmentNavigationManager.getCurrentFragment()
-
-        if (currentFragment == null || !currentFragment.onBackPressed())
-            super.onBackPressed()
-    }
-
-    override fun onBackStackChanged()
-    {
-        val currentFragment: BaseSimpleFragment? = fragmentNavigationManager.getCurrentFragment()
-
-        if (currentFragment == null)
-            fragmentNavigationManager.startFragment(defaultFragmentClass,
-                                                    defaultFragmentBundle,
-                                                    false)
     }
 }

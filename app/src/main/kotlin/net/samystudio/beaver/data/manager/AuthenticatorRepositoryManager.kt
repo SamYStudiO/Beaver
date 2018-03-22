@@ -1,13 +1,13 @@
-package net.samystudio.beaver.data.remote.api
+package net.samystudio.beaver.data.manager
 
 import io.reactivex.Observable
-import net.samystudio.beaver.data.manager.UserManager
 import net.samystudio.beaver.data.remote.CompletableRequestState
+import net.samystudio.beaver.data.remote.api.AuthenticatorApiInterface
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class AuthenticatorApiInterfaceManager
+class AuthenticatorRepositoryManager
 @Inject
 constructor(
     private val userManager: UserManager,

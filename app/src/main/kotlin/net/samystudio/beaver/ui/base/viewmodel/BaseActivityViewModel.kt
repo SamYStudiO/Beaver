@@ -4,7 +4,6 @@ package net.samystudio.beaver.ui.base.viewmodel
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
-import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.CallSuper
 
@@ -19,15 +18,11 @@ abstract class BaseActivityViewModel : BaseViewControllerViewModel()
             _titleObservable.value = value
         }
 
-    override fun handleCreate(savedInstanceState: Bundle?)
+    override fun handleRestoreInstanceState(savedInstanceState: Bundle)
     {
-        super.handleCreate(savedInstanceState)
+        super.handleRestoreInstanceState(savedInstanceState)
 
-        _titleObservable.value = savedInstanceState?.getString(TITLE_OBSERVABLE, null)
-    }
-
-    open fun handleIntent(intent: Intent)
-    {
+        _titleObservable.value = savedInstanceState.getString(TITLE_OBSERVABLE, null)
     }
 
     @CallSuper

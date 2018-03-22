@@ -1,5 +1,3 @@
-@file:Suppress("unused")
-
 package net.samystudio.beaver.ext
 
 import android.content.res.Resources

@@ -4,27 +4,22 @@ package net.samystudio.beaver.ui.common.dialog
 
 import android.content.Context
 import android.content.DialogInterface
-import android.os.Bundle
 import android.os.Parcelable
 import android.support.annotation.*
 import android.util.TypedValue
 import kotlinx.android.parcel.Parcelize
-import net.samystudio.beaver.ui.base.fragment.BaseSimpleFragment
+import net.samystudio.beaver.ui.base.controller.BaseSimpleController
 import java.util.*
 import android.support.v7.app.AlertDialog as AndroidAlertDialog
 
-/**
- * AlertDialog using [android.support.v4.app.DialogFragment].
- */
-open class AlertDialog : BaseSimpleFragment(),
+open class AlertDialog : BaseSimpleController(),
                          DialogInterface.OnClickListener,
                          DialogInterface.OnMultiChoiceClickListener
 {
-    override val layoutViewRes: Int
-        get() = 0
+    override val layoutViewRes: Int = 0
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): AndroidAlertDialog =
-        Builder(context!!, arguments?.getParcelable(PARAMS) as? Params).build(this, theme).create()
+    override fun onCreateDialog(): AndroidAlertDialog =
+        Builder(activity!!, args.getParcelable(PARAMS) as? Params).build(this, dialogTheme).create()
 
     override fun onClick(dialog: DialogInterface?, which: Int)
     {
@@ -41,7 +36,7 @@ open class AlertDialog : BaseSimpleFragment(),
             }
         }
 
-        targetFragment?.let {
+        targetController?.let {
             if (it is AlertDialogListener)
             {
                 when (which)
@@ -62,7 +57,7 @@ open class AlertDialog : BaseSimpleFragment(),
                 it.onDialogClick(targetRequestCode, which, isChecked)
         }
 
-        targetFragment?.let {
+        targetController?.let {
             if (it is AlertDialogListener)
             {
                 it.onDialogClick(targetRequestCode, which, isChecked)
@@ -78,7 +73,7 @@ open class AlertDialog : BaseSimpleFragment(),
         /**
          * @hide
          */
-        internal constructor(context: Context, params: Params?) : this(context)
+        constructor(context: Context, params: Params?) : this(context)
         {
             if (params != null)
             {
@@ -115,7 +110,7 @@ open class AlertDialog : BaseSimpleFragment(),
         private var cancelable: Boolean = true
 
         /**
-         * If not set [AlertDialog.getTheme] will be used
+         * If not set [BaseSimpleController.dialogTheme] will be used
          *
          * @see [AndroidAlertDialog.Builder.mTheme]
          */
@@ -251,8 +246,7 @@ open class AlertDialog : BaseSimpleFragment(),
                    singleChoice,
                    cancelable)
 
-        fun build(dialog: AlertDialog,
-                  @StyleRes themeResId: Int): AndroidAlertDialog.Builder =
+        fun build(dialog: AlertDialog, @StyleRes themeResId: Int): AndroidAlertDialog.Builder =
             AndroidAlertDialog.Builder(context,
                                        if (this.themeResId == 0) themeResId else this.themeResId).apply {
                 setTitle(title)
@@ -273,11 +267,9 @@ open class AlertDialog : BaseSimpleFragment(),
         /**
          * @see newInstance
          */
-        fun create(targetFragment: BaseSimpleFragment? = null,
-                   targetRequestCode: Int = 0): AlertDialog
-        {
-            return newInstance(this, targetFragment, targetRequestCode)
-        }
+        fun create(targetController: BaseSimpleController? = null,
+                   targetRequestCode: Int = 0): AlertDialog =
+            newInstance(this, targetController, targetRequestCode)
     }
 
     @Parcelize
@@ -343,22 +335,19 @@ open class AlertDialog : BaseSimpleFragment(),
         /**
          * Create a new Alert dialog instance.
          * If you want to get result from dialog or received events ([AlertDialogListener]), you
-         * must passed target [BaseSimpleFragment] calling this dialog and that target need to implement
-         * [AlertDialogListener]. Additionally if you open several dialogs you may pass
+         * must passed target [BaseSimpleController] calling this dialog and that target need to
+         * implement [AlertDialogListener]. Additionally if you open several dialogs you may pass
          * [targetRequestCode] to then identify which dialog your result or events come from.
          * Note you may receive events as well from activity host if activity implements
          * [AlertDialogListener].
          */
         fun newInstance(builder: Builder,
-                        targetFragment: BaseSimpleFragment? = null,
+                        targetController: BaseSimpleController? = null,
                         targetRequestCode: Int = 0): AlertDialog
         {
             val dialog = AlertDialog()
-            dialog.setTargetFragment(targetFragment, targetRequestCode)
-
-            val bundle = Bundle()
-            bundle.putParcelable(PARAMS, builder.toParams())
-            dialog.arguments = bundle
+            dialog.setTargetController(targetController, targetRequestCode)
+            dialog.args.putParcelable(PARAMS, builder.toParams())
 
             return dialog
         }
