@@ -4,7 +4,7 @@
 
 Android Project template using [Conductor](https://github.com/bluelinelabs/Conductor) with [MVVM](https://developer.android.com/topic/libraries/architecture/index.html) and [Dagger 2](https://github.com/google/dagger).
 
-Also includes a bunch of common use libraries (may be easily replaced or removed) :
+Also includes a bunch of common use libraries :
 - [Firebase app indexing](https://firebase.google.com/docs/app-indexing/)
 - [Firebase crashlytics](https://firebase.google.com/docs/crashlytics/)
 - [AccountManager](https://developer.android.com/reference/android/accounts/AccountManager.html)
