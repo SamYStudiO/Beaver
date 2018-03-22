@@ -10,5 +10,7 @@ Also includes a bunch of common use libraries :
 - [AccountManager](https://developer.android.com/reference/android/accounts/AccountManager.html)
 - [Retrofit](https://github.com/square/retrofit)
 - [RxJava](https://github.com/ReactiveX/RxJava)
+- [RxBinding](https://github.com/JakeWharton/RxBinding)
+- [Butter knife](https://github.com/JakeWharton/butterknife)
 - [Android State](https://github.com/evernote/android-state)
 - [Timber](https://github.com/JakeWharton/timber)
