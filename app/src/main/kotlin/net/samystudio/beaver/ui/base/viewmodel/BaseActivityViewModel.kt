@@ -18,10 +18,11 @@ abstract class BaseActivityViewModel : BaseViewControllerViewModel()
             _titleObservable.value = value
         }
 
-    @CallSuper
-    override fun handleRestoreInstanceState(savedViewState: Bundle)
+    override fun handleRestoreInstanceState(savedInstanceState: Bundle)
     {
-        _titleObservable.value = savedViewState.getString(TITLE_OBSERVABLE, null)
+        super.handleRestoreInstanceState(savedInstanceState)
+
+        _titleObservable.value = savedInstanceState.getString(TITLE_OBSERVABLE, null)
     }
 
     @CallSuper

@@ -19,7 +19,7 @@ open class AlertDialog : BaseSimpleController(),
     override val layoutViewRes: Int = 0
 
     override fun onCreateDialog(): AndroidAlertDialog =
-        Builder(activity!!, args.getParcelable(PARAMS) as? Params).build(this, theme).create()
+        Builder(activity!!, args.getParcelable(PARAMS) as? Params).build(this, dialogTheme).create()
 
     override fun onClick(dialog: DialogInterface?, which: Int)
     {
@@ -110,7 +110,7 @@ open class AlertDialog : BaseSimpleController(),
         private var cancelable: Boolean = true
 
         /**
-         * If not set [BaseSimpleController.theme] will be used
+         * If not set [BaseSimpleController.dialogTheme] will be used
          *
          * @see [AndroidAlertDialog.Builder.mTheme]
          */

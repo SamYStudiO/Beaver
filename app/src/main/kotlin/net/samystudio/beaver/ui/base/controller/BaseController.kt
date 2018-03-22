@@ -3,6 +3,7 @@ package net.samystudio.beaver.ui.base.controller
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelStore
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.CallSuper
@@ -32,24 +33,37 @@ abstract class BaseController<VM : BaseControllerViewModel> : BaseSimpleControll
     }
 
     @CallSuper
-    override fun onViewCreated(view: View)
+    override fun onContextAvailable(context: Context)
     {
-        super.onViewCreated(view)
+        super.onContextAvailable(context)
 
         if (!::viewModel.isInitialized)
         {
             ConductorInjection.inject(this)
             viewModel = viewModelProvider.get(viewModelClass)
             viewModel.handleCreate()
+            activity?.intent?.let { viewModel.handleIntent(it) }
             viewModel.handleArguments(args)
+
+            onViewModelCreated()
         }
 
         savedInstanceState?.let {
             viewModel.handleRestoreInstanceState(it)
             savedInstanceState = null
         }
+    }
 
-        onViewModelCreated()
+    @CallSuper
+    open fun onNewIntent(intent: Intent)
+    {
+        viewModel.handleIntent(intent)
+
+        childRouters.forEach { router ->
+            router.backstack.forEach {
+                (it.controller() as? BaseController<*>)?.onNewIntent(intent)
+            }
+        }
     }
 
     @CallSuper

@@ -52,7 +52,7 @@ class HomeController : BaseDataFetchController<HomeControllerViewModel, Home>()
                      AlertDialog::class.java.name)*/
 
         // viewModel.requestAuthenticator()
-        //router.pushController(RouterTransaction.with(AuthenticatorController()))
+        // router.pushController(RouterTransaction.with(AuthenticatorController()))
         //getGenericErrorDialog(activity!!).show(router)
 
         AuthenticatorController().show(router)
