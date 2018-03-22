@@ -1,5 +1,3 @@
-@file:Suppress("unused")
-
 package net.samystudio.beaver.ext
 
 import android.util.Patterns
@@ -21,4 +19,3 @@ class PasswordValidator : IValidator<CharSequence>
 {
     override fun validate(any: CharSequence?): Boolean = !any.isNullOrBlank() && any!!.length >= 8
 }
-

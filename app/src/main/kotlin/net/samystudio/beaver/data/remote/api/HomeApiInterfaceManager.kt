@@ -3,10 +3,10 @@ package net.samystudio.beaver.data.remote.api
 import io.reactivex.Observable
 import net.samystudio.beaver.data.model.Home
 import net.samystudio.beaver.data.remote.DataRequestState
-import net.samystudio.beaver.di.scope.FragmentScope
+import net.samystudio.beaver.di.scope.ControllerScope
 import javax.inject.Inject
 
-@FragmentScope
+@ControllerScope
 class HomeApiInterfaceManager
 @Inject
 constructor(private val homeApiInterface: HomeApiInterface)

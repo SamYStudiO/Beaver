@@ -2,50 +2,49 @@
 
 package net.samystudio.beaver.ui.main.home
 
-import android.support.v4.app.Fragment
+import com.bluelinelabs.conductor.Controller
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.multibindings.IntoMap
 import net.samystudio.beaver.data.remote.api.HomeApiInterface
-import net.samystudio.beaver.di.key.FragmentViewModelKey
-import net.samystudio.beaver.di.scope.ActivityScope
-import net.samystudio.beaver.di.scope.FragmentScope
+import net.samystudio.beaver.di.key.ControllerViewModelKey
+import net.samystudio.beaver.di.scope.ControllerScope
 import net.samystudio.beaver.ext.EmailValidator
 import net.samystudio.beaver.ext.PasswordValidator
-import net.samystudio.beaver.ui.base.fragment.BaseFragmentModule
-import net.samystudio.beaver.ui.base.viewmodel.BaseFragmentViewModel
+import net.samystudio.beaver.ui.base.controller.BaseControllerModule
+import net.samystudio.beaver.ui.base.viewmodel.BaseControllerViewModel
 import retrofit2.Retrofit
 
-@Module(includes = [BaseFragmentModule::class])
-abstract class HomeFragmentModule
+@Module(includes = [BaseControllerModule::class])
+abstract class HomeControllerModule
 {
     @Binds
-    @FragmentScope
-    abstract fun bindFragment(fragment: HomeFragment): Fragment
+    @ControllerScope
+    abstract fun bindController(controller: HomeController): Controller
 
     @Binds
     @IntoMap
-    @FragmentViewModelKey(HomeFragmentViewModel::class)
-    @FragmentScope
-    abstract fun bindViewModel(viewModel: HomeFragmentViewModel): BaseFragmentViewModel
+    @ControllerViewModelKey(HomeControllerViewModel::class)
+    @ControllerScope
+    abstract fun bindViewModel(viewModel: HomeControllerViewModel): BaseControllerViewModel
 
     @Module
     companion object
     {
         @Provides
-        @FragmentScope
+        @ControllerScope
         @JvmStatic
         fun provideHomeApiInterface(retrofit: Retrofit): HomeApiInterface =
             retrofit.create(HomeApiInterface::class.java)
 
         @Provides
-        @ActivityScope
+        @ControllerScope
         @JvmStatic
         fun provideEmailValidator(): EmailValidator = EmailValidator()
 
         @Provides
-        @ActivityScope
+        @ControllerScope
         @JvmStatic
         fun providePasswordValidator(): PasswordValidator = PasswordValidator()
     }

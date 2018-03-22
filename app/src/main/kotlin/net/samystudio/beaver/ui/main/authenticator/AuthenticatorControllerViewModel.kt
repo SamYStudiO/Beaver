@@ -9,19 +9,17 @@ import io.reactivex.Observable
 import net.samystudio.beaver.BuildConfig
 import net.samystudio.beaver.data.remote.CompletableRequestState
 import net.samystudio.beaver.data.remote.api.AuthenticatorApiInterfaceManager
-import net.samystudio.beaver.di.scope.FragmentScope
-import net.samystudio.beaver.ui.base.viewmodel.BaseFragmentViewModel
+import net.samystudio.beaver.di.scope.ControllerScope
+import net.samystudio.beaver.ui.base.viewmodel.BaseControllerViewModel
 import net.samystudio.beaver.ui.base.viewmodel.DataPushViewModel
 import net.samystudio.beaver.ui.common.viewmodel.CompletableRequestLiveData
-import net.samystudio.beaver.ui.main.MainActivityViewModel
 import javax.inject.Inject
 
-@FragmentScope
-class AuthenticatorFragmentViewModel
+@ControllerScope
+class AuthenticatorControllerViewModel
 @Inject
-constructor(activityViewModel: MainActivityViewModel,
-            private val authenticatorApiInterfaceManager: AuthenticatorApiInterfaceManager) :
-    BaseFragmentViewModel(activityViewModel), DataPushViewModel
+constructor(private val authenticatorApiInterfaceManager: AuthenticatorApiInterfaceManager) :
+    BaseControllerViewModel(), DataPushViewModel
 {
     private val _dataPushCompletable: CompletableRequestLiveData = CompletableRequestLiveData()
     override val dataPushCompletable: LiveData<CompletableRequestState> = _dataPushCompletable

@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
@@ -15,6 +15,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="invalidate token"
-        app:layout_constraintTop_toBottomOf="@+id/textView"/>
+        app:layout_constraintTop_toBottomOf="@+id/text_view"/>
 
 </android.support.constraint.ConstraintLayout>

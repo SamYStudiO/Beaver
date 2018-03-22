@@ -11,7 +11,6 @@ import net.samystudio.beaver.BuildConfig
 import net.samystudio.beaver.data.local.SharedPreferencesHelper
 import net.samystudio.beaver.data.manager.UserManager
 import net.samystudio.beaver.data.remote.api.AuthenticatorApiInterface
-import net.samystudio.beaver.di.qualifier.ApplicationContext
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Converter
@@ -48,7 +47,6 @@ object NetworkModule
 
     @Provides
     @Singleton
-    @ApplicationContext
     @JvmStatic
     fun provideOkHttpClient(cache: Cache,
                             httpLoggingInterceptor: HttpLoggingInterceptor,
@@ -130,16 +128,16 @@ object NetworkModule
     @Provides
     @Singleton
     @JvmStatic
-    fun provideRetrofit(rxJava2CallAdapterFactory: RxJava2CallAdapterFactory,
+    fun provideRetrofit(okHttpClient: OkHttpClient,
+                        rxJava2CallAdapterFactory: RxJava2CallAdapterFactory,
                         nullOrEmptyConverterFactory: Converter.Factory,
-                        @ApplicationContext okHttpClient: OkHttpClient,
                         gsonConverterFactory: GsonConverterFactory): Retrofit =
         Retrofit.Builder()
+            .client(okHttpClient)
             .addCallAdapterFactory(rxJava2CallAdapterFactory)
             .addConverterFactory(nullOrEmptyConverterFactory)
             .addConverterFactory(gsonConverterFactory)
             .baseUrl(BASE_URL)
-            .client(okHttpClient)
             .build()
 
     @Provides
