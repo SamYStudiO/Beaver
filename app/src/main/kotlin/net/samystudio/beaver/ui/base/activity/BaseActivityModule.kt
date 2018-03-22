@@ -13,6 +13,7 @@ import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import net.samystudio.beaver.R
+import net.samystudio.beaver.di.qualifier.ActivityContext
 import net.samystudio.beaver.di.qualifier.ActivityRouteContainerId
 import net.samystudio.beaver.di.scope.ActivityScope
 import net.samystudio.beaver.ui.base.viewmodel.factory.ActivityViewModelFactory
@@ -22,6 +23,7 @@ abstract class BaseActivityModule
 {
     @Binds
     @ActivityScope
+    @ActivityContext
     abstract fun bindActivityContext(activity: AppCompatActivity): Context
 
     @Binds
