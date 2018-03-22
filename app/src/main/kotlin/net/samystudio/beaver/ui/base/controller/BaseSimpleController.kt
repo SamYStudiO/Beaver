@@ -29,8 +29,7 @@ abstract class BaseSimpleController : LifecycleController(),
 {
     private var unBinder: Unbinder? = null
     private var finished: Boolean = false
-    private var dismissed: Boolean = false
-    private var dialog: Dialog? = null
+    private var dialogDismissed: Boolean = false
     private var dialogView: View? = null
     @get:LayoutRes
     protected abstract val layoutViewRes: Int
@@ -41,19 +40,20 @@ abstract class BaseSimpleController : LifecycleController(),
     protected var resultIntent: Intent? = null
     @State
     protected var targetRequestCode: Int = 0
+    protected var dialog: Dialog? = null
     @State(DialogStyle.BundleHelper::class)
-    protected var dialogStyle: DialogStyle = DialogStyle.STYLE_NORMAL
+    var dialogStyle: DialogStyle = DialogStyle.STYLE_NORMAL
     @State
-    protected var theme = 0
+    var dialogTheme = 0
     @State
-    protected var cancelable = true
+    var dialogCancelable = true
         set(value)
         {
             field = value
             dialog?.setCancelable(value)
         }
     @State
-    protected var showsDialog = false
+    var isDialog = false
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle)
     {
@@ -64,7 +64,7 @@ abstract class BaseSimpleController : LifecycleController(),
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View
     {
-        if (showsDialog)
+        if (isDialog)
         {
             if (layoutViewRes > 0)
             {
@@ -99,12 +99,12 @@ abstract class BaseSimpleController : LifecycleController(),
     @CallSuper
     open fun onViewCreated(view: View)
     {
-        if (!showsDialog)
+        if (!isDialog)
             return
 
         dialog = onCreateDialog().also {
 
-            dismissed = false
+            dialogDismissed = false
 
             when (dialogStyle)
             {
@@ -127,7 +127,7 @@ abstract class BaseSimpleController : LifecycleController(),
                 it.setContentView(dialogView)
 
             it.ownerActivity = activity
-            it.setCancelable(cancelable)
+            it.setCancelable(dialogCancelable)
             it.setOnCancelListener(this)
             it.setOnDismissListener(this)
         }
@@ -175,7 +175,7 @@ abstract class BaseSimpleController : LifecycleController(),
 
         dialog?.dismiss()
         dialog = null
-        dismissed = true
+        dialogDismissed = true
 
         unBinder?.unbind()
         unBinder = null
@@ -198,19 +198,19 @@ abstract class BaseSimpleController : LifecycleController(),
 
     fun setDialogStyle(style: DialogStyle, theme: Int = 0)
     {
-        this.dialogStyle = style
+        dialogStyle = style
 
-        if (this.dialogStyle == DialogStyle.STYLE_NO_FRAME ||
-            this.dialogStyle == DialogStyle.STYLE_NO_INPUT)
-            this.theme = android.R.style.Theme_Panel
+        if (dialogStyle == DialogStyle.STYLE_NO_FRAME ||
+            dialogStyle == DialogStyle.STYLE_NO_INPUT)
+            dialogTheme = android.R.style.Theme_Panel
 
         if (theme != 0)
-            this.theme = theme
+            dialogTheme = theme
     }
 
     open fun onCreateDialog(): Dialog
     {
-        return Dialog(activity, theme)
+        return Dialog(activity, dialogTheme)
     }
 
     fun show(router: Router, transaction: RouterTransaction = RouterTransaction.with(this))
@@ -225,7 +225,7 @@ abstract class BaseSimpleController : LifecycleController(),
         if (targetController == null && !router.backstack.isEmpty()) targetController =
                 router.backstack.last().controller()
 
-        showsDialog = true
+        isDialog = true
         router.pushController(transaction)
     }
 
@@ -233,7 +233,7 @@ abstract class BaseSimpleController : LifecycleController(),
     {
         dialog?.dismiss()
         dialog = null
-        dismissed = true
+        dialogDismissed = true
 
         finish()
     }
@@ -242,7 +242,7 @@ abstract class BaseSimpleController : LifecycleController(),
     {
         if (finished) return
 
-        if (showsDialog && !dismissed) dismiss()
+        if (isDialog && !dialogDismissed) dismiss()
         else
         {
             targetController?.onActivityResult(targetRequestCode, resultCode, resultIntent)
@@ -260,14 +260,14 @@ abstract class BaseSimpleController : LifecycleController(),
     @CallSuper
     override fun onDismiss(dialog: DialogInterface)
     {
-        if (!dismissed)
+        if (!dialogDismissed)
             dismiss()
     }
 
     companion object
     {
         private const val KEY_SAVED_DIALOG_STATE = "BaseSimpleController.savedDialogState"
-        private val dialogPushChangeHandler: DialogPushTransition = DialogPushTransition()
+        private val dialogPushChangeHandler: ControllerChangeHandler = DialogPushTransition()
     }
 
     enum class DialogStyle
