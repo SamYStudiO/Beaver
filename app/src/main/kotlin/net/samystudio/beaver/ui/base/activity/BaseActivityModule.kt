@@ -9,6 +9,7 @@ import android.support.annotation.IdRes
 import android.support.v7.app.AppCompatActivity
 import com.bluelinelabs.conductor.Conductor
 import com.bluelinelabs.conductor.Router
+import com.tbruyelle.rxpermissions2.RxPermissions
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -56,5 +57,11 @@ abstract class BaseActivityModule
         fun provideViewModelProvider(activity: AppCompatActivity,
                                      viewModelFactory: ViewModelProvider.Factory): ViewModelProvider =
             ViewModelProviders.of(activity, viewModelFactory)
+
+        @Provides
+        @ActivityScope
+        @JvmStatic
+        fun provideRxPermissions(activity: AppCompatActivity): RxPermissions =
+            RxPermissions(activity)
     }
 }

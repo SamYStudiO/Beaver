@@ -117,6 +117,7 @@ dependencies {
     implementation "com.jakewharton.timber:timber:4.6.1"
     implementation "com.evernote:android-state:1.2.1"
     kapt           "com.evernote:android-state-processor:1.2.1"
+    implementation "com.tbruyelle.rxpermissions2:rxpermissions:0.9.5@aar"
 }
 
 apply plugin: "com.google.gms.google-services"

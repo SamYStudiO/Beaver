@@ -3,7 +3,6 @@ package net.samystudio.beaver.ui.main.home
 import android.widget.TextView
 import butterknife.BindView
 import butterknife.OnClick
-import com.bluelinelabs.conductor.RouterTransaction
 import net.samystudio.beaver.R
 import net.samystudio.beaver.data.model.Home
 import net.samystudio.beaver.ui.base.controller.BaseDataFetchController
