@@ -9,10 +9,9 @@ import net.samystudio.beaver.ui.base.controller.BaseDataPushFragment
 
 class AuthenticatorController : BaseDataPushFragment<AuthenticatorControllerViewModel>()
 {
-    override val layoutViewRes: Int
-        get() = R.layout.fragment_authenticator
-    override val viewModelClass: Class<AuthenticatorControllerViewModel>
-        get() = AuthenticatorControllerViewModel::class.java
+    override val layoutViewRes: Int = R.layout.fragment_authenticator
+    override val viewModelClass: Class<AuthenticatorControllerViewModel> =
+        AuthenticatorControllerViewModel::class.java
 
     @BindView(R.id.sign_in)
     lateinit var signInButton: Button
@@ -54,7 +53,7 @@ class AuthenticatorController : BaseDataPushFragment<AuthenticatorControllerView
         {
             val fragment = AuthenticatorController()
             requestCode?.let { fragment.setTargetActivity(requestCode) }
-            fragment.setStyle(DialogFragment.STYLE_NO_TITLE, 0)
+            fragment.setDialogStyle(DialogFragment.STYLE_NO_TITLE, 0)
             return fragment
         }*/
     }

@@ -17,7 +17,9 @@ class DataRequestLiveData<T>(private var bindObservable: Observable<DataRequestS
     init
     {
         disposable = trigger
-            .flatMap { bindObservable?.doOnNext({ postValue(it) }) ?: Observable.just(Unit) }
+            .flatMap { bindObservable?.doOnNext({
+                                                    postValue(it)
+                                                }) ?: Observable.just(Unit) }
             .subscribe()
     }
 

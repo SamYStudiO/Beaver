@@ -8,13 +8,13 @@ import net.samystudio.beaver.R
 import net.samystudio.beaver.data.model.Home
 import net.samystudio.beaver.ui.base.controller.BaseDataFetchController
 import net.samystudio.beaver.ui.main.authenticator.AuthenticatorController
+import timber.log.Timber
 
 class HomeController : BaseDataFetchController<HomeControllerViewModel, Home>()
 {
-    override val layoutViewRes: Int
-        get() = R.layout.fragment_home
-    override val viewModelClass: Class<HomeControllerViewModel>
-        get() = HomeControllerViewModel::class.java
+    override val layoutViewRes: Int = R.layout.fragment_home
+    override val viewModelClass: Class<HomeControllerViewModel> =
+        HomeControllerViewModel::class.java
 
     @BindView(R.id.text_view)
     lateinit var textView: TextView
@@ -31,6 +31,7 @@ class HomeController : BaseDataFetchController<HomeControllerViewModel, Home>()
 
     override fun dataFetchError(throwable: Throwable)
     {
+        Timber.d("dataFetchError: ")
         // getGenericErrorDialog(context!!).showNow(fragmentManager, AlertDialog::class.java.name)
     }
 
@@ -52,7 +53,11 @@ class HomeController : BaseDataFetchController<HomeControllerViewModel, Home>()
                      AlertDialog::class.java.name)*/
 
         // viewModel.requestAuthenticator()
-        router.pushController(RouterTransaction.with(AuthenticatorController()))
+        //router.pushController(RouterTransaction.with(AuthenticatorController()))
+        //getGenericErrorDialog(activity!!).show(router)
+
+        AuthenticatorController().show(router)
+        //  .showNow(supportFragmentManager, AuthenticatorFragment::class.java.name)
 
         //viewModel.invalidateToken()
     }
