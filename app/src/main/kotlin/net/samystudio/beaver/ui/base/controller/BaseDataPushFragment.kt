@@ -8,9 +8,9 @@ import net.samystudio.beaver.ui.base.viewmodel.DataPushViewModel
 abstract class BaseDataPushFragment<VM> :
     BaseViewModelController<VM>() where VM : BaseControllerViewModel, VM : DataPushViewModel
 {
-    override fun startListeningForData()
+    override fun startObservingData()
     {
-        super.startListeningForData()
+        super.startObservingData()
 
         viewModel.dataPushCompletable.observe(this, Observer {
             it?.let {
@@ -32,9 +32,9 @@ abstract class BaseDataPushFragment<VM> :
         })
     }
 
-    override fun stopListeningForData()
+    override fun stopObservingData()
     {
-        super.stopListeningForData()
+        super.stopObservingData()
 
         viewModel.dataPushCompletable.removeObservers(this)
     }
