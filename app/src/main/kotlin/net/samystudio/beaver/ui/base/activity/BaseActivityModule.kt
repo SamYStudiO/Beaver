@@ -16,7 +16,7 @@ import net.samystudio.beaver.R
 import net.samystudio.beaver.di.qualifier.ActivityContext
 import net.samystudio.beaver.di.qualifier.ActivityRouteContainerId
 import net.samystudio.beaver.di.scope.ActivityScope
-import net.samystudio.beaver.ui.base.viewmodel.factory.ActivityViewModelFactory
+import net.samystudio.beaver.ui.common.viewmodel.factory.ActivityViewModelFactory
 
 @Module
 abstract class BaseActivityModule

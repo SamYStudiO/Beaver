@@ -8,7 +8,7 @@ import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import net.samystudio.beaver.di.scope.ControllerScope
-import net.samystudio.beaver.ui.base.viewmodel.factory.ControllerViewModelFactory
+import net.samystudio.beaver.ui.common.viewmodel.factory.ControllerViewModelFactory
 
 @Module
 abstract class BaseControllerModule

@@ -1,8 +1,9 @@
-package net.samystudio.beaver.ui.base.viewmodel.factory
+package net.samystudio.beaver.ui.common.viewmodel.factory
 
 import android.arch.lifecycle.ViewModel
 import net.samystudio.beaver.di.scope.ControllerScope
 import net.samystudio.beaver.ui.base.viewmodel.BaseControllerViewModel
+import net.samystudio.beaver.ui.base.viewmodel.factory.BaseViewModelFactory
 import javax.inject.Inject
 import javax.inject.Provider
 
