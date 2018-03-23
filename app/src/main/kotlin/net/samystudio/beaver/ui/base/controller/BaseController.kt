@@ -263,9 +263,8 @@ abstract class BaseController : LifecycleController(),
             targetController?.onActivityResult(targetRequestCode, resultCode, resultIntent)
 
             router.popController(this)
+            finished = true
         }
-
-        finished = true
     }
 
     override fun onCancel(dialog: DialogInterface)
