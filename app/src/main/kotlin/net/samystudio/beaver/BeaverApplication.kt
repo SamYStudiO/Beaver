@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.util.Base64
 import com.bluelinelabs.conductor.Controller
 import com.ivianuu.contributer.conductor.HasControllerInjector
+import com.squareup.leakcanary.LeakCanary
 import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
 import dagger.android.DispatchingAndroidInjector
@@ -33,6 +34,11 @@ class BeaverApplication : DaggerApplication(), HasControllerInjector
     override fun onCreate()
     {
         super.onCreate()
+
+        if (LeakCanary.isInAnalyzerProcess(this))
+            return
+
+        LeakCanary.install(this)
 
         Timber.plant(timberTree)
         logKeyHash()
