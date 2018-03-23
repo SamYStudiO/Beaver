@@ -78,8 +78,13 @@ android {
     configurations.all { config ->
         if (config.name.contains("UnitTest") || config.name.contains('AndroidTest')) {
             config.resolutionStrategy.eachDependency { details ->
-                if (details.requested.group == "com.squareup.leakcanary" && details.requested.name == "leakcanary-android") {
-                    details.useTarget(group: details.requested.group, name: "leakcanary-android-no-op", version: details.requested.version)
+                if (details.requested.group == "com.squareup.leakcanary" &&
+                        details.requested.name == "leakcanary-android") {
+                    details.useTarget(
+                            group: details.requested.group,
+                            name: "leakcanary-android-no-op",
+                            version: details.requested.version
+                    )
                 }
             }
         }
@@ -109,13 +114,13 @@ dependencies {
     implementation "com.bluelinelabs:conductor:2.1.4"
     implementation "com.bluelinelabs:conductor-support:2.1.4"
     implementation "com.bluelinelabs:conductor-archlifecycle:0.1.1"
-    implementation "com.github.IVIanuu.Contributer:contributer-conductor:1.0.0"
-    kapt "com.github.IVIanuu.Contributer:contributer-processor:1.0.0"
     implementation "com.google.dagger:dagger:2.14.1"
     implementation "com.google.dagger:dagger-android:2.14.1"
     implementation "com.google.dagger:dagger-android-support:2.14.1"
     kapt "com.google.dagger:dagger-compiler:2.14.1"
     //kapt           "com.google.dagger:dagger-android-processor:2.14.1"
+    implementation "com.github.IVIanuu.Contributer:contributer-conductor:1.0.0"
+    kapt "com.github.IVIanuu.Contributer:contributer-processor:1.0.0"
     implementation "com.squareup.retrofit2:retrofit:2.3.0"
     implementation "com.squareup.retrofit2:converter-gson:2.3.0"
     implementation "com.squareup.retrofit2:adapter-rxjava2:2.3.0"
