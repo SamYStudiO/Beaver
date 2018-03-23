@@ -55,15 +55,11 @@ abstract class BaseController<VM : BaseControllerViewModel> : BaseSimpleControll
     }
 
     @CallSuper
-    open fun onNewIntent(intent: Intent)
+    override fun onNewIntent(intent: Intent)
     {
         viewModel.handleIntent(intent)
 
-        childRouters.forEach { router ->
-            router.backstack.forEach {
-                (it.controller() as? BaseController<*>)?.onNewIntent(intent)
-            }
-        }
+        super.onNewIntent(intent)
     }
 
     @CallSuper

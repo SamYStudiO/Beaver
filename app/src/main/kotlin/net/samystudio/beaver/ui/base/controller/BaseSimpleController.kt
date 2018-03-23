@@ -97,6 +97,16 @@ abstract class BaseSimpleController : LifecycleController(),
     }
 
     @CallSuper
+    open fun onNewIntent(intent: Intent)
+    {
+        childRouters.forEach { router ->
+            router.backstack.forEach {
+                (it.controller() as? BaseSimpleController)?.onNewIntent(intent)
+            }
+        }
+    }
+
+    @CallSuper
     open fun onViewCreated(view: View)
     {
         if (!isDialog)
