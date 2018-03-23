@@ -183,12 +183,17 @@ abstract class BaseController : LifecycleController(),
     {
         super.onDestroyView(view)
 
+        unBinder?.unbind()
+        unBinder = null
+    }
+
+    override fun onDestroy()
+    {
+        super.onDestroy()
+
         dialog?.dismiss()
         dialog = null
         dialogDismissed = true
-
-        unBinder?.unbind()
-        unBinder = null
     }
 
     fun setTargetController(controller: Controller?, requestCode: Int = 0)

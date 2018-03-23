@@ -24,12 +24,14 @@ abstract class BaseViewModelController<VM : BaseControllerViewModel> : BaseContr
     protected abstract val viewModelClass: Class<VM>
     lateinit var viewModel: VM
     private var savedInstanceState: Bundle? = null
+    private var isInitialized: Boolean = false
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle)
     {
         super.onRestoreInstanceState(savedInstanceState)
 
-        this.savedInstanceState = savedInstanceState
+        if (::viewModel.isInitialized) viewModel.handleRestoreInstanceState(savedInstanceState)
+        else this.savedInstanceState = savedInstanceState
     }
 
     @CallSuper
@@ -37,15 +39,16 @@ abstract class BaseViewModelController<VM : BaseControllerViewModel> : BaseContr
     {
         super.onContextAvailable(context)
 
-        if (!::viewModel.isInitialized)
+        if (!isInitialized)
         {
             ConductorInjection.inject(this)
+
             viewModel = viewModelProvider.get(viewModelClass)
             viewModel.handleCreate()
             activity?.intent?.let { viewModel.handleIntent(it) }
             viewModel.handleArguments(args)
 
-            onViewModelCreated()
+            isInitialized = true
         }
 
         savedInstanceState?.let {
@@ -62,8 +65,15 @@ abstract class BaseViewModelController<VM : BaseControllerViewModel> : BaseContr
         super.onNewIntent(intent)
     }
 
+    override fun onViewCreated(view: View)
+    {
+        super.onViewCreated(view)
+
+        startListeningForData()
+    }
+
     @CallSuper
-    protected open fun onViewModelCreated()
+    protected open fun startListeningForData()
     {
         viewModel.resultEvent.observe(this, Observer {
             it?.let {
@@ -72,6 +82,12 @@ abstract class BaseViewModelController<VM : BaseControllerViewModel> : BaseContr
                     finish()
             }
         })
+    }
+
+    @CallSuper
+    protected open fun stopListeningForData()
+    {
+        viewModel.resultEvent.removeObservers(this)
     }
 
     @CallSuper
@@ -92,6 +108,13 @@ abstract class BaseViewModelController<VM : BaseControllerViewModel> : BaseContr
         super.onSaveInstanceState(outState)
 
         viewModel.handleSaveInstanceState(outState)
+    }
+
+    override fun onDestroyView(view: View)
+    {
+        super.onDestroyView(view)
+
+        stopListeningForData()
     }
 
     override fun onDestroy()

@@ -8,9 +8,9 @@ import net.samystudio.beaver.ui.base.viewmodel.DataFetchViewModel
 abstract class BaseDataFetchController<VM, D> :
     BaseViewModelController<VM>() where VM : BaseControllerViewModel, VM : DataFetchViewModel<D>
 {
-    override fun onViewModelCreated()
+    override fun startListeningForData()
     {
-        super.onViewModelCreated()
+        super.startListeningForData()
 
         viewModel.dataFetchObservable.observe(this, Observer {
             it?.let {
@@ -30,6 +30,13 @@ abstract class BaseDataFetchController<VM, D> :
                 }
             }
         })
+    }
+
+    override fun stopListeningForData()
+    {
+        super.stopListeningForData()
+
+        viewModel.dataFetchObservable.removeObservers(this)
     }
 
     fun refreshData()
