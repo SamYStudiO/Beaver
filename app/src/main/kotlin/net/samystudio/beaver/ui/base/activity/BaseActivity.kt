@@ -12,7 +12,7 @@ import com.bluelinelabs.conductor.Router
 import com.bluelinelabs.conductor.RouterTransaction
 import com.evernote.android.state.StateSaver
 import dagger.android.AndroidInjection
-import net.samystudio.beaver.ui.base.controller.BaseSimpleController
+import net.samystudio.beaver.ui.base.controller.BaseController
 import net.samystudio.beaver.ui.base.viewmodel.BaseActivityViewModel
 import net.samystudio.beaver.ui.main.home.HomeController
 import javax.inject.Inject
@@ -70,7 +70,7 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity()
 
         setIntent(intent)
         viewModel.handleIntent(intent)
-        router.backstack.forEach { (it.controller() as? BaseSimpleController)?.onNewIntent(intent) }
+        router.backstack.forEach { (it.controller() as? BaseController)?.onNewIntent(intent) }
     }
 
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)

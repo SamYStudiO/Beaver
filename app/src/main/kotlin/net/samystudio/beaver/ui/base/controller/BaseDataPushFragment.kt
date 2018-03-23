@@ -6,7 +6,7 @@ import net.samystudio.beaver.ui.base.viewmodel.BaseControllerViewModel
 import net.samystudio.beaver.ui.base.viewmodel.DataPushViewModel
 
 abstract class BaseDataPushFragment<VM> :
-    BaseController<VM>() where VM : BaseControllerViewModel, VM : DataPushViewModel
+    BaseViewModelController<VM>() where VM : BaseControllerViewModel, VM : DataPushViewModel
 {
     override fun onViewModelCreated()
     {

@@ -6,7 +6,7 @@ import net.samystudio.beaver.ui.base.viewmodel.BaseControllerViewModel
 import net.samystudio.beaver.ui.base.viewmodel.DataFetchViewModel
 
 abstract class BaseDataFetchController<VM, D> :
-    BaseController<VM>() where VM : BaseControllerViewModel, VM : DataFetchViewModel<D>
+    BaseViewModelController<VM>() where VM : BaseControllerViewModel, VM : DataFetchViewModel<D>
 {
     override fun onViewModelCreated()
     {

@@ -8,11 +8,11 @@ import android.os.Parcelable
 import android.support.annotation.*
 import android.util.TypedValue
 import kotlinx.android.parcel.Parcelize
-import net.samystudio.beaver.ui.base.controller.BaseSimpleController
+import net.samystudio.beaver.ui.base.controller.BaseController
 import java.util.*
 import android.support.v7.app.AlertDialog as AndroidAlertDialog
 
-open class AlertDialog : BaseSimpleController(),
+open class AlertDialog : BaseController(),
                          DialogInterface.OnClickListener,
                          DialogInterface.OnMultiChoiceClickListener
 {
@@ -23,46 +23,33 @@ open class AlertDialog : BaseSimpleController(),
 
     override fun onClick(dialog: DialogInterface?, which: Int)
     {
-        activity?.let {
-            if (it is AlertDialogListener)
+        (activity as? AlertDialogListener)?.let {
+            when (which)
             {
-                when (which)
-                {
-                    DialogInterface.BUTTON_POSITIVE -> it.onDialogPositive(targetRequestCode)
-                    DialogInterface.BUTTON_NEGATIVE -> it.onDialogNegative(targetRequestCode)
-                    DialogInterface.BUTTON_NEUTRAL  -> it.onDialogNeutral(targetRequestCode)
-                    else                            -> it.onDialogClick(targetRequestCode, which)
-                }
+                DialogInterface.BUTTON_POSITIVE -> it.onDialogPositive(targetRequestCode)
+                DialogInterface.BUTTON_NEGATIVE -> it.onDialogNegative(targetRequestCode)
+                DialogInterface.BUTTON_NEUTRAL  -> it.onDialogNeutral(targetRequestCode)
+                else                            -> it.onDialogClick(targetRequestCode, which)
             }
         }
 
-        targetController?.let {
-            if (it is AlertDialogListener)
+        (targetController as? AlertDialogListener)?.let {
+            when (which)
             {
-                when (which)
-                {
-                    DialogInterface.BUTTON_POSITIVE -> it.onDialogPositive(targetRequestCode)
-                    DialogInterface.BUTTON_NEGATIVE -> it.onDialogNegative(targetRequestCode)
-                    DialogInterface.BUTTON_NEUTRAL  -> it.onDialogNeutral(targetRequestCode)
-                    else                            -> it.onDialogClick(targetRequestCode, which)
-                }
+                DialogInterface.BUTTON_POSITIVE -> it.onDialogPositive(targetRequestCode)
+                DialogInterface.BUTTON_NEGATIVE -> it.onDialogNegative(targetRequestCode)
+                DialogInterface.BUTTON_NEUTRAL  -> it.onDialogNeutral(targetRequestCode)
+                else                            -> it.onDialogClick(targetRequestCode, which)
             }
         }
     }
 
     override fun onClick(dialog: DialogInterface?, which: Int, isChecked: Boolean)
     {
-        activity?.let {
-            if (it is AlertDialogListener)
-                it.onDialogClick(targetRequestCode, which, isChecked)
-        }
+        (activity as? AlertDialogListener)?.onDialogClick(targetRequestCode, which, isChecked)
 
-        targetController?.let {
-            if (it is AlertDialogListener)
-            {
-                it.onDialogClick(targetRequestCode, which, isChecked)
-            }
-        }
+        (targetController as? AlertDialogListener)?.onDialogClick(targetRequestCode, which,
+                                                                  isChecked)
     }
 
     /**
@@ -110,7 +97,7 @@ open class AlertDialog : BaseSimpleController(),
         private var cancelable: Boolean = true
 
         /**
-         * If not set [BaseSimpleController.dialogTheme] will be used
+         * If not set [BaseController.dialogTheme] will be used
          *
          * @see [AndroidAlertDialog.Builder.mTheme]
          */
@@ -267,7 +254,7 @@ open class AlertDialog : BaseSimpleController(),
         /**
          * @see newInstance
          */
-        fun create(targetController: BaseSimpleController? = null,
+        fun create(targetController: BaseController? = null,
                    targetRequestCode: Int = 0): AlertDialog =
             newInstance(this, targetController, targetRequestCode)
     }
@@ -335,14 +322,14 @@ open class AlertDialog : BaseSimpleController(),
         /**
          * Create a new Alert dialog instance.
          * If you want to get result from dialog or received events ([AlertDialogListener]), you
-         * must passed target [BaseSimpleController] calling this dialog and that target need to
+         * must passed target [BaseController] calling this dialog and that target need to
          * implement [AlertDialogListener]. Additionally if you open several dialogs you may pass
          * [targetRequestCode] to then identify which dialog your result or events come from.
          * Note you may receive events as well from activity host if activity implements
          * [AlertDialogListener].
          */
         fun newInstance(builder: Builder,
-                        targetController: BaseSimpleController? = null,
+                        targetController: BaseController? = null,
                         targetRequestCode: Int = 0): AlertDialog
         {
             val dialog = AlertDialog()
