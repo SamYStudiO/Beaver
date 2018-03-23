@@ -37,8 +37,6 @@ abstract class BaseViewModelController<VM : BaseControllerViewModel> : BaseContr
     @CallSuper
     override fun onContextAvailable(context: Context)
     {
-        super.onContextAvailable(context)
-
         if (!isInitialized)
         {
             ConductorInjection.inject(this)
@@ -55,6 +53,8 @@ abstract class BaseViewModelController<VM : BaseControllerViewModel> : BaseContr
             viewModel.handleRestoreInstanceState(it)
             savedInstanceState = null
         }
+
+        super.onContextAvailable(context)
     }
 
     @CallSuper

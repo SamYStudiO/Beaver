@@ -62,6 +62,14 @@ abstract class BaseController : LifecycleController(),
         StateSaver.restoreInstanceState(this, savedInstanceState)
     }
 
+    override fun onContextAvailable(context: Context)
+    {
+        super.onContextAvailable(context)
+
+        if (!::firebaseAnalytics.isInitialized)
+            firebaseAnalytics = FirebaseAnalytics.getInstance(context)
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View
     {
         if (isDialog)
@@ -86,14 +94,6 @@ abstract class BaseController : LifecycleController(),
         }
 
         return View(activity)
-    }
-
-    override fun onContextAvailable(context: Context)
-    {
-        super.onContextAvailable(context)
-
-        if (!::firebaseAnalytics.isInitialized)
-            firebaseAnalytics = FirebaseAnalytics.getInstance(context)
     }
 
     @CallSuper
