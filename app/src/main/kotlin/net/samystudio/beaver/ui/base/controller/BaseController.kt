@@ -22,11 +22,8 @@ import com.evernote.android.state.Bundler
 import com.evernote.android.state.State
 import com.evernote.android.state.StateSaver
 import com.google.firebase.analytics.FirebaseAnalytics
-import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.*
 
 abstract class BaseController : LifecycleController(),
-                                LayoutContainer,
                                 DialogInterface.OnCancelListener,
                                 DialogInterface.OnDismissListener
 {
@@ -44,8 +41,6 @@ abstract class BaseController : LifecycleController(),
     @State
     protected var targetRequestCode: Int = 0
     protected var dialog: Dialog? = null
-    override val containerView: View?
-        get() = view
     @State(DialogStyle.BundleHelper::class)
     var dialogStyle: DialogStyle = DialogStyle.STYLE_NORMAL
     @State
@@ -188,7 +183,6 @@ abstract class BaseController : LifecycleController(),
     {
         super.onDestroyView(view)
 
-        clearFindViewByIdCache()
         unBinder?.unbind()
         unBinder = null
         dialogView = null
