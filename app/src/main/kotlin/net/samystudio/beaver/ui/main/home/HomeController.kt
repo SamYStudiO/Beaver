@@ -1,8 +1,7 @@
 package net.samystudio.beaver.ui.main.home
 
-import android.widget.TextView
-import butterknife.BindView
 import butterknife.OnClick
+import kotlinx.android.synthetic.main.fragment_home.*
 import net.samystudio.beaver.R
 import net.samystudio.beaver.data.model.Home
 import net.samystudio.beaver.ui.base.controller.BaseDataFetchController
@@ -15,9 +14,6 @@ class HomeController : BaseDataFetchController<HomeControllerViewModel, Home>()
     override val viewModelClass: Class<HomeControllerViewModel> =
         HomeControllerViewModel::class.java
 
-    @BindView(R.id.text_view)
-    lateinit var textView: TextView
-
     override fun dataFetchStart()
     {
         // TODO show loader
@@ -25,7 +21,7 @@ class HomeController : BaseDataFetchController<HomeControllerViewModel, Home>()
 
     override fun dataFetchSuccess(data: Home)
     {
-        textView.text = data.content
+        text_view.text = data.content
     }
 
     override fun dataFetchError(throwable: Throwable)

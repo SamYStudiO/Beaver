@@ -3,11 +3,10 @@ package net.samystudio.beaver.ui.base.controller
 import android.arch.lifecycle.Observer
 import net.samystudio.beaver.data.remote.CompletableRequestState
 import net.samystudio.beaver.ui.base.viewmodel.BaseControllerViewModel
-import net.samystudio.beaver.ui.base.viewmodel.DataFetchViewModel
 import net.samystudio.beaver.ui.base.viewmodel.DataPushViewModel
 
-abstract class BaseDataFetchPushFragment<VM, D> :
-    BaseDataFetchController<VM, D>() where VM : BaseControllerViewModel, VM : DataFetchViewModel<D>, VM : DataPushViewModel
+abstract class BaseDataPushController<VM> :
+    BaseViewModelController<VM>() where VM : BaseControllerViewModel, VM : DataPushViewModel
 {
     override fun startObservingData()
     {

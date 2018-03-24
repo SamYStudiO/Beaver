@@ -5,9 +5,9 @@ import android.widget.Button
 import butterknife.BindView
 import com.jakewharton.rxbinding2.view.clicks
 import net.samystudio.beaver.R
-import net.samystudio.beaver.ui.base.controller.BaseDataPushFragment
+import net.samystudio.beaver.ui.base.controller.BaseDataPushController
 
-class AuthenticatorController : BaseDataPushFragment<AuthenticatorControllerViewModel>()
+class AuthenticatorController : BaseDataPushController<AuthenticatorControllerViewModel>()
 {
     override val layoutViewRes: Int = R.layout.fragment_authenticator
     override val viewModelClass: Class<AuthenticatorControllerViewModel> =
