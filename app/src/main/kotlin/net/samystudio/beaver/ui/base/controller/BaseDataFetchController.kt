@@ -1,6 +1,7 @@
 package net.samystudio.beaver.ui.base.controller
 
 import android.arch.lifecycle.Observer
+import android.view.View
 import net.samystudio.beaver.data.remote.DataRequestState
 import net.samystudio.beaver.ui.base.viewmodel.BaseControllerViewModel
 import net.samystudio.beaver.ui.base.viewmodel.DataFetchViewModel
@@ -8,9 +9,9 @@ import net.samystudio.beaver.ui.base.viewmodel.DataFetchViewModel
 abstract class BaseDataFetchController<VM, D> :
     BaseViewModelController<VM>() where VM : BaseControllerViewModel, VM : DataFetchViewModel<D>
 {
-    override fun startObservingData()
+    override fun onViewCreated(view: View)
     {
-        super.startObservingData()
+        super.onViewCreated(view)
 
         viewModel.dataFetchObservable.observe(this, Observer {
             it?.let {
@@ -32,9 +33,9 @@ abstract class BaseDataFetchController<VM, D> :
         })
     }
 
-    override fun stopObservingData()
+    override fun onDestroyView(view: View)
     {
-        super.stopObservingData()
+        super.onDestroyView(view)
 
         viewModel.dataFetchObservable.removeObservers(this)
     }

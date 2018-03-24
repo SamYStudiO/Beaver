@@ -1,6 +1,7 @@
 package net.samystudio.beaver.ui.base.controller
 
 import android.arch.lifecycle.Observer
+import android.view.View
 import net.samystudio.beaver.data.remote.CompletableRequestState
 import net.samystudio.beaver.ui.base.viewmodel.BaseControllerViewModel
 import net.samystudio.beaver.ui.base.viewmodel.DataFetchViewModel
@@ -9,9 +10,9 @@ import net.samystudio.beaver.ui.base.viewmodel.DataPushViewModel
 abstract class BaseDataFetchPushController<VM, D> :
     BaseDataFetchController<VM, D>() where VM : BaseControllerViewModel, VM : DataFetchViewModel<D>, VM : DataPushViewModel
 {
-    override fun startObservingData()
+    override fun onViewCreated(view: View)
     {
-        super.startObservingData()
+        super.onViewCreated(view)
 
         viewModel.dataPushCompletable.observe(this, Observer {
             it?.let {
@@ -33,9 +34,9 @@ abstract class BaseDataFetchPushController<VM, D> :
         })
     }
 
-    override fun stopObservingData()
+    override fun onDestroyView(view: View)
     {
-        super.stopObservingData()
+        super.onDestroyView(view)
 
         viewModel.dataPushCompletable.removeObservers(this)
     }

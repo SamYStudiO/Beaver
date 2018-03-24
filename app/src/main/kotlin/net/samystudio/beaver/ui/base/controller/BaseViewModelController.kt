@@ -69,12 +69,6 @@ abstract class BaseViewModelController<VM : BaseControllerViewModel> : BaseContr
     {
         super.onViewCreated(view)
 
-        startObservingData()
-    }
-
-    @CallSuper
-    protected open fun startObservingData()
-    {
         viewModel.resultEvent.observe(this, Observer {
             it?.let {
                 setResult(it.code, it.intent)
@@ -82,12 +76,6 @@ abstract class BaseViewModelController<VM : BaseControllerViewModel> : BaseContr
                     finish()
             }
         })
-    }
-
-    @CallSuper
-    protected open fun stopObservingData()
-    {
-        viewModel.resultEvent.removeObservers(this)
     }
 
     @CallSuper
@@ -114,7 +102,7 @@ abstract class BaseViewModelController<VM : BaseControllerViewModel> : BaseContr
     {
         super.onDestroyView(view)
 
-        stopObservingData()
+        viewModel.resultEvent.removeObservers(this)
     }
 
     override fun onDestroy()
