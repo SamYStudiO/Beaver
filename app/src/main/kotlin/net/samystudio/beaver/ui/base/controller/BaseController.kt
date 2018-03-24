@@ -191,6 +191,7 @@ abstract class BaseController : LifecycleController(),
         clearFindViewByIdCache()
         unBinder?.unbind()
         unBinder = null
+        dialogView = null
     }
 
     override fun onDestroy()
