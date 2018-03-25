@@ -14,10 +14,12 @@ import com.evernote.android.state.StateSaver
 import dagger.android.AndroidInjection
 import net.samystudio.beaver.ui.base.controller.BaseController
 import net.samystudio.beaver.ui.base.viewmodel.BaseActivityViewModel
+import net.samystudio.beaver.ui.common.navigation.Navigable
+import net.samystudio.beaver.ui.common.navigation.NavigationRequest
 import net.samystudio.beaver.ui.main.home.HomeController
 import javax.inject.Inject
 
-abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity()
+abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(), Navigable
 {
     @get:LayoutRes
     protected abstract val layoutViewRes: Int
@@ -112,5 +114,23 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity()
         StateSaver.saveInstanceState(this, outState)
 
         viewModel.handleSaveInstanceState(outState)
+    }
+
+    override fun handleNavigationRequest(navigationRequest: NavigationRequest)
+    {
+        when (navigationRequest)
+        {
+            is NavigationRequest.Pop        ->
+            {
+                if (navigationRequest.controller != null) router.popController(
+                    navigationRequest.controller)
+                else router.popCurrentController()
+            }
+            is NavigationRequest.PopToRoot  -> router.popToRoot()
+            is NavigationRequest.Push       -> router.pushController(
+                navigationRequest.transaction)
+            is NavigationRequest.ReplaceTop -> router.replaceTopController(
+                navigationRequest.transaction)
+        }
     }
 }

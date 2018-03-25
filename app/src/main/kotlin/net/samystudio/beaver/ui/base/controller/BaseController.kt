@@ -22,8 +22,11 @@ import com.evernote.android.state.Bundler
 import com.evernote.android.state.State
 import com.evernote.android.state.StateSaver
 import com.google.firebase.analytics.FirebaseAnalytics
+import net.samystudio.beaver.ui.common.navigation.Navigable
+import net.samystudio.beaver.ui.common.navigation.NavigationRequest
 
 abstract class BaseController : LifecycleController(),
+                                Navigable,
                                 DialogInterface.OnCancelListener,
                                 DialogInterface.OnDismissListener
 {
@@ -195,6 +198,24 @@ abstract class BaseController : LifecycleController(),
         dialog?.dismiss()
         dialog = null
         dialogDismissed = true
+    }
+
+    override fun handleNavigationRequest(navigationRequest: NavigationRequest)
+    {
+        when (navigationRequest)
+        {
+            is NavigationRequest.Pop        ->
+            {
+                if (navigationRequest.controller != null) router.popController(
+                    navigationRequest.controller)
+                else router.popCurrentController()
+            }
+            is NavigationRequest.PopToRoot  -> router.popToRoot()
+            is NavigationRequest.Push       -> router.pushController(
+                navigationRequest.transaction)
+            is NavigationRequest.ReplaceTop -> router.replaceTopController(
+                navigationRequest.transaction)
+        }
     }
 
     fun setTargetController(controller: Controller?, requestCode: Int = 0)
