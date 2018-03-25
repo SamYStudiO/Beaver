@@ -32,7 +32,7 @@ abstract class BaseViewControllerViewModel : BaseViewModel()
     {
     }
 
-    open fun handleResult(requestCode: Int?, code: Int?, data: Intent?)
+    open fun handleResult(requestCode: Int, code: Int, data: Intent?)
     {
     }
 

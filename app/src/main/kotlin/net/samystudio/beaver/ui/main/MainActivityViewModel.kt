@@ -32,7 +32,7 @@ constructor() : BaseActivityViewModel()
         }
     }
 
-    override fun handleResult(requestCode: Int?, code: Int?, data: Intent?)
+    override fun handleResult(requestCode: Int, code: Int, data: Intent?)
     {
         super.handleResult(requestCode, code, data)
 
