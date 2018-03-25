@@ -23,7 +23,6 @@ constructor(private val authenticatorRepositoryManager: AuthenticatorRepositoryM
 {
     private val _dataPushCompletable: CompletableRequestLiveData = CompletableRequestLiveData()
     override val dataPushCompletable: LiveData<CompletableRequestState> = _dataPushCompletable
-    override val title: String? = null
 
     fun <T : AuthenticatorUserFlow> addUserFlow(observable: Observable<T>)
     {

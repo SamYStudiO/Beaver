@@ -14,6 +14,7 @@ class HomeController : BaseDataFetchController<HomeControllerViewModel, Home>()
     override val layoutViewRes: Int = R.layout.fragment_home
     override val viewModelClass: Class<HomeControllerViewModel> =
         HomeControllerViewModel::class.java
+    override var title: String? = "Home"
 
     @BindView(R.id.text_view)
     lateinit var textView: TextView

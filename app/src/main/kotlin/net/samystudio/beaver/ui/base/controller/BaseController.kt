@@ -44,6 +44,12 @@ abstract class BaseController : LifecycleController(),
     @State
     protected var targetRequestCode: Int = 0
     protected var dialog: Dialog? = null
+    open var title: String? = null
+        set(value)
+        {
+            value?.let { activity?.title = it }
+            field = value
+        }
     @State(DialogStyle.BundleHelper::class)
     var dialogStyle: DialogStyle = DialogStyle.STYLE_NORMAL
     @State
@@ -71,6 +77,8 @@ abstract class BaseController : LifecycleController(),
 
         if (!::firebaseAnalytics.isInitialized)
             firebaseAnalytics = FirebaseAnalytics.getInstance(context)
+
+        title?.let { activity?.title = it }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View
