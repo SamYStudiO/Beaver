@@ -4,10 +4,10 @@
           package="net.samystudio.beaver">
 
     <supports-screens
-        android:largeScreens="false"
+        android:largeScreens="true"
         android:normalScreens="true"
         android:smallScreens="false"
-        android:xlargeScreens="false"/>
+        android:xlargeScreens="true"/>
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
