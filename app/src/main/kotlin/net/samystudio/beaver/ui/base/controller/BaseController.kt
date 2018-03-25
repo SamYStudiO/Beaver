@@ -44,7 +44,6 @@ abstract class BaseController : LifecycleController(),
     @State
     protected var targetRequestCode: Int = 0
     protected var dialog: Dialog? = null
-    @State
     open var title: String? = null
         set(value)
         {
@@ -197,15 +196,14 @@ abstract class BaseController : LifecycleController(),
 
         unBinder?.unbind()
         unBinder = null
-        dialogView = null
-    }
 
-    override fun onDestroy()
-    {
-        super.onDestroy()
-
-        dialog?.dismiss()
+        dialog?.let {
+            it.setOnCancelListener(null)
+            it.setOnDismissListener(null)
+            it.dismiss()
+        }
         dialog = null
+        dialogView = null
         dialogDismissed = true
     }
 
