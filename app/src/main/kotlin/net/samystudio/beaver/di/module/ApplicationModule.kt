@@ -33,6 +33,7 @@ abstract class ApplicationModule
         @Singleton
         @ApplicationContext
         @JvmStatic
-        fun provideApplicationContext(application: BeaverApplication): Context = application
+        fun provideApplicationContext(application: Application): Context =
+            application.applicationContext
     }
 }
