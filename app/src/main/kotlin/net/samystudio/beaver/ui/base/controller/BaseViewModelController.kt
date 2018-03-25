@@ -45,6 +45,7 @@ abstract class BaseViewModelController<VM : BaseControllerViewModel> : BaseContr
             viewModel.handleCreate()
             activity?.intent?.let { viewModel.handleIntent(it) }
             viewModel.handleArguments(args)
+            onViewModelCreated()
 
             isInitialized = true
         }
@@ -58,17 +59,11 @@ abstract class BaseViewModelController<VM : BaseControllerViewModel> : BaseContr
     }
 
     @CallSuper
-    override fun onNewIntent(intent: Intent)
+    protected open fun onViewModelCreated()
     {
-        viewModel.handleIntent(intent)
-
-        super.onNewIntent(intent)
-    }
-
-    override fun onViewCreated(view: View)
-    {
-        super.onViewCreated(view)
-
+        viewModel.navigationCommand.observe(this, Observer {
+            it?.let { handleNavigationRequest(it) }
+        })
         viewModel.resultEvent.observe(this, Observer {
             it?.let {
                 setResult(it.code, it.intent)
@@ -76,6 +71,14 @@ abstract class BaseViewModelController<VM : BaseControllerViewModel> : BaseContr
                     finish()
             }
         })
+    }
+
+    @CallSuper
+    override fun onNewIntent(intent: Intent)
+    {
+        viewModel.handleIntent(intent)
+
+        super.onNewIntent(intent)
     }
 
     @CallSuper
@@ -96,13 +99,6 @@ abstract class BaseViewModelController<VM : BaseControllerViewModel> : BaseContr
         super.onSaveInstanceState(outState)
 
         viewModel.handleSaveInstanceState(outState)
-    }
-
-    override fun onDestroyView(view: View)
-    {
-        super.onDestroyView(view)
-
-        viewModel.resultEvent.removeObservers(this)
     }
 
     override fun onDestroy()

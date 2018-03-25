@@ -25,9 +25,4 @@ constructor(homeRepositoryManager: HomeRepositoryManager) : BaseControllerViewMo
     {
         _dataFetchObservable.refresh()
     }
-
-    fun requestAuthenticator()
-    {
-        // (activityViewModel as MainActivityViewModel).requestAuthenticator()
-    }
 }

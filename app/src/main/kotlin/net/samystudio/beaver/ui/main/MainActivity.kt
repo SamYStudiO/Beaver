@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer
 import android.os.Bundle
 import net.samystudio.beaver.R
 import net.samystudio.beaver.ui.base.activity.BaseActivity
+import net.samystudio.beaver.ui.main.authenticator.AuthenticatorController
 
 class MainActivity : BaseActivity<MainActivityViewModel>()
 {
@@ -23,21 +24,14 @@ class MainActivity : BaseActivity<MainActivityViewModel>()
     {
         super.onViewModelCreated()
 
-        viewModel.requestAuthenticatorCommand.observe(this, Observer {
-
-            //AuthenticatorFragment.newInstance(MainActivityViewModel.AUTHENTICATOR_REQUEST_CODE)
-            //  .showNow(supportFragmentManager, AuthenticatorFragment::class.java.name)
-        })
-
         viewModel.userStatusObservable.observe(this, Observer {
 
-            /*it?.let {
+            it?.let {
                 if (it)
-                    onBackStackChanged()
+                    router.popCurrentController()
                 else
-                    AuthenticatorFragment().showNow(supportFragmentManager,
-                                                    AuthenticatorFragment::class.java.name)
-            }*/
+                    AuthenticatorController().show(router)
+            }
         })
     }
 }

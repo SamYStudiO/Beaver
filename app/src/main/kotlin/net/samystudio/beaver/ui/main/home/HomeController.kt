@@ -5,9 +5,9 @@ import butterknife.BindView
 import butterknife.OnClick
 import net.samystudio.beaver.R
 import net.samystudio.beaver.data.model.Home
+import net.samystudio.beaver.ext.getGenericErrorDialog
 import net.samystudio.beaver.ui.base.controller.BaseDataFetchController
 import net.samystudio.beaver.ui.main.authenticator.AuthenticatorController
-import timber.log.Timber
 
 class HomeController : BaseDataFetchController<HomeControllerViewModel, Home>()
 {
@@ -30,8 +30,7 @@ class HomeController : BaseDataFetchController<HomeControllerViewModel, Home>()
 
     override fun dataFetchError(throwable: Throwable)
     {
-        Timber.d("dataFetchError: ")
-        // getGenericErrorDialog(context!!).showNow(fragmentManager, AlertDialog::class.java.name)
+        getGenericErrorDialog(activity!!).show(router)
     }
 
     override fun dataFetchTerminate()
@@ -51,12 +50,10 @@ class HomeController : BaseDataFetchController<HomeControllerViewModel, Home>()
             .showNow(fragmentManager,
                      AlertDialog::class.java.name)*/
 
-        // viewModel.requestAuthenticator()
         // router.pushController(RouterTransaction.with(AuthenticatorController()))
         //getGenericErrorDialog(activity!!).show(router)
 
         AuthenticatorController().show(router)
-        //  .showNow(supportFragmentManager, AuthenticatorFragment::class.java.name)
 
         //viewModel.invalidateToken()
     }

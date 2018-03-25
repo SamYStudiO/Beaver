@@ -57,7 +57,10 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(), N
     protected open fun onViewModelCreated()
     {
         viewModel.titleObservable.observe(this, Observer { it -> title = it })
-        viewModel.resultEvent.observe(this, Observer {
+        viewModel.navigationCommand.observe(this,
+                                            Observer { it?.let { handleNavigationRequest(it) } })
+        viewModel.resultEvent.observe(this, Observer
+        {
             it?.let {
                 setResult(it.code, it.intent)
                 if (it.finish)
@@ -131,6 +134,12 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(), N
                 navigationRequest.transaction)
             is NavigationRequest.ReplaceTop -> router.replaceTopController(
                 navigationRequest.transaction)
+            is NavigationRequest.Dialog     ->
+            {
+                if (navigationRequest.transaction != null)
+                    navigationRequest.controller.show(router, navigationRequest.transaction)
+                else navigationRequest.controller.show(router)
+            }
         }
     }
 }

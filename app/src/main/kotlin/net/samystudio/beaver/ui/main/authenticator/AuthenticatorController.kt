@@ -5,6 +5,7 @@ import android.widget.Button
 import butterknife.BindView
 import com.jakewharton.rxbinding2.view.clicks
 import net.samystudio.beaver.R
+import net.samystudio.beaver.ext.getGenericErrorDialog
 import net.samystudio.beaver.ui.base.controller.BaseDataPushController
 
 class AuthenticatorController : BaseDataPushController<AuthenticatorControllerViewModel>()
@@ -39,22 +40,11 @@ class AuthenticatorController : BaseDataPushController<AuthenticatorControllerVi
 
     override fun dataPushError(throwable: Throwable)
     {
-        //  getGenericErrorDialog(context!!).showNow(fragmentManager, AlertDialog::class.java.name)
+        getGenericErrorDialog(activity!!).show(router)
     }
 
     override fun dataPushTerminate()
     {
         // TODO hide loader
-    }
-
-    companion object
-    {
-        /*fun newInstance(requestCode: Int?): AuthenticatorController
-        {
-            val fragment = AuthenticatorController()
-            requestCode?.let { fragment.setTargetActivity(requestCode) }
-            fragment.setDialogStyle(DialogFragment.STYLE_NO_TITLE, 0)
-            return fragment
-        }*/
     }
 }

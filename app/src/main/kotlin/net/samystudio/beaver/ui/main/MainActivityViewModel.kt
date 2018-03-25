@@ -6,7 +6,8 @@ import android.app.Activity
 import android.content.Intent
 import net.samystudio.beaver.di.scope.ActivityScope
 import net.samystudio.beaver.ui.base.viewmodel.BaseActivityViewModel
-import net.samystudio.beaver.ui.common.viewmodel.CommandLiveEvent
+import net.samystudio.beaver.ui.common.navigation.NavigationRequest
+import net.samystudio.beaver.ui.main.authenticator.AuthenticatorController
 import javax.inject.Inject
 
 @ActivityScope
@@ -15,7 +16,6 @@ class MainActivityViewModel
 constructor() : BaseActivityViewModel()
 {
     private var authenticatorResponse: AccountAuthenticatorResponse? = null
-    val requestAuthenticatorCommand: CommandLiveEvent = CommandLiveEvent()
 
     override fun handleIntent(intent: Intent)
     {
@@ -55,12 +55,8 @@ constructor() : BaseActivityViewModel()
 
         // If we got a non null authenticatorResponse that mean we were ask from system to create
         // account, so let's notify we want to authenticate.
-        if (authenticatorResponse != null) requestAuthenticator()
-    }
-
-    fun requestAuthenticator()
-    {
-        requestAuthenticatorCommand.call()
+        if (authenticatorResponse != null) navigate(
+            NavigationRequest.Dialog(AuthenticatorController()))
     }
 
     companion object

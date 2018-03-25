@@ -215,6 +215,12 @@ abstract class BaseController : LifecycleController(),
                 navigationRequest.transaction)
             is NavigationRequest.ReplaceTop -> router.replaceTopController(
                 navigationRequest.transaction)
+            is NavigationRequest.Dialog     ->
+            {
+                if (navigationRequest.transaction != null)
+                    navigationRequest.controller.show(router, navigationRequest.transaction)
+                else navigationRequest.controller.show(router)
+            }
         }
     }
 
