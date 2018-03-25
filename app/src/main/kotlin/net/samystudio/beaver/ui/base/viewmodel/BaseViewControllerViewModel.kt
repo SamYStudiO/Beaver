@@ -1,4 +1,4 @@
-@file:Suppress("MemberVisibilityCanBePrivate", "PropertyName")
+@file:Suppress("MemberVisibilityCanBePrivate")
 
 package net.samystudio.beaver.ui.base.viewmodel
 
@@ -17,7 +17,7 @@ abstract class BaseViewControllerViewModel : BaseViewModel()
 {
     @Inject
     protected lateinit var userManager: UserManager
-    protected val _resultEvent: SingleLiveEvent<Result> by lazy { SingleLiveEvent<Result>() }
+    private val _resultEvent: SingleLiveEvent<Result> by lazy { SingleLiveEvent<Result>() }
     val resultEvent: LiveData<Result> = _resultEvent
     val userStatusObservable: LiveData<Boolean> by lazy {
         LiveDataReactiveStreams.fromPublisher(

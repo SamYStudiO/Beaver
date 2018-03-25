@@ -1,4 +1,4 @@
-@file:Suppress("PropertyName", "MemberVisibilityCanBePrivate")
+@file:Suppress("MemberVisibilityCanBePrivate")
 
 package net.samystudio.beaver.ui.base.viewmodel
 
@@ -9,7 +9,7 @@ import android.support.annotation.CallSuper
 
 abstract class BaseActivityViewModel : BaseViewControllerViewModel()
 {
-    protected val _titleObservable: MutableLiveData<String> = MutableLiveData()
+    private val _titleObservable: MutableLiveData<String> = MutableLiveData()
     val titleObservable: LiveData<String> = _titleObservable
     var title
         get() = _titleObservable.value
