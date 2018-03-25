@@ -43,6 +43,7 @@ abstract class BaseController : LifecycleController(),
     protected var resultIntent: Intent? = null
     @State
     protected var targetRequestCode: Int = 0
+    @State
     protected var dialog: Dialog? = null
     open var title: String? = null
         set(value)
