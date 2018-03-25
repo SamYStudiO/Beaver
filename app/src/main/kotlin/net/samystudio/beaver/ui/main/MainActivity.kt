@@ -1,10 +1,8 @@
 package net.samystudio.beaver.ui.main
 
-import android.arch.lifecycle.Observer
 import android.os.Bundle
 import net.samystudio.beaver.R
 import net.samystudio.beaver.ui.base.activity.BaseActivity
-import net.samystudio.beaver.ui.main.authenticator.AuthenticatorController
 
 class MainActivity : BaseActivity<MainActivityViewModel>()
 {
@@ -18,20 +16,5 @@ class MainActivity : BaseActivity<MainActivityViewModel>()
         setTheme(R.style.AppTheme)
 
         super.onCreate(savedInstanceState)
-    }
-
-    override fun onViewModelCreated()
-    {
-        super.onViewModelCreated()
-
-        viewModel.userStatusObservable.observe(this, Observer {
-
-            it?.let {
-                if (it)
-                    router.popCurrentController()
-                else
-                    AuthenticatorController().show(router)
-            }
-        })
     }
 }
