@@ -11,7 +11,7 @@ import com.evernote.android.state.StateSaver
 import io.reactivex.BackpressureStrategy
 import net.samystudio.beaver.data.manager.UserManager
 import net.samystudio.beaver.ui.common.navigation.NavigationRequest
-import net.samystudio.beaver.ui.common.viewmodel.NavigationCommand
+import net.samystudio.beaver.ui.common.viewmodel.NavigationEvent
 import net.samystudio.beaver.ui.common.viewmodel.SingleLiveEvent
 import javax.inject.Inject
 
@@ -19,7 +19,7 @@ abstract class BaseViewControllerViewModel : BaseViewModel()
 {
     @Inject
     protected lateinit var userManager: UserManager
-    private val _navigationCommand: NavigationCommand = NavigationCommand()
+    private val _navigationCommand: NavigationEvent = NavigationEvent()
     val navigationCommand: LiveData<NavigationRequest> = _navigationCommand
     private val _resultEvent: SingleLiveEvent<Result> by lazy { SingleLiveEvent<Result>() }
     val resultEvent: LiveData<Result> = _resultEvent

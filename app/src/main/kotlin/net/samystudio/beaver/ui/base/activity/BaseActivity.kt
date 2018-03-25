@@ -56,7 +56,6 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(), N
     @CallSuper
     protected open fun onViewModelCreated()
     {
-        viewModel.titleObservable.observe(this, Observer { it -> title = it })
         viewModel.navigationCommand.observe(this,
                                             Observer { it?.let { handleNavigationRequest(it) } })
         viewModel.resultEvent.observe(this, Observer
