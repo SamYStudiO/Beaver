@@ -44,6 +44,7 @@ abstract class BaseController : LifecycleController(),
     @State
     protected var targetRequestCode: Int = 0
     protected var dialog: Dialog? = null
+    @State
     open var title: String? = null
         set(value)
         {
