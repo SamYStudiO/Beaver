@@ -22,11 +22,13 @@ import com.evernote.android.state.Bundler
 import com.evernote.android.state.State
 import com.evernote.android.state.StateSaver
 import com.google.firebase.analytics.FirebaseAnalytics
+import net.samystudio.beaver.ui.common.dialog.DialogListener
 import net.samystudio.beaver.ui.common.navigation.Navigable
 import net.samystudio.beaver.ui.common.navigation.NavigationRequest
 
 abstract class BaseController : LifecycleController(),
                                 Navigable,
+                                DialogInterface.OnShowListener,
                                 DialogInterface.OnCancelListener,
                                 DialogInterface.OnDismissListener
 {
@@ -150,6 +152,7 @@ abstract class BaseController : LifecycleController(),
 
             it.ownerActivity = activity
             it.setCancelable(dialogCancelable)
+            it.setOnShowListener(this)
             it.setOnCancelListener(this)
             it.setOnDismissListener(this)
         }
@@ -199,6 +202,7 @@ abstract class BaseController : LifecycleController(),
         unBinder = null
 
         dialog?.let {
+            it.setOnShowListener(null)
             it.setOnCancelListener(null)
             it.setOnDismissListener(null)
             it.dismiss()
@@ -206,6 +210,34 @@ abstract class BaseController : LifecycleController(),
         dialog = null
         dialogView = null
         dialogDismissed = true
+    }
+
+    @CallSuper
+    override fun onShow(dialog: DialogInterface?)
+    {
+        (activity as? DialogListener)?.onDialogShow(targetRequestCode)
+        (targetController as? DialogListener)?.onDialogShow(targetRequestCode)
+    }
+
+    @CallSuper
+    override fun onCancel(dialog: DialogInterface)
+    {
+        (activity as? DialogListener)?.onDialogCancel(targetRequestCode)
+        (targetController as? DialogListener)?.onDialogCancel(targetRequestCode)
+
+        setResult(Activity.RESULT_CANCELED, null)
+    }
+
+    @CallSuper
+    override fun onDismiss(dialog: DialogInterface)
+    {
+        (activity as? DialogListener)?.onDialogDismiss(targetRequestCode)
+        (targetController as? DialogListener)?.onDialogDismiss(targetRequestCode)
+
+        this.dialog = null
+        dialogView = null
+        dialogDismissed = true
+        finish()
     }
 
     override fun handleNavigationRequest(navigationRequest: NavigationRequest)
@@ -283,10 +315,6 @@ abstract class BaseController : LifecycleController(),
     fun dismiss()
     {
         dialog?.dismiss()
-        dialog = null
-        dialogDismissed = true
-
-        finish()
     }
 
     fun finish()
@@ -301,17 +329,6 @@ abstract class BaseController : LifecycleController(),
             router.popController(this)
             finished = true
         }
-    }
-
-    override fun onCancel(dialog: DialogInterface)
-    {
-    }
-
-    @CallSuper
-    override fun onDismiss(dialog: DialogInterface)
-    {
-        if (!dialogDismissed)
-            dismiss()
     }
 
     companion object
