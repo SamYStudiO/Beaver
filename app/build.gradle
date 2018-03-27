@@ -1,9 +1,9 @@
-apply plugin: "com.android.application"
-apply plugin: "com.google.firebase.firebase-perf"
-apply plugin: "kotlin-android"
-apply plugin: "kotlin-android-extensions"
-apply plugin: "kotlin-kapt"
-apply plugin: "io.fabric"
+apply plugin: 'com.android.application'
+apply plugin: 'com.google.firebase.firebase-perf'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'io.fabric'
 
 def versionMajor = 1
 def versionMinor = 0
@@ -17,22 +17,22 @@ android {
     compileSdkVersion sdk.compileSdkVersion
 
     defaultConfig {
-        applicationId "net.samystudio.beaver"
+        applicationId 'net.samystudio.beaver'
         minSdkVersion sdk.minSdkVersion
         targetSdkVersion sdk.targetSdkVersion
         versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        buildConfigField("String", "FULL_VERSION_NAME", "\"${versionName}.${versionCode}\"")
-        resValue "string", "application_id", applicationId
+        testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
+        buildConfigField('String', 'FULL_VERSION_NAME', "\"$versionName.$versionCode\"")
+        resValue 'string', 'application_id', applicationId
     }
 
     signingConfigs {
         release {
-            keyAlias "beaver"
-            keyPassword "beaver"
-            storeFile file("keystore.jks")
-            storePassword "beaver"
+            keyAlias 'beaver'
+            keyPassword 'beaver'
+            storeFile file('keystore.jks')
+            storePassword 'beaver'
         }
     }
 
@@ -44,14 +44,14 @@ android {
         }
         release {
             minifyEnabled true
-            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
             manifestPlaceholders = [crashlyticsEnabled: true]
         }
     }
 
     sourceSets {
-        main.java.srcDirs += "src/main/kotlin"
+        main.java.srcDirs += 'src/main/kotlin'
     }
 
     kapt {
@@ -64,23 +64,24 @@ android {
 
     applicationVariants.all { variant ->
         variant.outputs.all { output ->
-            def sep = "_"
+            def sep = '_'
             def version = variant.versionName
             def build = variant.versionCode
-            outputFileName = rootProject.name + sep +
-                    variant.buildType.name + sep +
-                    version + sep + "build" + sep + build + ".apk"
+            outputFileName = "${rootProject.name}${sep}" +
+                    "${variant.buildType.name}${sep}" +
+                    "${version}${sep}" +
+                    "build${sep}${build}.apk"
         }
     }
 
     configurations.all { config ->
-        if (config.name.contains("UnitTest") || config.name.contains('AndroidTest')) {
+        if (config.name.contains('UnitTest') || config.name.contains('AndroidTest')) {
             config.resolutionStrategy.eachDependency { details ->
-                if (details.requested.group == "com.squareup.leakcanary" &&
-                        details.requested.name == "leakcanary-android") {
+                if (details.requested.group == 'com.squareup.leakcanary' &&
+                        details.requested.name == 'leakcanary-android') {
                     details.useTarget(
                             group: details.requested.group,
-                            name: "leakcanary-android-no-op",
+                            name: 'leakcanary-android-no-op',
                             version: details.requested.version
                     )
                 }
@@ -157,4 +158,4 @@ dependencies {
     androidTestImplementation testDependencies.espresso
 }
 
-apply plugin: "com.google.gms.google-services"
+apply plugin: 'com.google.gms.google-services'
