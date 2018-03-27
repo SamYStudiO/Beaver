@@ -12,16 +12,14 @@ def versionBuild = 0
 
 android {
 
-    def sdk = rootProject.ext.sdk
-
-    compileSdkVersion sdk.compileSdkVersion
+    compileSdkVersion 27
 
     defaultConfig {
         applicationId 'net.samystudio.beaver'
-        minSdkVersion sdk.minSdkVersion
-        targetSdkVersion sdk.targetSdkVersion
+        minSdkVersion 19
+        targetSdkVersion 27
         versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
-        versionName "${versionMajor}.${versionMinor}.${versionPatch}"
+        versionName "$versionMajor.$versionMinor.$versionPatch"
         testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
         buildConfigField('String', 'FULL_VERSION_NAME', "\"$versionName.$versionCode\"")
         resValue 'string', 'application_id', applicationId
@@ -91,71 +89,58 @@ android {
 }
 
 dependencies {
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jre7:1.2.31'
+    implementation 'androidx.core:core-ktx:0.2'
 
-    def kotlinDependencies = rootProject.ext.kotlinDependencies
-    def supportDependencies = rootProject.ext.supportDependencies
-    def archDependencies = rootProject.ext.archDependencies
-    def firebaseDependencies = rootProject.ext.firebaseDependencies
-    def daggerDependencies = rootProject.ext.daggerDependencies
-    def conductorDependencies = rootProject.ext.conductorDependencies
-    def reactiveDependencies = rootProject.ext.reactiveDependencies
-    def networkDependencies = rootProject.ext.networkDependencies
-    def debugDependencies = rootProject.ext.debugDependencies
-    def miscDependencies = rootProject.ext.miscDependencies
-    def testDependencies = rootProject.ext.testDependencies
+    implementation 'com.android.support:support-v4:27.1.0'
+    implementation 'com.android.support:appcompat-v7:27.1.0'
+    implementation 'com.android.support:design:27.1.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.0-beta6'
 
-    implementation kotlinDependencies.kotlin
-    implementation kotlinDependencies.ktx
+    implementation 'android.arch.lifecycle:extensions:1.1.1'
+    implementation 'android.arch.lifecycle:compiler:1.1.1'
+    implementation 'android.arch.lifecycle:reactivestreams:1.1.1'
 
-    implementation supportDependencies.supportv4
-    implementation supportDependencies.appcompatv7
-    implementation supportDependencies.design
-    implementation supportDependencies.constraint
+    implementation 'com.google.firebase:firebase-core:12.0.0'
+    implementation 'com.google.firebase:firebase-appindexing:12.0.0'
+    implementation 'com.google.firebase:firebase-perf:12.0.0'
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.9.1'
 
-    implementation archDependencies.lifecycle
-    kapt archDependencies.lifecyclecCompiler
-    implementation archDependencies.lifecycleReactiveStreams
+    implementation 'com.google.dagger:dagger:2.15'
+    implementation 'com.google.dagger:dagger-android:2.15'
+    implementation 'com.google.dagger:dagger-android-support:2.15'
+    kapt 'com.google.dagger:dagger-compiler:2.15'
+    //kapt      'ccom.google.dagger:dagger-android-processor:2.15'
+    implementation 'com.github.IVIanuu.Contributer:contributer-conductor:1.0.0'
+    kapt 'ccom.github.IVIanuu.Contributer:contributer-processor:1.0.0'
 
-    implementation firebaseDependencies.core
-    implementation firebaseDependencies.appindexing
-    implementation firebaseDependencies.perf
-    implementation firebaseDependencies.crashlytics
+    implementation 'com.bluelinelabs:conductor:2.1.4'
+    implementation 'com.bluelinelabs:conductor-support:2.1.4'
+    implementation 'com.bluelinelabs:conductor-archlifecycle:0.1.1'
 
-    implementation daggerDependencies.dagger
-    implementation daggerDependencies.daggerAndroid
-    implementation daggerDependencies.daggerAndroidSupport
-    kapt daggerDependencies.daggerCompiler
-    //kapt daggerDependencies.daggerProcessor
-    implementation daggerDependencies.contributer
-    kapt daggerDependencies.contributerProcessor
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.12'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
+    implementation 'io.reactivex.rxjava2:rxkotlin:2.2.0'
+    implementation 'com.jakewharton.rxbinding2:rxbinding:2.1.1'
+    implementation 'com.jakewharton.rxbinding2:rxbinding-kotlin:2.1.1'
 
-    implementation conductorDependencies.conductor
-    implementation conductorDependencies.conductorSupport
-    implementation conductorDependencies.conductorLifecycle
+    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.9.0'
 
-    implementation reactiveDependencies.rxJava
-    implementation reactiveDependencies.rxAndroid
-    implementation reactiveDependencies.rxKotlin
-    implementation reactiveDependencies.rxBinding
-    implementation reactiveDependencies.rxBindingKotlin
+    implementation 'com.jakewharton.timber:timber:4.6.1'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
+    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
 
-    implementation networkDependencies.retrofit
-    implementation networkDependencies.retrofitGson
-    implementation networkDependencies.retrofitRxJava
-    implementation networkDependencies.okHttpLogging
+    implementation 'com.jakewharton:butterknife:8.8.1'
+    kapt 'com.jakewharton:butterknife-compiler:8.8.1'
+    implementation 'com.evernote:android-state:1.2.1'
+    kapt 'com.evernote:android-state-processor:1.2.1'
 
-    implementation debugDependencies.timber
-    debugImplementation debugDependencies.leakcanary
-    releaseImplementation debugDependencies.leakcanarynoop
-
-    implementation miscDependencies.butterKnife
-    kapt miscDependencies.butterKnifeCompiler
-    implementation miscDependencies.androidState
-    kapt miscDependencies.androidStateProcessor
-
-    testImplementation testDependencies.junit
-    androidTestImplementation testDependencies.runner
-    androidTestImplementation testDependencies.espresso
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 }
 
 apply plugin: 'com.google.gms.google-services'
