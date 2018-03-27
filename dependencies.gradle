@@ -14,7 +14,7 @@ ext {
     ktxVersion = '0.2'
 
     supportVersion = "$sdkVersion.1.0"
-    constraintVersion = '1.0.2'
+    constraintVersion = '1.1.0-beta6'
 
     archVersion = '1.1.0'
 
