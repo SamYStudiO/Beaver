@@ -11,6 +11,9 @@ import net.samystudio.beaver.ui.base.activity.BaseActivity
 import javax.inject.Inject
 import javax.inject.Singleton
 
+/**
+ * Navigation helper to navigate through activities from an non activity context.
+ */
 @Singleton
 open class ApplicationNavigationManager
 @Inject

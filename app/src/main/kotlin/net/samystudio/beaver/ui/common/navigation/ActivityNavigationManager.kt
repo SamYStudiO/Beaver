@@ -12,7 +12,7 @@ import net.samystudio.beaver.ui.base.activity.BaseActivity
 import javax.inject.Inject
 
 /**
- * Navigation helper to navigate through activities.
+ * Navigation helper to navigate through activities from an activity.
  */
 @ActivityScope
 open class ActivityNavigationManager
