@@ -73,7 +73,6 @@ abstract class BaseViewModelController<VM : BaseControllerViewModel> : BaseContr
         })
     }
 
-    @CallSuper
     override fun onNewIntent(intent: Intent)
     {
         viewModel.handleIntent(intent)

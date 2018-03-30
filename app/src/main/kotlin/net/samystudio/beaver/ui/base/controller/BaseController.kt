@@ -84,6 +84,16 @@ abstract class BaseController : LifecycleController(),
         title?.let { activity?.title = it }
     }
 
+    @CallSuper
+    open fun onNewIntent(intent: Intent)
+    {
+        childRouters.forEach { router ->
+            router.backstack.forEach {
+                (it.controller() as? BaseController)?.onNewIntent(intent)
+            }
+        }
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View
     {
         if (isDialog)
@@ -108,16 +118,6 @@ abstract class BaseController : LifecycleController(),
         }
 
         return View(activity)
-    }
-
-    @CallSuper
-    open fun onNewIntent(intent: Intent)
-    {
-        childRouters.forEach { router ->
-            router.backstack.forEach {
-                (it.controller() as? BaseController)?.onNewIntent(intent)
-            }
-        }
     }
 
     @CallSuper
