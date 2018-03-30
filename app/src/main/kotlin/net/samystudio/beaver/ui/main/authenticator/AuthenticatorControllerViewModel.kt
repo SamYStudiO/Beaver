@@ -19,33 +19,36 @@ import javax.inject.Inject
 class AuthenticatorControllerViewModel
 @Inject
 constructor(private val authenticatorRepositoryManager: AuthenticatorRepositoryManager) :
-    BaseControllerViewModel(), DataPushViewModel
-{
+    BaseControllerViewModel(), DataPushViewModel {
     private val _dataPushCompletable: CompletableRequestLiveData = CompletableRequestLiveData()
     override val dataPushCompletable: LiveData<CompletableRequestState> = _dataPushCompletable
 
-    fun <T : AuthenticatorUserFlow> addUserFlow(observable: Observable<T>)
-    {
+    fun <T : AuthenticatorUserFlow> addUserFlow(observable: Observable<T>) {
         disposables.add(observable.flatMap { userFlow ->
-            when (userFlow)
-            {
+            when (userFlow) {
                 is AuthenticatorUserFlow.SignIn ->
                     _dataPushCompletable.bind(
-                        authenticatorRepositoryManager.signIn(userFlow.email,
-                                                              userFlow.password)).doOnNext(
+                        authenticatorRepositoryManager.signIn(
+                            userFlow.email,
+                            userFlow.password
+                        )
+                    ).doOnNext(
                         {
                             if (it is CompletableRequestState.Complete)
                                 handleSignResult(userFlow.email, userFlow.password)
                         })
                 is AuthenticatorUserFlow.SignUp ->
                     _dataPushCompletable.bind(
-                        authenticatorRepositoryManager.signUp(userFlow.email,
-                                                              userFlow.password)).doOnNext(
+                        authenticatorRepositoryManager.signUp(
+                            userFlow.email,
+                            userFlow.password
+                        )
+                    ).doOnNext(
                         {
                             if (it is CompletableRequestState.Complete)
                                 handleSignResult(userFlow.email, userFlow.password)
                         })
-                else                            ->
+                else ->
                     Observable.just(Observable.error<Unit> {
                         IllegalArgumentException("Unknown user flow ${userFlow.javaClass.name}.")
                     })
@@ -53,8 +56,7 @@ constructor(private val authenticatorRepositoryManager: AuthenticatorRepositoryM
         }.subscribe())
     }
 
-    private fun handleSignResult(email: String, password: String)
-    {
+    private fun handleSignResult(email: String, password: String) {
         val bundle = Bundle()
         bundle.putString(AccountManager.KEY_ACCOUNT_NAME, email)
         bundle.putString(AccountManager.KEY_ACCOUNT_TYPE, BuildConfig.APPLICATION_ID)

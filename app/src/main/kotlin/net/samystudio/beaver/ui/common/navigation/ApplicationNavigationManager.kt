@@ -17,13 +17,15 @@ import javax.inject.Singleton
 @Singleton
 open class ApplicationNavigationManager
 @Inject
-constructor(@param:ApplicationContext
-            protected val context: Context)
-{
-    fun startActivity(activityClass: Class<out BaseActivity<*>>,
-                      extras: Bundle? = null,
-                      options: Bundle? = null)
-    {
+constructor(
+    @param:ApplicationContext
+    protected val context: Context
+) {
+    fun startActivity(
+        activityClass: Class<out BaseActivity<*>>,
+        extras: Bundle? = null,
+        options: Bundle? = null
+    ) {
         val intent = Intent(context, activityClass)
 
         if (extras != null)
@@ -32,15 +34,15 @@ constructor(@param:ApplicationContext
         context.startActivity(intent, options)
     }
 
-    fun startActivity(intent: Intent,
-                      options: Bundle? = null)
-    {
+    fun startActivity(
+        intent: Intent,
+        options: Bundle? = null
+    ) {
         context.startActivity(intent, options)
     }
 
     fun startUrl(url: String) = startUrl(Uri.parse(url))
-    fun startUrl(uri: Uri)
-    {
+    fun startUrl(uri: Uri) {
         val intent = Intent(Intent.ACTION_VIEW, uri)
         intent.addCategory(Intent.CATEGORY_DEFAULT)
         intent.addCategory(Intent.CATEGORY_BROWSABLE)

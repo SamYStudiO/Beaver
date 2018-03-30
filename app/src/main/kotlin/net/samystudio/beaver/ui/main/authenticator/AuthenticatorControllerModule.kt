@@ -12,8 +12,7 @@ import net.samystudio.beaver.ui.base.controller.BaseControllerModule
 import net.samystudio.beaver.ui.base.viewmodel.BaseControllerViewModel
 
 @Module(includes = [BaseControllerModule::class])
-abstract class AuthenticatorControllerModule
-{
+abstract class AuthenticatorControllerModule {
     @Binds
     @ControllerScope
     abstract fun bindController(controller: AuthenticatorController): Controller

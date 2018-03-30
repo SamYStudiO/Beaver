@@ -16,19 +16,19 @@ import net.samystudio.beaver.ui.ActivityBuilderModule
 import net.samystudio.beaver.ui.ControllerBuilderModule
 import javax.inject.Singleton
 
-@Module(includes = [CrashlyticsModule::class, TimberModule::class,
-    AndroidSupportInjectionModule::class, ConductorInjectionModule::class,
-    ActivityBuilderModule::class, ControllerBuilderModule::class, ServiceBuilderModule::class,
-    SystemServiceModule::class, NetworkModule::class, FirebaseModule::class])
-abstract class ApplicationModule
-{
+@Module(
+    includes = [CrashlyticsModule::class, TimberModule::class,
+        AndroidSupportInjectionModule::class, ConductorInjectionModule::class,
+        ActivityBuilderModule::class, ControllerBuilderModule::class, ServiceBuilderModule::class,
+        SystemServiceModule::class, NetworkModule::class, FirebaseModule::class]
+)
+abstract class ApplicationModule {
     @Binds
     @Singleton
     abstract fun bindApplication(application: BeaverApplication): Application
 
     @Module
-    companion object
-    {
+    companion object {
         @Provides
         @Singleton
         @ApplicationContext

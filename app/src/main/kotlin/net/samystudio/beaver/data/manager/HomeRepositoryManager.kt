@@ -10,8 +10,7 @@ import javax.inject.Inject
 @ControllerScope
 class HomeRepositoryManager
 @Inject
-constructor(private val homeApiInterface: HomeApiInterface)
-{
+constructor(private val homeApiInterface: HomeApiInterface) {
     fun home(): Observable<DataRequestState<Home>> =
         homeApiInterface
             .home()

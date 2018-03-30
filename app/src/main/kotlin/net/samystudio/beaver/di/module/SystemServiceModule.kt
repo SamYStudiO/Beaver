@@ -14,8 +14,7 @@ import javax.inject.Singleton
  * Mostly singleton retrieved using [android.content.Context.getSystemService].
  */
 @Module
-object SystemServiceModule
-{
+object SystemServiceModule {
     @Provides
     @Singleton
     @JvmStatic

@@ -11,8 +11,7 @@ import net.samystudio.beaver.ui.main.home.HomeController
 import net.samystudio.beaver.ui.main.home.HomeControllerModule
 
 @Module
-abstract class ControllerBuilderModule
-{
+abstract class ControllerBuilderModule {
     @ContributesAndroidInjector(modules = [HomeControllerModule::class])
     @ControllerScope
     abstract fun contributeHomeController(): HomeController

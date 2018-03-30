@@ -9,8 +9,7 @@ import android.support.annotation.CallSuper
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
-abstract class BaseViewModel : ViewModel()
-{
+abstract class BaseViewModel : ViewModel() {
     @SuppressLint("StaticFieldLeak")
     @Inject
     protected lateinit var application: Application

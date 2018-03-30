@@ -3,8 +3,7 @@ package net.samystudio.beaver.ui.common.navigation
 import com.bluelinelabs.conductor.RouterTransaction
 import net.samystudio.beaver.ui.base.controller.BaseController
 
-sealed class NavigationRequest
-{
+sealed class NavigationRequest {
     class Pop(val controller: BaseController? = null) : NavigationRequest()
     class PopToRoot : NavigationRequest()
     class Push(val transaction: RouterTransaction) : NavigationRequest()

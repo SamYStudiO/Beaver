@@ -13,10 +13,11 @@ import javax.inject.Singleton
 @Singleton
 class UserManager
 @Inject
-constructor(private val accountManager: AccountManager,
-            private val sharedPreferencesHelper: SharedPreferencesHelper) :
-    OnAccountsUpdateListener
-{
+constructor(
+    private val accountManager: AccountManager,
+    private val sharedPreferencesHelper: SharedPreferencesHelper
+) :
+    OnAccountsUpdateListener {
     private val _statusObservable: BehaviorSubject<Boolean> = BehaviorSubject.create()
     val statusObservable: Observable<Boolean> = _statusObservable
     val token: String?
@@ -24,34 +25,35 @@ constructor(private val accountManager: AccountManager,
             accountManager.peekAuthToken(it, DEFAULT_AUTH_TOKEN_TYPE)
         }
 
-    init
-    {
+    init {
         accountManager.addOnAccountsUpdatedListener(this, null, true)
     }
 
-    override fun onAccountsUpdated(accounts: Array<out Account>?)
-    {
+    override fun onAccountsUpdated(accounts: Array<out Account>?) {
         val account = getCurrentAccount()
-        val connect = account != null && accountManager.peekAuthToken(account,
-                                                                      DEFAULT_AUTH_TOKEN_TYPE) != null
+        val connect = account != null && accountManager.peekAuthToken(
+            account,
+            DEFAULT_AUTH_TOKEN_TYPE
+        ) != null
         if (_statusObservable.value != connect)
             _statusObservable.onNext(connect)
     }
 
-    fun invalidateToken()
-    {
-        accountManager.invalidateAuthToken(BuildConfig.APPLICATION_ID,
-                                           accountManager.peekAuthToken(getCurrentAccount(),
-                                                                        DEFAULT_AUTH_TOKEN_TYPE))
+    fun invalidateToken() {
+        accountManager.invalidateAuthToken(
+            BuildConfig.APPLICATION_ID,
+            accountManager.peekAuthToken(
+                getCurrentAccount(),
+                DEFAULT_AUTH_TOKEN_TYPE
+            )
+        )
     }
 
-    private fun getCurrentAccount(): Account?
-    {
+    private fun getCurrentAccount(): Account? {
         val accountName = sharedPreferencesHelper.accountName
         val accounts = accountManager.getAccountsByType(BuildConfig.APPLICATION_ID)
 
-        if (accountName != null)
-        {
+        if (accountName != null) {
             accounts.forEach { account ->
                 if (accountName == account.name)
                     return account
@@ -61,27 +63,28 @@ constructor(private val accountManager: AccountManager,
         return if (accounts.isEmpty()) null else accounts[0]
     }
 
-    fun onNewToken(email: String, password: String, token: String)
-    {
+    fun onNewToken(email: String, password: String, token: String) {
         var account =
             getCurrentAccount()
 
-        if (account == null)
-        {
-            account = Account(email,
-                              BuildConfig.APPLICATION_ID)
+        if (account == null) {
+            account = Account(
+                email,
+                BuildConfig.APPLICATION_ID
+            )
 
             val b = accountManager.addAccountExplicitly(account, password, null)
             if (b) sharedPreferencesHelper.accountName = account.name
         }
 
-        accountManager.setAuthToken(account,
-                                    DEFAULT_AUTH_TOKEN_TYPE,
-                                    token)
+        accountManager.setAuthToken(
+            account,
+            DEFAULT_AUTH_TOKEN_TYPE,
+            token
+        )
     }
 
-    companion object
-    {
+    companion object {
         const val KEY_AUTH_TOKEN_TYPE = "authTokenType"
         const val KEY_FEATURES = "features"
         const val DEFAULT_AUTH_TOKEN_TYPE = "defaultAuthTokenType"

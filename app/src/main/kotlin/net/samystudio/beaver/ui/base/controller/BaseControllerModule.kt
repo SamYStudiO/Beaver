@@ -11,16 +11,15 @@ import net.samystudio.beaver.di.scope.ControllerScope
 import net.samystudio.beaver.ui.common.viewmodel.factory.ControllerViewModelFactory
 
 @Module
-abstract class BaseControllerModule
-{
+abstract class BaseControllerModule {
     @Binds
     @ControllerScope
     abstract fun bindViewModelFactory(
-        viewModelFactory: ControllerViewModelFactory): ViewModelProvider.Factory
+        viewModelFactory: ControllerViewModelFactory
+    ): ViewModelProvider.Factory
 
     @Module
-    companion object
-    {
+    companion object {
         @Provides
         @ControllerScope
         @JvmStatic
@@ -29,8 +28,10 @@ abstract class BaseControllerModule
         @Provides
         @ControllerScope
         @JvmStatic
-        fun provideViewModelProvider(viewModelStore: ViewModelStore,
-                                     viewModelFactory: ViewModelProvider.Factory): ViewModelProvider =
+        fun provideViewModelProvider(
+            viewModelStore: ViewModelStore,
+            viewModelFactory: ViewModelProvider.Factory
+        ): ViewModelProvider =
             ViewModelProvider(viewModelStore, viewModelFactory)
     }
 }

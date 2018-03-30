@@ -17,8 +17,7 @@ import net.samystudio.beaver.ui.base.viewmodel.BaseControllerViewModel
 import retrofit2.Retrofit
 
 @Module(includes = [BaseControllerModule::class])
-abstract class HomeControllerModule
-{
+abstract class HomeControllerModule {
     @Binds
     @ControllerScope
     abstract fun bindController(controller: HomeController): Controller
@@ -30,8 +29,7 @@ abstract class HomeControllerModule
     abstract fun bindViewModel(viewModel: HomeControllerViewModel): BaseControllerViewModel
 
     @Module
-    companion object
-    {
+    companion object {
         @Provides
         @ControllerScope
         @JvmStatic

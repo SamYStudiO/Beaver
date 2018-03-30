@@ -9,9 +9,10 @@ import javax.inject.Singleton
 @Singleton
 class AuthenticatorRepositoryManager
 @Inject
-constructor(private val userManager: UserManager,
-            private val authenticatorApiInterface: AuthenticatorApiInterface)
-{
+constructor(
+    private val userManager: UserManager,
+    private val authenticatorApiInterface: AuthenticatorApiInterface
+) {
     fun signIn(email: String, password: String): Observable<CompletableRequestState> =
         authenticatorApiInterface
             .signIn(email, password)

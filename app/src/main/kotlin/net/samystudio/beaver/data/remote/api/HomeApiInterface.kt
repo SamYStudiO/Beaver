@@ -4,8 +4,7 @@ import io.reactivex.Single
 import net.samystudio.beaver.data.model.Home
 import retrofit2.http.GET
 
-interface HomeApiInterface
-{
+interface HomeApiInterface {
     @GET("home.json")
     fun home(): Single<Home>
 }

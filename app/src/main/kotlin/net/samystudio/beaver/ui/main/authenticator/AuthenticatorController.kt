@@ -8,8 +8,7 @@ import net.samystudio.beaver.R
 import net.samystudio.beaver.ext.getGenericErrorDialog
 import net.samystudio.beaver.ui.base.controller.BaseDataPushController
 
-class AuthenticatorController : BaseDataPushController<AuthenticatorControllerViewModel>()
-{
+class AuthenticatorController : BaseDataPushController<AuthenticatorControllerViewModel>() {
     override val layoutViewRes: Int = R.layout.fragment_authenticator
     override val viewModelClass: Class<AuthenticatorControllerViewModel> =
         AuthenticatorControllerViewModel::class.java
@@ -19,8 +18,7 @@ class AuthenticatorController : BaseDataPushController<AuthenticatorControllerVi
     @BindView(R.id.sign_up)
     lateinit var signUpButton: Button
 
-    override fun onViewCreated(view: View)
-    {
+    override fun onViewCreated(view: View) {
         super.onViewCreated(view)
 
         viewModel.addUserFlow(
@@ -29,22 +27,18 @@ class AuthenticatorController : BaseDataPushController<AuthenticatorControllerVi
             signUpButton.clicks().map { AuthenticatorUserFlow.SignUp("hello", "world") })
     }
 
-    override fun dataPushStart()
-    {
+    override fun dataPushStart() {
         // TODO show loader
     }
 
-    override fun dataPushSuccess()
-    {
+    override fun dataPushSuccess() {
     }
 
-    override fun dataPushError(throwable: Throwable)
-    {
+    override fun dataPushError(throwable: Throwable) {
         getGenericErrorDialog(activity!!).show(router)
     }
 
-    override fun dataPushTerminate()
-    {
+    override fun dataPushTerminate() {
         // TODO hide loader
     }
 }

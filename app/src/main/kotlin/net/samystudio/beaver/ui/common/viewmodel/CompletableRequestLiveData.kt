@@ -7,13 +7,14 @@ import io.reactivex.Flowable
 import io.reactivex.Observable
 import net.samystudio.beaver.data.remote.CompletableRequestState
 
-class CompletableRequestLiveData : LiveData<CompletableRequestState>()
-{
+class CompletableRequestLiveData : LiveData<CompletableRequestState>() {
     fun bind(
-        observable: Observable<CompletableRequestState>): Observable<CompletableRequestState> =
+        observable: Observable<CompletableRequestState>
+    ): Observable<CompletableRequestState> =
         observable.doOnNext { postValue(it) }
 
     fun bind(
-        flowable: Flowable<CompletableRequestState>): Flowable<CompletableRequestState> =
+        flowable: Flowable<CompletableRequestState>
+    ): Flowable<CompletableRequestState> =
         flowable.doOnNext { postValue(it) }
 }

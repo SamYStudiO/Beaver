@@ -13,57 +13,51 @@ import java.util.*
 import android.support.v7.app.AlertDialog as AndroidAlertDialog
 
 open class AlertDialog : BaseController(),
-                         DialogInterface.OnClickListener,
-                         DialogInterface.OnMultiChoiceClickListener
-{
+    DialogInterface.OnClickListener,
+    DialogInterface.OnMultiChoiceClickListener {
     override val layoutViewRes: Int = 0
 
     override fun onCreateDialog(): AndroidAlertDialog =
         Builder(activity!!, args.getParcelable(PARAMS) as? Params).build(this, dialogTheme).create()
 
-    override fun onClick(dialog: DialogInterface?, which: Int)
-    {
+    override fun onClick(dialog: DialogInterface?, which: Int) {
         (activity as? AlertDialogListener)?.let {
-            when (which)
-            {
+            when (which) {
                 DialogInterface.BUTTON_POSITIVE -> it.onDialogPositive(targetRequestCode)
                 DialogInterface.BUTTON_NEGATIVE -> it.onDialogNegative(targetRequestCode)
-                DialogInterface.BUTTON_NEUTRAL  -> it.onDialogNeutral(targetRequestCode)
-                else                            -> it.onDialogClick(targetRequestCode, which)
+                DialogInterface.BUTTON_NEUTRAL -> it.onDialogNeutral(targetRequestCode)
+                else -> it.onDialogClick(targetRequestCode, which)
             }
         }
 
         (targetController as? AlertDialogListener)?.let {
-            when (which)
-            {
+            when (which) {
                 DialogInterface.BUTTON_POSITIVE -> it.onDialogPositive(targetRequestCode)
                 DialogInterface.BUTTON_NEGATIVE -> it.onDialogNegative(targetRequestCode)
-                DialogInterface.BUTTON_NEUTRAL  -> it.onDialogNeutral(targetRequestCode)
-                else                            -> it.onDialogClick(targetRequestCode, which)
+                DialogInterface.BUTTON_NEUTRAL -> it.onDialogNeutral(targetRequestCode)
+                else -> it.onDialogClick(targetRequestCode, which)
             }
         }
     }
 
-    override fun onClick(dialog: DialogInterface?, which: Int, isChecked: Boolean)
-    {
+    override fun onClick(dialog: DialogInterface?, which: Int, isChecked: Boolean) {
         (activity as? AlertDialogListener)?.onDialogClick(targetRequestCode, which, isChecked)
 
-        (targetController as? AlertDialogListener)?.onDialogClick(targetRequestCode, which,
-                                                                  isChecked)
+        (targetController as? AlertDialogListener)?.onDialogClick(
+            targetRequestCode, which,
+            isChecked
+        )
     }
 
     /**
      * @see [AndroidAlertDialog.Builder]
      */
-    class Builder(private val context: Context)
-    {
+    class Builder(private val context: Context) {
         /**
          * @hide
          */
-        constructor(context: Context, params: Params?) : this(context)
-        {
-            if (params != null)
-            {
+        constructor(context: Context, params: Params?) : this(context) {
+            if (params != null) {
                 themeResId = params.themeResId
                 title = params.title
                 message = params.message
@@ -219,23 +213,27 @@ open class AlertDialog : BaseController(),
         fun setCancelable(cancelable: Boolean) = apply { this.cancelable = cancelable }
 
         fun toParams() =
-            Params(themeResId,
-                   title,
-                   message,
-                   titleIconId,
-                   positiveButton,
-                   negativeButton,
-                   neutralButtonText,
-                   items,
-                   checkedItem,
-                   checkedItems,
-                   multiChoice,
-                   singleChoice,
-                   cancelable)
+            Params(
+                themeResId,
+                title,
+                message,
+                titleIconId,
+                positiveButton,
+                negativeButton,
+                neutralButtonText,
+                items,
+                checkedItem,
+                checkedItems,
+                multiChoice,
+                singleChoice,
+                cancelable
+            )
 
         fun build(dialog: AlertDialog, @StyleRes themeResId: Int): AndroidAlertDialog.Builder =
-            AndroidAlertDialog.Builder(context,
-                                       if (this.themeResId == 0) themeResId else this.themeResId).apply {
+            AndroidAlertDialog.Builder(
+                context,
+                if (this.themeResId == 0) themeResId else this.themeResId
+            ).apply {
                 setTitle(title)
                 setMessage(message)
                 setIcon(titleIconId)
@@ -254,28 +252,30 @@ open class AlertDialog : BaseController(),
         /**
          * @see newInstance
          */
-        fun create(targetController: BaseController? = null,
-                   targetRequestCode: Int = 0): AlertDialog =
+        fun create(
+            targetController: BaseController? = null,
+            targetRequestCode: Int = 0
+        ): AlertDialog =
             newInstance(this, targetController, targetRequestCode)
     }
 
     @Parcelize
-    data class Params(@StyleRes val themeResId: Int,
-                      val title: CharSequence?,
-                      val message: CharSequence?,
-                      val titleIconId: Int,
-                      val positiveButtonText: CharSequence?,
-                      val negativeButtonText: CharSequence?,
-                      val neutralButtonText: CharSequence?,
-                      val items: Array<CharSequence>?,
-                      val checkedItem: Int,
-                      val checkedItems: BooleanArray?,
-                      val multiChoice: Boolean,
-                      val singleChoice: Boolean,
-                      val cancelable: Boolean) : Parcelable
-    {
-        override fun equals(other: Any?): Boolean
-        {
+    data class Params(
+        @StyleRes val themeResId: Int,
+        val title: CharSequence?,
+        val message: CharSequence?,
+        val titleIconId: Int,
+        val positiveButtonText: CharSequence?,
+        val negativeButtonText: CharSequence?,
+        val neutralButtonText: CharSequence?,
+        val items: Array<CharSequence>?,
+        val checkedItem: Int,
+        val checkedItems: BooleanArray?,
+        val multiChoice: Boolean,
+        val singleChoice: Boolean,
+        val cancelable: Boolean
+    ) : Parcelable {
+        override fun equals(other: Any?): Boolean {
             if (this === other) return true
             if (javaClass != other?.javaClass) return false
 
@@ -298,8 +298,7 @@ open class AlertDialog : BaseController(),
             return true
         }
 
-        override fun hashCode(): Int
-        {
+        override fun hashCode(): Int {
             var result = themeResId
             result = 31 * result + (title?.hashCode() ?: 0)
             result = 31 * result + (message?.hashCode() ?: 0)
@@ -317,8 +316,7 @@ open class AlertDialog : BaseController(),
         }
     }
 
-    companion object
-    {
+    companion object {
         /**
          * Create a new Alert dialog instance.
          * If you want to get result from dialog or received events ([AlertDialogListener]), you
@@ -328,10 +326,11 @@ open class AlertDialog : BaseController(),
          * Note you may receive events as well from activity host if activity implements
          * [AlertDialogListener].
          */
-        fun newInstance(builder: Builder,
-                        targetController: BaseController? = null,
-                        targetRequestCode: Int = 0): AlertDialog
-        {
+        fun newInstance(
+            builder: Builder,
+            targetController: BaseController? = null,
+            targetRequestCode: Int = 0
+        ): AlertDialog {
             val dialog = AlertDialog()
             dialog.setTargetController(targetController, targetRequestCode)
             dialog.args.putParcelable(PARAMS, builder.toParams())

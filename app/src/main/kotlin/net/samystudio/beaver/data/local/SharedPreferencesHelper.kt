@@ -11,10 +11,11 @@ import javax.inject.Singleton
 @Singleton
 class SharedPreferencesHelper
 @Inject
-constructor(@param:ApplicationContext
-            private val context: Context,
-            private val sharedPreferences: SharedPreferences)
-{
+constructor(
+    @param:ApplicationContext
+    private val context: Context,
+    private val sharedPreferences: SharedPreferences
+) {
     var apiUrl: String
         get() = sharedPreferences.getString(API_URL, context.getString(R.string.api_url))
         set(value) = sharedPreferences.edit { putString(API_URL, value) }
@@ -23,8 +24,7 @@ constructor(@param:ApplicationContext
         get() = sharedPreferences.getString(ACCOUNT_NAME, null)
         set(value) = sharedPreferences.edit { putString(ACCOUNT_NAME, value) }
 
-    companion object
-    {
+    companion object {
         private const val API_URL = "SharedPreferencesManager:apiUrl"
         private const val ACCOUNT_NAME = "SharedPreferencesManager:accountName"
     }

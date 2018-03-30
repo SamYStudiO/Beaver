@@ -11,14 +11,12 @@ import javax.inject.Singleton
  * https://github.com/JakeWharton/timber
  */
 @Module
-object TimberModule
-{
+object TimberModule {
     @Provides
     @Singleton
     @JvmStatic
     fun provideTimberTree(): Timber.Tree =
-        object : Timber.DebugTree()
-        {
+        object : Timber.DebugTree() {
             override fun isLoggable(tag: String?, priority: Int) =
                 BuildConfig.DEBUG || priority >= Log.INFO
         }

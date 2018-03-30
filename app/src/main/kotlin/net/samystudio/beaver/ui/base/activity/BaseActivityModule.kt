@@ -19,8 +19,7 @@ import net.samystudio.beaver.di.scope.ActivityScope
 import net.samystudio.beaver.ui.common.viewmodel.factory.ActivityViewModelFactory
 
 @Module
-abstract class BaseActivityModule
-{
+abstract class BaseActivityModule {
     @Binds
     @ActivityScope
     @ActivityContext
@@ -29,11 +28,11 @@ abstract class BaseActivityModule
     @Binds
     @ActivityScope
     abstract fun bindViewModelFactory(
-        viewModelFactory: ActivityViewModelFactory): ViewModelProvider.Factory
+        viewModelFactory: ActivityViewModelFactory
+    ): ViewModelProvider.Factory
 
     @Module
-    companion object
-    {
+    companion object {
         @Provides
         @ActivityScope
         @ActivityRouteContainerId
@@ -44,17 +43,23 @@ abstract class BaseActivityModule
         @Provides
         @ActivityScope
         @JvmStatic
-        fun provideRoute(activity: BaseActivity<*>,
-                         @ActivityRouteContainerId
-                         controllerContainerId: Int): Router =
-            Conductor.attachRouter(activity, activity.findViewById(controllerContainerId),
-                                   activity.saveInstanceState)
+        fun provideRoute(
+            activity: BaseActivity<*>,
+            @ActivityRouteContainerId
+            controllerContainerId: Int
+        ): Router =
+            Conductor.attachRouter(
+                activity, activity.findViewById(controllerContainerId),
+                activity.saveInstanceState
+            )
 
         @Provides
         @ActivityScope
         @JvmStatic
-        fun provideViewModelProvider(activity: AppCompatActivity,
-                                     viewModelFactory: ViewModelProvider.Factory): ViewModelProvider =
+        fun provideViewModelProvider(
+            activity: AppCompatActivity,
+            viewModelFactory: ViewModelProvider.Factory
+        ): ViewModelProvider =
             ViewModelProviders.of(activity, viewModelFactory)
     }
 }

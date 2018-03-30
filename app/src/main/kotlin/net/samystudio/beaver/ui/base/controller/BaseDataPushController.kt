@@ -7,24 +7,19 @@ import net.samystudio.beaver.ui.base.viewmodel.BaseControllerViewModel
 import net.samystudio.beaver.ui.base.viewmodel.DataPushViewModel
 
 abstract class BaseDataPushController<VM> :
-    BaseViewModelController<VM>() where VM : BaseControllerViewModel, VM : DataPushViewModel
-{
-    override fun onViewCreated(view: View)
-    {
+    BaseViewModelController<VM>() where VM : BaseControllerViewModel, VM : DataPushViewModel {
+    override fun onViewCreated(view: View) {
         super.onViewCreated(view)
 
         viewModel.dataPushCompletable.observe(this, Observer {
             it?.let {
-                when (it)
-                {
-                    is CompletableRequestState.Start    -> dataPushStart()
-                    is CompletableRequestState.Complete ->
-                    {
+                when (it) {
+                    is CompletableRequestState.Start -> dataPushStart()
+                    is CompletableRequestState.Complete -> {
                         dataPushSuccess()
                         dataPushTerminate()
                     }
-                    is CompletableRequestState.Error    ->
-                    {
+                    is CompletableRequestState.Error -> {
                         dataPushError(it.error)
                         dataPushTerminate()
                     }
@@ -33,8 +28,7 @@ abstract class BaseDataPushController<VM> :
         })
     }
 
-    override fun onDestroyView(view: View)
-    {
+    override fun onDestroyView(view: View) {
         super.onDestroyView(view)
 
         viewModel.dataPushCompletable.removeObservers(this)

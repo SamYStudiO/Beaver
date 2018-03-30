@@ -19,8 +19,7 @@ import net.samystudio.beaver.ui.common.navigation.NavigationRequest
 import net.samystudio.beaver.ui.main.home.HomeController
 import javax.inject.Inject
 
-abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(), Navigable
-{
+abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(), Navigable {
     @get:LayoutRes
     protected abstract val layoutViewRes: Int
     @Inject
@@ -35,8 +34,7 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(), N
      */
     var saveInstanceState: Bundle? = null
 
-    override fun onCreate(savedInstanceState: Bundle?)
-    {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(layoutViewRes)
         ButterKnife.bind(this)
@@ -54,10 +52,9 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(), N
     }
 
     @CallSuper
-    protected open fun onViewModelCreated()
-    {
+    protected open fun onViewModelCreated() {
         viewModel.navigationCommand.observe(this,
-                                            Observer { it?.let { handleNavigationRequest(it) } })
+            Observer { it?.let { handleNavigationRequest(it) } })
         viewModel.resultEvent.observe(this, Observer
         {
             it?.let {
@@ -68,8 +65,7 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(), N
         })
     }
 
-    override fun onNewIntent(intent: Intent)
-    {
+    override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
 
         setIntent(intent)
@@ -77,15 +73,13 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(), N
         router.backstack.forEach { (it.controller() as? BaseController)?.onNewIntent(intent) }
     }
 
-    public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
-    {
+    public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         viewModel.handleResult(requestCode, resultCode, data)
     }
 
-    override fun onRestoreInstanceState(savedInstanceState: Bundle?)
-    {
+    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
         super.onRestoreInstanceState(savedInstanceState)
 
         StateSaver.restoreInstanceState(this, savedInstanceState)
@@ -94,23 +88,19 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(), N
             viewModel.handleRestoreInstanceState(savedInstanceState)
     }
 
-    override fun onResume()
-    {
+    override fun onResume() {
         super.onResume()
 
         viewModel.handleReady()
     }
 
-    override fun onBackPressed()
-    {
-        if (!router.handleBack())
-        {
+    override fun onBackPressed() {
+        if (!router.handleBack()) {
             super.onBackPressed()
         }
     }
 
-    override fun onSaveInstanceState(outState: Bundle)
-    {
+    override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
 
         StateSaver.saveInstanceState(this, outState)
@@ -118,23 +108,22 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(), N
         viewModel.handleSaveInstanceState(outState)
     }
 
-    override fun handleNavigationRequest(navigationRequest: NavigationRequest)
-    {
-        when (navigationRequest)
-        {
-            is NavigationRequest.Pop        ->
-            {
+    override fun handleNavigationRequest(navigationRequest: NavigationRequest) {
+        when (navigationRequest) {
+            is NavigationRequest.Pop -> {
                 if (navigationRequest.controller != null) router.popController(
-                    navigationRequest.controller)
+                    navigationRequest.controller
+                )
                 else router.popCurrentController()
             }
-            is NavigationRequest.PopToRoot  -> router.popToRoot()
-            is NavigationRequest.Push       -> router.pushController(
-                navigationRequest.transaction)
+            is NavigationRequest.PopToRoot -> router.popToRoot()
+            is NavigationRequest.Push -> router.pushController(
+                navigationRequest.transaction
+            )
             is NavigationRequest.ReplaceTop -> router.replaceTopController(
-                navigationRequest.transaction)
-            is NavigationRequest.Dialog     ->
-            {
+                navigationRequest.transaction
+            )
+            is NavigationRequest.Dialog -> {
                 if (navigationRequest.transaction != null)
                     navigationRequest.controller.show(router, navigationRequest.transaction)
                 else navigationRequest.controller.show(router)

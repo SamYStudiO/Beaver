@@ -8,8 +8,7 @@ import dagger.android.DaggerService
 import net.samystudio.beaver.data.manager.AuthenticatorManager
 import javax.inject.Inject
 
-class AuthenticatorService : DaggerService()
-{
+class AuthenticatorService : DaggerService() {
     @Inject
     protected lateinit var authenticatorManager: AuthenticatorManager
 

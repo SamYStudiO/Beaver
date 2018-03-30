@@ -10,8 +10,7 @@ import net.samystudio.beaver.data.model.Home
 import net.samystudio.beaver.ext.getGenericErrorDialog
 import net.samystudio.beaver.ui.base.controller.BaseDataFetchController
 
-class HomeController : BaseDataFetchController<HomeControllerViewModel, Home>()
-{
+class HomeController : BaseDataFetchController<HomeControllerViewModel, Home>() {
     override val layoutViewRes: Int = R.layout.fragment_home
     override val viewModelClass: Class<HomeControllerViewModel> =
         HomeControllerViewModel::class.java
@@ -20,29 +19,24 @@ class HomeController : BaseDataFetchController<HomeControllerViewModel, Home>()
     @BindView(R.id.text_view)
     lateinit var textView: TextView
 
-    override fun dataFetchStart()
-    {
+    override fun dataFetchStart() {
         // TODO show loader
     }
 
-    override fun dataFetchSuccess(data: Home)
-    {
+    override fun dataFetchSuccess(data: Home) {
         textView.text = data.content
     }
 
-    override fun dataFetchError(throwable: Throwable)
-    {
+    override fun dataFetchError(throwable: Throwable) {
         getGenericErrorDialog(activity!!).show(router)
     }
 
-    override fun dataFetchTerminate()
-    {
+    override fun dataFetchTerminate() {
         // TODO hide loader
     }
 
     @OnClick(R.id.invalidate)
-    fun onClickInvalidate()
-    {
+    fun onClickInvalidate() {
 
         /*AlertDialog.Builder(activity!!)
         .title("title")
@@ -51,8 +45,11 @@ class HomeController : BaseDataFetchController<HomeControllerViewModel, Home>()
         .create(this, 11)
         .show(router)*/
 
-        router.pushController(RouterTransaction.with(this).pushChangeHandler(
-            HorizontalChangeHandler()))
+        router.pushController(
+            RouterTransaction.with(this).pushChangeHandler(
+                HorizontalChangeHandler()
+            )
+        )
         //getGenericErrorDialog(activity!!).show(router)
 
         //AuthenticatorController().show(router)

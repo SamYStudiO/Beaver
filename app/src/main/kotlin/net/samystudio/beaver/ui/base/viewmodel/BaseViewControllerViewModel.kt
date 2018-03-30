@@ -15,8 +15,7 @@ import net.samystudio.beaver.ui.common.viewmodel.NavigationEvent
 import net.samystudio.beaver.ui.common.viewmodel.SingleLiveEvent
 import javax.inject.Inject
 
-abstract class BaseViewControllerViewModel : BaseViewModel()
-{
+abstract class BaseViewControllerViewModel : BaseViewModel() {
     @Inject
     protected lateinit var userManager: UserManager
     private val _navigationCommand: NavigationEvent = NavigationEvent()
@@ -25,24 +24,21 @@ abstract class BaseViewControllerViewModel : BaseViewModel()
     val resultEvent: LiveData<Result> = _resultEvent
     val userStatusObservable: LiveData<Boolean> by lazy {
         LiveDataReactiveStreams.fromPublisher(
-            userManager.statusObservable.toFlowable(BackpressureStrategy.LATEST))
+            userManager.statusObservable.toFlowable(BackpressureStrategy.LATEST)
+        )
     }
 
-    open fun handleCreate()
-    {
+    open fun handleCreate() {
     }
 
-    open fun handleIntent(intent: Intent)
-    {
+    open fun handleIntent(intent: Intent) {
     }
 
-    open fun handleResult(requestCode: Int, code: Int, data: Intent?)
-    {
+    open fun handleResult(requestCode: Int, code: Int, data: Intent?) {
     }
 
     @CallSuper
-    open fun handleRestoreInstanceState(savedInstanceState: Bundle)
-    {
+    open fun handleRestoreInstanceState(savedInstanceState: Bundle) {
         StateSaver.restoreInstanceState(this, savedInstanceState)
     }
 
@@ -50,26 +46,22 @@ abstract class BaseViewControllerViewModel : BaseViewModel()
      * View model is up and ready, all kind of params (intent, savedInstanceState, arguments) should
      * be handled now.
      */
-    open fun handleReady()
-    {
+    open fun handleReady() {
     }
 
     @CallSuper
-    open fun handleSaveInstanceState(outState: Bundle)
-    {
+    open fun handleSaveInstanceState(outState: Bundle) {
         StateSaver.saveInstanceState(this, outState)
     }
 
-    fun navigate(navigationRequest: NavigationRequest)
-    {
+    fun navigate(navigationRequest: NavigationRequest) {
         _navigationCommand.value = navigationRequest
     }
 
     /**
      * @see android.app.Activity.setResult
      */
-    fun setResult(code: Int, intent: Intent?, finish: Boolean = true)
-    {
+    fun setResult(code: Int, intent: Intent?, finish: Boolean = true) {
         _resultEvent.value = Result(code, intent, finish)
     }
 

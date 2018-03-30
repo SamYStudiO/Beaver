@@ -21,8 +21,7 @@ import java.lang.reflect.Type
 import javax.inject.Singleton
 
 @Module
-object NetworkModule
-{
+object NetworkModule {
     private const val BASE_URL: String = "https://root/"
 
     @Provides
@@ -34,8 +33,7 @@ object NetworkModule
     @Provides
     @Singleton
     @JvmStatic
-    fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor
-    {
+    fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor {
         val httpLoggingInterceptor = HttpLoggingInterceptor()
 
         httpLoggingInterceptor.level =
@@ -48,9 +46,11 @@ object NetworkModule
     @Provides
     @Singleton
     @JvmStatic
-    fun provideOkHttpClient(cache: Cache,
-                            httpLoggingInterceptor: HttpLoggingInterceptor,
-                            requestInterceptor: Interceptor): OkHttpClient =
+    fun provideOkHttpClient(
+        cache: Cache,
+        httpLoggingInterceptor: HttpLoggingInterceptor,
+        requestInterceptor: Interceptor
+    ): OkHttpClient =
         OkHttpClient.Builder()
             .cache(cache)
             .addInterceptor(requestInterceptor)
@@ -60,8 +60,10 @@ object NetworkModule
     @Provides
     @Singleton
     @JvmStatic
-    fun provideRequestInterceptor(sharedPreferencesHelper: SharedPreferencesHelper,
-                                  userManager: UserManager): Interceptor =
+    fun provideRequestInterceptor(
+        sharedPreferencesHelper: SharedPreferencesHelper,
+        userManager: UserManager
+    ): Interceptor =
         Interceptor { chain ->
             // Request interceptor to update root url and add user token if exist.
 
@@ -101,16 +103,17 @@ object NetworkModule
     @Singleton
     @JvmStatic
     fun provideNullOrEmptyConverterFactory(): Converter.Factory =
-        object : Converter.Factory()
-        {
-            override fun responseBodyConverter(type: Type,
-                                               annotations: Array<out Annotation>,
-                                               retrofit: Retrofit): Converter<ResponseBody, Any?>
-            {
+        object : Converter.Factory() {
+            override fun responseBodyConverter(
+                type: Type,
+                annotations: Array<out Annotation>,
+                retrofit: Retrofit
+            ): Converter<ResponseBody, Any?> {
                 val nextResponseBodyConverter = retrofit.nextResponseBodyConverter<Any?>(
                     this,
                     type,
-                    annotations)
+                    annotations
+                )
 
                 return Converter { body: ResponseBody ->
                     if (body.contentLength() == 0L) null
@@ -128,10 +131,12 @@ object NetworkModule
     @Provides
     @Singleton
     @JvmStatic
-    fun provideRetrofit(okHttpClient: OkHttpClient,
-                        rxJava2CallAdapterFactory: RxJava2CallAdapterFactory,
-                        nullOrEmptyConverterFactory: Converter.Factory,
-                        gsonConverterFactory: GsonConverterFactory): Retrofit =
+    fun provideRetrofit(
+        okHttpClient: OkHttpClient,
+        rxJava2CallAdapterFactory: RxJava2CallAdapterFactory,
+        nullOrEmptyConverterFactory: Converter.Factory,
+        gsonConverterFactory: GsonConverterFactory
+    ): Retrofit =
         Retrofit.Builder()
             .client(okHttpClient)
             .addCallAdapterFactory(rxJava2CallAdapterFactory)

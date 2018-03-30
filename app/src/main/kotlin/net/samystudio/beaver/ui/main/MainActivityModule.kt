@@ -13,8 +13,7 @@ import net.samystudio.beaver.ui.base.activity.BaseActivityModule
 import net.samystudio.beaver.ui.base.viewmodel.BaseActivityViewModel
 
 @Module(includes = [BaseActivityModule::class])
-abstract class MainActivityModule
-{
+abstract class MainActivityModule {
     @Binds
     @ActivityScope
     abstract fun bindActivity(activity: MainActivity): AppCompatActivity

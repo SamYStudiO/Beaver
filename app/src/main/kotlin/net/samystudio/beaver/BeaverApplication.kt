@@ -12,8 +12,7 @@ import net.samystudio.beaver.di.component.DaggerApplicationComponent
 import timber.log.Timber
 import javax.inject.Inject
 
-class BeaverApplication : DaggerApplication(), HasControllerInjector
-{
+class BeaverApplication : DaggerApplication(), HasControllerInjector {
     private val applicationInjector = DaggerApplicationComponent.builder()
         .application(this)
         .build()
@@ -25,8 +24,7 @@ class BeaverApplication : DaggerApplication(), HasControllerInjector
     @Inject
     protected lateinit var timberTree: Timber.Tree
 
-    override fun onCreate()
-    {
+    override fun onCreate() {
         super.onCreate()
 
         if (LeakCanary.isInAnalyzerProcess(this))

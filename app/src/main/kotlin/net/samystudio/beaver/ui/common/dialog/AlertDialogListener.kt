@@ -4,40 +4,34 @@ package net.samystudio.beaver.ui.common.dialog
  * AlertDialog listener for Dialog events, only activities and controllers will received these
  * events if they implement this interface, there is no point to implement it with any other object.
  */
-interface AlertDialogListener
-{
+interface AlertDialogListener {
     /**
      * @see android.content.DialogInterface.OnClickListener.onClick
      */
-    fun onDialogPositive(requestCode: Int)
-    {
+    fun onDialogPositive(requestCode: Int) {
     }
 
     /**
      * @see android.content.DialogInterface.OnClickListener.onClick
      */
-    fun onDialogNegative(requestCode: Int)
-    {
+    fun onDialogNegative(requestCode: Int) {
     }
 
     /**
      * @see android.content.DialogInterface.OnClickListener.onClick
      */
-    fun onDialogNeutral(requestCode: Int)
-    {
+    fun onDialogNeutral(requestCode: Int) {
     }
 
     /**
      * @see android.content.DialogInterface.OnClickListener.onClick
      */
-    fun onDialogClick(requestCode: Int, which: Int)
-    {
+    fun onDialogClick(requestCode: Int, which: Int) {
     }
 
     /**
      * @see android.content.DialogInterface.OnMultiChoiceClickListener.onClick
      */
-    fun onDialogClick(requestCode: Int, which: Int, checked: Boolean)
-    {
+    fun onDialogClick(requestCode: Int, which: Int, checked: Boolean) {
     }
 }

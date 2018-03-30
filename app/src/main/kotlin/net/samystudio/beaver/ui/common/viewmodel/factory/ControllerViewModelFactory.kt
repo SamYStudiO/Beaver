@@ -11,6 +11,8 @@ import javax.inject.Provider
 @ControllerScope
 class ControllerViewModelFactory
 @Inject
-constructor(creators: Map<Class<out BaseControllerViewModel>,
-        @JvmSuppressWildcards Provider<BaseControllerViewModel>>) :
+constructor(
+    creators: Map<Class<out BaseControllerViewModel>,
+            @JvmSuppressWildcards Provider<BaseControllerViewModel>>
+) :
     BaseViewModelFactory(creators as Map<Class<out ViewModel>, Provider<ViewModel>>)

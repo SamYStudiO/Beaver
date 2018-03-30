@@ -7,8 +7,7 @@ import android.support.v7.widget.Toolbar
 import android.widget.TextView
 import net.samystudio.beaver.ui.base.viewmodel.BaseActivityViewModel
 
-abstract class BaseToolbarActivity<VM : BaseActivityViewModel> : BaseActivity<VM>()
-{
+abstract class BaseToolbarActivity<VM : BaseActivityViewModel> : BaseActivity<VM>() {
     protected abstract val toolbar: Toolbar
 
     /**
@@ -17,15 +16,13 @@ abstract class BaseToolbarActivity<VM : BaseActivityViewModel> : BaseActivity<VM
      */
     protected abstract val toolbarTitle: TextView?
 
-    override fun onCreate(savedInstanceState: Bundle?)
-    {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setSupportActionBar(toolbar)
     }
 
-    override fun setTitle(title: CharSequence?)
-    {
+    override fun setTitle(title: CharSequence?) {
         super.setTitle(title)
 
         // try to fade in/out title if possible
@@ -35,33 +32,23 @@ abstract class BaseToolbarActivity<VM : BaseActivityViewModel> : BaseActivity<VM
 
             it.animate().cancel()
 
-            if (title.isNullOrBlank())
-            {
-                hideTitle()?.setListener(object : AnimatorListenerAdapter()
-                                         {
-                                             override fun onAnimationEnd(animation: Animator?)
-                                             {
-                                                 it.text = ""
-                                             }
-                                         })
-            }
-            else
-            {
-                if (it.text.isNullOrBlank())
-                {
+            if (title.isNullOrBlank()) {
+                hideTitle()?.setListener(object : AnimatorListenerAdapter() {
+                    override fun onAnimationEnd(animation: Animator?) {
+                        it.text = ""
+                    }
+                })
+            } else {
+                if (it.text.isNullOrBlank()) {
                     it.text = title
                     showTitle()
-                }
-                else
-                {
-                    hideTitle()?.setListener(object : AnimatorListenerAdapter()
-                                             {
-                                                 override fun onAnimationEnd(animation: Animator?)
-                                                 {
-                                                     it.text = title
-                                                     showTitle()
-                                                 }
-                                             })
+                } else {
+                    hideTitle()?.setListener(object : AnimatorListenerAdapter() {
+                        override fun onAnimationEnd(animation: Animator?) {
+                            it.text = title
+                            showTitle()
+                        }
+                    })
                 }
             }
         }

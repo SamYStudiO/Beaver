@@ -14,8 +14,7 @@ import javax.inject.Singleton
  * https://firebase.google.com/docs/crashlytics/
  */
 @Module
-object CrashlyticsModule
-{
+object CrashlyticsModule {
     @Provides
     @Singleton
     @JvmStatic

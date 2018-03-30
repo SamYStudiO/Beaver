@@ -8,8 +8,7 @@ import net.samystudio.beaver.di.qualifier.ApplicationContext
 import javax.inject.Singleton
 
 @Module
-object FirebaseModule
-{
+object FirebaseModule {
     @Provides
     @Singleton
     @JvmStatic

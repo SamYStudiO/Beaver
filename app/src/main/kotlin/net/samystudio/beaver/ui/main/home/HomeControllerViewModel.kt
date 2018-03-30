@@ -14,14 +14,12 @@ import javax.inject.Inject
 class HomeControllerViewModel
 @Inject
 constructor(homeRepositoryManager: HomeRepositoryManager) : BaseControllerViewModel(),
-                                                            DataFetchViewModel<Home>
-{
+    DataFetchViewModel<Home> {
     private val _dataFetchObservable: DataRequestLiveData<Home> =
         DataRequestLiveData(homeRepositoryManager.home())
     override val dataFetchObservable: LiveData<DataRequestState<Home>> = _dataFetchObservable
 
-    override fun refreshData()
-    {
+    override fun refreshData() {
         _dataFetchObservable.refresh()
     }
 }

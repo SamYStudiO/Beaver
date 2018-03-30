@@ -12,13 +12,11 @@ import javax.inject.Singleton
 @AndroidInjectorKeyRegistry(keys = [ControllerKey::class])
 @Singleton
 @Component(modules = [ApplicationModule::class])
-interface ApplicationComponent : AndroidInjector<BeaverApplication>
-{
+interface ApplicationComponent : AndroidInjector<BeaverApplication> {
     override fun inject(application: BeaverApplication)
 
     @Component.Builder
-    interface Builder
-    {
+    interface Builder {
         @BindsInstance
         fun application(application: BeaverApplication): Builder
 

@@ -7,24 +7,19 @@ import net.samystudio.beaver.ui.base.viewmodel.BaseControllerViewModel
 import net.samystudio.beaver.ui.base.viewmodel.DataFetchViewModel
 
 abstract class BaseDataFetchController<VM, D> :
-    BaseViewModelController<VM>() where VM : BaseControllerViewModel, VM : DataFetchViewModel<D>
-{
-    override fun onViewCreated(view: View)
-    {
+    BaseViewModelController<VM>() where VM : BaseControllerViewModel, VM : DataFetchViewModel<D> {
+    override fun onViewCreated(view: View) {
         super.onViewCreated(view)
 
         viewModel.dataFetchObservable.observe(this, Observer {
             it?.let {
-                when (it)
-                {
-                    is DataRequestState.Start   -> dataFetchStart()
-                    is DataRequestState.Success ->
-                    {
+                when (it) {
+                    is DataRequestState.Start -> dataFetchStart()
+                    is DataRequestState.Success -> {
                         dataFetchSuccess(it.data)
                         dataFetchTerminate()
                     }
-                    is DataRequestState.Error   ->
-                    {
+                    is DataRequestState.Error -> {
                         dataFetchError(it.error)
                         dataFetchTerminate()
                     }
@@ -33,15 +28,13 @@ abstract class BaseDataFetchController<VM, D> :
         })
     }
 
-    override fun onDestroyView(view: View)
-    {
+    override fun onDestroyView(view: View) {
         super.onDestroyView(view)
 
         viewModel.dataFetchObservable.removeObservers(this)
     }
 
-    fun refreshData()
-    {
+    fun refreshData() {
         viewModel.refreshData()
     }
 
