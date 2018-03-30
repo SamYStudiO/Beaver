@@ -3,11 +3,13 @@ package net.samystudio.beaver.ui.main.home
 import android.widget.TextView
 import butterknife.BindView
 import butterknife.OnClick
+import com.bluelinelabs.conductor.RouterTransaction
+import com.bluelinelabs.conductor.changehandler.HorizontalChangeHandler
+import com.bluelinelabs.conductor.changehandler.SimpleSwapChangeHandler
 import net.samystudio.beaver.R
 import net.samystudio.beaver.data.model.Home
 import net.samystudio.beaver.ext.getGenericErrorDialog
 import net.samystudio.beaver.ui.base.controller.BaseDataFetchController
-import net.samystudio.beaver.ui.main.authenticator.AuthenticatorController
 
 class HomeController : BaseDataFetchController<HomeControllerViewModel, Home>()
 {
@@ -51,10 +53,11 @@ class HomeController : BaseDataFetchController<HomeControllerViewModel, Home>()
             .showNow(fragmentManager,
                      AlertDialog::class.java.name)*/
 
-        // router.pushController(RouterTransaction.with(AuthenticatorController()))
+        router.pushController(RouterTransaction.with(this).pushChangeHandler(
+            HorizontalChangeHandler()))
         //getGenericErrorDialog(activity!!).show(router)
 
-        AuthenticatorController().show(router)
+        //AuthenticatorController().show(router)
 
         //viewModel.invalidateToken()
     }
