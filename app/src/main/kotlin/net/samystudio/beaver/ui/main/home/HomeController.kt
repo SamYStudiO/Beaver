@@ -5,7 +5,6 @@ import butterknife.BindView
 import butterknife.OnClick
 import com.bluelinelabs.conductor.RouterTransaction
 import com.bluelinelabs.conductor.changehandler.HorizontalChangeHandler
-import com.bluelinelabs.conductor.changehandler.SimpleSwapChangeHandler
 import net.samystudio.beaver.R
 import net.samystudio.beaver.data.model.Home
 import net.samystudio.beaver.ext.getGenericErrorDialog
@@ -45,13 +44,12 @@ class HomeController : BaseDataFetchController<HomeControllerViewModel, Home>()
     fun onClickInvalidate()
     {
 
-        /*AlertDialog.Builder(context!!)
-            .title("title")
-            .items(R.array.api_urls)
-            .positiveButton("ok")
-            .create(this, 11)
-            .showNow(fragmentManager,
-                     AlertDialog::class.java.name)*/
+        /*AlertDialog.Builder(activity!!)
+        .title("title")
+        .items(R.array.api_urls)
+        .positiveButton("ok")
+        .create(this, 11)
+        .show(router)*/
 
         router.pushController(RouterTransaction.with(this).pushChangeHandler(
             HorizontalChangeHandler()))
