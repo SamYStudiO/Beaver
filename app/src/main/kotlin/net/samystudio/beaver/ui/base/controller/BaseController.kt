@@ -36,6 +36,7 @@ abstract class BaseController : LifecycleController(),
     private var finished: Boolean = false
     private var dialogDismissed: Boolean = false
     private var dialogView: View? = null
+    private var restoringState: Boolean = false
     @get:LayoutRes
     protected abstract val layoutViewRes: Int
     protected open lateinit var firebaseAnalytics: FirebaseAnalytics
@@ -71,6 +72,7 @@ abstract class BaseController : LifecycleController(),
     {
         super.onRestoreInstanceState(savedInstanceState)
 
+        restoringState = true
         StateSaver.restoreInstanceState(this, savedInstanceState)
     }
 
@@ -171,7 +173,10 @@ abstract class BaseController : LifecycleController(),
         super.onAttach(view)
 
         dialog?.show()
-        firebaseAnalytics.setCurrentScreen(activity!!, javaClass.simpleName, javaClass.simpleName)
+
+        if (!restoringState)
+            firebaseAnalytics.setCurrentScreen(activity!!, javaClass.simpleName,
+                                               javaClass.simpleName)
     }
 
     override fun onSaveViewState(view: View, outState: Bundle)
