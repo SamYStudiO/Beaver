@@ -13,8 +13,6 @@ import javax.inject.Singleton
 @Singleton
 @Component(modules = [ApplicationModule::class])
 interface ApplicationComponent : AndroidInjector<BeaverApplication> {
-    override fun inject(application: BeaverApplication)
-
     @Component.Builder
     interface Builder {
         @BindsInstance
