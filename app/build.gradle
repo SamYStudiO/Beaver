@@ -52,10 +52,6 @@ android {
         main.java.srcDirs += 'src/main/kotlin'
     }
 
-    kapt {
-        generateStubs = false
-    }
-
     androidExtensions {
         experimental = true
     }
