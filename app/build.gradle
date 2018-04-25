@@ -88,12 +88,12 @@ dependencies {
 
     // kotlin
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jre7:1.2.31'
-    implementation 'androidx.core:core-ktx:0.2'
+    implementation 'androidx.core:core-ktx:0.3'
 
     // support
-    implementation 'com.android.support:support-v4:27.1.0'
-    implementation 'com.android.support:appcompat-v7:27.1.0'
-    implementation 'com.android.support:design:27.1.0'
+    implementation 'com.android.support:support-v4:27.1.1'
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.android.support:design:27.1.1'
     implementation 'com.android.support.constraint:constraint-layout:1.1.0-beta6'
 
     // architecture components
@@ -102,9 +102,9 @@ dependencies {
     implementation 'android.arch.lifecycle:reactivestreams:1.1.1'
 
     // firebase
-    implementation 'com.google.firebase:firebase-core:12.0.0'
-    implementation 'com.google.firebase:firebase-appindexing:12.0.0'
-    implementation 'com.google.firebase:firebase-perf:12.0.0'
+    implementation 'com.google.firebase:firebase-core:12.0.1'
+    implementation 'com.google.firebase:firebase-appindexing:12.0.1'
+    implementation 'com.google.firebase:firebase-perf:12.0.1'
     implementation 'com.crashlytics.sdk.android:crashlytics:2.9.1'
 
     // dagger
