@@ -2,7 +2,7 @@ package net.samystudio.beaver.data.local
 
 import android.content.Context
 import android.content.SharedPreferences
-import androidx.content.edit
+import androidx.core.content.edit
 import net.samystudio.beaver.R
 import net.samystudio.beaver.di.qualifier.ApplicationContext
 import javax.inject.Inject
