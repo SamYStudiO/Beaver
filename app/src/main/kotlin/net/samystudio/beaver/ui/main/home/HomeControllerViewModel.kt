@@ -19,6 +19,10 @@ constructor(homeRepositoryManager: HomeRepositoryManager) : BaseControllerViewMo
         DataRequestLiveData(homeRepositoryManager.home())
     override val dataFetchObservable: LiveData<DataRequestState<Home>> = _dataFetchObservable
 
+    init {
+        disposables.add(_dataFetchObservable)
+    }
+
     override fun refreshData() {
         _dataFetchObservable.refresh()
     }
