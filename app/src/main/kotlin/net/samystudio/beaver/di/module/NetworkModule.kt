@@ -1,9 +1,12 @@
 package net.samystudio.beaver.di.module
 
 import android.app.Application
+import android.content.Context
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.squareup.picasso.OkHttp3Downloader
+import com.squareup.picasso.Picasso
 import dagger.Module
 import dagger.Provides
 import io.reactivex.schedulers.Schedulers
@@ -11,6 +14,7 @@ import net.samystudio.beaver.BuildConfig
 import net.samystudio.beaver.data.local.SharedPreferencesHelper
 import net.samystudio.beaver.data.manager.UserManager
 import net.samystudio.beaver.data.remote.api.AuthenticatorApiInterface
+import net.samystudio.beaver.di.qualifier.ApplicationContext
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Converter
@@ -150,4 +154,14 @@ object NetworkModule {
     @JvmStatic
     fun provideAuthenticatorApiInterface(retrofit: Retrofit): AuthenticatorApiInterface =
         retrofit.create(AuthenticatorApiInterface::class.java)
+
+    @Provides
+    @Singleton
+    @JvmStatic
+    fun providePicasso(@ApplicationContext context: Context, okHttpClient: OkHttpClient): Picasso =
+        Picasso.Builder(context)
+            .downloader(OkHttp3Downloader(okHttpClient))
+            .indicatorsEnabled(BuildConfig.DEBUG)
+            .loggingEnabled(BuildConfig.DEBUG)
+            .build()
 }

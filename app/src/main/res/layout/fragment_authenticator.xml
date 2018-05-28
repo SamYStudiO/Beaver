@@ -22,14 +22,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="signup"
-        app:layout_constraintBottom_toTopOf="@+id/invalidateToken"
+        app:layout_constraintBottom_toTopOf="@+id/invalidate_token"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sign_in"/>
 
     <Button
-        android:id="@+id/invalidateToken"
+        android:id="@+id/invalidate_token"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="invalidate token"
