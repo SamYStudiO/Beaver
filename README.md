@@ -9,6 +9,7 @@ Also includes a bunch of common use libraries :
 - [Firebase crashlytics](https://firebase.google.com/docs/crashlytics/)
 - [AccountManager](https://developer.android.com/reference/android/accounts/AccountManager.html)
 - [Retrofit](https://github.com/square/retrofit)
+- [Picasso](https://github.com/square/picasso)
 - [RxJava](https://github.com/ReactiveX/RxJava)
 - [RxBinding](https://github.com/JakeWharton/RxBinding)
 - [Butter knife](https://github.com/JakeWharton/butterknife)
