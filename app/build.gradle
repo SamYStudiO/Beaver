@@ -102,10 +102,10 @@ dependencies {
     implementation 'android.arch.lifecycle:reactivestreams:1.1.1'
 
     // firebase
-    implementation 'com.google.firebase:firebase-core:15.0.0'
-    implementation 'com.google.firebase:firebase-appindexing:15.0.0'
-    implementation 'com.google.firebase:firebase-perf:15.0.0'
-    implementation 'com.crashlytics.sdk.android:crashlytics:2.9.1'
+    implementation 'com.google.firebase:firebase-core:15.0.2'
+    implementation 'com.google.firebase:firebase-appindexing:15.0.1'
+    implementation 'com.google.firebase:firebase-perf:15.2.0'
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.9.3'
 
     // dagger
     implementation 'com.google.dagger:dagger:2.15'
