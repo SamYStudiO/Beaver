@@ -1,5 +1,3 @@
-@file:Suppress("unused")
-
 package net.samystudio.beaver.data.remote
 
 /**

@@ -3,8 +3,8 @@ package net.samystudio.beaver.ui.base.activity
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.os.Bundle
-import android.support.v7.widget.Toolbar
 import android.widget.TextView
+import androidx.appcompat.widget.Toolbar
 import net.samystudio.beaver.ui.base.viewmodel.BaseActivityViewModel
 
 abstract class BaseToolbarActivity<VM : BaseActivityViewModel> : BaseActivity<VM>() {

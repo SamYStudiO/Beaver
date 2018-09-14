@@ -2,23 +2,18 @@
 
 package net.samystudio.beaver
 
-import com.bluelinelabs.conductor.Controller
-import com.ivianuu.contributer.conductor.HasControllerInjector
 import com.squareup.leakcanary.LeakCanary
-import dagger.android.DaggerApplication
-import dagger.android.DispatchingAndroidInjector
+import dagger.android.support.DaggerApplication
 import io.fabric.sdk.android.Fabric
 import net.samystudio.beaver.di.component.DaggerApplicationComponent
 import timber.log.Timber
 import javax.inject.Inject
 
-class BeaverApplication : DaggerApplication(), HasControllerInjector {
+class BeaverApplication : DaggerApplication() {
     private val applicationInjector = DaggerApplicationComponent.builder()
         .application(this)
         .build()
 
-    @Inject
-    protected lateinit var controllerInjector: DispatchingAndroidInjector<Controller>
     @Inject
     protected lateinit var fabric: Fabric
     @Inject
@@ -40,5 +35,4 @@ class BeaverApplication : DaggerApplication(), HasControllerInjector {
     }
 
     override fun applicationInjector() = applicationInjector
-    override fun controllerInjector() = controllerInjector
 }

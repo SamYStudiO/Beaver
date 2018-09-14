@@ -44,6 +44,3 @@
 }
 # Ignore annotation used for build tooling.
 -dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
-
-# Dagger -------------------------------------------------------------------------------------------
--dontwarn com.google.errorprone.annotations.*

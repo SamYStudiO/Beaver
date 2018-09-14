@@ -5,4 +5,4 @@ import javax.inject.Scope
 @Scope
 @Retention(AnnotationRetention.RUNTIME)
 @MustBeDocumented
-annotation class ControllerScope
+annotation class FragmentScope

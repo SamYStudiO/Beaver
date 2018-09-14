@@ -1,13 +1,14 @@
+@file:Suppress("UNCHECKED_CAST")
+
 package net.samystudio.beaver.ui.base.viewmodel.factory
 
-import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import javax.inject.Provider
 
 abstract class BaseViewModelFactory
 constructor(private val creators: Map<Class<out ViewModel>, Provider<ViewModel>>) :
     ViewModelProvider.Factory {
-    @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         var creator = creators[modelClass]
 

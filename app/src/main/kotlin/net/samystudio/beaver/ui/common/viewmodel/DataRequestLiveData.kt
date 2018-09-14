@@ -1,8 +1,6 @@
-@file:Suppress("MemberVisibilityCanBePrivate", "unused")
-
 package net.samystudio.beaver.ui.common.viewmodel
 
-import android.arch.lifecycle.LiveData
+import androidx.lifecycle.LiveData
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.PublishSubject
@@ -14,13 +12,9 @@ class DataRequestLiveData<T>(private var bindObservable: Observable<DataRequestS
     private val disposable: Disposable
 
     init {
-        disposable = trigger
-            .flatMap {
-                bindObservable?.doOnNext({
-                    postValue(it)
-                }) ?: Observable.just(Unit)
-            }
-            .subscribe()
+        disposable = trigger.flatMap { _ ->
+            bindObservable?.doOnNext { postValue(it) } ?: Observable.just(Unit)
+        }.subscribe()
     }
 
     override fun onActive() {

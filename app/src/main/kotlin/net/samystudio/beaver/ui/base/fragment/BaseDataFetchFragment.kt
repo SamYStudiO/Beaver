@@ -1,18 +1,19 @@
-package net.samystudio.beaver.ui.base.controller
+package net.samystudio.beaver.ui.base.fragment
 
-import android.arch.lifecycle.Observer
+import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.Observer
 import net.samystudio.beaver.data.remote.DataRequestState
-import net.samystudio.beaver.ui.base.viewmodel.BaseControllerViewModel
+import net.samystudio.beaver.ui.base.viewmodel.BaseFragmentViewModel
 import net.samystudio.beaver.ui.base.viewmodel.DataFetchViewModel
 
-abstract class BaseDataFetchController<VM, D> :
-    BaseViewModelController<VM>() where VM : BaseControllerViewModel, VM : DataFetchViewModel<D> {
-    override fun onViewCreated(view: View) {
-        super.onViewCreated(view)
+abstract class BaseDataFetchFragment<VM, D> :
+    BaseViewModelFragment<VM>() where VM : BaseFragmentViewModel, VM : DataFetchViewModel<D> {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        viewModel.dataFetchObservable.observe(this, Observer {
-            it?.let {
+        viewModel.dataFetchObservable.observe(viewLifecycleOwner, Observer { requestState ->
+            requestState?.let {
                 when (it) {
                     is DataRequestState.Start -> dataFetchStart()
                     is DataRequestState.Success -> {
@@ -26,12 +27,6 @@ abstract class BaseDataFetchController<VM, D> :
                 }
             }
         })
-    }
-
-    override fun onDestroyView(view: View) {
-        super.onDestroyView(view)
-
-        viewModel.dataFetchObservable.removeObservers(this)
     }
 
     fun refreshData() {

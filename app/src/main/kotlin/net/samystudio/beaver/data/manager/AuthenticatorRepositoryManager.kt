@@ -19,11 +19,11 @@ constructor(
             .toObservable()
             .map {
                 userManager.onNewToken(email, password, it)
-                CompletableRequestState.Complete()
+                CompletableRequestState.Complete
             }
             .cast(CompletableRequestState::class.java)
             .onErrorReturn { CompletableRequestState.Error(it) }
-            .startWith(CompletableRequestState.Start())
+            .startWith(CompletableRequestState.Start)
 
     fun signUp(email: String, password: String): Observable<CompletableRequestState> =
         authenticatorApiInterface
@@ -31,9 +31,9 @@ constructor(
             .toObservable()
             .map {
                 userManager.onNewToken(email, password, it)
-                CompletableRequestState.Complete()
+                CompletableRequestState.Complete
             }
             .cast(CompletableRequestState::class.java)
             .onErrorReturn { CompletableRequestState.Error(it) }
-            .startWith(CompletableRequestState.Start())
+            .startWith(CompletableRequestState.Start)
 }

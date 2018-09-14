@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools"
-          package="net.samystudio.beaver">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="net.samystudio.beaver">
 
     <supports-screens
-        android:largeScreens="true"
+        android:largeScreens="false"
         android:normalScreens="true"
         android:smallScreens="false"
-        android:xlargeScreens="true"/>
+        android:xlargeScreens="false" />
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
-    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
-    <uses-permission android:name="android.permission.USE_CREDENTIALS"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
 
     <application
         android:name=".BeaverApplication"
@@ -24,36 +24,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning"
         tools:targetApi="n">
 
         <activity
             android:name=".ui.main.MainActivity"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.Launcher">
+            <!--suppress AndroidElementNotAllowed -->
+            <nav-graph android:value="@navigation/navigation" />
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-
-                <data
-                    android:host="samystudio.github.io"
-                    android:scheme="https"/>
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-
-                <data
-                    android:host="samystudio.github.io"
-                    android:pathPattern="/*"
-                    android:scheme="https"/>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
@@ -62,20 +44,20 @@
             android:process=":authenticator"
             tools:ignore="ExportedService">
             <intent-filter>
-                <action android:name="android.accounts.AccountAuthenticator"/>
+                <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
             <meta-data
                 android:name="android.accounts.AccountAuthenticator"
-                android:resource="@xml/account_authenticator"/>
+                android:resource="@xml/account_authenticator" />
         </service>
 
         <meta-data
             android:name="asset_statements"
-            android:resource="@string/asset_statements"/>
+            android:resource="@string/asset_statements" />
 
         <meta-data
             android:name="firebase_crashlytics_collection_enabled"
-            android:value="${crashlyticsEnabled}"/>
+            android:value="${crashlyticsEnabled}" />
 
     </application>
 

@@ -1,19 +1,20 @@
-package net.samystudio.beaver.ui.base.controller
+package net.samystudio.beaver.ui.base.fragment
 
-import android.arch.lifecycle.Observer
+import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.Observer
 import net.samystudio.beaver.data.remote.CompletableRequestState
-import net.samystudio.beaver.ui.base.viewmodel.BaseControllerViewModel
+import net.samystudio.beaver.ui.base.viewmodel.BaseFragmentViewModel
 import net.samystudio.beaver.ui.base.viewmodel.DataFetchViewModel
 import net.samystudio.beaver.ui.base.viewmodel.DataPushViewModel
 
-abstract class BaseDataFetchPushController<VM, D> :
-    BaseDataFetchController<VM, D>() where VM : BaseControllerViewModel, VM : DataFetchViewModel<D>, VM : DataPushViewModel {
-    override fun onViewCreated(view: View) {
-        super.onViewCreated(view)
+abstract class BaseDataFetchPushFragment<VM, D> :
+    BaseDataFetchFragment<VM, D>() where VM : BaseFragmentViewModel, VM : DataFetchViewModel<D>, VM : DataPushViewModel {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        viewModel.dataPushCompletable.observe(this, Observer {
-            it?.let {
+        viewModel.dataPushCompletable.observe(viewLifecycleOwner, Observer { requestState ->
+            requestState?.let {
                 when (it) {
                     is CompletableRequestState.Start -> dataPushStart()
                     is CompletableRequestState.Complete -> {
@@ -27,12 +28,6 @@ abstract class BaseDataFetchPushController<VM, D> :
                 }
             }
         })
-    }
-
-    override fun onDestroyView(view: View) {
-        super.onDestroyView(view)
-
-        viewModel.dataPushCompletable.removeObservers(this)
     }
 
     protected abstract fun dataPushStart()

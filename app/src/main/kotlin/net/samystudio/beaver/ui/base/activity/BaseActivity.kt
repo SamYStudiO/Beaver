@@ -1,63 +1,64 @@
 package net.samystudio.beaver.ui.base.activity
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProvider
+//import com.evernote.android.state.StateSaver
 import android.content.Intent
 import android.os.Bundle
-import android.support.annotation.CallSuper
-import android.support.annotation.LayoutRes
-import android.support.v7.app.AppCompatActivity
-import butterknife.ButterKnife
-import com.bluelinelabs.conductor.Router
-import com.bluelinelabs.conductor.RouterTransaction
-import com.evernote.android.state.StateSaver
+import androidx.annotation.CallSuper
+import androidx.annotation.LayoutRes
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
 import dagger.android.AndroidInjection
-import net.samystudio.beaver.ui.base.controller.BaseController
+import dagger.android.AndroidInjector
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.support.HasSupportFragmentInjector
+import net.samystudio.beaver.di.qualifier.ActivityContext
+import net.samystudio.beaver.ui.base.fragment.BaseViewModelFragment
 import net.samystudio.beaver.ui.base.viewmodel.BaseActivityViewModel
 import net.samystudio.beaver.ui.common.navigation.Navigable
-import net.samystudio.beaver.ui.common.navigation.NavigationRequest
-import net.samystudio.beaver.ui.main.home.HomeController
 import javax.inject.Inject
 
-abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(), Navigable {
+abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(),
+    HasSupportFragmentInjector, Navigable {
+    @Inject
+    protected lateinit var supportFragmentInjector: DispatchingAndroidInjector<Fragment>
     @get:LayoutRes
     protected abstract val layoutViewRes: Int
     @Inject
+    @field:ActivityContext
     protected lateinit var viewModelProvider: ViewModelProvider
     protected abstract val viewModelClass: Class<VM>
     @Inject
-    lateinit var router: Router
+    override lateinit var navigationController: NavController
     lateinit var viewModel: VM
-    /**
-     * For dagger only.
-     * @hide
-     */
-    var saveInstanceState: Bundle? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(layoutViewRes)
-        ButterKnife.bind(this)
-        saveInstanceState = savedInstanceState
         AndroidInjection.inject(this)
-        saveInstanceState = null
 
         viewModel = viewModelProvider.get(viewModelClass)
         viewModel.handleCreate()
         viewModel.handleIntent(intent)
         onViewModelCreated()
-
-        if (!router.hasRootController())
-            router.setRoot(RouterTransaction.with(HomeController()))
     }
 
     @CallSuper
     protected open fun onViewModelCreated() {
         viewModel.navigationCommand.observe(this,
-            Observer { it?.let { handleNavigationRequest(it) } })
+            Observer { request ->
+                request?.let {
+                    handleNavigationRequest(
+                        it,
+                        supportFragmentManager
+                    )
+                }
+            })
         viewModel.resultEvent.observe(this, Observer
-        {
-            it?.let {
+        { result ->
+            result?.let {
                 setResult(it.code, it.intent)
                 if (it.finish)
                     finish()
@@ -70,7 +71,12 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(), N
 
         setIntent(intent)
         viewModel.handleIntent(intent)
-        router.backstack.forEach { (it.controller() as? BaseController)?.onNewIntent(intent) }
+
+        supportFragmentManager.fragments.forEach {
+            (it as? BaseViewModelFragment<*>)?.onNewIntent(
+                intent
+            )
+        }
     }
 
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -82,7 +88,7 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(), N
     override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
         super.onRestoreInstanceState(savedInstanceState)
 
-        StateSaver.restoreInstanceState(this, savedInstanceState)
+        //StateSaver.restoreInstanceState(this, savedInstanceState)
 
         if (savedInstanceState != null)
             viewModel.handleRestoreInstanceState(savedInstanceState)
@@ -94,40 +100,15 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(), N
         viewModel.handleReady()
     }
 
-    override fun onBackPressed() {
-        if (!router.handleBack()) {
-            super.onBackPressed()
-        }
-    }
-
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
 
-        StateSaver.saveInstanceState(this, outState)
+        //StateSaver.saveInstanceState(this, outState)
 
         viewModel.handleSaveInstanceState(outState)
     }
 
-    override fun handleNavigationRequest(navigationRequest: NavigationRequest) {
-        when (navigationRequest) {
-            is NavigationRequest.Pop -> {
-                if (navigationRequest.controller != null) router.popController(
-                    navigationRequest.controller
-                )
-                else router.popCurrentController()
-            }
-            is NavigationRequest.PopToRoot -> router.popToRoot()
-            is NavigationRequest.Push -> router.pushController(
-                navigationRequest.transaction
-            )
-            is NavigationRequest.ReplaceTop -> router.replaceTopController(
-                navigationRequest.transaction
-            )
-            is NavigationRequest.Dialog -> {
-                if (navigationRequest.transaction != null)
-                    navigationRequest.controller.show(router, navigationRequest.transaction)
-                else navigationRequest.controller.show(router)
-            }
-        }
+    override fun supportFragmentInjector(): AndroidInjector<Fragment> {
+        return supportFragmentInjector
     }
 }

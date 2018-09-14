@@ -1,24 +1,34 @@
-@file:Suppress("MemberVisibilityCanBePrivate", "unused")
+@file:Suppress("unused", "MemberVisibilityCanBePrivate")
 
 package net.samystudio.beaver.ui.common.dialog
 
 import android.content.Context
 import android.content.DialogInterface
+import android.os.Bundle
 import android.os.Parcelable
-import android.support.annotation.*
 import android.util.TypedValue
+import androidx.annotation.*
 import kotlinx.android.parcel.Parcelize
-import net.samystudio.beaver.ui.base.controller.BaseController
+import net.samystudio.beaver.ui.base.fragment.BaseFragment
 import java.util.*
-import android.support.v7.app.AlertDialog as AndroidAlertDialog
+import androidx.appcompat.app.AlertDialog as AndroidAlertDialog
 
-open class AlertDialog : BaseController(),
+/**
+ * AlertDialog using [androidx.fragment.app.DialogFragment].
+ */
+open class AlertDialog : BaseFragment(),
     DialogInterface.OnClickListener,
     DialogInterface.OnMultiChoiceClickListener {
     override val layoutViewRes: Int = 0
 
-    override fun onCreateDialog(): AndroidAlertDialog =
-        Builder(activity!!, args.getParcelable(PARAMS) as? Params).build(this, dialogTheme).create()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        if (arguments == null) arguments = Bundle()
+
+        Builder(activity!!, arguments!!.getParcelable(PARAMS) as? Params).build(this, theme)
+            .create()
+    }
 
     override fun onClick(dialog: DialogInterface?, which: Int) {
         (activity as? AlertDialogListener)?.let {
@@ -30,7 +40,7 @@ open class AlertDialog : BaseController(),
             }
         }
 
-        (targetController as? AlertDialogListener)?.let {
+        (targetFragment as? AlertDialogListener)?.let {
             when (which) {
                 DialogInterface.BUTTON_POSITIVE -> it.onDialogPositive(targetRequestCode)
                 DialogInterface.BUTTON_NEGATIVE -> it.onDialogNegative(targetRequestCode)
@@ -43,7 +53,7 @@ open class AlertDialog : BaseController(),
     override fun onClick(dialog: DialogInterface?, which: Int, isChecked: Boolean) {
         (activity as? AlertDialogListener)?.onDialogClick(targetRequestCode, which, isChecked)
 
-        (targetController as? AlertDialogListener)?.onDialogClick(
+        (targetFragment as? AlertDialogListener)?.onDialogClick(
             targetRequestCode, which,
             isChecked
         )
@@ -91,7 +101,7 @@ open class AlertDialog : BaseController(),
         private var cancelable: Boolean = true
 
         /**
-         * If not set [BaseController.dialogTheme] will be used
+         * If not set [BaseFragment.getTheme] will be used
          *
          * @see [AndroidAlertDialog.Builder.mTheme]
          */
@@ -253,7 +263,7 @@ open class AlertDialog : BaseController(),
          * @see newInstance
          */
         fun create(
-            targetController: BaseController? = null,
+            targetController: BaseFragment? = null,
             targetRequestCode: Int = 0
         ): AlertDialog =
             newInstance(this, targetController, targetRequestCode)
@@ -320,7 +330,7 @@ open class AlertDialog : BaseController(),
         /**
          * Create a new Alert dialog instance.
          * If you want to get result from dialog or received events ([AlertDialogListener]), you
-         * must passed target [BaseController] calling this dialog and that target need to
+         * must passed target [BaseFragment] calling this dialog and that target need to
          * implement [AlertDialogListener]. Additionally if you open several dialogs you may pass
          * [targetRequestCode] to then identify which dialog your result or events come from.
          * Note you may receive events as well from activity host if activity implements
@@ -328,12 +338,12 @@ open class AlertDialog : BaseController(),
          */
         fun newInstance(
             builder: Builder,
-            targetController: BaseController? = null,
+            targetController: BaseFragment? = null,
             targetRequestCode: Int = 0
         ): AlertDialog {
             val dialog = AlertDialog()
-            dialog.setTargetController(targetController, targetRequestCode)
-            dialog.args.putParcelable(PARAMS, builder.toParams())
+            dialog.setTargetFragment(targetController, targetRequestCode)
+            dialog.arguments?.putParcelable(PARAMS, builder.toParams())
 
             return dialog
         }

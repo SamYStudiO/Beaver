@@ -1,18 +1,21 @@
-package net.samystudio.beaver.ui.base.controller
+@file:Suppress("unused", "MemberVisibilityCanBePrivate", "UNUSED_PARAMETER")
 
-import android.arch.lifecycle.Observer
+package net.samystudio.beaver.ui.base.fragment
+
+import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.Observer
 import net.samystudio.beaver.data.remote.CompletableRequestState
-import net.samystudio.beaver.ui.base.viewmodel.BaseControllerViewModel
+import net.samystudio.beaver.ui.base.viewmodel.BaseFragmentViewModel
 import net.samystudio.beaver.ui.base.viewmodel.DataPushViewModel
 
-abstract class BaseDataPushController<VM> :
-    BaseViewModelController<VM>() where VM : BaseControllerViewModel, VM : DataPushViewModel {
-    override fun onViewCreated(view: View) {
-        super.onViewCreated(view)
+abstract class BaseDataPushFragment<VM> :
+    BaseViewModelFragment<VM>() where VM : BaseFragmentViewModel, VM : DataPushViewModel {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        viewModel.dataPushCompletable.observe(this, Observer {
-            it?.let {
+        viewModel.dataPushCompletable.observe(viewLifecycleOwner, Observer { requestState ->
+            requestState?.let {
                 when (it) {
                     is CompletableRequestState.Start -> dataPushStart()
                     is CompletableRequestState.Complete -> {
@@ -26,12 +29,6 @@ abstract class BaseDataPushController<VM> :
                 }
             }
         })
-    }
-
-    override fun onDestroyView(view: View) {
-        super.onDestroyView(view)
-
-        viewModel.dataPushCompletable.removeObservers(this)
     }
 
     protected abstract fun dataPushStart()

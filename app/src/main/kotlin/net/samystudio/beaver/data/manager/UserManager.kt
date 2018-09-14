@@ -11,13 +11,10 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class UserManager
-@Inject
-constructor(
+class UserManager @Inject constructor(
     private val accountManager: AccountManager,
     private val sharedPreferencesHelper: SharedPreferencesHelper
-) :
-    OnAccountsUpdateListener {
+) : OnAccountsUpdateListener {
     private val _statusObservable: BehaviorSubject<Boolean> = BehaviorSubject.create()
     val statusObservable: Observable<Boolean> = _statusObservable
     val token: String?

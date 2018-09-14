@@ -1,13 +1,11 @@
-@file:Suppress("MemberVisibilityCanBePrivate")
-
 package net.samystudio.beaver.ui.base.viewmodel
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.LiveDataReactiveStreams
 import android.content.Intent
 import android.os.Bundle
-import android.support.annotation.CallSuper
-import com.evernote.android.state.StateSaver
+import androidx.annotation.CallSuper
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.LiveDataReactiveStreams
+//import com.evernote.android.state.StateSaver
 import io.reactivex.BackpressureStrategy
 import net.samystudio.beaver.data.manager.UserManager
 import net.samystudio.beaver.ui.common.navigation.NavigationRequest
@@ -39,7 +37,7 @@ abstract class BaseViewControllerViewModel : BaseViewModel() {
 
     @CallSuper
     open fun handleRestoreInstanceState(savedInstanceState: Bundle) {
-        StateSaver.restoreInstanceState(this, savedInstanceState)
+        //StateSaver.restoreInstanceState(this, savedInstanceState)
     }
 
     /**
@@ -51,7 +49,7 @@ abstract class BaseViewControllerViewModel : BaseViewModel() {
 
     @CallSuper
     open fun handleSaveInstanceState(outState: Bundle) {
-        StateSaver.saveInstanceState(this, outState)
+        //StateSaver.saveInstanceState(this, outState)
     }
 
     fun navigate(navigationRequest: NavigationRequest) {

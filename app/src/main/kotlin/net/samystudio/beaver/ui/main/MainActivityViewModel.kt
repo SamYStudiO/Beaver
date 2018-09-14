@@ -7,13 +7,11 @@ import android.content.Intent
 import net.samystudio.beaver.di.scope.ActivityScope
 import net.samystudio.beaver.ui.base.viewmodel.BaseActivityViewModel
 import net.samystudio.beaver.ui.common.navigation.NavigationRequest
-import net.samystudio.beaver.ui.main.authenticator.AuthenticatorController
+import net.samystudio.beaver.ui.main.authenticator.AuthenticatorFragment
 import javax.inject.Inject
 
 @ActivityScope
-class MainActivityViewModel
-@Inject
-constructor() : BaseActivityViewModel() {
+class MainActivityViewModel @Inject constructor() : BaseActivityViewModel() {
     private var authenticatorResponse: AccountAuthenticatorResponse? = null
 
     override fun handleIntent(intent: Intent) {
@@ -37,7 +35,7 @@ constructor() : BaseActivityViewModel() {
                 if (code == Activity.RESULT_OK)
                     it.onResult(data?.extras)
                 else
-                    it.onError(AccountManager.ERROR_CODE_CANCELED, "canceled")
+                    it.onError(AccountManager.ERROR_CODE_CANCELED, "cancelled")
 
                 authenticatorResponse = null
             }
@@ -49,9 +47,7 @@ constructor() : BaseActivityViewModel() {
 
         // If we got a non null authenticatorResponse that mean we were ask from system to create
         // account, so let's notify we want to authenticate.
-        if (authenticatorResponse != null) navigate(
-            NavigationRequest.Dialog(AuthenticatorController())
-        )
+        if (authenticatorResponse != null) navigate(NavigationRequest.Dialog(AuthenticatorFragment.newInstance()))
     }
 
     companion object {

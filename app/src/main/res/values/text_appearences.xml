@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AppTextAppearance" parent="TextAppearance.AppCompat"/>
+    <style name="AppTextAppearance" parent="TextAppearance.MaterialComponents.Body1" />
 
     <style name="AppTextAppearance.Small">
         <item name="android:textSize">@dimen/text_small</item>

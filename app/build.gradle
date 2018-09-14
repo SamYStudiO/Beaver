@@ -13,17 +13,18 @@ def versionBuild = 0
 
 android {
 
-    compileSdkVersion 27
+    compileSdkVersion 28
 
     defaultConfig {
         applicationId 'net.samystudio.beaver'
-        minSdkVersion 19
-        targetSdkVersion 27
+        minSdkVersion 21
+        targetSdkVersion 28
         versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
         versionName "$versionMajor.$versionMinor.$versionPatch"
-        testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         buildConfigField('String', 'FULL_VERSION_NAME', "\"$versionName.$versionCode\"")
         resValue 'string', 'application_id', applicationId
+        multiDexEnabled true
     }
 
     signingConfigs {
@@ -88,40 +89,33 @@ android {
 dependencies {
 
     // kotlin
-    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jre7:1.2.31'
-    implementation 'androidx.core:core-ktx:0.3'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.61'
 
-    // support
-    implementation 'com.android.support:support-v4:27.1.1'
-    implementation 'com.android.support:appcompat-v7:27.1.1'
-    implementation 'com.android.support:design:27.1.1'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+    // android
+    implementation 'androidx.core:core:1.0.0-rc02'
+    implementation 'androidx.core:core-ktx:1.0.0-rc02'
+    implementation 'androidx.appcompat:appcompat:1.0.0-rc02'
+    //implementation 'com.google.android.material:material:1.0.0-alpha3'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 
-    // architecture components
-    implementation 'android.arch.lifecycle:extensions:1.1.1'
-    kapt 'android.arch.lifecycle:compiler:1.1.1'
-    implementation 'android.arch.lifecycle:reactivestreams:1.1.1'
-    implementation 'android.arch.navigation:navigation-ui:1.0.0-alpha01'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0-rc01'
+    kapt 'androidx.lifecycle:lifecycle-compiler:2.0.0-rc01'
+    implementation 'androidx.lifecycle:lifecycle-reactivestreams:2.0.0-rc01'
+    implementation 'android.arch.navigation:navigation-fragment-ktx:1.0.0-alpha05'
+    implementation 'android.arch.navigation:navigation-ui-ktx:1.0.0-alpha05'
 
     // firebase
-    implementation 'com.google.firebase:firebase-core:15.0.2'
-    implementation 'com.google.firebase:firebase-appindexing:15.0.1'
-    implementation 'com.google.firebase:firebase-perf:15.2.0'
-    implementation 'com.crashlytics.sdk.android:crashlytics:2.9.3'
+    implementation 'com.google.firebase:firebase-core:16.0.3'
+    implementation 'com.google.firebase:firebase-appindexing:16.0.1'
+    implementation 'com.google.firebase:firebase-perf:16.1.0'
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.9.5'
 
     // dagger
-    implementation 'com.google.dagger:dagger:2.15'
-    implementation 'com.google.dagger:dagger-android:2.15'
-    implementation 'com.google.dagger:dagger-android-support:2.15'
-    kapt 'com.google.dagger:dagger-compiler:2.15'
-    //kapt      'com.google.dagger:dagger-android-processor:2.15'
-    implementation 'com.github.IVIanuu.Contributer:contributer-conductor:1.0.0'
-    kapt 'com.github.IVIanuu.Contributer:contributer-processor:1.0.0'
-
-    // conductor
-    implementation 'com.bluelinelabs:conductor:2.1.4'
-    implementation 'com.bluelinelabs:conductor-support:2.1.4'
-    implementation 'com.bluelinelabs:conductor-archlifecycle:0.1.1'
+    implementation 'com.google.dagger:dagger:2.16'
+    implementation 'com.google.dagger:dagger-android:2.16'
+    implementation 'com.google.dagger:dagger-android-support:2.16'
+    kapt 'com.google.dagger:dagger-compiler:2.16'
+    kapt 'com.google.dagger:dagger-android-processor:2.16'
 
     // reactive
     implementation 'io.reactivex.rxjava2:rxjava:2.1.12'
@@ -138,15 +132,15 @@ dependencies {
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
 
     // debug
-    implementation 'com.jakewharton.timber:timber:4.6.1'
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
-    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
+    implementation 'com.jakewharton.timber:timber:4.7.1'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.1'
+    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.1'
 
     // misc
-    implementation 'com.jakewharton:butterknife:8.8.1'
-    kapt 'com.jakewharton:butterknife-compiler:8.8.1'
-    implementation 'com.evernote:android-state:1.2.1'
-    kapt 'com.evernote:android-state-processor:1.2.1'
+    //implementation 'com.jakewharton:butterknife:9.0.0-SNAPSHOT'
+    //kapt 'com.jakewharton:butterknife-compiler:9.0.0-SNAPSHOT'
+    //implementation 'com.evernote:android-state:1.3.1'
+   // kapt 'com.evernote:android-state-processor:1.3.1'
     implementation 'com.squareup.picasso:picasso:3.0.0-SNAPSHOT'
 
     // test
@@ -155,9 +149,9 @@ dependencies {
     testImplementation 'org.robolectric:robolectric:3.8'
     testImplementation 'com.squareup.okhttp3:mockwebserver:3.10.0'
     androidTestImplementation 'org.mockito:mockito-android:2.17.0'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    androidTestImplementation 'android.arch.navigation:navigation-testing:1.0.0-alpha01'
+    androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha4'
+    androidTestImplementation 'android.arch.navigation:navigation-testing-ktx:1.0.0-alpha05'
 }
 
 apply plugin: 'com.google.gms.google-services'

@@ -9,15 +9,11 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class SharedPreferencesHelper
-@Inject
-constructor(
-    @param:ApplicationContext
-    private val context: Context,
-    private val sharedPreferences: SharedPreferences
+class SharedPreferencesHelper @Inject constructor(
+    @param:ApplicationContext private val context: Context, private val sharedPreferences: SharedPreferences
 ) {
     var apiUrl: String
-        get() = sharedPreferences.getString(API_URL, context.getString(R.string.api_url))
+        get() = sharedPreferences.getString(API_URL, context.getString(R.string.api_url))!!
         set(value) = sharedPreferences.edit { putString(API_URL, value) }
 
     var accountName: String?

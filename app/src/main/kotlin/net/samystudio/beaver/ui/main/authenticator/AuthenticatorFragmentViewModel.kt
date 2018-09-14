@@ -2,24 +2,22 @@ package net.samystudio.beaver.ui.main.authenticator
 
 import android.accounts.AccountManager
 import android.app.Activity
-import android.arch.lifecycle.LiveData
 import android.content.Intent
 import android.os.Bundle
+import androidx.lifecycle.LiveData
 import io.reactivex.Observable
 import net.samystudio.beaver.BuildConfig
 import net.samystudio.beaver.data.manager.AuthenticatorRepositoryManager
 import net.samystudio.beaver.data.remote.CompletableRequestState
-import net.samystudio.beaver.di.scope.ControllerScope
-import net.samystudio.beaver.ui.base.viewmodel.BaseControllerViewModel
+import net.samystudio.beaver.di.scope.FragmentScope
+import net.samystudio.beaver.ui.base.viewmodel.BaseFragmentViewModel
 import net.samystudio.beaver.ui.base.viewmodel.DataPushViewModel
 import net.samystudio.beaver.ui.common.viewmodel.CompletableRequestLiveData
 import javax.inject.Inject
 
-@ControllerScope
-class AuthenticatorControllerViewModel
-@Inject
-constructor(private val authenticatorRepositoryManager: AuthenticatorRepositoryManager) :
-    BaseControllerViewModel(), DataPushViewModel {
+@FragmentScope
+class AuthenticatorFragmentViewModel @Inject constructor(private val authenticatorRepositoryManager: AuthenticatorRepositoryManager) :
+    BaseFragmentViewModel(), DataPushViewModel {
     private val _dataPushCompletable: CompletableRequestLiveData = CompletableRequestLiveData()
     override val dataPushCompletable: LiveData<CompletableRequestState> = _dataPushCompletable
 
@@ -32,22 +30,20 @@ constructor(private val authenticatorRepositoryManager: AuthenticatorRepositoryM
                             userFlow.email,
                             userFlow.password
                         )
-                    ).doOnNext(
-                        {
-                            if (it is CompletableRequestState.Complete)
-                                handleSignResult(userFlow.email, userFlow.password)
-                        })
+                    ).doOnNext {
+                        if (it is CompletableRequestState.Complete)
+                            handleSignResult(userFlow.email, userFlow.password)
+                    }
                 is AuthenticatorUserFlow.SignUp ->
                     _dataPushCompletable.bind(
                         authenticatorRepositoryManager.signUp(
                             userFlow.email,
                             userFlow.password
                         )
-                    ).doOnNext(
-                        {
-                            if (it is CompletableRequestState.Complete)
-                                handleSignResult(userFlow.email, userFlow.password)
-                        })
+                    ).doOnNext {
+                        if (it is CompletableRequestState.Complete)
+                            handleSignResult(userFlow.email, userFlow.password)
+                    }
                 else ->
                     Observable.just(Observable.error<Unit> {
                         IllegalArgumentException("Unknown user flow ${userFlow.javaClass.name}.")
