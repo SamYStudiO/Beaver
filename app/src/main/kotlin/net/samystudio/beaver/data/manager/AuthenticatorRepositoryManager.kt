@@ -6,6 +6,9 @@ import net.samystudio.beaver.data.remote.api.AuthenticatorApiInterface
 import javax.inject.Inject
 import javax.inject.Singleton
 
+/**
+ * @see [net.samystudio.beaver.di.module.NetworkModule.provideAuthenticatorApiInterface]
+ */
 @Singleton
 class AuthenticatorRepositoryManager
 @Inject

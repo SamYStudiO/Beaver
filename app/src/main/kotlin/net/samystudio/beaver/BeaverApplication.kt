@@ -14,8 +14,14 @@ class BeaverApplication : DaggerApplication() {
         .application(this)
         .build()
 
+    /**
+     * @see [net.samystudio.beaver.di.module.CrashlyticsModule.provideFabric]
+     */
     @Inject
     protected lateinit var fabric: Fabric
+    /**
+     * @see [net.samystudio.beaver.di.module.TimberModule.provideTimberTree]
+     */
     @Inject
     protected lateinit var timberTree: Timber.Tree
 

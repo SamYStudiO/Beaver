@@ -26,10 +26,16 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(),
     protected lateinit var supportFragmentInjector: DispatchingAndroidInjector<Fragment>
     @get:LayoutRes
     protected abstract val layoutViewRes: Int
+    /**
+     * @see [net.samystudio.beaver.ui.base.activity.BaseActivityModule.provideViewModelProvider]
+     */
     @Inject
     @field:ActivityContext
     protected lateinit var viewModelProvider: ViewModelProvider
     protected abstract val viewModelClass: Class<VM>
+    /**
+     * @see [net.samystudio.beaver.ui.base.activity.BaseActivityModule.provideNavController]
+     */
     @Inject
     override lateinit var navigationController: NavController
     lateinit var viewModel: VM

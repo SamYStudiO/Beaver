@@ -25,10 +25,19 @@ abstract class BaseViewModelFragment<VM : BaseFragmentViewModel> : BaseFragment(
     HasSupportFragmentInjector, DialogInterface.OnShowListener {
     @Inject
     protected lateinit var childFragmentInjector: DispatchingAndroidInjector<Fragment>
+    /**
+     * @see [net.samystudio.beaver.di.module.FirebaseModule.provideFirebaseAnalytics]
+     */
     @Inject
     final override lateinit var firebaseAnalytics: FirebaseAnalytics
+    /**
+     * @see [net.samystudio.beaver.ui.base.activity.BaseActivityModule.provideNavController]
+     */
     @Inject
     final override lateinit var navigationController: NavController
+    /**
+     * @see [net.samystudio.beaver.ui.base.fragment.BaseFragmentModule.provideViewModelProvider]
+     */
     @Inject
     @field:FragmentContext
     protected lateinit var viewModelProvider: ViewModelProvider

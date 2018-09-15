@@ -10,10 +10,14 @@ import net.samystudio.beaver.ui.main.MainActivity
 import javax.inject.Inject
 import javax.inject.Singleton
 
+/**
+ * @see [net.samystudio.beaver.di.module.SystemServiceModule.provideAccountManager]
+ * @see [net.samystudio.beaver.di.module.NetworkModule.provideAuthenticatorApiInterface]
+ */
 @Singleton
 class AuthenticatorManager @Inject constructor(
     @param:ApplicationContext private val context: Context, private val accountManager: AccountManager,
-    private val authenticatorInterface: AuthenticatorApiInterface
+    private val authenticatorApiInterface: AuthenticatorApiInterface
 ) :
     AbstractAccountAuthenticator(context) {
     override fun getAuthTokenLabel(authTokenType: String): String? {
@@ -48,7 +52,7 @@ class AuthenticatorManager @Inject constructor(
         if (authToken.isNullOrBlank()) {
             accountManager.getPassword(account)?.let {
                 try {
-                    authToken = authenticatorInterface.signIn(account.name, it).blockingGet()
+                    authToken = authenticatorApiInterface.signIn(account.name, it).blockingGet()
                 } catch (e: Throwable) {
                     throw NetworkErrorException(e)
                 }
