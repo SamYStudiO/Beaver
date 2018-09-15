@@ -8,7 +8,6 @@ import dagger.Provides
 import dagger.multibindings.IntoMap
 import net.samystudio.beaver.data.remote.api.HomeApiInterface
 import net.samystudio.beaver.di.key.FragmentViewModelKey
-import net.samystudio.beaver.di.scope.ActivityScope
 import net.samystudio.beaver.di.scope.FragmentScope
 import net.samystudio.beaver.ext.EmailValidator
 import net.samystudio.beaver.ext.PasswordValidator
@@ -37,12 +36,12 @@ abstract class HomeFragmentModule {
             retrofit.create(HomeApiInterface::class.java)
 
         @Provides
-        @ActivityScope
+        @FragmentScope
         @JvmStatic
         fun provideEmailValidator(): EmailValidator = EmailValidator()
 
         @Provides
-        @ActivityScope
+        @FragmentScope
         @JvmStatic
         fun providePasswordValidator(): PasswordValidator = PasswordValidator()
     }
