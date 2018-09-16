@@ -6,8 +6,9 @@ import kotlinx.android.synthetic.main.fragment_home.*
 import net.samystudio.beaver.R
 import net.samystudio.beaver.data.model.Home
 import net.samystudio.beaver.ext.getGenericErrorDialog
+import net.samystudio.beaver.ext.getMethodTag
+import net.samystudio.beaver.ext.showIfInexistant
 import net.samystudio.beaver.ui.base.fragment.BaseDataFetchFragment
-import net.samystudio.beaver.ui.common.dialog.AlertDialog
 import net.samystudio.beaver.ui.common.dialog.AlertDialogListener
 
 class HomeFragment : BaseDataFetchFragment<HomeFragmentViewModel, Home>(), AlertDialogListener {
@@ -44,7 +45,9 @@ class HomeFragment : BaseDataFetchFragment<HomeFragmentViewModel, Home>(), Alert
     }
 
     override fun dataFetchError(throwable: Throwable) {
-        getGenericErrorDialog(context!!).showNow(fragmentManager, AlertDialog::class.java.name)
+        fragmentManager?.let {
+            getGenericErrorDialog(context!!).showIfInexistant(it, getMethodTag())
+        }
     }
 
     override fun dataFetchTerminate() {
