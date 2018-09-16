@@ -31,12 +31,12 @@ class UserManager @Inject constructor(
 
     override fun onAccountsUpdated(accounts: Array<out Account>?) {
         val account = getCurrentAccount()
-        val connect = account != null && accountManager.peekAuthToken(
+        val connected = account != null && accountManager.peekAuthToken(
             account,
             DEFAULT_AUTH_TOKEN_TYPE
         ) != null
-        if (_statusObservable.value != connect)
-            _statusObservable.onNext(connect)
+        if (_statusObservable.value != connected)
+            _statusObservable.onNext(connected)
     }
 
     fun invalidateToken() {
