@@ -11,7 +11,6 @@ import androidx.annotation.CallSuper
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavController
 import com.google.firebase.analytics.FirebaseAnalytics
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
@@ -30,11 +29,6 @@ abstract class BaseViewModelFragment<VM : BaseFragmentViewModel> : BaseFragment(
      */
     @Inject
     final override lateinit var firebaseAnalytics: FirebaseAnalytics
-    /**
-     * @see [net.samystudio.beaver.ui.base.activity.BaseActivityModule.provideNavController]
-     */
-    @Inject
-    final override lateinit var navigationController: NavController
     /**
      * @see [net.samystudio.beaver.ui.base.fragment.BaseFragmentModule.provideViewModelProvider]
      */

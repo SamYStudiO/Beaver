@@ -12,12 +12,12 @@ fun getGenericErrorDialog(context: Context): AlertDialog =
         .positiveButton("Ok")
         .create()
 
-fun DialogFragment.showIfInexistant(manager: FragmentManager, tag: String) {
+fun DialogFragment.showIfNonExistent(manager: FragmentManager, tag: String) {
     if (manager.findFragmentByTag(tag) == null)
         this.show(manager, tag)
 }
 
-fun DialogFragment.showNowIfInexistant(manager: FragmentManager, tag: String) {
+fun DialogFragment.showNowIfNonExistent(manager: FragmentManager, tag: String) {
     if (manager.findFragmentByTag(tag) == null)
         this.showNow(manager, tag)
 }

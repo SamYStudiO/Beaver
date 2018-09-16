@@ -38,7 +38,7 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
     protected var resultCode: Int = Activity.RESULT_CANCELED
     // @State
     protected var resultIntent: Intent? = null
-    override lateinit var navigationController: NavController
+    final override lateinit var navigationController: NavController
     // @State
     open var title: String? = null
         set(value) {
@@ -70,13 +70,13 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        navigationController = activity!!.findNavController(R.id.nav_host)
+
         // In most case we'll extends BaseDataFragment and get these initialized with injection, but
         // if we want really simple fragment screen with no data (less boilerplate), we have to
         // initialize these manually.
         if (!::firebaseAnalytics.isInitialized)
             context?.let { firebaseAnalytics = FirebaseAnalytics.getInstance(it) }
-        if (!::navigationController.isInitialized)
-            navigationController = activity!!.findNavController(R.id.nav_host)
 
         if (showsDialog) dialog.setOnShowListener(this)
 

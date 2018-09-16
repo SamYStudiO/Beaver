@@ -7,9 +7,10 @@ import net.samystudio.beaver.R
 import net.samystudio.beaver.data.model.Home
 import net.samystudio.beaver.ext.getGenericErrorDialog
 import net.samystudio.beaver.ext.getMethodTag
-import net.samystudio.beaver.ext.showIfInexistant
+import net.samystudio.beaver.ext.showIfNonExistent
 import net.samystudio.beaver.ui.base.fragment.BaseDataFetchFragment
 import net.samystudio.beaver.ui.common.dialog.AlertDialogListener
+import net.samystudio.beaver.ui.main.authenticator.AuthenticatorFragment
 
 class HomeFragment : BaseDataFetchFragment<HomeFragmentViewModel, Home>(), AlertDialogListener {
     override val layoutViewRes: Int = R.layout.fragment_home
@@ -32,7 +33,9 @@ class HomeFragment : BaseDataFetchFragment<HomeFragmentViewModel, Home>(), Alert
             //viewModel.requestAuthenticator()
             //viewModel.invalidateToken()
 
-            navigationController.navigate(R.id.action_home_to_authenticator)
+            AuthenticatorFragment.newInstance()
+                .show(fragmentManager, AuthenticatorFragment::javaClass.name)
+            //navigationController.navigate(R.id.action_home_to_authenticator)
         }
     }
 
@@ -46,7 +49,7 @@ class HomeFragment : BaseDataFetchFragment<HomeFragmentViewModel, Home>(), Alert
 
     override fun dataFetchError(throwable: Throwable) {
         fragmentManager?.let {
-            getGenericErrorDialog(context!!).showIfInexistant(it, getMethodTag())
+            getGenericErrorDialog(context!!).showIfNonExistent(it, getMethodTag())
         }
     }
 

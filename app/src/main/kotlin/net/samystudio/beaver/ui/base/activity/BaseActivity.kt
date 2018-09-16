@@ -10,10 +10,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
+import net.samystudio.beaver.R
 import net.samystudio.beaver.di.qualifier.ActivityContext
 import net.samystudio.beaver.ui.base.fragment.BaseViewModelFragment
 import net.samystudio.beaver.ui.base.viewmodel.BaseActivityViewModel
@@ -33,18 +35,15 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(),
     @field:ActivityContext
     protected lateinit var viewModelProvider: ViewModelProvider
     protected abstract val viewModelClass: Class<VM>
-    /**
-     * @see [net.samystudio.beaver.ui.base.activity.BaseActivityModule.provideNavController]
-     */
-    @Inject
     override lateinit var navigationController: NavController
     lateinit var viewModel: VM
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(layoutViewRes)
-        AndroidInjection.inject(this)
 
+        navigationController = findNavController(R.id.nav_host)
         viewModel = viewModelProvider.get(viewModelClass)
         viewModel.handleCreate()
         viewModel.handleIntent(intent)
