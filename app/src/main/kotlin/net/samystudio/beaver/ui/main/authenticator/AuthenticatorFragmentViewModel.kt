@@ -10,6 +10,7 @@ import net.samystudio.beaver.BuildConfig
 import net.samystudio.beaver.data.AsyncState
 import net.samystudio.beaver.data.manager.AuthenticatorRepositoryManager
 import net.samystudio.beaver.di.scope.FragmentScope
+import net.samystudio.beaver.ext.getClassTag
 import net.samystudio.beaver.ui.base.viewmodel.BaseFragmentViewModel
 import net.samystudio.beaver.ui.base.viewmodel.DataPushViewModel
 import net.samystudio.beaver.ui.common.viewmodel.CompletableRequestLiveData
@@ -46,7 +47,7 @@ class AuthenticatorFragmentViewModel @Inject constructor(private val authenticat
                     }
                 else ->
                     Observable.just(Observable.error<Unit> {
-                        IllegalArgumentException("Unknown user flow ${userFlow.javaClass.name}.")
+                        IllegalArgumentException("Unknown user flow ${userFlow.getClassTag()}.")
                     })
             }
         }.subscribe())

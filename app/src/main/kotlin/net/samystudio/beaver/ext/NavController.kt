@@ -24,7 +24,7 @@ fun NavController.navigate(request: NavigationRequest, fragmentManager: Fragment
         )
         is NavigationRequest.Dialog -> {
             val tag: String =
-                request.tag ?: request.destination.javaClass.name
+                request.tag ?: request.destination.getClassTag()
 
             if (fragmentManager == null) throw IllegalArgumentException("You cannot navigate to a Dialog using NavController.navigate with a null fragmentManager argument")
             request.destination.show(fragmentManager, tag)
