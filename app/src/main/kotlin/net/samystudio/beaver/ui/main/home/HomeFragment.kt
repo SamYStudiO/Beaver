@@ -7,9 +7,11 @@ import net.samystudio.beaver.R
 import net.samystudio.beaver.data.model.Home
 import net.samystudio.beaver.ext.getGenericErrorDialog
 import net.samystudio.beaver.ext.getMethodTag
+import net.samystudio.beaver.ext.navigate
 import net.samystudio.beaver.ext.showIfNonExistent
 import net.samystudio.beaver.ui.base.fragment.BaseDataFetchFragment
 import net.samystudio.beaver.ui.common.dialog.AlertDialogListener
+import net.samystudio.beaver.ui.common.navigation.NavigationRequest
 import net.samystudio.beaver.ui.main.authenticator.AuthenticatorFragment
 
 class HomeFragment : BaseDataFetchFragment<HomeFragmentViewModel, Home>(), AlertDialogListener {
@@ -33,8 +35,12 @@ class HomeFragment : BaseDataFetchFragment<HomeFragmentViewModel, Home>(), Alert
             //viewModel.requestAuthenticator()
             //viewModel.invalidateToken()
 
-            AuthenticatorFragment.newInstance()
-                .show(fragmentManager, AuthenticatorFragment::javaClass.name)
+            navController.navigate(
+                NavigationRequest.Dialog(AuthenticatorFragment.newInstance()),
+                fragmentManager
+            )
+            // AuthenticatorFragment.newInstance()
+            //    .show(fragmentManager, AuthenticatorFragment::javaClass.name)
             //navigationController.navigate(R.id.action_home_to_authenticator)
         }
     }

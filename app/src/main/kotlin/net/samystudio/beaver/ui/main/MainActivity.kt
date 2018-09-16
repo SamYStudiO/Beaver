@@ -1,13 +1,14 @@
 package net.samystudio.beaver.ui.main
 
 import android.os.Bundle
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import net.samystudio.beaver.R
 import net.samystudio.beaver.ui.base.activity.BaseActivity
 
 class MainActivity : BaseActivity<MainActivityViewModel>() {
-
     override val layoutViewRes: Int = R.layout.activity_main
+    override val navController: NavController by lazy { findNavController(R.id.nav_host) }
     override val viewModelClass: Class<MainActivityViewModel> = MainActivityViewModel::class.java
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,5 +19,5 @@ class MainActivity : BaseActivity<MainActivityViewModel>() {
         super.onCreate(savedInstanceState)
     }
 
-    override fun onSupportNavigateUp(): Boolean = findNavController(R.id.nav_host).navigateUp()
+    override fun onSupportNavigateUp(): Boolean = navController.navigateUp()
 }

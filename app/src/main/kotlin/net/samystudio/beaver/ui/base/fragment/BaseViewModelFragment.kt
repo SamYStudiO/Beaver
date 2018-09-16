@@ -17,6 +17,7 @@ import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.HasSupportFragmentInjector
 import net.samystudio.beaver.di.qualifier.FragmentContext
+import net.samystudio.beaver.ext.navigate
 import net.samystudio.beaver.ui.base.viewmodel.BaseFragmentViewModel
 import javax.inject.Inject
 
@@ -61,7 +62,14 @@ abstract class BaseViewModelFragment<VM : BaseFragmentViewModel> : BaseFragment(
 
         viewModel.navigationCommand.observe(
             viewLifecycleOwner,
-            Observer { request -> request?.let { handleNavigationRequest(it, fragmentManager!!) } })
+            Observer { request ->
+                request?.let {
+                    navController.navigate(
+                        it,
+                        fragmentManager
+                    )
+                }
+            })
 
         viewModel.resultEvent.observe(viewLifecycleOwner, Observer { result ->
             result?.let {

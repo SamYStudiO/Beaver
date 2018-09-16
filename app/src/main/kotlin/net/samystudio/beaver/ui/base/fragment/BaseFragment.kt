@@ -15,30 +15,28 @@ import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.google.firebase.analytics.FirebaseAnalytics
-import net.samystudio.beaver.R
 import net.samystudio.beaver.ui.base.activity.BaseActivity
 import net.samystudio.beaver.ui.common.dialog.DialogListener
-import net.samystudio.beaver.ui.common.navigation.Navigable
 
 /**
  * Simple fragment with no injection or view model to avoid boilerplate with screen/dialog that
  * display really simple static content. If you want injection or view model, base class is
  * [BaseViewModelFragment].
  */
-abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowListener, Navigable {
+abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowListener {
     private var finished: Boolean = false
     private var dialogDismissed: Boolean = false
     private var restoringState: Boolean = false
     @get:LayoutRes
     protected abstract val layoutViewRes: Int
+    protected val navController: NavController by lazy { findNavController() }
     protected open lateinit var firebaseAnalytics: FirebaseAnalytics
     // @State
     protected var resultCode: Int = Activity.RESULT_CANCELED
     // @State
     protected var resultIntent: Intent? = null
-    final override lateinit var navigationController: NavController
     // @State
     open var title: String? = null
         set(value) {
@@ -69,8 +67,6 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
-        navigationController = activity!!.findNavController(R.id.nav_host)
 
         // In most case we'll extends BaseDataFragment and get these initialized with injection, but
         // if we want really simple fragment screen with no data (less boilerplate), we have to
@@ -174,7 +170,7 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
 
         if (showsDialog && !dialogDismissed) dismiss()
         else {
-            if (!showsDialog) navigationController.popBackStack()
+            if (!showsDialog) findNavController().popBackStack()
 
             (activity as? BaseActivity<*>)?.onActivityResult(
                 targetRequestCode,
