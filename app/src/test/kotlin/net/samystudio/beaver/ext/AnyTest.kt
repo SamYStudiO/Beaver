@@ -7,6 +7,6 @@ class AnyTest {
 
     @Test
     fun testGetMethodTag() {
-        assertEquals("AnyKtTestgetMethodTag", getMethodTag())
+        assertEquals("AnyTestgetMethodTag", getMethodTag())
     }
 }
