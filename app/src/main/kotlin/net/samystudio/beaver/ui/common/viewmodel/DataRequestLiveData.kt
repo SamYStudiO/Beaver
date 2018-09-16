@@ -4,10 +4,10 @@ import androidx.lifecycle.LiveData
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.PublishSubject
-import net.samystudio.beaver.data.remote.DataRequestState
+import net.samystudio.beaver.data.DataAsyncState
 
-class DataRequestLiveData<T>(private var bindObservable: Observable<DataRequestState<T>>? = null) :
-    LiveData<DataRequestState<T>>(), Disposable {
+class DataRequestLiveData<T>(private var bindObservable: Observable<DataAsyncState<T>>? = null) :
+    LiveData<DataAsyncState<T>>(), Disposable {
     private val trigger: PublishSubject<Unit> = PublishSubject.create()
     private val disposable: Disposable
 
@@ -20,11 +20,11 @@ class DataRequestLiveData<T>(private var bindObservable: Observable<DataRequestS
     override fun onActive() {
         super.onActive()
 
-        bindObservable?.let { if (value == null || value is DataRequestState.Error) refresh() }
+        bindObservable?.let { if (value == null || value is DataAsyncState.Error) refresh() }
     }
 
     fun refresh() {
-        if (value !is DataRequestState.Start && bindObservable != null)
+        if (value !is DataAsyncState.Started && bindObservable != null)
             trigger.onNext(Unit)
     }
 

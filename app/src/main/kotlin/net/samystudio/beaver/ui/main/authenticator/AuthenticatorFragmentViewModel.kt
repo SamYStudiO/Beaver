@@ -7,8 +7,8 @@ import android.os.Bundle
 import androidx.lifecycle.LiveData
 import io.reactivex.Observable
 import net.samystudio.beaver.BuildConfig
+import net.samystudio.beaver.data.AsyncState
 import net.samystudio.beaver.data.manager.AuthenticatorRepositoryManager
-import net.samystudio.beaver.data.remote.CompletableRequestState
 import net.samystudio.beaver.di.scope.FragmentScope
 import net.samystudio.beaver.ui.base.viewmodel.BaseFragmentViewModel
 import net.samystudio.beaver.ui.base.viewmodel.DataPushViewModel
@@ -19,7 +19,7 @@ import javax.inject.Inject
 class AuthenticatorFragmentViewModel @Inject constructor(private val authenticatorRepositoryManager: AuthenticatorRepositoryManager) :
     BaseFragmentViewModel(), DataPushViewModel {
     private val _dataPushCompletable: CompletableRequestLiveData = CompletableRequestLiveData()
-    override val dataPushCompletable: LiveData<CompletableRequestState> = _dataPushCompletable
+    override val dataPushCompletable: LiveData<AsyncState> = _dataPushCompletable
 
     fun <T : AuthenticatorUserFlow> addUserFlow(observable: Observable<T>) {
         disposables.add(observable.flatMap { userFlow ->
@@ -31,7 +31,7 @@ class AuthenticatorFragmentViewModel @Inject constructor(private val authenticat
                             userFlow.password
                         )
                     ).doOnNext {
-                        if (it is CompletableRequestState.Complete)
+                        if (it is AsyncState.Completed)
                             handleSignResult(userFlow.email, userFlow.password)
                     }
                 is AuthenticatorUserFlow.SignUp ->
@@ -41,7 +41,7 @@ class AuthenticatorFragmentViewModel @Inject constructor(private val authenticat
                             userFlow.password
                         )
                     ).doOnNext {
-                        if (it is CompletableRequestState.Complete)
+                        if (it is AsyncState.Completed)
                             handleSignResult(userFlow.email, userFlow.password)
                     }
                 else ->

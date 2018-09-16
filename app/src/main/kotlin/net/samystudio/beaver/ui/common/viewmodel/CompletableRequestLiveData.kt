@@ -3,12 +3,12 @@ package net.samystudio.beaver.ui.common.viewmodel
 import androidx.lifecycle.LiveData
 import io.reactivex.Flowable
 import io.reactivex.Observable
-import net.samystudio.beaver.data.remote.CompletableRequestState
+import net.samystudio.beaver.data.AsyncState
 
-class CompletableRequestLiveData : LiveData<CompletableRequestState>() {
-    fun bind(observable: Observable<CompletableRequestState>): Observable<CompletableRequestState> =
+class CompletableRequestLiveData : LiveData<AsyncState>() {
+    fun bind(observable: Observable<AsyncState>): Observable<AsyncState> =
         observable.doOnNext { postValue(it) }
 
-    fun bind(flowable: Flowable<CompletableRequestState>): Flowable<CompletableRequestState> =
+    fun bind(flowable: Flowable<AsyncState>): Flowable<AsyncState> =
         flowable.doOnNext { postValue(it) }
 }

@@ -3,7 +3,7 @@ package net.samystudio.beaver.ui.base.fragment
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
-import net.samystudio.beaver.data.remote.CompletableRequestState
+import net.samystudio.beaver.data.AsyncState
 import net.samystudio.beaver.ui.base.viewmodel.BaseFragmentViewModel
 import net.samystudio.beaver.ui.base.viewmodel.DataFetchViewModel
 import net.samystudio.beaver.ui.base.viewmodel.DataPushViewModel
@@ -16,12 +16,12 @@ abstract class BaseDataFetchPushFragment<VM, D> :
         viewModel.dataPushCompletable.observe(viewLifecycleOwner, Observer { requestState ->
             requestState?.let {
                 when (it) {
-                    is CompletableRequestState.Start -> dataPushStart()
-                    is CompletableRequestState.Complete -> {
+                    is AsyncState.Started -> dataPushStart()
+                    is AsyncState.Completed -> {
                         dataPushSuccess()
                         dataPushTerminate()
                     }
-                    is CompletableRequestState.Error -> {
+                    is AsyncState.Error -> {
                         dataPushError(it.error)
                         dataPushTerminate()
                     }

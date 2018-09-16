@@ -1,7 +1,7 @@
 package net.samystudio.beaver.data.manager
 
 import io.reactivex.Observable
-import net.samystudio.beaver.data.remote.CompletableRequestState
+import net.samystudio.beaver.data.AsyncState
 import net.samystudio.beaver.data.remote.api.AuthenticatorApiInterface
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -16,27 +16,27 @@ constructor(
     private val userManager: UserManager,
     private val authenticatorApiInterface: AuthenticatorApiInterface
 ) {
-    fun signIn(email: String, password: String): Observable<CompletableRequestState> =
+    fun signIn(email: String, password: String): Observable<AsyncState> =
         authenticatorApiInterface
             .signIn(email, password)
             .toObservable()
             .map {
                 userManager.onNewToken(email, password, it)
-                CompletableRequestState.Complete
+                AsyncState.Completed
             }
-            .cast(CompletableRequestState::class.java)
-            .onErrorReturn { CompletableRequestState.Error(it) }
-            .startWith(CompletableRequestState.Start)
+            .cast(AsyncState::class.java)
+            .onErrorReturn { AsyncState.Error(it) }
+            .startWith(AsyncState.Started)
 
-    fun signUp(email: String, password: String): Observable<CompletableRequestState> =
+    fun signUp(email: String, password: String): Observable<AsyncState> =
         authenticatorApiInterface
             .signUp(email, password)
             .toObservable()
             .map {
                 userManager.onNewToken(email, password, it)
-                CompletableRequestState.Complete
+                AsyncState.Completed
             }
-            .cast(CompletableRequestState::class.java)
-            .onErrorReturn { CompletableRequestState.Error(it) }
-            .startWith(CompletableRequestState.Start)
+            .cast(AsyncState::class.java)
+            .onErrorReturn { AsyncState.Error(it) }
+            .startWith(AsyncState.Started)
 }

@@ -1,9 +1,9 @@
 package net.samystudio.beaver.ui.main.home
 
 import androidx.lifecycle.LiveData
+import net.samystudio.beaver.data.DataAsyncState
 import net.samystudio.beaver.data.manager.HomeRepositoryManager
 import net.samystudio.beaver.data.model.Home
-import net.samystudio.beaver.data.remote.DataRequestState
 import net.samystudio.beaver.di.scope.FragmentScope
 import net.samystudio.beaver.ui.base.viewmodel.BaseFragmentViewModel
 import net.samystudio.beaver.ui.base.viewmodel.DataFetchViewModel
@@ -16,7 +16,7 @@ class HomeFragmentViewModel @Inject constructor(homeRepositoryManager: HomeRepos
     DataFetchViewModel<Home> {
     private val _dataFetchObservable: DataRequestLiveData<Home> =
         DataRequestLiveData(homeRepositoryManager.home())
-    override val dataFetchObservable: LiveData<DataRequestState<Home>> = _dataFetchObservable
+    override val dataFetchObservable: LiveData<DataAsyncState<Home>> = _dataFetchObservable
 
     init {
         disposables.add(_dataFetchObservable)
