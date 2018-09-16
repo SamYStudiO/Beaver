@@ -2,6 +2,7 @@
 
 package net.samystudio.beaver.ui.common.dialog
 
+import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
@@ -21,14 +22,12 @@ open class AlertDialog : BaseFragment(),
     DialogInterface.OnMultiChoiceClickListener {
     override val layoutViewRes: Int = 0
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog =
+        Builder(activity!!, arguments!!.getParcelable(PARAMS) as? Params).build(
+            this,
+            theme
+        ).create()
 
-        if (arguments == null) arguments = Bundle()
-
-        Builder(activity!!, arguments!!.getParcelable(PARAMS) as? Params).build(this, theme)
-            .create()
-    }
 
     override fun onClick(dialog: DialogInterface?, which: Int) {
         (activity as? AlertDialogListener)?.let {
@@ -343,7 +342,8 @@ open class AlertDialog : BaseFragment(),
         ): AlertDialog {
             val dialog = AlertDialog()
             dialog.setTargetFragment(targetController, targetRequestCode)
-            dialog.arguments?.putParcelable(PARAMS, builder.toParams())
+            if (dialog.arguments == null) dialog.arguments = Bundle()
+            dialog.arguments!!.putParcelable(PARAMS, builder.toParams())
 
             return dialog
         }
