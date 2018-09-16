@@ -3,7 +3,7 @@ package net.samystudio.beaver.ext
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-class AnyKtTest {
+class AnyTest {
 
     @Test
     fun testGetMethodTag() {
