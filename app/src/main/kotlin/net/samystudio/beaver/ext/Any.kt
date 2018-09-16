@@ -1,4 +1,6 @@
 package net.samystudio.beaver.ext
 
+fun Any.getTag(): String = this.javaClass.simpleName
+
 fun Any.getMethodTag(): String =
-    this.javaClass.simpleName + object : Any() {}.javaClass.enclosingMethod?.name
+    getTag() + object : Any() {}.javaClass.enclosingMethod?.name
