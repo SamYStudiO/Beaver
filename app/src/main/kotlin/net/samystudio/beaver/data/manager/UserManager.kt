@@ -40,13 +40,15 @@ class UserManager @Inject constructor(
     }
 
     fun invalidateToken() {
-        accountManager.invalidateAuthToken(
-            BuildConfig.APPLICATION_ID,
-            accountManager.peekAuthToken(
-                getCurrentAccount(),
-                DEFAULT_AUTH_TOKEN_TYPE
+        getCurrentAccount()?.let {
+            accountManager.invalidateAuthToken(
+                BuildConfig.APPLICATION_ID,
+                accountManager.peekAuthToken(
+                    it,
+                    DEFAULT_AUTH_TOKEN_TYPE
+                )
             )
-        )
+        }
     }
 
     private fun getCurrentAccount(): Account? {

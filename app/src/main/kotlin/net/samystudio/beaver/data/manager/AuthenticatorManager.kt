@@ -4,6 +4,7 @@ import android.accounts.*
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import androidx.core.os.bundleOf
 import net.samystudio.beaver.data.remote.api.AuthenticatorApiInterface
 import net.samystudio.beaver.di.qualifier.ApplicationContext
 import net.samystudio.beaver.ui.main.MainActivity
@@ -59,25 +60,26 @@ class AuthenticatorManager @Inject constructor(
             }
         }
 
-        val bundle = Bundle()
-
         if (!authToken.isNullOrBlank()) {
-            bundle.putString(AccountManager.KEY_ACCOUNT_NAME, account.name)
-            bundle.putString(AccountManager.KEY_ACCOUNT_TYPE, account.type)
-            bundle.putString(AccountManager.KEY_AUTHTOKEN, authToken)
-            return bundle
+            return bundleOf(
+                AccountManager.KEY_ACCOUNT_NAME to account.name,
+                AccountManager.KEY_ACCOUNT_TYPE to account.type,
+                AccountManager.KEY_AUTHTOKEN to authToken
+            )
         }
 
         val intent = Intent(context, MainActivity::class.java)
-        intent.putExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE, response)
-        intent.putExtra(AccountManager.KEY_ACCOUNT_NAME, account.name)
-        intent.putExtra(AccountManager.KEY_ACCOUNT_TYPE, account.type)
-        intent.putExtra(AccountManager.KEY_USERDATA, options)
-        intent.putExtra(UserManager.KEY_AUTH_TOKEN_TYPE, authTokenType)
+        intent.putExtras(
+            bundleOf(
+                AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE to response,
+                AccountManager.KEY_ACCOUNT_NAME to account.name,
+                AccountManager.KEY_ACCOUNT_TYPE to account.type,
+                AccountManager.KEY_USERDATA to options,
+                UserManager.KEY_AUTH_TOKEN_TYPE to authTokenType
+            )
+        )
 
-        bundle.putParcelable(AccountManager.KEY_INTENT, intent)
-
-        return bundle
+        return bundleOf(AccountManager.KEY_INTENT to intent)
     }
 
     override fun hasFeatures(
@@ -103,15 +105,16 @@ class AuthenticatorManager @Inject constructor(
         options: Bundle
     ): Bundle? {
         val intent = Intent(context, MainActivity::class.java)
-        intent.putExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE, response)
-        intent.putExtra(AccountManager.KEY_ACCOUNT_TYPE, accountType)
-        intent.putExtra(AccountManager.KEY_USERDATA, options)
-        intent.putExtra(UserManager.KEY_AUTH_TOKEN_TYPE, authTokenType)
-        intent.putExtra(UserManager.KEY_FEATURES, requiredFeatures)
+        intent.putExtras(
+            bundleOf(
+                AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE to response,
+                AccountManager.KEY_ACCOUNT_TYPE to accountType,
+                AccountManager.KEY_USERDATA to options,
+                UserManager.KEY_AUTH_TOKEN_TYPE to authTokenType,
+                UserManager.KEY_FEATURES to requiredFeatures
+            )
+        )
 
-        val bundle = Bundle()
-        bundle.putParcelable(AccountManager.KEY_INTENT, intent)
-
-        return bundle
+        return bundleOf(AccountManager.KEY_INTENT to intent)
     }
 }

@@ -3,7 +3,7 @@ package net.samystudio.beaver.ui.main.authenticator
 import android.accounts.AccountManager
 import android.app.Activity
 import android.content.Intent
-import android.os.Bundle
+import androidx.core.os.bundleOf
 import androidx.lifecycle.LiveData
 import io.reactivex.Observable
 import net.samystudio.beaver.BuildConfig
@@ -54,13 +54,14 @@ class AuthenticatorFragmentViewModel @Inject constructor(private val authenticat
     }
 
     private fun handleSignResult(email: String, password: String) {
-        val bundle = Bundle()
-        bundle.putString(AccountManager.KEY_ACCOUNT_NAME, email)
-        bundle.putString(AccountManager.KEY_ACCOUNT_TYPE, BuildConfig.APPLICATION_ID)
-        bundle.putString(AccountManager.KEY_PASSWORD, password)
-
         val intent = Intent()
-        intent.putExtras(bundle)
+        intent.putExtras(
+            bundleOf(
+                AccountManager.KEY_ACCOUNT_NAME to email,
+                AccountManager.KEY_ACCOUNT_TYPE to BuildConfig.APPLICATION_ID,
+                AccountManager.KEY_PASSWORD to password
+            )
+        )
         setResult(Activity.RESULT_OK, intent)
     }
 }
