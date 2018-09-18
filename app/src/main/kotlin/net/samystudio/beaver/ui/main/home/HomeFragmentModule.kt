@@ -15,7 +15,7 @@ import net.samystudio.beaver.ui.base.fragment.BaseFragmentModule
 import net.samystudio.beaver.ui.base.viewmodel.BaseFragmentViewModel
 import retrofit2.Retrofit
 
-@Module(includes = [BaseFragmentModule::class])
+@Module(includes = [BaseFragmentModule::class, HomeAssistedInjectModule::class])
 abstract class HomeFragmentModule {
     @Binds
     @FragmentScope

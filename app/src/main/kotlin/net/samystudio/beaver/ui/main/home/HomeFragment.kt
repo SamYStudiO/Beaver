@@ -1,3 +1,5 @@
+@file:Suppress("ProtectedInFinal")
+
 package net.samystudio.beaver.ui.main.home
 
 import android.os.Bundle
@@ -13,11 +15,14 @@ import net.samystudio.beaver.ui.base.fragment.BaseDataFetchFragment
 import net.samystudio.beaver.ui.common.dialog.AlertDialogListener
 import net.samystudio.beaver.ui.common.navigation.NavigationRequest
 import net.samystudio.beaver.ui.main.authenticator.AuthenticatorFragment
+import javax.inject.Inject
 
 class HomeFragment : BaseDataFetchFragment<HomeFragmentViewModel, Home>(), AlertDialogListener {
     override val layoutViewRes: Int = R.layout.fragment_home
     override val viewModelClass: Class<HomeFragmentViewModel> = HomeFragmentViewModel::class.java
     override var title: String? = "Home"
+    @Inject
+    protected lateinit var assistedInject: HomeAssistedInject.Factory
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -43,6 +48,8 @@ class HomeFragment : BaseDataFetchFragment<HomeFragmentViewModel, Home>(), Alert
             //    .show(fragmentManager, AuthenticatorFragment::javaClass.name)
             //navigationController.navigate(R.id.action_home_to_authenticator)
         }
+
+        assistedInject.create(10).test()
     }
 
     override fun dataFetchStart() {
