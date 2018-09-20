@@ -1,8 +1,6 @@
-# !!!WORK IN PROGRESS!!!
+# beaver !work in progess!
 
-# beaver
-
-Android Project template using [MVVM](https://developer.android.com/topic/libraries/architecture/index.html) and [Dagger 2](https://github.com/google/dagger) and some [Jetpack](https://developer.android.com/jetpack/) libraries.
+Android Project template using [MVVM](https://developer.android.com/topic/libraries/architecture/index.html), [Dagger 2](https://github.com/google/dagger) and some [Jetpack](https://developer.android.com/jetpack/) libraries.
 
 Also includes a bunch of common use libraries (may be easily replaced or removed) :
 - [Firebase app indexing](https://firebase.google.com/docs/app-indexing/)
