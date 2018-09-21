@@ -6,6 +6,7 @@ import android.content.Intent
 import androidx.core.os.bundleOf
 import androidx.lifecycle.LiveData
 import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import net.samystudio.beaver.BuildConfig
 import net.samystudio.beaver.data.AsyncState
 import net.samystudio.beaver.data.manager.AuthenticatorRepositoryManager
@@ -30,7 +31,7 @@ class AuthenticatorFragmentViewModel @Inject constructor(private val authenticat
                         authenticatorRepositoryManager.signIn(
                             userFlow.email,
                             userFlow.password
-                        )
+                        ).observeOn(AndroidSchedulers.mainThread())
                     ).doOnNext {
                         if (it is AsyncState.Completed)
                             handleSignResult(userFlow.email, userFlow.password)
@@ -40,7 +41,7 @@ class AuthenticatorFragmentViewModel @Inject constructor(private val authenticat
                         authenticatorRepositoryManager.signUp(
                             userFlow.email,
                             userFlow.password
-                        )
+                        ).observeOn(AndroidSchedulers.mainThread())
                     ).doOnNext {
                         if (it is AsyncState.Completed)
                             handleSignResult(userFlow.email, userFlow.password)

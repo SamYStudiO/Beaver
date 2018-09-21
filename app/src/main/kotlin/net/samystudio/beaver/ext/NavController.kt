@@ -7,8 +7,8 @@ import net.samystudio.beaver.ui.common.navigation.NavigationRequest
 fun NavController.navigate(request: NavigationRequest, fragmentManager: FragmentManager? = null) {
     when (request) {
         is NavigationRequest.Pop -> {
-            if (request.destination != null) popBackStack(
-                request.destination.id,
+            if (request.destinationId != null && (request.destinationId > 0)) popBackStack(
+                request.destinationId,
                 false
             )
             else popBackStack()
@@ -18,7 +18,7 @@ fun NavController.navigate(request: NavigationRequest, fragmentManager: Fragment
             false
         )
         is NavigationRequest.Push -> navigate(
-            request.destination.id,
+            request.destinationId,
             request.args,
             request.options
         )
