@@ -20,7 +20,8 @@ fun NavController.navigate(request: NavigationRequest, fragmentManager: Fragment
         is NavigationRequest.Push -> navigate(
             request.destination.id,
             request.args,
-            request.options
+            request.options,
+            request.extras
         )
         is NavigationRequest.Dialog -> {
             val tag: String =
