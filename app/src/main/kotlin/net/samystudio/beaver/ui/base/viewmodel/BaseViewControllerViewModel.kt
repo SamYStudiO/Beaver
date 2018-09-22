@@ -1,11 +1,10 @@
 package net.samystudio.beaver.ui.base.viewmodel
 
+//import com.evernote.android.state.StateSaver
 import android.content.Intent
 import android.os.Bundle
 import androidx.annotation.CallSuper
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.LiveDataReactiveStreams
-//import com.evernote.android.state.StateSaver
 import io.reactivex.BackpressureStrategy
 import net.samystudio.beaver.data.manager.UserManager
 import net.samystudio.beaver.ui.common.navigation.NavigationRequest
@@ -20,13 +19,13 @@ abstract class BaseViewControllerViewModel : BaseViewModel() {
     val navigationCommand: LiveData<NavigationRequest> = _navigationCommand
     private val _resultEvent: SingleLiveEvent<Result> by lazy { SingleLiveEvent<Result>() }
     val resultEvent: LiveData<Result> = _resultEvent
-    val userStatusObservable: LiveData<Boolean> by lazy {
-        LiveDataReactiveStreams.fromPublisher(
-            userManager.statusObservable.toFlowable(BackpressureStrategy.LATEST)
-        )
-    }
 
     open fun handleCreate() {
+        disposables.add(userManager.statusObservable.toFlowable(BackpressureStrategy.LATEST)
+            .subscribe {
+                if (it) handleUserConnected()
+                else handleUserDisconnected()
+            })
     }
 
     open fun handleIntent(intent: Intent) {
@@ -45,6 +44,14 @@ abstract class BaseViewControllerViewModel : BaseViewModel() {
      * be handled now.
      */
     open fun handleReady() {
+    }
+
+    open fun handleUserConnected() {
+
+    }
+
+    open fun handleUserDisconnected() {
+
     }
 
     @CallSuper

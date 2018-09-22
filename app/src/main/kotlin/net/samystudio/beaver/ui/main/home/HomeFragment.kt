@@ -4,52 +4,25 @@ package net.samystudio.beaver.ui.main.home
 
 import android.os.Bundle
 import android.view.View
+import com.jakewharton.rxbinding2.view.clicks
 import kotlinx.android.synthetic.main.fragment_home.*
 import net.samystudio.beaver.R
 import net.samystudio.beaver.data.model.Home
 import net.samystudio.beaver.ext.getGenericErrorDialog
 import net.samystudio.beaver.ext.getMethodTag
-import net.samystudio.beaver.ext.navigate
 import net.samystudio.beaver.ext.showIfNonExistent
 import net.samystudio.beaver.ui.base.fragment.BaseDataFetchFragment
 import net.samystudio.beaver.ui.common.dialog.AlertDialogListener
-import net.samystudio.beaver.ui.common.navigation.NavigationRequest
-import net.samystudio.beaver.ui.main.authenticator.AuthenticatorFragment
-import javax.inject.Inject
 
 class HomeFragment : BaseDataFetchFragment<HomeFragmentViewModel, Home>(), AlertDialogListener {
     override val layoutViewRes: Int = R.layout.fragment_home
     override val viewModelClass: Class<HomeFragmentViewModel> = HomeFragmentViewModel::class.java
     override var title: String? = "Home"
-    @Inject
-    protected lateinit var assistedInject: HomeAssistedInject.Factory
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        invalidate.setOnClickListener {
-
-            /*AlertDialog.Builder(context!!)
-                .title("title")
-                .items(R.array.api_urls)
-                .positiveButton("ok")
-                .create(this, 11)
-                .showNow(fragmentManager,
-                         AlertDialog::class.java.name)*/
-
-            //viewModel.requestAuthenticator()
-            //viewModel.invalidateToken()
-
-            navController.navigate(
-                NavigationRequest.Dialog(AuthenticatorFragment.newInstance()),
-                fragmentManager
-            )
-            // AuthenticatorFragment.newInstance()
-            //    .show(fragmentManager, AuthenticatorFragment::javaClass.name)
-            //navigationController.navigate(R.id.action_home_to_authenticator)
-        }
-
-        assistedInject.create(10).test()
+        viewModel.addUserFlow(invalidate.clicks().map { HomeUserFlow.Disconnect })
     }
 
     override fun dataFetchStart() {
