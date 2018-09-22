@@ -28,11 +28,9 @@ abstract class BaseViewControllerViewModel : BaseViewModel() {
             })
     }
 
-    open fun handleIntent(intent: Intent) {
-    }
+    open fun handleIntent(intent: Intent) {}
 
-    open fun handleResult(requestCode: Int, code: Int, data: Intent?) {
-    }
+    open fun handleResult(requestCode: Int, code: Int, data: Intent?) {}
 
     @CallSuper
     open fun handleRestoreInstanceState(savedInstanceState: Bundle) {
@@ -43,16 +41,11 @@ abstract class BaseViewControllerViewModel : BaseViewModel() {
      * View model is up and ready, all kind of params (intent, savedInstanceState, arguments) should
      * be handled now.
      */
-    open fun handleReady() {
-    }
+    open fun handleReady() {}
 
-    open fun handleUserConnected() {
+    open fun handleUserConnected() {}
 
-    }
-
-    open fun handleUserDisconnected() {
-
-    }
+    open fun handleUserDisconnected() {}
 
     @CallSuper
     open fun handleSaveInstanceState(outState: Bundle) {
