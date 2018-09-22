@@ -17,10 +17,10 @@ import javax.inject.Singleton
  */
 @Singleton
 class AuthenticatorManager @Inject constructor(
-    @param:ApplicationContext private val context: Context, private val accountManager: AccountManager,
+    @param:ApplicationContext private val context: Context,
+    private val accountManager: AccountManager,
     private val authenticatorApiInterface: AuthenticatorApiInterface
-) :
-    AbstractAccountAuthenticator(context) {
+) : AbstractAccountAuthenticator(context) {
     override fun getAuthTokenLabel(authTokenType: String): String? {
         return null
     }

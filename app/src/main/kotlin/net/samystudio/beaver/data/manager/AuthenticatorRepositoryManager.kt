@@ -20,7 +20,7 @@ constructor(
         authenticatorApiInterface
             .signIn(email, password)
             .toObservable()
-            .onErrorReturnItem("token") // for debug
+            .onErrorReturnItem("token") // TODO remove this line, for debug only
             .map {
                 userManager.onNewToken(email, password, it)
                 AsyncState.Completed
