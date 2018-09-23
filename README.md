@@ -12,7 +12,7 @@ Also includes a bunch of common use libraries (may be easily replaced or removed
 - [Android State](https://github.com/evernote/android-state)
 - [Timber](https://github.com/JakeWharton/timber)
 
-Package structure is inspired from [this](https://overflow.buffer.com/2016/09/26/android-rethinking-package-structure/) reading
+Package structure is inspired from [this](https://overflow.buffer.com/2016/09/26/android-rethinking-package-structure/) reading.
 
 ### Conductor
 
