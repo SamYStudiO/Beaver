@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
+import androidx.navigation.ui.setupActionBarWithNavController
 import net.samystudio.beaver.ui.base.viewmodel.BaseActivityViewModel
 
 abstract class BaseToolbarActivity<VM : BaseActivityViewModel> : BaseActivity<VM>() {
@@ -20,6 +21,7 @@ abstract class BaseToolbarActivity<VM : BaseActivityViewModel> : BaseActivity<VM
         super.onCreate(savedInstanceState)
 
         setSupportActionBar(toolbar)
+        setupActionBarWithNavController(navController)
     }
 
     override fun setTitle(title: CharSequence?) {

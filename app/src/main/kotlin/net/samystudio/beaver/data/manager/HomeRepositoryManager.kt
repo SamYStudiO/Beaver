@@ -16,8 +16,6 @@ class HomeRepositoryManager @Inject constructor(private val homeApiInterface: Ho
         homeApiInterface.home()
             .toObservable()
             .map { DataAsyncState.Completed(it) as DataAsyncState<Home> }
-            .onErrorReturn {
-                DataAsyncState.Error(it)
-            }
+            .onErrorReturn { DataAsyncState.Error(it) }
             .startWith(DataAsyncState.Started())
 }

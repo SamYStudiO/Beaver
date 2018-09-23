@@ -5,10 +5,12 @@ import android.accounts.AccountManager
 import android.content.Intent
 import androidx.core.os.bundleOf
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import io.reactivex.Observable
-import net.samystudio.beaver.BuildConfig
+import io.reactivex.android.schedulers.AndroidSchedulers
 import net.samystudio.beaver.data.AsyncState
 import net.samystudio.beaver.data.manager.AuthenticatorRepositoryManager
+import net.samystudio.beaver.data.manager.UserManager
 import net.samystudio.beaver.di.scope.FragmentScope
 import net.samystudio.beaver.ext.getClassTag
 import net.samystudio.beaver.ui.base.viewmodel.BaseFragmentViewModel
@@ -22,15 +24,25 @@ class AuthenticatorFragmentViewModel @Inject constructor(private val authenticat
     BaseFragmentViewModel(), DataPushViewModel {
     private val _dataPushCompletable: CompletableRequestLiveData = CompletableRequestLiveData()
     override val dataPushCompletable: LiveData<AsyncState> = _dataPushCompletable
+    private val _signInVisibility: MutableLiveData<Boolean> = MutableLiveData()
+    private val _signUpVisibility: MutableLiveData<Boolean> = MutableLiveData()
+    val signInVisibility: LiveData<Boolean> = _signInVisibility
+    val signUpVisibility: LiveData<Boolean> = _signUpVisibility
+    // @State
     private var authenticatorResponse: AccountAuthenticatorResponse? = null
+    private lateinit var intent: Intent
 
     override fun handleIntent(intent: Intent) {
         super.handleIntent(intent)
 
+        this.intent = intent
+
         authenticatorResponse =
                 intent.getParcelableExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE)
-
         authenticatorResponse?.onRequestContinued()
+
+        _signInVisibility.value = !intent.hasExtra(UserManager.KEY_CREATE_ACCOUNT)
+        _signUpVisibility.value = !intent.hasExtra(UserManager.KEY_CONFIRM_ACCOUNT)
     }
 
     fun <T : AuthenticatorUserFlow> addUserFlow(observable: Observable<T>) {
@@ -38,51 +50,55 @@ class AuthenticatorFragmentViewModel @Inject constructor(private val authenticat
             when (userFlow) {
                 is AuthenticatorUserFlow.SignIn ->
                     _dataPushCompletable.bind(
-                        authenticatorRepositoryManager.signIn(
-                            userFlow.email,
-                            userFlow.password
-                        )
-                    ).doOnNext {
-                        if (it is AsyncState.Completed)
-                            handleSignResult(userFlow.email, userFlow.password)
-                    }
+                        authenticatorRepositoryManager.signIn(userFlow.email, userFlow.password)
+                    ).observeOn(AndroidSchedulers.mainThread())
+                        .doOnNext {
+                            if (it is AsyncState.Completed) handleSignResult(
+                                userFlow.email,
+                                userFlow.password
+                            )
+                        }
                 is AuthenticatorUserFlow.SignUp ->
                     _dataPushCompletable.bind(
-                        authenticatorRepositoryManager.signUp(
-                            userFlow.email,
-                            userFlow.password
-                        )
-                    ).doOnNext {
-                        if (it is AsyncState.Completed)
-                            handleSignResult(userFlow.email, userFlow.password)
-                    }
+                        authenticatorRepositoryManager.signUp(userFlow.email, userFlow.password)
+                    ).observeOn(AndroidSchedulers.mainThread())
+                        .doOnNext {
+                            if (it is AsyncState.Completed) handleSignResult(
+                                userFlow.email,
+                                userFlow.password
+                            )
+                        }
                 else ->
                     Observable.just(Observable.error<AsyncState> {
                         IllegalArgumentException("Unknown user flow ${userFlow.getClassTag()}.")
                     })
             }
-        }.subscribe({}, { handleSignError(it) }))
+        }.subscribe())
     }
 
     private fun handleSignResult(email: String, password: String) {
-        authenticatorResponse?.let {
-            it.onResult(
-                bundleOf(
-                    AccountManager.KEY_ACCOUNT_NAME to email,
-                    AccountManager.KEY_ACCOUNT_TYPE to BuildConfig.APPLICATION_ID,
-                    AccountManager.KEY_PASSWORD to password
-                )
+        authenticatorResponse?.onResult(
+            bundleOf(
+                AccountManager.KEY_ACCOUNT_NAME to email,
+                AccountManager.KEY_ACCOUNT_TYPE to UserManager.ACCOUNT_TYPE,
+                AccountManager.KEY_PASSWORD to password
             )
-            authenticatorResponse = null
-        }
+        )
 
+        authenticatorResponse = null
         navigate(NavigationRequest.Pop())
     }
 
-    private fun handleSignError(error: Throwable) {
-        authenticatorResponse?.let {
-            it.onError(AccountManager.ERROR_CODE_CANCELED, error.localizedMessage)
-            authenticatorResponse = null
-        }
+    override fun onCleared() {
+        super.onCleared()
+
+        authenticatorResponse?.onError(
+            AccountManager.ERROR_CODE_CANCELED,
+            "Authentication was cancelled"
+        )
+        authenticatorResponse = null
+
+        intent.removeExtra(UserManager.KEY_CREATE_ACCOUNT)
+        intent.removeExtra(UserManager.KEY_CONFIRM_ACCOUNT)
     }
 }

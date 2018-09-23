@@ -2,11 +2,15 @@
 
 package net.samystudio.beaver.ui.main.authenticator
 
+import androidx.fragment.app.Fragment
 import dagger.Binds
 import dagger.Module
+import dagger.Provides
 import dagger.multibindings.IntoMap
 import net.samystudio.beaver.di.key.FragmentViewModelKey
 import net.samystudio.beaver.di.scope.FragmentScope
+import net.samystudio.beaver.ext.EmailValidator
+import net.samystudio.beaver.ext.PasswordValidator
 import net.samystudio.beaver.ui.base.fragment.BaseFragmentModule
 import net.samystudio.beaver.ui.base.viewmodel.BaseFragmentViewModel
 
@@ -14,11 +18,24 @@ import net.samystudio.beaver.ui.base.viewmodel.BaseFragmentViewModel
 abstract class AuthenticatorFragmentModule {
     @Binds
     @FragmentScope
-    abstract fun bindFragment(fragment: AuthenticatorFragment): androidx.fragment.app.Fragment
+    abstract fun bindFragment(fragment: AuthenticatorFragment): Fragment
 
     @Binds
     @IntoMap
     @FragmentViewModelKey(AuthenticatorFragmentViewModel::class)
     @FragmentScope
     abstract fun bindViewModel(viewModel: AuthenticatorFragmentViewModel): BaseFragmentViewModel
+
+    @Module
+    companion object {
+        @Provides
+        @FragmentScope
+        @JvmStatic
+        fun provideEmailValidator(): EmailValidator = EmailValidator()
+
+        @Provides
+        @FragmentScope
+        @JvmStatic
+        fun providePasswordValidator(): PasswordValidator = PasswordValidator()
+    }
 }

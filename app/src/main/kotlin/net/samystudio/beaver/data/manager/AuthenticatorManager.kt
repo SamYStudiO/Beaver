@@ -22,7 +22,7 @@ class AuthenticatorManager @Inject constructor(
     private val authenticatorApiInterface: AuthenticatorApiInterface
 ) : AbstractAccountAuthenticator(context) {
     override fun getAuthTokenLabel(authTokenType: String): String? {
-        return null
+        return authTokenType
     }
 
     override fun confirmCredentials(
@@ -30,7 +30,18 @@ class AuthenticatorManager @Inject constructor(
         account: Account,
         options: Bundle?
     ): Bundle? {
-        return null
+        val intent = Intent(context, MainActivity::class.java)
+        intent.putExtras(
+            bundleOf(
+                AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE to response,
+                AccountManager.KEY_ACCOUNT_NAME to account.name,
+                AccountManager.KEY_ACCOUNT_TYPE to account.type,
+                AccountManager.KEY_USERDATA to options,
+                UserManager.KEY_CONFIRM_ACCOUNT to true
+            )
+        )
+
+        return bundleOf(AccountManager.KEY_INTENT to intent)
     }
 
     override fun updateCredentials(
@@ -111,7 +122,8 @@ class AuthenticatorManager @Inject constructor(
                 AccountManager.KEY_ACCOUNT_TYPE to accountType,
                 AccountManager.KEY_USERDATA to options,
                 UserManager.KEY_AUTH_TOKEN_TYPE to authTokenType,
-                UserManager.KEY_FEATURES to requiredFeatures
+                UserManager.KEY_FEATURES to requiredFeatures,
+                UserManager.KEY_CREATE_ACCOUNT to true
             )
         )
 

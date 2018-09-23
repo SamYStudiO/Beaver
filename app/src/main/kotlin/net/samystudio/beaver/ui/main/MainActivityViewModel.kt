@@ -26,6 +26,6 @@ class MainActivityViewModel @Inject constructor() : BaseActivityViewModel() {
 
         // If we got authenticatorResponse that mean we were ask from system to create
         // account, so let's notify we want to authenticate.
-        if (hasAuthenticatorResponse) navigate(NavigationRequest.Push(R.id.authenticator))
+        if (hasAuthenticatorResponse) navigate(NavigationRequest.Push(R.id.action_global_authenticator))
     }
 }

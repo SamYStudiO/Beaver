@@ -22,7 +22,7 @@ constructor(
             .toObservable()
             .onErrorReturnItem("token") // TODO remove this line, for debug only
             .map {
-                userManager.onNewToken(email, password, it)
+                userManager.connect(email, password, it)
                 AsyncState.Completed
             }
             .cast(AsyncState::class.java)
@@ -33,8 +33,9 @@ constructor(
         authenticatorApiInterface
             .signUp(email, password)
             .toObservable()
+            .onErrorReturnItem("token") // TODO remove this line, for debug only
             .map {
-                userManager.onNewToken(email, password, it)
+                userManager.createAccount(email, password)
                 AsyncState.Completed
             }
             .cast(AsyncState::class.java)

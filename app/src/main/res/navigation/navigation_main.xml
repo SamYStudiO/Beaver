@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/navigation_main"
+    app:startDestination="@id/home">
+
+    <fragment
+        android:id="@+id/home"
+        android:name="net.samystudio.beaver.ui.main.home.HomeFragment"
+        android:label="HomeFragment">
+        <deepLink app:uri="https://samystudio.github.io" />
+        <action
+            android:id="@+id/action_home_to_userProfile"
+            app:destination="@id/userProfile"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@+id/home" />
+    </fragment>
+    <fragment
+        android:id="@+id/userProfile"
+        android:name="net.samystudio.beaver.ui.main.userProfile.UserProfileFragment"
+        android:label="UserProfileFragment" />
+    <fragment
+        android:id="@+id/authenticator"
+        android:name="net.samystudio.beaver.ui.main.authenticator.AuthenticatorFragment"
+        android:label="AuthenticatorFragment" />
+    <action
+        android:id="@+id/action_global_authenticator"
+        app:destination="@id/authenticator"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:launchSingleTop="true"
+        app:popEnterAnim="@anim/nav_default_enter_anim"
+        app:popExitAnim="@anim/nav_default_pop_exit_anim"
+        app:popUpTo="@+id/home"
+        app:popUpToInclusive="false" />
+
+</navigation>

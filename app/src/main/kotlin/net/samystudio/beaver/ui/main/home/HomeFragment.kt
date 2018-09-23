@@ -4,7 +4,7 @@ package net.samystudio.beaver.ui.main.home
 
 import android.os.Bundle
 import android.view.View
-import com.jakewharton.rxbinding2.view.clicks
+import androidx.navigation.Navigation
 import kotlinx.android.synthetic.main.fragment_home.*
 import net.samystudio.beaver.R
 import net.samystudio.beaver.data.model.Home
@@ -22,7 +22,7 @@ class HomeFragment : BaseDataFetchFragment<HomeFragmentViewModel, Home>(), Alert
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.addUserFlow(invalidate.clicks().map { HomeUserFlow.Disconnect })
+        invalidate.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_home_to_userProfile))
     }
 
     override fun dataFetchStart() {

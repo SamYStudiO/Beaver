@@ -4,16 +4,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.appcompat.widget.AppCompatTextView
+    <TextView
         android:id="@+id/text_view"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="profile" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/invalidate"
+    <Button
+        android:id="@+id/disconnect"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Go Profile"
+        android:text="Disconnect"
         app:layout_constraintTop_toBottomOf="@+id/text_view" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,8 +7,12 @@ import androidx.navigation.Navigator
 import net.samystudio.beaver.ui.base.fragment.BaseFragment
 
 sealed class NavigationRequest {
-    class Pop(@param:IdRes @get:IdRes val destinationId: Int? = null) : NavigationRequest()
-    object PopToRoot : NavigationRequest()
+    class Pop(
+        @param:IdRes @get:IdRes val destinationId: Int? = null,
+        val inclusive: Boolean = false
+    ) : NavigationRequest()
+
+    class PopToRoot(val inclusive: Boolean = false) : NavigationRequest()
     class Push(
         @param:IdRes @get:IdRes val destinationId: Int,
         val args: Bundle? = null,
@@ -16,8 +20,6 @@ sealed class NavigationRequest {
         val extras: Navigator.Extras? = null
     ) : NavigationRequest()
 
-    class Dialog(
-        val destination: BaseFragment,
-        val tag: String? = null
-    ) : NavigationRequest()
+    class Dialog(val destination: BaseFragment, val tag: String? = null) : NavigationRequest()
+    object Finish : NavigationRequest()
 }

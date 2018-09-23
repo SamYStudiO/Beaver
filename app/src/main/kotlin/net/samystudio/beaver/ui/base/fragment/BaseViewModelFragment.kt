@@ -64,10 +64,7 @@ abstract class BaseViewModelFragment<VM : BaseFragmentViewModel> : BaseFragment(
             viewLifecycleOwner,
             Observer { request ->
                 request?.let {
-                    navController.navigate(
-                        it,
-                        fragmentManager
-                    )
+                    navController.navigate(it, activity, fragmentManager)
                 }
             })
 

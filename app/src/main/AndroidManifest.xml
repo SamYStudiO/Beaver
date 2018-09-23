@@ -18,7 +18,7 @@
         android:name="android.permission.USE_CREDENTIALS"
         android:maxSdkVersion="22" />
     <uses-permission
-        android:name="android.permission.MANAGE_ACCOUNTS "
+        android:name="android.permission.MANAGE_ACCOUNTS"
         android:maxSdkVersion="22" />
 
     <application
@@ -35,10 +35,10 @@
 
         <activity
             android:name=".ui.main.MainActivity"
-            android:launchMode="singleTop"
+            android:launchMode="singleInstance"
             android:theme="@style/AppTheme.Launcher">
             <!--suppress AndroidElementNotAllowed -->
-            <nav-graph android:value="@navigation/navigation" />
+            <nav-graph android:value="@navigation/navigation_main" />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

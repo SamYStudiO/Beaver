@@ -14,6 +14,7 @@ import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
+import net.samystudio.beaver.data.manager.UserManager
 import net.samystudio.beaver.di.qualifier.ActivityContext
 import net.samystudio.beaver.ext.navigate
 import net.samystudio.beaver.ui.base.fragment.BaseViewModelFragment
@@ -35,6 +36,9 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(),
     protected lateinit var viewModelProvider: ViewModelProvider
     protected abstract val viewModelClass: Class<VM>
     lateinit var viewModel: VM
+    @Inject
+    protected lateinit var userManager: UserManager
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
@@ -52,7 +56,7 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(),
         viewModel.navigationCommand.observe(this,
             Observer { request ->
                 request?.let {
-                    navController.navigate(it, supportFragmentManager)
+                    navController.navigate(it, this, supportFragmentManager)
                 }
             })
         viewModel.resultEvent.observe(this, Observer
@@ -82,6 +86,9 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(),
         super.onActivityResult(requestCode, resultCode, data)
 
         viewModel.handleResult(requestCode, resultCode, data)
+
+        if (requestCode == UserManager.REQUEST_CODE_CHOOSE_ACCOUNT)
+            userManager.onActivityResult(resultCode, data)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
