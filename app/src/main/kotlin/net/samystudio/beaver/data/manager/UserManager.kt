@@ -4,15 +4,14 @@ package net.samystudio.beaver.data.manager
 
 import android.accounts.Account
 import android.accounts.AccountManager
-import android.accounts.AccountsException
 import android.accounts.OnAccountsUpdateListener
 import android.app.Activity
 import android.content.Intent
 import android.os.Build
 import io.reactivex.Observable
 import io.reactivex.Single
-import io.reactivex.SingleEmitter
 import io.reactivex.subjects.BehaviorSubject
+import io.reactivex.subjects.PublishSubject
 import net.samystudio.beaver.BuildConfig
 import net.samystudio.beaver.data.local.SharedPreferencesHelper
 import javax.inject.Inject
@@ -26,8 +25,8 @@ class UserManager @Inject constructor(
     private val accountManager: AccountManager,
     private val sharedPreferencesHelper: SharedPreferencesHelper
 ) : OnAccountsUpdateListener {
+    private var chooseAccountObservable: PublishSubject<Account> = PublishSubject.create()
     private val _statusObservable: BehaviorSubject<Boolean> = BehaviorSubject.create()
-    private var chooseAccountEmitter: SingleEmitter<Account>? = null
     val statusObservable: Observable<Boolean> = _statusObservable
     val token: String?
         get() = sharedPreferencesHelper.accountToken ?: getCurrentAccount()?.let {
@@ -108,9 +107,7 @@ class UserManager @Inject constructor(
     fun getCurrentAccount(activity: Activity): Single<Account> {
         val account = getCurrentAccount()
 
-        return if (account != null) Single.just(account) else Single.create { emitter ->
-
-            chooseAccountEmitter = emitter
+        return if (account != null) Single.just(account) else run {
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 activity.startActivityForResult(
@@ -139,6 +136,8 @@ class UserManager @Inject constructor(
                     ), REQUEST_CODE_CHOOSE_ACCOUNT
                 )
             }
+
+            chooseAccountObservable.singleOrError()
         }
     }
 
@@ -160,14 +159,8 @@ class UserManager @Inject constructor(
             val name = data?.getStringExtra(AccountManager.KEY_ACCOUNT_NAME)
             val account = if (name != null) getAccount(name) else null
 
-            if (account != null)
-                chooseAccountEmitter?.onSuccess(account)
-            else
-                chooseAccountEmitter?.onError(AccountsException("Choose accounts was unable to retrieve account $name"))
-        } else {
-            chooseAccountEmitter?.onError(AccountsException("Choose accounts dialog was cancelled"))
+            if (account != null) chooseAccountObservable.onNext(account)
         }
-        chooseAccountEmitter = null
     }
 
     companion object {
