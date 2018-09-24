@@ -90,7 +90,7 @@ android {
 dependencies {
 
     // kotlin
-    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.70'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.71'
 
     // android
     implementation 'androidx.core:core:1.0.0'
