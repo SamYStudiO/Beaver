@@ -86,9 +86,6 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(),
         super.onActivityResult(requestCode, resultCode, data)
 
         viewModel.handleResult(requestCode, resultCode, data)
-
-        if (requestCode == UserManager.REQUEST_CODE_CHOOSE_ACCOUNT)
-            userManager.onActivityResult(resultCode, data)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle?) {

@@ -5,13 +5,8 @@ package net.samystudio.beaver.data.manager
 import android.accounts.Account
 import android.accounts.AccountManager
 import android.accounts.OnAccountsUpdateListener
-import android.app.Activity
-import android.content.Intent
-import android.os.Build
 import io.reactivex.Observable
-import io.reactivex.Single
 import io.reactivex.subjects.BehaviorSubject
-import io.reactivex.subjects.PublishSubject
 import net.samystudio.beaver.BuildConfig
 import net.samystudio.beaver.data.local.SharedPreferencesHelper
 import javax.inject.Inject
@@ -25,7 +20,6 @@ class UserManager @Inject constructor(
     private val accountManager: AccountManager,
     private val sharedPreferencesHelper: SharedPreferencesHelper
 ) : OnAccountsUpdateListener {
-    private var chooseAccountObservable: PublishSubject<Account> = PublishSubject.create()
     private val _statusObservable: BehaviorSubject<Boolean> = BehaviorSubject.create()
     val statusObservable: Observable<Boolean> = _statusObservable
     val token: String?
@@ -38,46 +32,9 @@ class UserManager @Inject constructor(
     }
 
     override fun onAccountsUpdated(accounts: Array<out Account>?) {
-        val account = getCurrentAccount()
-        val connected = account != null && accountManager.peekAuthToken(
-            account,
-            DEFAULT_AUTH_TOKEN_TYPE
-        ) != null
+        val connected = isConnected()
         if (_statusObservable.value != connected)
             _statusObservable.onNext(connected)
-    }
-
-    /**
-     * Only meant to be called when sign up api responds successfully.
-     */
-    internal fun createAccount(email: String, password: String, token: String? = null) {
-        if (token != null) connect(email, password, token)
-        else if (accountManager.addAccountExplicitly(
-                Account(email, ACCOUNT_TYPE),
-                password,
-                null
-            )
-        ) sharedPreferencesHelper.accountName = email
-    }
-
-    /**
-     * Only meant to be called when sign in api responds successfully.
-     */
-    internal fun connect(email: String, password: String, token: String) {
-        val account = getAccount(email)
-
-        if (account == null)
-            createAccount(email, password)
-
-        getAccount(email)?.let {
-            accountManager.setPassword(it, password)
-            accountManager.setAuthToken(it, DEFAULT_AUTH_TOKEN_TYPE, token)
-            sharedPreferencesHelper.accountName = email
-            sharedPreferencesHelper.accountToken = token
-
-            if (_statusObservable.value != true)
-                _statusObservable.onNext(true)
-        }
     }
 
     fun disconnect() {
@@ -96,6 +53,39 @@ class UserManager @Inject constructor(
 
     fun isConnected() = !token.isNullOrBlank()
 
+    /**
+     * Only meant to be called when sign up api responds successfully.
+     */
+    /*private*/internal fun createAccount(email: String, password: String, token: String? = null) {
+        if (token != null) connect(email, password, token)
+        else if (accountManager.addAccountExplicitly(
+                Account(email, ACCOUNT_TYPE),
+                password,
+                null
+            )
+        ) sharedPreferencesHelper.accountName = email
+    }
+
+    /**
+     * Only meant to be called when sign in api responds successfully.
+     */
+    /*private*/internal fun connect(email: String, password: String, token: String) {
+        val account = getAccount(email)
+
+        if (account == null)
+            createAccount(email, password)
+
+        getAccount(email)?.let {
+            accountManager.setPassword(it, password)
+            accountManager.setAuthToken(it, DEFAULT_AUTH_TOKEN_TYPE, token)
+            sharedPreferencesHelper.accountName = email
+            sharedPreferencesHelper.accountToken = token
+
+            if (_statusObservable.value != true)
+                _statusObservable.onNext(true)
+        }
+    }
+
     private fun getAccount(email: String): Account? {
         accountManager.accounts.forEach {
             if (it.name == email) return it
@@ -104,44 +94,7 @@ class UserManager @Inject constructor(
         return null
     }
 
-    fun getCurrentAccount(activity: Activity): Single<Account> {
-        val account = getCurrentAccount()
-
-        return if (account != null) Single.just(account) else run {
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                activity.startActivityForResult(
-                    AccountManager.newChooseAccountIntent(
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null
-                    ), REQUEST_CODE_CHOOSE_ACCOUNT
-                )
-            } else {
-                @Suppress("DEPRECATION")
-                activity.startActivityForResult(
-                    AccountManager.newChooseAccountIntent(
-                        null,
-                        null,
-                        null,
-                        true,
-                        null,
-                        null,
-                        null,
-                        null
-                    ), REQUEST_CODE_CHOOSE_ACCOUNT
-                )
-            }
-
-            chooseAccountObservable.singleOrError()
-        }
-    }
-
-    fun getCurrentAccount(): Account? {
+    private fun getCurrentAccount(): Account? {
         val accountName = sharedPreferencesHelper.accountName ?: return null
         val accounts = accountManager.accounts
 
@@ -152,15 +105,6 @@ class UserManager @Inject constructor(
 
         sharedPreferencesHelper.accountName = null
         return null
-    }
-
-    fun onActivityResult(resultCode: Int, data: Intent?) {
-        if (resultCode == Activity.RESULT_OK) {
-            val name = data?.getStringExtra(AccountManager.KEY_ACCOUNT_NAME)
-            val account = if (name != null) getAccount(name) else null
-
-            if (account != null) chooseAccountObservable.onNext(account)
-        }
     }
 
     companion object {
