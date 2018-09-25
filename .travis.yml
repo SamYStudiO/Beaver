@@ -23,7 +23,7 @@ android:
 
 before_install:
   - yes | sdkmanager "build-tools;"$ANDROID_BUILD_TOOLS_VERSION
-  - yes | sdkmanager "platforms;android-"$ANDROID_BUILD_TOOLS_VERSION
+  - yes | sdkmanager "platforms;android-"ANDROID_API_LEVEL
 
 script:
   - ./gradlew build check
