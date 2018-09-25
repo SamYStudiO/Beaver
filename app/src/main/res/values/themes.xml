@@ -5,18 +5,28 @@
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorAccent">@color/accent</item>
+        <item name="colorError">@color/error</item>
         <item name="colorControlNormal">@color/accent</item>
         <item name="colorControlHighlight">@color/accent</item>
+        <item name="textAppearanceHeadline1">@style/AppTextAppearance.Headline1</item>
+        <item name="textAppearanceHeadline2">@style/AppTextAppearance.Headline2</item>
+        <item name="textAppearanceHeadline3">@style/AppTextAppearance.Headline3</item>
+        <item name="textAppearanceHeadline4">@style/AppTextAppearance.Headline4</item>
+        <item name="textAppearanceHeadline5">@style/AppTextAppearance.Headline5</item>
+        <item name="textAppearanceHeadline6">@style/AppTextAppearance.Headline6</item>
+        <item name="textAppearanceSubtitle1">@style/AppTextAppearance.Subtitle1</item>
+        <item name="textAppearanceSubtitle2">@style/AppTextAppearance.Subtitle2</item>
+        <item name="textAppearanceBody1">@style/AppTextAppearance.Body1</item>
+        <item name="textAppearanceBody2">@style/AppTextAppearance.Body2</item>
+        <item name="textAppearanceButton">@style/AppTextAppearance.Button</item>
+        <item name="textAppearanceOverline">@style/AppTextAppearance.Overline</item>
+        <item name="textAppearanceCaption">@style/AppTextAppearance.Caption</item>
         <item name="android:textColorPrimary">@color/text</item>
         <item name="android:textColorSecondary">@color/text</item>
         <item name="android:textColorTertiary">@color/text</item>
         <item name="android:textColorPrimaryInverse">@color/text_inverse</item>
         <item name="android:textColorSecondaryInverse">@color/text_inverse</item>
         <item name="android:textColorTertiaryInverse">@color/text_inverse</item>
-        <item name="android:textAppearance">@style/AppTextAppearance.Normal</item>
-        <item name="android:textAppearanceSmall">@style/AppTextAppearance.Small</item>
-        <item name="android:textAppearanceMedium">@style/AppTextAppearance.Medium</item>
-        <item name="android:textAppearanceLarge">@style/AppTextAppearance.Large</item>
     </style>
 
     <style name="AppTheme" parent="Base.AppTheme" />

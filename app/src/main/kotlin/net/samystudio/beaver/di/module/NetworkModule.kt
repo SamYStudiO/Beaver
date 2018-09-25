@@ -84,7 +84,7 @@ object NetworkModule {
                 newBuilder.url(httpUrl)
 
             // let's add token if we got one
-            userManager.token?.let { newBuilder.header("Authorization", it) }
+            userManager.token?.let { newBuilder.header("Authorization", "Bearer $it") }
 
             chain.proceed(newBuilder.build())
         }

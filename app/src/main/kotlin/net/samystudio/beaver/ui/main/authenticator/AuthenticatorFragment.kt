@@ -70,7 +70,7 @@ class AuthenticatorFragment : BaseDataPushFragment<AuthenticatorFragmentViewMode
                         .observeOn(AndroidSchedulers.mainThread())
                         .map { t ->
                             val emailValid = emailValidator.validate(t)
-                            sign_in_email.error =
+                            sign_in_email_layout.error =
                                     if (!t.isEmpty() && !emailValid) "Invalid email" else null
                             emailValid
                         },
@@ -79,7 +79,7 @@ class AuthenticatorFragment : BaseDataPushFragment<AuthenticatorFragmentViewMode
                         .observeOn(AndroidSchedulers.mainThread())
                         .map { t ->
                             val passwordValid = passwordValidator.validate(t)
-                            sign_in_password.error =
+                            sign_in_password_layout.error =
                                     if (!t.isEmpty() && !passwordValid) "Invalid password (minimum 8 chars)" else null
                             passwordValid
                         }
@@ -96,7 +96,7 @@ class AuthenticatorFragment : BaseDataPushFragment<AuthenticatorFragmentViewMode
                         .observeOn(AndroidSchedulers.mainThread())
                         .map { t ->
                             val emailValid = emailValidator.validate(t)
-                            sign_up_email.error =
+                            sign_up_email_layout.error =
                                     if (!t.isEmpty() && !emailValid) "Invalid email" else null
                             emailValid
                         },
@@ -105,7 +105,7 @@ class AuthenticatorFragment : BaseDataPushFragment<AuthenticatorFragmentViewMode
                         .observeOn(AndroidSchedulers.mainThread())
                         .map { t ->
                             val passwordValid = passwordValidator.validate(t)
-                            sign_up_password.error =
+                            sign_up_password_layout.error =
                                     if (!t.isEmpty() && !passwordValid) "Invalid password (minimum 8 chars)" else null
                             passwordValid
                         },
@@ -115,7 +115,7 @@ class AuthenticatorFragment : BaseDataPushFragment<AuthenticatorFragmentViewMode
                         .map { t ->
                             val password = sign_up_password.text.toString()
                             val passwordMatchValid = t.toString() == password
-                            sign_up_confirm_password.error =
+                            sign_up_confirm_password_layout.error =
                                     if (passwordValidator.validate(password) && !passwordMatchValid) "Passwords don't match" else null
                             passwordMatchValid
                         }

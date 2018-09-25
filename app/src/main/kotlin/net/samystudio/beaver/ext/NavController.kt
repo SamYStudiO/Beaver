@@ -29,11 +29,11 @@ fun NavController.navigate(
             request.extras
         )
         is NavigationRequest.Dialog -> {
-            val tag: String =
-                request.tag ?: request.destination.getClassTag()
+            val tag: String = request.tag ?: request.destination.getClassTag()
 
-            if (fragmentManager == null) throw IllegalArgumentException("You cannot navigate to a Dialog using NavController.navigate with a null fragmentManager argument")
-            request.destination.show(fragmentManager, tag)
+            val fm = fragmentManager ?: activity?.supportFragmentManager
+            ?: throw IllegalArgumentException("You cannot navigate to a Dialog using NavController.navigate without either an activity or a fragmentManager argument")
+            request.destination.show(fm, tag)
         }
         is NavigationRequest.Finish -> {
             if (activity == null) throw IllegalArgumentException("You cannot finish an Activity using NavController.navigate with a null activity argument")
