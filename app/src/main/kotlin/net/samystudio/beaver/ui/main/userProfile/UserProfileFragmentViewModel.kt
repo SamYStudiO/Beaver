@@ -11,9 +11,7 @@ import javax.inject.Inject
 class UserProfileFragmentViewModel @Inject constructor() : BaseFragmentViewModel() {
 
     fun <T : UserProfileUserFlow> addUserFlow(observable: Observable<T>) {
-        disposables.add(observable.map {
-            if (it is UserProfileUserFlow.Disconnect) userManager.disconnect()
-        }.subscribe())
+        disposables.add(observable.forEach { if (it is UserProfileUserFlow.Disconnect) userManager.disconnect() })
     }
 
     override fun handleUserDisconnected() {
