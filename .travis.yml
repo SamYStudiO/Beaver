@@ -21,8 +21,9 @@ android:
     - extra-android-m2repository
     - addon-google_apis-google-$ANDROID_API_LEVEL
 
-before_script:
-  - yes | $ANDROID_HOME/tools/bin/sdkmanager "build-tools;"$ANDROID_BUILD_TOOLS_VERSION
+before_install:
+  - yes | sdkmanager "build-tools;"$ANDROID_BUILD_TOOLS_VERSION
+  - yes | sdkmanager "platforms;android-"$ANDROID_BUILD_TOOLS_VERSION
 
 script:
   - ./gradlew build check

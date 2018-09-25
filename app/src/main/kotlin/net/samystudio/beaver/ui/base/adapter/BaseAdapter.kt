@@ -42,14 +42,16 @@ abstract class BaseAdapter<D, VH : BaseViewHolder<D>>(private val _items: Mutabl
         val start = MathUtils.clamp(0, positionStart, _items.size - 1)
         val end = MathUtils.clamp(start, positionEnd, _items.size)
         _items.removeAll(_items.subList(start, end))
-        notifyItemRangeRemoved(start, end)
+        notifyItemRangeRemoved(start, end - start)
     }
 
     fun setItemAt(position: Int, item: D) =
         _items.set(position, item).also { notifyItemChanged(position) }
 
-    fun clearData() {
+    fun clear() {
         _items.clear()
         notifyDataSetChanged()
     }
+
+    fun getItemAt(position: Int) = items[position]
 }
