@@ -1,0 +1,6 @@
+language: android
+
+android:
+  components:
+    # The SDK version used to compile your project
+    # android-28
