@@ -22,7 +22,7 @@ android:
     - addon-google_apis-google-$ANDROID_API_LEVEL
 
 before_script:
-  - yes | $ANDROID_HOME/tools/bin/sdkmanager 'build-tools;$ANDROID_BUILD_TOOLS_VERSION'
+  - yes | $ANDROID_HOME/tools/bin/sdkmanager "build-tools;"$ANDROID_BUILD_TOOLS_VERSION
 
 script:
   - ./gradlew build check
