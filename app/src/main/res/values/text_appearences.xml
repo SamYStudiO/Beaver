@@ -1,22 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AppTextAppearance" parent="TextAppearance.MaterialComponents.Body1" />
+    <style name="AppTextAppearance.Headline1" parent="TextAppearance.MaterialComponents.Headline1" />
 
-    <style name="AppTextAppearance.Small">
-        <item name="android:textSize">@dimen/text_small</item>
-    </style>
+    <style name="AppTextAppearance.Headline2" parent="TextAppearance.MaterialComponents.Headline2" />
 
-    <style name="AppTextAppearance.Normal">
-        <item name="android:textSize">@dimen/text_normal</item>
-    </style>
+    <style name="AppTextAppearance.Headline3" parent="TextAppearance.MaterialComponents.Headline3" />
 
-    <style name="AppTextAppearance.Medium">
-        <item name="android:textSize">@dimen/text_medium</item>
-    </style>
+    <style name="AppTextAppearance.Headline4" parent="TextAppearance.MaterialComponents.Headline4" />
 
-    <style name="AppTextAppearance.Large">
-        <item name="android:textSize">@dimen/text_large</item>
-    </style>
+    <style name="AppTextAppearance.Headline5" parent="TextAppearance.MaterialComponents.Headline5" />
 
+    <style name="AppTextAppearance.Headline6" parent="TextAppearance.MaterialComponents.Headline6" />
+
+    <style name="AppTextAppearance.Subtitle1" parent="TextAppearance.MaterialComponents.Subtitle1" />
+
+    <style name="AppTextAppearance.Subtitle2" parent="TextAppearance.MaterialComponents.Subtitle2" />
+
+    <style name="AppTextAppearance.Body1" parent="TextAppearance.MaterialComponents.Body1" />
+
+    <style name="AppTextAppearance.Body2" parent="TextAppearance.MaterialComponents.Body2" />
+
+    <style name="AppTextAppearance.Button" parent="TextAppearance.MaterialComponents.Button" />
+
+    <style name="AppTextAppearance.Caption" parent="TextAppearance.MaterialComponents.Caption" />
+
+    <style name="AppTextAppearance.Overline" parent="TextAppearance.MaterialComponents.Overline" />
 </resources>
