@@ -26,7 +26,7 @@ constructor(
                 AsyncState.Completed
             }
             .cast(AsyncState::class.java)
-            .onErrorReturn { AsyncState.Error(it) }
+            .onErrorReturn { AsyncState.Failed(it) }
             .startWith(AsyncState.Started)
 
     fun signUp(email: String, password: String): Observable<AsyncState> =
@@ -39,6 +39,6 @@ constructor(
                 AsyncState.Completed
             }
             .cast(AsyncState::class.java)
-            .onErrorReturn { AsyncState.Error(it) }
+            .onErrorReturn { AsyncState.Failed(it) }
             .startWith(AsyncState.Started)
 }

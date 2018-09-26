@@ -3,7 +3,7 @@ package net.samystudio.beaver.ui.base.fragment
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
-import net.samystudio.beaver.data.DataAsyncState
+import net.samystudio.beaver.data.ResultAsyncState
 import net.samystudio.beaver.ui.base.viewmodel.BaseFragmentViewModel
 import net.samystudio.beaver.ui.base.viewmodel.DataFetchViewModel
 
@@ -15,12 +15,12 @@ abstract class BaseDataFetchFragment<VM, D> :
         viewModel.dataFetchObservable.observe(viewLifecycleOwner, Observer { requestState ->
             requestState?.let {
                 when (it) {
-                    is DataAsyncState.Started -> dataFetchStart()
-                    is DataAsyncState.Completed -> {
+                    is ResultAsyncState.Started -> dataFetchStart()
+                    is ResultAsyncState.Completed -> {
                         dataFetchSuccess(it.data)
                         dataFetchTerminate()
                     }
-                    is DataAsyncState.Error -> {
+                    is ResultAsyncState.Failed -> {
                         dataFetchError(it.error)
                         dataFetchTerminate()
                     }

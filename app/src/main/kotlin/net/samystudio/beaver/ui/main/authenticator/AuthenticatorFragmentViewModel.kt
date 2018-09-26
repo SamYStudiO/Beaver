@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.functions.BiFunction
 import net.samystudio.beaver.data.AsyncState
 import net.samystudio.beaver.data.manager.AuthenticatorRepositoryManager
 import net.samystudio.beaver.data.manager.UserManager
@@ -16,13 +17,13 @@ import net.samystudio.beaver.ext.getClassTag
 import net.samystudio.beaver.ui.base.viewmodel.BaseFragmentViewModel
 import net.samystudio.beaver.ui.base.viewmodel.DataPushViewModel
 import net.samystudio.beaver.ui.common.navigation.NavigationRequest
-import net.samystudio.beaver.ui.common.viewmodel.CompletableRequestLiveData
+import net.samystudio.beaver.ui.common.viewmodel.AsyncStateLiveData
 import javax.inject.Inject
 
 @FragmentScope
 class AuthenticatorFragmentViewModel @Inject constructor(private val authenticatorRepositoryManager: AuthenticatorRepositoryManager) :
     BaseFragmentViewModel(), DataPushViewModel {
-    private val _dataPushCompletable: CompletableRequestLiveData = CompletableRequestLiveData()
+    private val _dataPushCompletable: AsyncStateLiveData = AsyncStateLiveData()
     override val dataPushCompletable: LiveData<AsyncState> = _dataPushCompletable
     private val _signInVisibility: MutableLiveData<Boolean> = MutableLiveData()
     private val _signUpVisibility: MutableLiveData<Boolean> = MutableLiveData()
@@ -67,7 +68,7 @@ class AuthenticatorFragmentViewModel @Inject constructor(private val authenticat
                                 userFlow.email,
                                 userFlow.password
                             )
-                        }
+                        }.zipWith(Observable.just(""), BiFunction { t1, t2 -> t1 })
                 else ->
                     Observable.just(Observable.error<AsyncState> {
                         IllegalArgumentException("Unknown user flow ${userFlow.getClassTag()}.")

@@ -22,7 +22,7 @@ abstract class BaseDataPushFragment<VM> :
                         dataPushSuccess()
                         dataPushTerminate()
                     }
-                    is AsyncState.Error -> {
+                    is AsyncState.Failed -> {
                         dataPushError(it.error)
                         dataPushTerminate()
                     }

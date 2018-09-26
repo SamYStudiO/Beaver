@@ -21,7 +21,7 @@ abstract class BaseDataFetchPushFragment<VM, D> :
                         dataPushSuccess()
                         dataPushTerminate()
                     }
-                    is AsyncState.Error -> {
+                    is AsyncState.Failed -> {
                         dataPushError(it.error)
                         dataPushTerminate()
                     }

@@ -6,5 +6,5 @@ package net.samystudio.beaver.data
 sealed class AsyncState {
     object Started : AsyncState()
     object Completed : AsyncState()
-    class Error(val error: Throwable) : AsyncState()
+    class Failed(val error: Throwable) : AsyncState()
 }
