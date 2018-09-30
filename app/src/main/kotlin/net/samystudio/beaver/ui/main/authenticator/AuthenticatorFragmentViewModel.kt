@@ -68,7 +68,7 @@ class AuthenticatorFragmentViewModel @Inject constructor(private val authenticat
                                 userFlow.email,
                                 userFlow.password
                             )
-                        }.zipWith(Observable.just(""), BiFunction { t1, t2 -> t1 })
+                        }.zipWith(Observable.just(""), BiFunction { t1, _ -> t1 })
                 else ->
                     Observable.just(Observable.error<AsyncState> {
                         IllegalArgumentException("Unknown user flow ${userFlow.getClassTag()}.")
