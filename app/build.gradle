@@ -59,6 +59,11 @@ android {
         experimental = true
     }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
     // better output apk naming : {projectName}_{flavor(s)}_{buildType}_{versionName}_build_{buildVersion}.apk
     applicationVariants.all { variant ->
         variant.outputs.all { output ->
