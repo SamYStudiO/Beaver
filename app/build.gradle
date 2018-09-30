@@ -59,6 +59,7 @@ android {
         experimental = true
     }
 
+    // better output apk naming : {projectName}_{variantName}_{versionName}_build_{buildVersion}.apk
     applicationVariants.all { variant ->
         variant.outputs.all { output ->
             def sep = '_'
