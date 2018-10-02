@@ -6,7 +6,6 @@ import android.app.Application
 import android.content.Context
 import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import dagger.android.support.AndroidSupportInjectionModule
 import net.samystudio.beaver.BeaverApplication
 import net.samystudio.beaver.data.service.ServiceBuilderModule
@@ -24,13 +23,8 @@ abstract class ApplicationModule {
     @Singleton
     abstract fun bindApplication(application: BeaverApplication): Application
 
-    @Module
-    companion object {
-        @Provides
-        @Singleton
-        @ApplicationContext
-        @JvmStatic
-        fun provideApplicationContext(application: Application): Context =
-            application.applicationContext
-    }
+    @Binds
+    @Singleton
+    @ApplicationContext
+    abstract fun bindApplicationContext(application: Application): Context
 }
