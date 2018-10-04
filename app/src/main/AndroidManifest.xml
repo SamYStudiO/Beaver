@@ -37,8 +37,6 @@
             android:name=".ui.main.MainActivity"
             android:launchMode="singleInstance"
             android:theme="@style/AppTheme.Launcher">
-            <!--suppress AndroidElementNotAllowed -->
-            <nav-graph android:value="@navigation/navigation_main" />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
