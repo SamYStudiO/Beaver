@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.google.firebase.firebase-perf'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'com.google.firebase.firebase-perf'
 apply plugin: 'io.fabric'
 apply plugin: 'androidx.navigation.safeargs'
 
@@ -85,67 +85,66 @@ android {
 
 dependencies {
     // kotlin
-    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.71'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin"
 
     // android
-    implementation 'androidx.core:core-ktx:1.0.0'
-    implementation 'androidx.appcompat:appcompat:1.0.0'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    implementation 'com.google.android.material:material:1.0.0'
-
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
-    kapt 'androidx.lifecycle:lifecycle-compiler:2.0.0'
-    implementation 'androidx.lifecycle:lifecycle-reactivestreams:2.0.0'
-    implementation 'android.arch.navigation:navigation-fragment-ktx:1.0.0-alpha06'
-    implementation 'android.arch.navigation:navigation-ui-ktx:1.0.0-alpha06'
+    implementation "androidx.core:core-ktx:$versions.core_ktx"
+    implementation "androidx.appcompat:appcompat:$versions.appcompat"
+    implementation "androidx.constraintlayout:constraintlayout:$versions.constraintlayout"
+    implementation "com.google.android.material:material:$versions.material"
+    implementation "androidx.lifecycle:lifecycle-extensions:$versions.lifecycle"
+    kapt "androidx.lifecycle:lifecycle-compiler:$versions.lifecycle"
+    implementation "androidx.lifecycle:lifecycle-reactivestreams:$versions.lifecycle"
+    implementation "android.arch.navigation:navigation-fragment-ktx:$versions.navigation"
+    implementation "android.arch.navigation:navigation-ui-ktx:$versions.navigation"
 
     // firebase
-    implementation 'com.google.firebase:firebase-core:16.0.4'
-    implementation 'com.google.firebase:firebase-appindexing:16.0.2'
-    implementation 'com.google.firebase:firebase-perf:16.1.2'
-    implementation 'com.crashlytics.sdk.android:crashlytics:2.9.5'
+    implementation "com.google.firebase:firebase-core:$versions.firebase_core"
+    implementation "com.google.firebase:firebase-appindexing:$versions.firebase_appindexing"
+    implementation "com.google.firebase:firebase-perf:$versions.firebase_perf"
+    implementation "com.crashlytics.sdk.android:crashlytics:$versions.crashlytics"
 
     // dagger
-    implementation 'com.google.dagger:dagger:2.16'
-    implementation 'com.google.dagger:dagger-android:2.16'
-    implementation 'com.google.dagger:dagger-android-support:2.16'
-    kapt 'com.google.dagger:dagger-compiler:2.16'
-    kapt 'com.google.dagger:dagger-android-processor:2.16'
-    compileOnly 'com.squareup.inject:assisted-inject-annotations-dagger2:0.2.1'
-    kapt 'com.squareup.inject:assisted-inject-processor-dagger2:0.2.1'
+    implementation "com.google.dagger:dagger:$versions.dagger"
+    implementation "com.google.dagger:dagger-android:$versions.dagger"
+    implementation "com.google.dagger:dagger-android-support:$versions.dagger"
+    kapt "com.google.dagger:dagger-compiler:$versions.dagger"
+    kapt "com.google.dagger:dagger-android-processor:$versions.dagger"
+    compileOnly "com.squareup.inject:assisted-inject-annotations-dagger2:$versions.assisted_inject"
+    kapt "com.squareup.inject:assisted-inject-processor-dagger2:$versions.assisted_inject"
 
     // reactive
-    implementation 'io.reactivex.rxjava2:rxjava:2.2.2'
-    implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
-    implementation 'io.reactivex.rxjava2:rxkotlin:2.3.0'
-    implementation 'com.jakewharton.rxbinding2:rxbinding-kotlin:2.2.0'
+    implementation "io.reactivex.rxjava2:rxjava:$versions.rxjava"
+    implementation "io.reactivex.rxjava2:rxandroid:$versions.rxandroid"
+    implementation "io.reactivex.rxjava2:rxkotlin:$versions.rxkotlin"
+    implementation "com.jakewharton.rxbinding2:rxbinding-kotlin:$versions.rxbinding_kotlin"
 
     // network
-    implementation 'com.squareup.okhttp3:okhttp:3.11.0'
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.11.0'
-    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
-    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
+    implementation "com.squareup.okhttp3:okhttp:$versions.okhttp"
+    implementation "com.squareup.okhttp3:logging-interceptor:$versions.okhttp"
+    implementation "com.squareup.retrofit2:retrofit:$versions.retrofit"
+    implementation "com.squareup.retrofit2:converter-gson:$versions.retrofit"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$versions.retrofit"
+    implementation "com.squareup.picasso:picasso:$versions.picasso"
 
     // debug
-    implementation 'com.jakewharton.timber:timber:4.7.1'
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.1'
-    debugImplementation 'com.squareup.leakcanary:leakcanary-support-fragment:1.6.1'
-    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.1'
+    implementation "com.jakewharton.timber:timber:$versions.timber"
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:$versions.leakcanary"
+    debugImplementation "com.squareup.leakcanary:leakcanary-support-fragment:$versions.leakcanary"
+    releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$versions.leakcanary"
 
     // misc
-    //implementation 'com.evernote:android-state:1.3.1'
-    //kapt 'com.evernote:android-state-processor:1.3.1'
-    implementation 'com.squareup.picasso:picasso:3.0.0-SNAPSHOT'
+    //implementation "com.evernote:android-state:$versions.android_state"
+    //kapt "com.evernote:android-state-processor:$versions.android_state"
 
     // test
-    testImplementation 'junit:junit:4.12'
-    testImplementation 'org.mockito:mockito-core:2.22.0'
-    testImplementation 'org.robolectric:robolectric:3.8'
-    testImplementation 'com.squareup.okhttp3:mockwebserver:3.11.0'
-    androidTestImplementation 'androidx.test:runner:1.1.0-beta01'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-beta01'
-    androidTestImplementation 'org.mockito:mockito-android:2.22.0'
+    testImplementation "junit:junit:$versions.junit"
+    testImplementation "org.mockito:mockito-core:$versions.mockito"
+    testImplementation "org.robolectric:robolectric:$versions.robolectric"
+    testImplementation "com.squareup.okhttp3:mockwebserver:$versions.okhttp"
+    androidTestImplementation "androidx.test:runner:$versions.runner"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$versions.espresso_core"
+    androidTestImplementation "org.mockito:mockito-android:$versions.mockito"
 }
 
 apply plugin: 'com.google.gms.google-services'
