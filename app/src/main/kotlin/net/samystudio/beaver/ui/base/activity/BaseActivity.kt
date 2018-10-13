@@ -1,6 +1,5 @@
 package net.samystudio.beaver.ui.base.activity
 
-//import com.evernote.android.state.StateSaver
 import android.content.Intent
 import android.os.Bundle
 import androidx.annotation.CallSuper
@@ -91,8 +90,6 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(),
     override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
         super.onRestoreInstanceState(savedInstanceState)
 
-        //StateSaver.restoreInstanceState(this, savedInstanceState)
-
         if (savedInstanceState != null)
             viewModel.handleRestoreInstanceState(savedInstanceState)
     }
@@ -105,8 +102,6 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(),
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-
-        //StateSaver.saveInstanceState(this, outState)
 
         viewModel.handleSaveInstanceState(outState)
     }

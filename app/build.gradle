@@ -134,8 +134,8 @@ dependencies {
     releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$versions.leakcanary"
 
     // misc
-    //implementation "com.evernote:android-state:$versions.android_state"
-    //kapt "com.evernote:android-state-processor:$versions.android_state"
+    implementation "com.evernote:android-state:$versions.android_state"
+    kapt "com.evernote:android-state-processor:$versions.android_state"
 
     // test
     testImplementation "junit:junit:$versions.junit"

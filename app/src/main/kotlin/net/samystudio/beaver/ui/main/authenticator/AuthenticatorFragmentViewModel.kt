@@ -29,7 +29,6 @@ class AuthenticatorFragmentViewModel @Inject constructor(private val authenticat
     private val _signUpVisibility: MutableLiveData<Boolean> = MutableLiveData()
     val signInVisibility: LiveData<Boolean> = _signInVisibility
     val signUpVisibility: LiveData<Boolean> = _signUpVisibility
-    // @State
     private var authenticatorResponse: AccountAuthenticatorResponse? = null
     private lateinit var intent: Intent
 

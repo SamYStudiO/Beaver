@@ -2,7 +2,6 @@
 
 package net.samystudio.beaver.ui.base.fragment
 
-//import com.evernote.android.state.State
 import android.app.Activity
 import android.content.DialogInterface
 import android.content.Intent
@@ -16,6 +15,7 @@ import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import com.evernote.android.state.State
 import com.google.firebase.analytics.FirebaseAnalytics
 import net.samystudio.beaver.ext.getClassTag
 import net.samystudio.beaver.ui.base.activity.BaseActivity
@@ -34,11 +34,11 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
     protected abstract val layoutViewRes: Int
     protected val navController: NavController by lazy { findNavController() }
     protected open lateinit var firebaseAnalytics: FirebaseAnalytics
-    // @State
+    @State
     protected var resultCode: Int = Activity.RESULT_CANCELED
-    // @State
+    @State
     protected var resultIntent: Intent? = null
-    // @State
+    @State
     open var title: String? = null
         set(value) {
             value?.let { activity?.title = it }
