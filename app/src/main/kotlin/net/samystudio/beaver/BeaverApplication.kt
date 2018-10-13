@@ -6,6 +6,7 @@ import com.evernote.android.state.StateSaver
 import com.squareup.leakcanary.LeakCanary
 import dagger.android.support.DaggerApplication
 import io.fabric.sdk.android.Fabric
+import net.samystudio.beaver.di.component.DaggerApplicationComponent
 import timber.log.Timber
 import javax.inject.Inject
 
