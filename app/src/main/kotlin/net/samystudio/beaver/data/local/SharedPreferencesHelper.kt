@@ -5,9 +5,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class SharedPreferencesHelper @Inject constructor(
-    rxSharedPreferences: RxSharedPreferences
-) {
+class SharedPreferencesHelper @Inject constructor(rxSharedPreferences: RxSharedPreferences) {
     val apiUrl by lazy { rxSharedPreferences.getString(API_URL) }
     val accountName by lazy { rxSharedPreferences.getString(ACCOUNT_NAME) }
     val accountToken by lazy { rxSharedPreferences.getString(ACCOUNT_TOKEN) }
