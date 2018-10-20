@@ -9,6 +9,7 @@ Also includes a bunch of common use libraries (may be easily replaced or removed
 - [Retrofit](https://github.com/square/retrofit)
 - [Picasso](https://github.com/square/picasso)
 - [RxJava](https://github.com/ReactiveX/RxJava)
+- [Rx Preferences](https://github.com/f2prateek/rx-preferences)
 - [Android State](https://github.com/evernote/android-state)
 - [Timber](https://github.com/JakeWharton/timber)
 
