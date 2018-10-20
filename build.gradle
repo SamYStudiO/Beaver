@@ -23,7 +23,7 @@ buildscript {
                 crashlytics         : '2.9.5',
 
                 // dagger
-                dagger              : '2.16',
+                dagger              : '2.18',
                 assisted_inject     : '0.2.1',
 
                 // reactive
@@ -40,7 +40,7 @@ buildscript {
 
                 // debug
                 timber              : '4.7.1',
-                leakcanary          : '1.6.1',
+                leakcanary          : '1.6.2',
 
                 // misc
                 android_state       : '1.4.1',
