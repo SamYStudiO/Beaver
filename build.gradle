@@ -23,7 +23,7 @@ buildscript {
                 crashlytics         : '2.9.5',
 
                 // dagger
-                dagger              : '2.18',
+                dagger              : '2.16',
                 assisted_inject     : '0.2.1',
 
                 // reactive
