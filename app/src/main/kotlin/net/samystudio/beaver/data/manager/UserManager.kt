@@ -23,8 +23,15 @@ class UserManager @Inject constructor(
     private val _statusObservable: BehaviorSubject<Boolean> = BehaviorSubject.create()
     val statusObservable: Observable<Boolean> = _statusObservable
     val token: String?
-        get() = sharedPreferencesHelper.accountToken ?: getCurrentAccount()?.let {
-            accountManager.peekAuthToken(it, DEFAULT_AUTH_TOKEN_TYPE)
+        get() {
+            val token = sharedPreferencesHelper.accountToken.get()
+            return if (token.isNotBlank()) token
+            else getCurrentAccount()?.let {
+                accountManager.peekAuthToken(
+                    it,
+                    DEFAULT_AUTH_TOKEN_TYPE
+                )
+            }
         }
 
     init {
@@ -44,7 +51,7 @@ class UserManager @Inject constructor(
                 accountManager.peekAuthToken(it, DEFAULT_AUTH_TOKEN_TYPE)
             )
             accountManager.clearPassword(it)
-            sharedPreferencesHelper.accountToken = null
+            sharedPreferencesHelper.accountToken.delete()
 
             if (_statusObservable.value != false)
                 _statusObservable.onNext(false)
@@ -63,7 +70,7 @@ class UserManager @Inject constructor(
                 password,
                 null
             )
-        ) sharedPreferencesHelper.accountName = email
+        ) sharedPreferencesHelper.accountName.set(email)
     }
 
     /**
@@ -78,8 +85,8 @@ class UserManager @Inject constructor(
         getAccount(email)?.let {
             accountManager.setPassword(it, password)
             accountManager.setAuthToken(it, DEFAULT_AUTH_TOKEN_TYPE, token)
-            sharedPreferencesHelper.accountName = email
-            sharedPreferencesHelper.accountToken = token
+            sharedPreferencesHelper.accountName.set(email)
+            sharedPreferencesHelper.accountToken.set(token)
 
             if (_statusObservable.value != true)
                 _statusObservable.onNext(true)
@@ -95,15 +102,17 @@ class UserManager @Inject constructor(
     }
 
     private fun getCurrentAccount(): Account? {
-        val accountName = sharedPreferencesHelper.accountName ?: return null
-        val accounts = accountManager.accounts
+        val accountName = sharedPreferencesHelper.accountName.get()
 
+        if (accountName.isBlank()) return null
+
+        val accounts = accountManager.accounts
         accounts.forEach { account ->
             if (accountName == account.name)
                 return account
         }
 
-        sharedPreferencesHelper.accountName = null
+        sharedPreferencesHelper.accountName.delete()
         return null
     }
 

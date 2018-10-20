@@ -31,6 +31,7 @@ buildscript {
                 rxandroid           : '2.1.0',
                 rxkotlin            : '2.3.0',
                 rxbinding_kotlin    : '2.2.0',
+                rx_preferences      : '2.0.0',
 
                 // network
                 okhttp              : '3.11.0',

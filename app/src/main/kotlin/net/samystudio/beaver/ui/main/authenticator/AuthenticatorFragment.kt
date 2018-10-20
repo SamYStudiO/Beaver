@@ -38,7 +38,7 @@ class AuthenticatorFragment : BaseDataPushFragment<AuthenticatorFragmentViewMode
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        sign_in_email.setText(sharedPreferencesHelper.accountName ?: "")
+        sign_in_email.setText(sharedPreferencesHelper.accountName.get())
 
         viewModel.signInVisibility.observe(this, Observer { sign_in_layout.isVisible = it })
         viewModel.signUpVisibility.observe(this, Observer { sign_up_layout.isVisible = it })

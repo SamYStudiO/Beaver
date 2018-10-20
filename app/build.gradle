@@ -119,6 +119,7 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxandroid:$versions.rxandroid"
     implementation "io.reactivex.rxjava2:rxkotlin:$versions.rxkotlin"
     implementation "com.jakewharton.rxbinding2:rxbinding-kotlin:$versions.rxbinding_kotlin"
+    implementation "com.f2prateek.rx.preferences2:rx-preferences:$versions.rx_preferences"
 
     // network
     implementation "com.squareup.okhttp3:okhttp:$versions.okhttp"

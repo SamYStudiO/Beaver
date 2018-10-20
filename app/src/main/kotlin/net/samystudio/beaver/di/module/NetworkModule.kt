@@ -77,7 +77,7 @@ object NetworkModule {
             // rewriting url is not necessary when using a unique production server url, but in most
             // case we'll use multiple server urls  (test/prod/...) and this is the way to go if we
             // want to update Retrofit base url at runtime
-            val httpUrl = HttpUrl.parse(url.replace(BASE_URL, sharedPreferencesHelper.apiUrl))
+            val httpUrl = HttpUrl.parse(url.replace(BASE_URL, sharedPreferencesHelper.apiUrl.get()))
             val newBuilder = request.newBuilder()
 
             if (httpUrl != null)

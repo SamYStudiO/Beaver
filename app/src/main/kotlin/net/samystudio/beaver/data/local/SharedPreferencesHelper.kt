@@ -1,33 +1,20 @@
 package net.samystudio.beaver.data.local
 
-import android.content.Context
-import android.content.SharedPreferences
-import androidx.core.content.edit
-import net.samystudio.beaver.R
-import net.samystudio.beaver.di.qualifier.ApplicationContext
+import com.f2prateek.rx.preferences2.RxSharedPreferences
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class SharedPreferencesHelper @Inject constructor(
-    @param:ApplicationContext private val context: Context,
-    private val sharedPreferences: SharedPreferences
+    rxSharedPreferences: RxSharedPreferences
 ) {
-    var apiUrl: String
-        get() = sharedPreferences.getString(API_URL, context.getString(R.string.api_url))!!
-        set(value) = sharedPreferences.edit { putString(API_URL, value) }
-
-    var accountName: String?
-        get() = sharedPreferences.getString(ACCOUNT_NAME, null)
-        set(value) = sharedPreferences.edit { putString(ACCOUNT_NAME, value) }
-
-    var accountToken: String?
-        get() = sharedPreferences.getString(ACCOUNT_TOKEN, null)
-        set(value) = sharedPreferences.edit { putString(ACCOUNT_TOKEN, value) }
+    val apiUrl by lazy { rxSharedPreferences.getString(API_URL) }
+    val accountName by lazy { rxSharedPreferences.getString(ACCOUNT_NAME) }
+    val accountToken by lazy { rxSharedPreferences.getString(ACCOUNT_TOKEN) }
 
     companion object {
-        private const val API_URL = "SharedPreferencesManager:apiUrl"
-        private const val ACCOUNT_NAME = "SharedPreferencesManager:accountName"
-        private const val ACCOUNT_TOKEN = "SharedPreferencesManager:accountToken"
+        private const val API_URL = "SharedPreferencesHelper:apiUrl"
+        private const val ACCOUNT_NAME = "SharedPreferencesHelper:accountName"
+        private const val ACCOUNT_TOKEN = "SharedPreferencesHelper:accountToken"
     }
 }
