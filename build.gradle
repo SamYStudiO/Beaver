@@ -6,7 +6,7 @@ buildscript {
                 targetSdk           : 28,
 
                 // kotlin
-                kotlin              : '1.2.71',
+                kotlin              : '1.3.0',
 
                 // android
                 core_ktx            : '1.0.0',
@@ -14,12 +14,12 @@ buildscript {
                 constraintlayout    : '1.1.3',
                 material            : '1.0.0',
                 lifecycle           : '2.0.0',
-                navigation          : '1.0.0-alpha06',
+                navigation          : '1.0.0-alpha07',
 
                 // firebase
                 firebase_core       : '16.0.4',
                 firebase_appindexing: '16.0.2',
-                firebase_perf       : '16.1.2',
+                firebase_perf       : '16.2.0',
                 crashlytics         : '2.9.5',
 
                 // dagger
@@ -65,7 +65,7 @@ buildscript {
         classpath 'com.google.gms:google-services:4.1.0'
         classpath 'com.google.firebase:firebase-plugins:1.1.5'
         classpath 'io.fabric.tools:gradle:1.25.4'
-        classpath 'android.arch.navigation:navigation-safe-args-gradle-plugin:1.0.0-alpha06'
+        classpath 'android.arch.navigation:navigation-safe-args-gradle-plugin:1.0.0-alpha07'
     }
 }
 
