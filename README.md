@@ -1,4 +1,4 @@
-# beaver
+# Beaver
 
 Android Project template using [MVVM](https://developer.android.com/topic/libraries/architecture/index.html), [Dagger 2](https://github.com/google/dagger) and some [Jetpack](https://developer.android.com/jetpack/) libraries.
 
