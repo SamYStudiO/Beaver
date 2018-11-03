@@ -141,8 +141,9 @@ dependencies {
 
     // test
     testImplementation "junit:junit:$versions.junit"
-    testImplementation "org.mockito:mockito-core:$versions.mockito"
+    testImplementation "androidx.test:core:$versions.core"
     testImplementation "org.robolectric:robolectric:$versions.robolectric"
+    testImplementation "org.mockito:mockito-core:$versions.mockito"
     testImplementation "com.squareup.okhttp3:mockwebserver:$versions.okhttp"
     androidTestImplementation "androidx.test:runner:$versions.runner"
     androidTestImplementation "androidx.test.espresso:espresso-core:$versions.espresso_core"

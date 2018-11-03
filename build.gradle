@@ -47,10 +47,11 @@ buildscript {
 
                 // test
                 junit               : '4.12',
-                runner              : '1.1.0-alpha4',
-                espresso_core       : '3.1.0-alpha4',
-                mockito             : '2.22.0',
-                robolectric         : '3.8',
+                core                : '1.0.0',
+                robolectric         : '4.0',
+                mockito             : '2.23.0',
+                runner              : '1.1.0',
+                espresso_core       : '3.1.0'
         ]
     }
 
