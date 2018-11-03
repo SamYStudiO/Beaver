@@ -30,7 +30,7 @@ buildscript {
                 rxjava              : '2.2.2',
                 rxandroid           : '2.1.0',
                 rxkotlin            : '2.3.0',
-                rxbinding           : '2.2.0',
+                rxbinding           : '3.0.0-alpha1',
                 rxpreferences       : '2.0.0',
                 rxpicasso           : '0.3.0',
 
@@ -48,7 +48,7 @@ buildscript {
 
                 // test
                 junit               : '4.12',
-                test_core                : '1.0.0',
+                test_core           : '1.0.0',
                 robolectric         : '4.0',
                 mockito             : '2.23.0',
                 runner              : '1.1.0',
