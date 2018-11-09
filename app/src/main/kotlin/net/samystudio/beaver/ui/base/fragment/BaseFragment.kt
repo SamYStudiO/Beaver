@@ -1,5 +1,3 @@
-@file:Suppress("MemberVisibilityCanBePrivate")
-
 package net.samystudio.beaver.ui.base.fragment
 
 import android.app.Activity

@@ -1,5 +1,3 @@
-@file:Suppress("unused", "MemberVisibilityCanBePrivate", "UNUSED_PARAMETER")
-
 package net.samystudio.beaver.ui.base.fragment
 
 import android.os.Bundle
