@@ -6,7 +6,7 @@ buildscript {
                 targetSdk           : 28,
 
                 // kotlin
-                kotlin              : '1.2.71',
+                kotlin              : '1.3.0',
 
                 // android
                 core_ktx            : '1.0.0',
@@ -14,24 +14,25 @@ buildscript {
                 constraintlayout    : '1.1.3',
                 material            : '1.0.0',
                 lifecycle           : '2.0.0',
-                navigation          : '1.0.0-alpha06',
+                navigation          : '1.0.0-alpha07',
 
                 // firebase
-                firebase_core       : '16.0.4',
+                firebase_core       : '16.0.5',
                 firebase_appindexing: '16.0.2',
-                firebase_perf       : '16.1.2',
+                firebase_perf       : '16.2.0',
                 crashlytics         : '2.9.5',
 
                 // dagger
                 dagger              : '2.16',
-                assisted_inject     : '0.2.1',
+                assisted_inject     : '0.3.0',
 
                 // reactive
-                rxjava              : '2.2.2',
+                rxjava              : '2.2.3',
                 rxandroid           : '2.1.0',
                 rxkotlin            : '2.3.0',
-                rxbinding_kotlin    : '2.2.0',
-                rx_preferences      : '2.0.0',
+                rxbinding           : '3.0.0-alpha1',
+                rxpreferences       : '2.0.0',
+                rxpicasso           : '0.3.0',
 
                 // network
                 okhttp              : '3.11.0',
@@ -47,10 +48,11 @@ buildscript {
 
                 // test
                 junit               : '4.12',
-                runner              : '1.1.0-alpha4',
-                espresso_core       : '3.1.0-alpha4',
-                mockito             : '2.22.0',
-                robolectric         : '3.8',
+                test_core           : '1.0.0',
+                robolectric         : '4.0.1',
+                mockito             : '2.23.0',
+                runner              : '1.1.0',
+                espresso_core       : '3.1.0'
         ]
     }
 
@@ -62,10 +64,11 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:3.2.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin"
-        classpath 'com.google.gms:google-services:4.1.0'
+        classpath 'com.google.gms:google-services:4.2.0'
         classpath 'com.google.firebase:firebase-plugins:1.1.5'
-        classpath 'io.fabric.tools:gradle:1.25.4'
-        classpath 'android.arch.navigation:navigation-safe-args-gradle-plugin:1.0.0-alpha06'
+        classpath 'io.fabric.tools:gradle:1.26.1'
+        classpath 'android.arch.navigation:navigation-safe-args-gradle-plugin:1.0.0-alpha07'
+        classpath "com.github.ben-manes:gradle-versions-plugin:0.20.0"
     }
 }
 
@@ -78,6 +81,22 @@ allprojects {
     }
 }
 
+apply plugin: "com.github.ben-manes.versions"
+
+dependencyUpdates.resolutionStrategy {
+    componentSelection { rules ->
+        rules.all { ComponentSelection selection ->
+            boolean rejected = ['alpha', 'beta', 'rc', 'cr', 'm', 'preview'].any { qualifier ->
+                selection.candidate.version ==~ /(?i).*[.-]${qualifier}[.\d-]*/
+            }
+            if (rejected) {
+                selection.reject('Release candidate')
+            }
+        }
+    }
+}
+
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+

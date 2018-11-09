@@ -118,8 +118,16 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxjava:$versions.rxjava"
     implementation "io.reactivex.rxjava2:rxandroid:$versions.rxandroid"
     implementation "io.reactivex.rxjava2:rxkotlin:$versions.rxkotlin"
-    implementation "com.jakewharton.rxbinding2:rxbinding-kotlin:$versions.rxbinding_kotlin"
-    implementation "com.f2prateek.rx.preferences2:rx-preferences:$versions.rx_preferences"
+    implementation "com.jakewharton.rxbinding3:rxbinding:$versions.rxbinding"
+    //implementation "com.jakewharton.rxbinding3:rxbinding-appcompat:$versions.rxbinding"
+    //implementation "com.jakewharton.rxbinding3:rxbinding-drawerlayout:$versions.rxbinding"
+    //implementation "com.jakewharton.rxbinding3:rxbinding-leanback:$versions.rxbinding"
+    //implementation "com.jakewharton.rxbinding3:rxbinding-recyclerview:$versions.rxbinding"
+    //implementation "com.jakewharton.rxbinding3:rxbinding-slidingpanelayout:$versions.rxbinding"
+    //implementation "com.jakewharton.rxbinding3:rxbinding-swiperefreshlayout:$versions.rxbinding"
+    //implementation "com.jakewharton.rxbinding3:rxbinding-viewpager:$versions.rxbinding"
+    implementation "com.f2prateek.rx.preferences2:rx-preferences:$versions.rxpreferences"
+    implementation "net.samystudio.rxpicasso:rxpicasso-kotlin:$versions.rxpicasso"
 
     // network
     implementation "com.squareup.okhttp3:okhttp:$versions.okhttp"
@@ -141,8 +149,9 @@ dependencies {
 
     // test
     testImplementation "junit:junit:$versions.junit"
-    testImplementation "org.mockito:mockito-core:$versions.mockito"
+    testImplementation "androidx.test:core:$versions.test_core"
     testImplementation "org.robolectric:robolectric:$versions.robolectric"
+    testImplementation "org.mockito:mockito-core:$versions.mockito"
     testImplementation "com.squareup.okhttp3:mockwebserver:$versions.okhttp"
     androidTestImplementation "androidx.test:runner:$versions.runner"
     androidTestImplementation "androidx.test.espresso:espresso-core:$versions.espresso_core"
