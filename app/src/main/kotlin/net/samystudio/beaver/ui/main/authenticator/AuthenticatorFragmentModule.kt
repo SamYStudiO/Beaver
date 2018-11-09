@@ -11,10 +11,10 @@ import net.samystudio.beaver.di.key.FragmentViewModelKey
 import net.samystudio.beaver.di.scope.FragmentScope
 import net.samystudio.beaver.ext.EmailValidator
 import net.samystudio.beaver.ext.PasswordValidator
-import net.samystudio.beaver.ui.base.fragment.BaseFragmentModule
+import net.samystudio.beaver.ui.base.fragment.BaseViewModelFragmentModule
 import net.samystudio.beaver.ui.base.viewmodel.BaseFragmentViewModel
 
-@Module(includes = [BaseFragmentModule::class])
+@Module(includes = [BaseViewModelFragmentModule::class])
 abstract class AuthenticatorFragmentModule {
     @Binds
     @FragmentScope

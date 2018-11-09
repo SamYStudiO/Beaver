@@ -21,7 +21,7 @@ abstract class BaseViewModelFragment<VM : BaseFragmentViewModel> : BaseDaggerFra
     @Inject
     final override lateinit var firebaseAnalytics: FirebaseAnalytics
     /**
-     * @see [net.samystudio.beaver.ui.base.fragment.BaseFragmentModule.provideViewModelProvider]
+     * @see [net.samystudio.beaver.ui.base.fragment.BaseViewModelFragmentModule.provideViewModelProvider]
      */
     @Inject
     @field:FragmentContext

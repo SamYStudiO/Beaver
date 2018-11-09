@@ -10,11 +10,11 @@ import dagger.multibindings.IntoMap
 import net.samystudio.beaver.data.remote.api.UserProfileApiInterface
 import net.samystudio.beaver.di.key.FragmentViewModelKey
 import net.samystudio.beaver.di.scope.FragmentScope
-import net.samystudio.beaver.ui.base.fragment.BaseFragmentModule
+import net.samystudio.beaver.ui.base.fragment.BaseViewModelFragmentModule
 import net.samystudio.beaver.ui.base.viewmodel.BaseFragmentViewModel
 import retrofit2.Retrofit
 
-@Module(includes = [BaseFragmentModule::class])
+@Module(includes = [BaseViewModelFragmentModule::class])
 abstract class UserProfileFragmentModule {
     @Binds
     @FragmentScope
