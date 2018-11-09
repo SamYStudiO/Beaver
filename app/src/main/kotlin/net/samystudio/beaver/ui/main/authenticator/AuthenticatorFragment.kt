@@ -1,3 +1,5 @@
+@file:Suppress("ProtectedInFinal")
+
 package net.samystudio.beaver.ui.main.authenticator
 
 import android.os.Bundle
