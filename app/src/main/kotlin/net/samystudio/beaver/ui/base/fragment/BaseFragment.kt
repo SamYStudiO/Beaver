@@ -17,6 +17,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.evernote.android.state.State
 import com.google.firebase.analytics.FirebaseAnalytics
+import io.reactivex.disposables.CompositeDisposable
 import net.samystudio.beaver.ext.getClassTag
 import net.samystudio.beaver.ui.base.activity.BaseActivity
 import net.samystudio.beaver.ui.common.dialog.DialogListener
@@ -38,12 +39,21 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
     protected var resultCode: Int = Activity.RESULT_CANCELED
     @State
     protected var resultIntent: Intent? = null
+    protected var destroyDisposable: CompositeDisposable? = null
+    protected var destroyViewDisposable: CompositeDisposable? = null
+    protected var stopDisposable: CompositeDisposable? = null
+    protected var pauseDisposable: CompositeDisposable? = null
     @State
     open var title: String? = null
         set(value) {
             value?.let { activity?.title = it }
             field = value
         }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        destroyDisposable = CompositeDisposable()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -56,6 +66,7 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        destroyViewDisposable = CompositeDisposable()
         dialogDismissed = false
     }
 
@@ -82,12 +93,17 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
-
         restoringState = true
+    }
+
+    override fun onStart() {
+        super.onStart()
+        stopDisposable = CompositeDisposable()
     }
 
     override fun onResume() {
         super.onResume()
+        pauseDisposable = CompositeDisposable()
 
         if (!restoringState) {
             firebaseAnalytics.setCurrentScreen(
@@ -97,6 +113,16 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
             )
             restoringState = false
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        pauseDisposable?.dispose()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        stopDisposable?.dispose()
     }
 
     /**
@@ -186,7 +212,7 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
 
     override fun onDestroyView() {
         super.onDestroyView()
-
+        destroyViewDisposable?.dispose()
         dialogDismissed = true
 
         dialog?.let {
@@ -194,5 +220,10 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
             it.setOnCancelListener(null)
             it.setOnDismissListener(null)
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        destroyDisposable?.dispose()
     }
 }

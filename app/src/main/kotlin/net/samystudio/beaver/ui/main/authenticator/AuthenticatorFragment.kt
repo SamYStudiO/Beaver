@@ -6,8 +6,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
-import com.jakewharton.rxbinding2.view.clicks
-import com.jakewharton.rxbinding2.widget.textChanges
+import com.jakewharton.rxbinding3.view.clicks
+import com.jakewharton.rxbinding3.widget.textChanges
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.Observables

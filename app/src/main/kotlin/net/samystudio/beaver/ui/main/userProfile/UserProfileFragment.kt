@@ -2,7 +2,7 @@ package net.samystudio.beaver.ui.main.userProfile
 
 import android.os.Bundle
 import android.view.View
-import com.jakewharton.rxbinding2.view.clicks
+import com.jakewharton.rxbinding3.view.clicks
 import kotlinx.android.synthetic.main.fragment_user_profile.*
 import net.samystudio.beaver.R
 import net.samystudio.beaver.ui.base.fragment.BaseViewModelFragment

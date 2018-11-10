@@ -13,7 +13,7 @@ import net.samystudio.beaver.di.scope.FragmentScope
 import net.samystudio.beaver.ui.common.viewmodel.factory.FragmentViewModelFactory
 
 @Module
-abstract class BaseFragmentModule {
+abstract class BaseViewModelFragmentModule {
     @Binds
     @FragmentScope
     @FragmentContext

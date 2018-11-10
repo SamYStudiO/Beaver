@@ -1,5 +1,3 @@
-@file:Suppress("ProtectedInFinal")
-
 package net.samystudio.beaver.ui.main.home
 
 import android.os.Bundle

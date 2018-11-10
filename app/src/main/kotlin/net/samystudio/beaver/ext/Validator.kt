@@ -14,5 +14,5 @@ class EmailValidator : Validator<CharSequence> {
 }
 
 class PasswordValidator : Validator<CharSequence> {
-    override fun validate(any: CharSequence?): Boolean = !any.isNullOrBlank() && any!!.length >= 8
+    override fun validate(any: CharSequence?): Boolean = !any.isNullOrBlank() && any.length >= 8
 }
