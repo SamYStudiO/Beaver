@@ -25,4 +25,9 @@ class MainActivity : BaseToolbarActivity<MainActivityViewModel>() {
     }
 
     override fun onSupportNavigateUp(): Boolean = navController.navigateUp()
+
+    override fun onBackPressed() {
+        if (!navController.popBackStack())
+            super.onBackPressed()
+    }
 }
