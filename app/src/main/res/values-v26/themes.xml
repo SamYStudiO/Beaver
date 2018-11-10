@@ -7,9 +7,6 @@
 
     <style name="AppTheme.Launcher">
         <item name="android:windowFullscreen">true</item>
-        <!-- using windowSplashscreenContent insteadof windowBackground, we need to add fitsSystemWindows
-        if we want to make a clean transition between splash and next screen -->
-        <item name="android:fitsSystemWindows">true</item>
     </style>
 
 </resources>
