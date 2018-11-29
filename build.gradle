@@ -6,7 +6,7 @@ buildscript {
                 targetSdk           : 28,
 
                 // kotlin
-                kotlin              : '1.3.0',
+                kotlin              : '1.3.10',
 
                 // android
                 core_ktx            : '1.0.1',
@@ -24,10 +24,10 @@ buildscript {
 
                 // dagger
                 dagger              : '2.16',
-                assisted_inject     : '0.3.0',
+                assisted_inject     : '0.3.2',
 
                 // reactive
-                rxjava              : '2.2.3',
+                rxjava              : '2.2.4',
                 rxandroid           : '2.1.0',
                 rxkotlin            : '2.3.0',
                 rxbinding           : '3.0.0-alpha1',
@@ -35,8 +35,8 @@ buildscript {
                 rxpicasso           : '0.3.0',
 
                 // network
-                okhttp              : '3.11.0',
-                retrofit            : '2.4.0',
+                okhttp              : '3.12.0',
+                retrofit            : '2.5.0',
                 picasso             : '3.0.0-SNAPSHOT',
 
                 // debug
@@ -49,8 +49,8 @@ buildscript {
                 // test
                 junit               : '4.12',
                 test_core           : '1.0.0',
-                robolectric         : '4.0.1',
-                mockito             : '2.23.0',
+                robolectric         : '4.0.2',
+                mockito             : '2.23.4',
                 runner              : '1.1.0',
                 espresso_core       : '3.1.0'
         ]
