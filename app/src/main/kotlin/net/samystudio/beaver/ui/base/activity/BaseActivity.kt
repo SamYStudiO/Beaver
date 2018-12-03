@@ -1,3 +1,5 @@
+@file:Suppress("MemberVisibilityCanBePrivate")
+
 package net.samystudio.beaver.ui.base.activity
 
 import android.content.Intent
@@ -13,6 +15,7 @@ import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
+import io.reactivex.disposables.CompositeDisposable
 import net.samystudio.beaver.data.manager.UserManager
 import net.samystudio.beaver.di.qualifier.ActivityContext
 import net.samystudio.beaver.ext.navigate
@@ -34,6 +37,9 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(),
     @field:ActivityContext
     protected lateinit var viewModelProvider: ViewModelProvider
     protected abstract val viewModelClass: Class<VM>
+    protected var destroyDisposable: CompositeDisposable? = null
+    protected var stopDisposable: CompositeDisposable? = null
+    protected var pauseDisposable: CompositeDisposable? = null
     lateinit var viewModel: VM
     @Inject
     protected lateinit var userManager: UserManager
@@ -44,6 +50,7 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(),
         super.onCreate(savedInstanceState)
         setContentView(layoutViewRes)
 
+        destroyDisposable = CompositeDisposable()
         viewModel = viewModelProvider.get(viewModelClass)
         viewModel.handleCreate()
         viewModel.handleIntent(intent)
@@ -94,10 +101,25 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(),
             viewModel.handleRestoreInstanceState(savedInstanceState)
     }
 
+    override fun onStart() {
+        super.onStart()
+        stopDisposable = CompositeDisposable()
+    }
+
     override fun onResume() {
         super.onResume()
-
+        pauseDisposable = CompositeDisposable()
         viewModel.handleReady()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        pauseDisposable?.dispose()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        stopDisposable?.dispose()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -108,5 +130,10 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(),
 
     override fun supportFragmentInjector(): AndroidInjector<Fragment> {
         return supportFragmentInjector
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        destroyDisposable?.dispose()
     }
 }
