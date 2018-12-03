@@ -197,7 +197,7 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
 
         if (showsDialog && !dialogDismissed) dismiss()
         else {
-            if (!showsDialog) findNavController().popBackStack()
+            if (!showsDialog) navController.popBackStack()
 
             (activity as? BaseActivity<*>)?.onActivityResult(
                 targetRequestCode,
