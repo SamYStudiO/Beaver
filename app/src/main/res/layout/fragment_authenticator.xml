@@ -59,6 +59,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="signin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/sign_in_password_layout" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -126,6 +128,8 @@
             android:layout_height="wrap_content"
             android:text="signup"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/sign_up_confirm_password_layout" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,13 +7,16 @@
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/text_view"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/invalidate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Go Profile"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_view" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
