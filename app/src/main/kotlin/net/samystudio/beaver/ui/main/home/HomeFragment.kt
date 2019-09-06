@@ -13,9 +13,10 @@ import net.samystudio.beaver.ui.base.fragment.BaseDataFetchFragment
 import net.samystudio.beaver.ui.common.dialog.AlertDialogListener
 
 class HomeFragment : BaseDataFetchFragment<HomeFragmentViewModel, Home>(), AlertDialogListener {
-    override val layoutViewRes: Int = R.layout.fragment_home
-    override val viewModelClass: Class<HomeFragmentViewModel> = HomeFragmentViewModel::class.java
+    override val viewModel by viewModels<HomeFragmentViewModel>()
+    override val layoutViewRes = R.layout.fragment_home
     override var title: String? = "Home"
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

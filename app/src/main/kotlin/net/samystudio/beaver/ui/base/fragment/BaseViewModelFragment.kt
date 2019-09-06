@@ -6,33 +6,34 @@ import android.os.Bundle
 import android.view.View
 import androidx.annotation.CallSuper
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelStoreOwner
 import com.google.firebase.analytics.FirebaseAnalytics
 import net.samystudio.beaver.di.qualifier.FragmentContext
 import net.samystudio.beaver.ext.navigate
 import net.samystudio.beaver.ui.base.viewmodel.BaseFragmentViewModel
 import javax.inject.Inject
+import androidx.fragment.app.viewModels as viewModelsInternal
 
 abstract class BaseViewModelFragment<VM : BaseFragmentViewModel> : BaseDaggerFragment(),
     DialogInterface.OnShowListener {
+    /**
+     * @see [net.samystudio.beaver.ui.base.fragment.BaseViewModelFragmentModule.bindViewModelFactory]
+     */
+    @Inject
+    @field:FragmentContext
+    protected lateinit var viewModelFactory: ViewModelProvider.Factory
+    abstract val viewModel: VM
     /**
      * @see [net.samystudio.beaver.di.module.FirebaseModule.provideFirebaseAnalytics]
      */
     @Inject
     final override lateinit var firebaseAnalytics: FirebaseAnalytics
-    /**
-     * @see [net.samystudio.beaver.ui.base.fragment.BaseViewModelFragmentModule.provideViewModelProvider]
-     */
-    @Inject
-    @field:FragmentContext
-    protected lateinit var viewModelProvider: ViewModelProvider
-    protected abstract val viewModelClass: Class<VM>
-    lateinit var viewModel: VM
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel = viewModelProvider.get(viewModelClass)
         viewModel.handleCreate()
         activity?.intent?.let { viewModel.handleIntent(it) }
         arguments?.let { viewModel.handleArguments(it) }
@@ -86,4 +87,9 @@ abstract class BaseViewModelFragment<VM : BaseFragmentViewModel> : BaseDaggerFra
 
         viewModel.handleSaveInstanceState(outState)
     }
+
+    @Suppress("UNUSED_PARAMETER")
+    protected inline fun <reified VM : ViewModel> viewModels(
+        ownerProducer: () -> ViewModelStoreOwner = { this }
+    ) = viewModelsInternal<VM> { viewModelFactory }
 }

@@ -8,7 +8,9 @@ import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelStoreOwner
 import androidx.navigation.NavController
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
@@ -21,25 +23,25 @@ import net.samystudio.beaver.ext.navigate
 import net.samystudio.beaver.ui.base.fragment.BaseViewModelFragment
 import net.samystudio.beaver.ui.base.viewmodel.BaseActivityViewModel
 import javax.inject.Inject
+import androidx.activity.viewModels as viewModelsInternal
 
 abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(),
     HasAndroidInjector {
     @Inject
     protected lateinit var androidInjector: DispatchingAndroidInjector<Any>
-    @get:LayoutRes
-    protected abstract val layoutViewRes: Int
-    protected abstract val navController: NavController
     /**
-     * @see [net.samystudio.beaver.ui.base.activity.BaseActivityModule.provideViewModelProvider]
+     * @see [net.samystudio.beaver.ui.base.activity.BaseActivityModule.bindViewModelFactory]
      */
     @Inject
     @field:ActivityContext
-    protected lateinit var viewModelProvider: ViewModelProvider
-    protected abstract val viewModelClass: Class<VM>
+    protected lateinit var viewModelFactory: ViewModelProvider.Factory
+    abstract val viewModel: VM
+    @get:LayoutRes
+    protected abstract val layoutViewRes: Int
+    protected abstract val navController: NavController
     protected var destroyDisposable: CompositeDisposable? = null
     protected var stopDisposable: CompositeDisposable? = null
     protected var pauseDisposable: CompositeDisposable? = null
-    lateinit var viewModel: VM
     @Inject
     protected lateinit var userManager: UserManager
 
@@ -50,7 +52,6 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(),
         setContentView(layoutViewRes)
 
         destroyDisposable = CompositeDisposable()
-        viewModel = viewModelProvider.get(viewModelClass)
         viewModel.handleCreate()
         viewModel.handleIntent(intent)
         onViewModelCreated()
@@ -135,4 +136,9 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(),
         super.onDestroy()
         destroyDisposable?.dispose()
     }
+
+    @Suppress("UNUSED_PARAMETER")
+    protected inline fun <reified VM : ViewModel> viewModels(
+        ownerProducer: () -> ViewModelStoreOwner = { this }
+    ) = viewModelsInternal<VM> { viewModelFactory }
 }
