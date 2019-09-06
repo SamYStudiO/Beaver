@@ -70,7 +70,7 @@ class AuthenticatorFragment : BaseDataPushFragment<AuthenticatorFragmentViewMode
                         .map { t ->
                             val emailValid = emailValidator.validate(t)
                             sign_in_email_layout.error =
-                                if (!t.isEmpty() && !emailValid) "Invalid email" else null
+                                if (t.isNotEmpty() && !emailValid) "Invalid email" else null
                             emailValid
                         },
                     sign_in_password.textChanges()
@@ -79,7 +79,7 @@ class AuthenticatorFragment : BaseDataPushFragment<AuthenticatorFragmentViewMode
                         .map { t ->
                             val passwordValid = passwordValidator.validate(t)
                             sign_in_password_layout.error =
-                                if (!t.isEmpty() && !passwordValid) "Invalid password (minimum 8 chars)" else null
+                                if (t.isNotEmpty() && !passwordValid) "Invalid password (minimum 8 chars)" else null
                             passwordValid
                         }
                 ) { t1, t2 -> t1 && t2 }
@@ -96,7 +96,7 @@ class AuthenticatorFragment : BaseDataPushFragment<AuthenticatorFragmentViewMode
                         .map { t ->
                             val emailValid = emailValidator.validate(t)
                             sign_up_email_layout.error =
-                                if (!t.isEmpty() && !emailValid) "Invalid email" else null
+                                if (t.isNotEmpty() && !emailValid) "Invalid email" else null
                             emailValid
                         },
                     sign_up_password.textChanges()
@@ -105,7 +105,7 @@ class AuthenticatorFragment : BaseDataPushFragment<AuthenticatorFragmentViewMode
                         .map { t ->
                             val passwordValid = passwordValidator.validate(t)
                             sign_up_password_layout.error =
-                                if (!t.isEmpty() && !passwordValid) "Invalid password (minimum 8 chars)" else null
+                                if (t.isNotEmpty() && !passwordValid) "Invalid password (minimum 8 chars)" else null
                             passwordValid
                         },
                     sign_up_confirm_password.textChanges()

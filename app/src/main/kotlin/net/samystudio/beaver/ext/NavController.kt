@@ -36,7 +36,7 @@ fun NavController.navigate(
             request.destination.show(fm, tag)
         }
         is NavigationRequest.Finish -> {
-            if (activity == null) throw IllegalArgumentException("You cannot finish an Activity using NavController.navigate with a null activity argument")
+            requireNotNull(activity) { "You cannot finish an Activity using NavController.navigate with a null activity argument" }
             activity.finish()
         }
     }

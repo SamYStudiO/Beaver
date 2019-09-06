@@ -21,7 +21,7 @@ constructor(private val creators: Map<Class<out ViewModel>, Provider<ViewModel>>
             }
         }
 
-        if (creator == null) throw IllegalArgumentException("unknown model class $modelClass")
+        requireNotNull(creator) { "unknown model class $modelClass" }
 
         try {
             return creator.get() as T
