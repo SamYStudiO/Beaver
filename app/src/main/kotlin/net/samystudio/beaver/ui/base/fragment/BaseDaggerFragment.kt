@@ -1,23 +1,22 @@
 package net.samystudio.beaver.ui.base.fragment
 
 import android.content.Context
-import androidx.fragment.app.Fragment
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
+import dagger.android.HasAndroidInjector
 import dagger.android.support.AndroidSupportInjection
-import dagger.android.support.HasSupportFragmentInjector
 import javax.inject.Inject
 
 abstract class BaseDaggerFragment : BaseFragment(),
-    HasSupportFragmentInjector {
+    HasAndroidInjector {
     @Inject
-    protected lateinit var childFragmentInjector: DispatchingAndroidInjector<Fragment>
+    protected lateinit var androidInjector: DispatchingAndroidInjector<Any>
 
-    override fun supportFragmentInjector(): AndroidInjector<Fragment>? {
-        return childFragmentInjector
+    override fun androidInjector(): AndroidInjector<Any> {
+        return androidInjector
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)
         super.onAttach(context)
     }

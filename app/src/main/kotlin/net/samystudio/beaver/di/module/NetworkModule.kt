@@ -11,7 +11,11 @@ import net.samystudio.beaver.BuildConfig
 import net.samystudio.beaver.data.local.SharedPreferencesHelper
 import net.samystudio.beaver.data.manager.UserManager
 import net.samystudio.beaver.data.remote.api.AuthenticatorApiInterface
-import okhttp3.*
+import okhttp3.Cache
+import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
+import okhttp3.Interceptor
+import okhttp3.OkHttpClient
+import okhttp3.ResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Converter
 import retrofit2.Retrofit
@@ -33,14 +37,10 @@ object NetworkModule {
     @Provides
     @Singleton
     @JvmStatic
-    fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor {
-        val httpLoggingInterceptor = HttpLoggingInterceptor()
-
-        httpLoggingInterceptor.level =
-                if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY
-                else HttpLoggingInterceptor.Level.NONE
-
-        return httpLoggingInterceptor
+    fun provideHttpLoggingInterceptor() = HttpLoggingInterceptor().apply {
+        level =
+            if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY
+            else HttpLoggingInterceptor.Level.NONE
     }
 
     @Provides
@@ -66,18 +66,17 @@ object NetworkModule {
     ): Interceptor =
         Interceptor { chain ->
             // Request interceptor to update root url and add user token if exist.
-
             val request = chain.request()
-            val url = request.url().url().toString()
+            val url = request.url.toString()
 
             // rewriting url is not necessary when using a unique production server url, but in most
             // case we'll use multiple server urls  (test/prod/...) and this is the way to go if we
             // want to update Retrofit base url at runtime
-            val httpUrl = HttpUrl.parse(url.replace(BASE_URL, sharedPreferencesHelper.apiUrl.get()))
             val newBuilder = request.newBuilder()
 
-            if (httpUrl != null)
-                newBuilder.url(httpUrl)
+            url.replace(BASE_URL, sharedPreferencesHelper.apiUrl.get()).toHttpUrlOrNull()?.let {
+                newBuilder.url(it)
+            }
 
             // let's add token if we got one
             userManager.token?.let { newBuilder.header("Authorization", "Bearer $it") }

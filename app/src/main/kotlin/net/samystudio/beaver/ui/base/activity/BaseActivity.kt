@@ -7,14 +7,13 @@ import android.os.Bundle
 import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
-import dagger.android.support.HasSupportFragmentInjector
+import dagger.android.HasAndroidInjector
 import io.reactivex.disposables.CompositeDisposable
 import net.samystudio.beaver.data.manager.UserManager
 import net.samystudio.beaver.di.qualifier.ActivityContext
@@ -24,9 +23,9 @@ import net.samystudio.beaver.ui.base.viewmodel.BaseActivityViewModel
 import javax.inject.Inject
 
 abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(),
-    HasSupportFragmentInjector {
+    HasAndroidInjector {
     @Inject
-    protected lateinit var supportFragmentInjector: DispatchingAndroidInjector<Fragment>
+    protected lateinit var androidInjector: DispatchingAndroidInjector<Any>
     @get:LayoutRes
     protected abstract val layoutViewRes: Int
     protected abstract val navController: NavController
@@ -128,8 +127,8 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(),
         viewModel.handleSaveInstanceState(outState)
     }
 
-    override fun supportFragmentInjector(): AndroidInjector<Fragment> {
-        return supportFragmentInjector
+    override fun androidInjector(): AndroidInjector<Any> {
+        return androidInjector
     }
 
     override fun onDestroy() {

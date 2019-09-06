@@ -86,7 +86,7 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
         if (!::firebaseAnalytics.isInitialized)
             context?.let { firebaseAnalytics = FirebaseAnalytics.getInstance(it) }
 
-        if (showsDialog) dialog.setOnShowListener(this)
+        if (showsDialog) dialog?.setOnShowListener(this)
 
         title?.let { activity?.title = it }
     }

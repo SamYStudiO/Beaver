@@ -13,12 +13,12 @@ def versionBuild = 0
 
 android {
 
-    compileSdkVersion 28
+    compileSdkVersion versions.compileSdk
 
     defaultConfig {
         applicationId 'net.samystudio.beaver'
-        minSdkVersion 21
-        targetSdkVersion 28
+        minSdkVersion versions.minSdk
+        targetSdkVersion versions.targetSdk
         versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
         versionName "$versionMajor.$versionMinor.$versionPatch"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
@@ -65,6 +65,10 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
     // better output apk naming : {projectName}_{flavor(s)}_{buildType}_{versionName}_build_{buildVersion}.apk
     applicationVariants.all { variant ->
         variant.outputs.all { output ->
@@ -92,12 +96,12 @@ dependencies {
     implementation "androidx.core:core-ktx:$versions.core_ktx"
     implementation "androidx.appcompat:appcompat:$versions.appcompat"
     implementation "androidx.constraintlayout:constraintlayout:$versions.constraintlayout"
-    implementation "com.google.android.material:material:$versions.material"
     implementation "androidx.lifecycle:lifecycle-extensions:$versions.lifecycle"
-    kapt "androidx.lifecycle:lifecycle-compiler:$versions.lifecycle"
+    implementation "androidx.lifecycle:lifecycle-common-java8:$versions.lifecycle"
     implementation "androidx.lifecycle:lifecycle-reactivestreams:$versions.lifecycle"
-    implementation "android.arch.navigation:navigation-fragment-ktx:$versions.navigation"
-    implementation "android.arch.navigation:navigation-ui-ktx:$versions.navigation"
+    implementation "androidx.navigation:navigation-fragment-ktx:$versions.navigation"
+    implementation "androidx.navigation:navigation-ui-ktx:$versions.navigation"
+    implementation "com.google.android.material:material:$versions.material"
 
     // firebase
     implementation "com.google.firebase:firebase-core:$versions.firebase_core"
