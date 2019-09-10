@@ -9,7 +9,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
-import com.google.firebase.analytics.FirebaseAnalytics
 import net.samystudio.beaver.di.qualifier.FragmentContext
 import net.samystudio.beaver.ext.navigate
 import net.samystudio.beaver.ui.base.viewmodel.BaseFragmentViewModel
@@ -25,11 +24,6 @@ abstract class BaseViewModelFragment<VM : BaseFragmentViewModel> : BaseDaggerFra
     @field:FragmentContext
     protected lateinit var viewModelFactory: ViewModelProvider.Factory
     abstract val viewModel: VM
-    /**
-     * @see [net.samystudio.beaver.di.module.FirebaseModule.provideFirebaseAnalytics]
-     */
-    @Inject
-    final override lateinit var firebaseAnalytics: FirebaseAnalytics
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

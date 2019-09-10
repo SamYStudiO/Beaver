@@ -34,7 +34,8 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
     @get:LayoutRes
     protected abstract val layoutViewRes: Int
     protected val navController: NavController by lazy { findNavController() }
-    protected open lateinit var firebaseAnalytics: FirebaseAnalytics
+    // Cannot inject here since we don't have dagger yet
+    protected lateinit var firebaseAnalytics: FirebaseAnalytics
     @State
     protected var resultCode: Int = Activity.RESULT_CANCELED
     @State
@@ -80,11 +81,7 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        // In most case we'll extends BaseDataFragment and get these initialized with injection, but
-        // if we want really simple fragment screen with no data (less boilerplate), we have to
-        // initialize these manually.
-        if (!::firebaseAnalytics.isInitialized)
-            context?.let { firebaseAnalytics = FirebaseAnalytics.getInstance(it) }
+        context?.let { firebaseAnalytics = FirebaseAnalytics.getInstance(it) }
 
         if (showsDialog) dialog?.setOnShowListener(this)
 
