@@ -8,11 +8,16 @@ interface Validator<in T> {
     fun validate(any: T?): Boolean
 }
 
-class EmailValidator : Validator<CharSequence> {
+private class EmailValidator : Validator<CharSequence> {
     override fun validate(any: CharSequence?): Boolean =
         !any.isNullOrBlank() && Patterns.EMAIL_ADDRESS.matcher(any).matches()
 }
 
-class PasswordValidator : Validator<CharSequence> {
+val EMAIL_VALIDATOR: Validator<CharSequence> = EmailValidator()
+
+private class PasswordValidator : Validator<CharSequence> {
     override fun validate(any: CharSequence?): Boolean = !any.isNullOrBlank() && any.length >= 8
 }
+
+val PASSWORD_VALIDATOR: Validator<CharSequence> = PasswordValidator()
+

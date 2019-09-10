@@ -14,10 +14,7 @@ import io.reactivex.rxkotlin.Observables
 import kotlinx.android.synthetic.main.fragment_authenticator.*
 import net.samystudio.beaver.R
 import net.samystudio.beaver.data.local.SharedPreferencesHelper
-import net.samystudio.beaver.ext.EmailValidator
-import net.samystudio.beaver.ext.PasswordValidator
-import net.samystudio.beaver.ext.getGenericErrorDialog
-import net.samystudio.beaver.ext.getMethodTag
+import net.samystudio.beaver.ext.*
 import net.samystudio.beaver.ui.base.fragment.BaseDataPushFragment
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -27,10 +24,6 @@ class AuthenticatorFragment : BaseDataPushFragment<AuthenticatorFragmentViewMode
     override val layoutViewRes: Int = R.layout.fragment_authenticator
     override var title: String? = "Authenticator"
     private var disposables: CompositeDisposable? = null
-    @Inject
-    protected lateinit var emailValidator: EmailValidator
-    @Inject
-    protected lateinit var passwordValidator: PasswordValidator
     @Inject
     protected lateinit var sharedPreferencesHelper: SharedPreferencesHelper
 
@@ -68,7 +61,7 @@ class AuthenticatorFragment : BaseDataPushFragment<AuthenticatorFragmentViewMode
                         .debounce(500, TimeUnit.MILLISECONDS)
                         .observeOn(AndroidSchedulers.mainThread())
                         .map { t ->
-                            val emailValid = emailValidator.validate(t)
+                            val emailValid = t.validate(EMAIL_VALIDATOR)
                             sign_in_email_layout.error =
                                 if (t.isNotEmpty() && !emailValid) "Invalid email" else null
                             emailValid
@@ -77,7 +70,7 @@ class AuthenticatorFragment : BaseDataPushFragment<AuthenticatorFragmentViewMode
                         .debounce(500, TimeUnit.MILLISECONDS)
                         .observeOn(AndroidSchedulers.mainThread())
                         .map { t ->
-                            val passwordValid = passwordValidator.validate(t)
+                            val passwordValid = t.validate(PASSWORD_VALIDATOR)
                             sign_in_password_layout.error =
                                 if (t.isNotEmpty() && !passwordValid) "Invalid password (minimum 8 chars)" else null
                             passwordValid
@@ -94,7 +87,7 @@ class AuthenticatorFragment : BaseDataPushFragment<AuthenticatorFragmentViewMode
                         .debounce(500, TimeUnit.MILLISECONDS)
                         .observeOn(AndroidSchedulers.mainThread())
                         .map { t ->
-                            val emailValid = emailValidator.validate(t)
+                            val emailValid = t.validate(EMAIL_VALIDATOR)
                             sign_up_email_layout.error =
                                 if (t.isNotEmpty() && !emailValid) "Invalid email" else null
                             emailValid
@@ -103,7 +96,7 @@ class AuthenticatorFragment : BaseDataPushFragment<AuthenticatorFragmentViewMode
                         .debounce(500, TimeUnit.MILLISECONDS)
                         .observeOn(AndroidSchedulers.mainThread())
                         .map { t ->
-                            val passwordValid = passwordValidator.validate(t)
+                            val passwordValid = t.validate(PASSWORD_VALIDATOR)
                             sign_up_password_layout.error =
                                 if (t.isNotEmpty() && !passwordValid) "Invalid password (minimum 8 chars)" else null
                             passwordValid
@@ -115,7 +108,7 @@ class AuthenticatorFragment : BaseDataPushFragment<AuthenticatorFragmentViewMode
                             val password = sign_up_password.text.toString()
                             val passwordMatchValid = t.toString() == password
                             sign_up_confirm_password_layout.error =
-                                if (passwordValidator.validate(password) && !passwordMatchValid) "Passwords don't match" else null
+                                if (password.validate(PASSWORD_VALIDATOR) && !passwordMatchValid) "Passwords don't match" else null
                             passwordMatchValid
                         }
                 ) { t1, t2, t3 -> t1 && t2 && t3 }

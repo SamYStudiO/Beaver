@@ -45,7 +45,6 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(),
     @Inject
     protected lateinit var userManager: UserManager
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
