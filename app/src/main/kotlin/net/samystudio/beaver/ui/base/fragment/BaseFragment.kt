@@ -7,7 +7,6 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.CallSuper
@@ -120,30 +119,6 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
     override fun onStop() {
         super.onStop()
         stopDisposable?.dispose()
-    }
-
-    /**
-     * Parent [Activity] wil call this when [Activity.onBackPressed] is called to check if we want
-     * to handle this event. Returning true will cancel activity default behaviour, returning false
-     * will let [Activity] handle this event.
-     * Note: will not be called if [getShowsDialog] is true.
-     */
-    open fun onBackPressed(): Boolean {
-        return false
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return false
-    }
-
-    /**
-     * Get if specified item will be consume from [onOptionsItemSelected], no more action is
-     * required here, you'll consume action in [onOptionsItemSelected] and should return the same
-     * [Boolean] from both method with the same item.
-     * Note: will not be called if [getShowsDialog] is true.
-     */
-    open fun willConsumeOptionsItem(item: MenuItem): Boolean {
-        return false
     }
 
     @CallSuper
