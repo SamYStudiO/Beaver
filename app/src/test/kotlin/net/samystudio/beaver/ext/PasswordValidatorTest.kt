@@ -8,16 +8,16 @@ class PasswordValidatorTest {
 
     @Test
     fun testValidateEmptyPassword() {
-        assertFalse(PasswordValidator().validate(""))
+        assertFalse(PASSWORD_VALIDATOR.validate(""))
     }
 
     @Test
     fun testValidateShortPassword() {
-        assertFalse(PasswordValidator().validate("azertyu"))
+        assertFalse(PASSWORD_VALIDATOR.validate("azertyu"))
     }
 
     @Test
     fun testValidateOkPassword() {
-        assertTrue(PasswordValidator().validate("azertyui"))
+        assertTrue(PASSWORD_VALIDATOR.validate("azertyui"))
     }
 }
