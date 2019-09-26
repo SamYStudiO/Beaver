@@ -12,7 +12,6 @@ class UserProfileFragment : BaseViewModelFragment<UserProfileFragmentViewModel>(
     AlertDialogListener {
     override val viewModel by viewModels<UserProfileFragmentViewModel>()
     override val layoutViewRes = R.layout.fragment_user_profile
-    override var title: String? = "UserProfile"
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

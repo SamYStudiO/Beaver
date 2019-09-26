@@ -22,7 +22,6 @@ import javax.inject.Inject
 class AuthenticatorFragment : BaseDataPushFragment<AuthenticatorFragmentViewModel>() {
     override val viewModel by viewModels<AuthenticatorFragmentViewModel>()
     override val layoutViewRes: Int = R.layout.fragment_authenticator
-    override var title: String? = "Authenticator"
     private var disposables: CompositeDisposable? = null
     @Inject
     protected lateinit var sharedPreferencesHelper: SharedPreferencesHelper

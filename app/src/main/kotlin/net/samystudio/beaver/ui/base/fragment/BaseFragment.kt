@@ -42,7 +42,6 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
     protected var destroyViewDisposable: CompositeDisposable? = null
     protected var stopDisposable: CompositeDisposable? = null
     protected var pauseDisposable: CompositeDisposable? = null
-    open var title: String? by state { value -> value?.let { activity?.title = it } }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,8 +76,6 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
         context?.let { firebaseAnalytics = FirebaseAnalytics.getInstance(it) }
 
         if (showsDialog) dialog?.setOnShowListener(this)
-
-        title?.let { activity?.title = it }
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {

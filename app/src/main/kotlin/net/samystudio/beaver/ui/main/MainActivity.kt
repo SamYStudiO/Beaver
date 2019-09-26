@@ -1,7 +1,6 @@
 package net.samystudio.beaver.ui.main
 
 import android.os.Bundle
-import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -12,7 +11,6 @@ import net.samystudio.beaver.ui.base.activity.BaseToolbarActivity
 class MainActivity : BaseToolbarActivity<MainActivityViewModel>() {
     override val viewModel by viewModels<MainActivityViewModel>()
     override val toolbar: Toolbar by lazy { header }
-    override val toolbarTitle: TextView? = null
     override val layoutViewRes: Int = R.layout.activity_main
     override val navController: NavController by lazy { findNavController(R.id.nav_host) }
 
