@@ -14,9 +14,9 @@ import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import com.evernote.android.state.State
 import com.google.firebase.analytics.FirebaseAnalytics
 import io.reactivex.disposables.CompositeDisposable
+import net.samystudio.beaver.data.local.InstanceStateProvider
 import net.samystudio.beaver.ext.getClassTag
 import net.samystudio.beaver.ui.base.activity.BaseActivity
 import net.samystudio.beaver.ui.common.dialog.DialogListener
@@ -30,25 +30,19 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
     private var finished: Boolean = false
     private var dialogDismissed: Boolean = false
     private var restoringState: Boolean = false
+    private val savable = Bundle()
     @get:LayoutRes
     protected abstract val layoutViewRes: Int
     protected val navController: NavController by lazy { findNavController() }
     // Cannot inject here since we don't have dagger yet
     protected lateinit var firebaseAnalytics: FirebaseAnalytics
-    @State
-    protected var resultCode: Int = Activity.RESULT_CANCELED
-    @State
-    protected var resultIntent: Intent? = null
+    protected var resultCode: Int by state(Activity.RESULT_CANCELED)
+    protected var resultIntent: Intent? by state()
     protected var destroyDisposable: CompositeDisposable? = null
     protected var destroyViewDisposable: CompositeDisposable? = null
     protected var stopDisposable: CompositeDisposable? = null
     protected var pauseDisposable: CompositeDisposable? = null
-    @State
-    open var title: String? = null
-        set(value) {
-            value?.let { activity?.title = it }
-            field = value
-        }
+    open var title: String? by state { value -> value?.let { activity?.title = it } }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,6 +82,7 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        savedInstanceState?.let { savable.putAll(it.getBundle(getClassTag())) }
         super.onViewStateRestored(savedInstanceState)
         restoringState = true
     }
@@ -119,6 +114,12 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
     override fun onStop() {
         super.onStop()
         stopDisposable?.dispose()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putBundle(getClassTag(), savable)
+
+        super.onSaveInstanceState(outState)
     }
 
     @CallSuper
@@ -198,4 +199,10 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
         super.onDestroy()
         destroyDisposable?.dispose()
     }
+
+    protected fun <T> state(setterCallback: ((value: T) -> Unit)? = null) =
+        InstanceStateProvider.Nullable(savable, setterCallback)
+
+    protected fun <T> state(defaultValue: T, setterCallback: ((value: T) -> Unit)? = null) =
+        InstanceStateProvider.NotNull(savable, defaultValue, setterCallback)
 }

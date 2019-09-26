@@ -4,9 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.annotation.CallSuper
 import androidx.lifecycle.LiveData
-import com.evernote.android.state.StateSaver
 import io.reactivex.BackpressureStrategy
+import net.samystudio.beaver.data.local.InstanceStateProvider
 import net.samystudio.beaver.data.manager.UserManager
+import net.samystudio.beaver.ext.getClassTag
 import net.samystudio.beaver.ui.common.navigation.NavigationRequest
 import net.samystudio.beaver.ui.common.viewmodel.NavigationEvent
 import net.samystudio.beaver.ui.common.viewmodel.SingleLiveEvent
@@ -19,6 +20,7 @@ abstract class BaseViewControllerViewModel : BaseViewModel() {
     val navigationCommand: LiveData<NavigationRequest> = _navigationCommand
     private val _resultEvent: SingleLiveEvent<Result> by lazy { SingleLiveEvent<Result>() }
     val resultEvent: LiveData<Result> = _resultEvent
+    private val savable = Bundle()
 
     open fun handleCreate() {
         disposables.add(userManager.statusObservable.toFlowable(BackpressureStrategy.LATEST)
@@ -34,7 +36,7 @@ abstract class BaseViewControllerViewModel : BaseViewModel() {
 
     @CallSuper
     open fun handleRestoreInstanceState(savedInstanceState: Bundle) {
-        StateSaver.restoreInstanceState(this, savedInstanceState)
+        savable.putAll(savedInstanceState.getBundle(getClassTag()))
     }
 
     /**
@@ -49,7 +51,7 @@ abstract class BaseViewControllerViewModel : BaseViewModel() {
 
     @CallSuper
     open fun handleSaveInstanceState(outState: Bundle) {
-        StateSaver.saveInstanceState(this, outState)
+        outState.putBundle(getClassTag(), savable)
     }
 
     fun navigate(navigationRequest: NavigationRequest) {
@@ -62,6 +64,12 @@ abstract class BaseViewControllerViewModel : BaseViewModel() {
     fun setResult(code: Int, intent: Intent?, finish: Boolean = true) {
         _resultEvent.value = Result(code, intent, finish)
     }
+
+    protected fun <T> state(setterCallback: (value: T) -> Unit) =
+        InstanceStateProvider.Nullable(savable, setterCallback)
+
+    protected fun <T> state(defaultValue: T, setterCallback: (value: T) -> Unit) =
+        InstanceStateProvider.NotNull(savable, defaultValue, setterCallback)
 
     data class Result(var code: Int, var intent: Intent?, var finish: Boolean)
 }

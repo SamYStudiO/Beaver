@@ -54,9 +54,9 @@ abstract class BaseViewModelFragment<VM : BaseFragmentViewModel> : BaseDaggerFra
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        super.onViewStateRestored(savedInstanceState)
-
         savedInstanceState?.let { viewModel.handleRestoreInstanceState(it) }
+
+        super.onViewStateRestored(savedInstanceState)
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -77,9 +77,9 @@ abstract class BaseViewModelFragment<VM : BaseFragmentViewModel> : BaseDaggerFra
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-
         viewModel.handleSaveInstanceState(outState)
+
+        super.onSaveInstanceState(outState)
     }
 
     @Suppress("UNUSED_PARAMETER")

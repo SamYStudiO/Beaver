@@ -17,8 +17,10 @@ import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
 import io.reactivex.disposables.CompositeDisposable
+import net.samystudio.beaver.data.local.InstanceStateProvider
 import net.samystudio.beaver.data.manager.UserManager
 import net.samystudio.beaver.di.qualifier.ActivityContext
+import net.samystudio.beaver.ext.getClassTag
 import net.samystudio.beaver.ext.navigate
 import net.samystudio.beaver.ui.base.fragment.BaseViewModelFragment
 import net.samystudio.beaver.ui.base.viewmodel.BaseActivityViewModel
@@ -44,6 +46,7 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(),
     protected var pauseDisposable: CompositeDisposable? = null
     @Inject
     protected lateinit var userManager: UserManager
+    private val savable = Bundle()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
@@ -94,10 +97,12 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(),
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
-        super.onRestoreInstanceState(savedInstanceState)
+        savedInstanceState?.let {
+            savable.putAll(it.getBundle(getClassTag()))
+            viewModel.handleRestoreInstanceState(it)
+        }
 
-        if (savedInstanceState != null)
-            viewModel.handleRestoreInstanceState(savedInstanceState)
+        super.onRestoreInstanceState(savedInstanceState)
     }
 
     override fun onStart() {
@@ -122,9 +127,10 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(),
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-
+        outState.putBundle(getClassTag(), savable)
         viewModel.handleSaveInstanceState(outState)
+
+        super.onSaveInstanceState(outState)
     }
 
     override fun androidInjector(): AndroidInjector<Any> {
@@ -140,4 +146,10 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(),
     protected inline fun <reified VM : ViewModel> viewModels(
         ownerProducer: () -> ViewModelStoreOwner = { this }
     ) = viewModelsInternal<VM> { viewModelFactory }
+
+    protected fun <T> state(setterCallback: (value: T) -> Unit) =
+        InstanceStateProvider.Nullable(savable, setterCallback)
+
+    protected fun <T> state(defaultValue: T, setterCallback: (value: T) -> Unit) =
+        InstanceStateProvider.NotNull(savable, defaultValue, setterCallback)
 }

@@ -147,10 +147,6 @@ dependencies {
     debugImplementation "com.squareup.leakcanary:leakcanary-support-fragment:$versions.leakcanary"
     releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$versions.leakcanary"
 
-    // misc
-    implementation "com.evernote:android-state:$versions.android_state"
-    kapt "com.evernote:android-state-processor:$versions.android_state"
-
     // test
     testImplementation "junit:junit:$versions.junit"
     testImplementation "androidx.test:core:$versions.test_core"

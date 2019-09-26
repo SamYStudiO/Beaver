@@ -2,7 +2,6 @@
 
 package net.samystudio.beaver
 
-import com.evernote.android.state.StateSaver
 import com.squareup.leakcanary.LeakCanary
 import dagger.android.support.DaggerApplication
 import io.fabric.sdk.android.Fabric
@@ -34,7 +33,6 @@ class BeaverApplication : DaggerApplication() {
 
         LeakCanary.install(this)
         Timber.plant(timberTree)
-        StateSaver.setEnabledForAllActivitiesAndSupportFragments(this, true)
 
         // Launch screen timeout, this is not material guideline compliant but client is king and
         // most want it displayed longer, just remove if client is material compliant ^^.
