@@ -16,7 +16,7 @@ import javax.inject.Singleton
 @Module(
     includes = [CrashlyticsModule::class, TimberModule::class, AndroidSupportInjectionModule::class,
         ActivityBuilderModule::class, ServiceBuilderModule::class, SystemServiceModule::class,
-        NetworkModule::class, FirebaseModule::class, PicassoModule::class]
+        NetworkModule::class, FirebaseModule::class, DataModule::class, PicassoModule::class]
 )
 abstract class ApplicationModule {
     @Binds
