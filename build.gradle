@@ -20,7 +20,7 @@ buildscript {
                 // firebase
                 firebase_core       : '17.2.0',
                 firebase_appindexing: '19.0.0',
-                firebase_perf       : '19.0.0',
+                firebase_perf       : '19.0.1',
                 crashlytics         : '2.10.1',
 
                 // dagger
@@ -28,7 +28,7 @@ buildscript {
                 assisted_inject     : '0.5.0',
 
                 // reactive
-                rxjava              : '2.2.12',
+                rxjava              : '2.2.13',
                 rxandroid           : '2.1.1',
                 rxkotlin            : '2.4.0',
                 rxbinding           : '3.0.0',
@@ -36,8 +36,8 @@ buildscript {
                 rxpicasso           : '0.3.0',
 
                 // network
-                okhttp              : '4.1.1',
-                retrofit            : '2.6.1',
+                okhttp              : '4.2.2',
+                retrofit            : '2.6.2',
                 picasso             : '3.0.0-SNAPSHOT',
 
                 // debug
@@ -50,8 +50,8 @@ buildscript {
                 // test
                 junit               : '4.12',
                 test_core           : '1.2.0',
-                robolectric         : '4.3',
-                mockito             : '3.0.0',
+                robolectric         : '4.3.1',
+                mockito             : '3.1.0',
                 runner              : '1.2.0',
                 espresso_core       : '3.2.0'
         ]
