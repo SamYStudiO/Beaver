@@ -3,7 +3,7 @@ package net.samystudio.beaver.di.module
 import android.accounts.AccountManager
 import android.content.Context
 import android.content.SharedPreferences
-import android.preference.PreferenceManager
+import androidx.preference.PreferenceManager
 import com.f2prateek.rx.preferences2.RxSharedPreferences
 import dagger.Module
 import dagger.Provides

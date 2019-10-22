@@ -11,6 +11,7 @@ buildscript {
                 // android
                 core_ktx            : '1.1.0',
                 appcompat           : '1.1.0',
+                preference_ktx      : '1.1.0',
                 constraintlayout    : '1.1.3',
                 material            : '1.1.0-beta01',
                 lifecycle           : '2.1.0',
