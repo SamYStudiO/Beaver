@@ -25,6 +25,12 @@ android {
         buildConfigField('String', 'FULL_VERSION_NAME', "\"$versionName.$versionCode\"")
         resValue 'string', 'application_id', applicationId
         multiDexEnabled true
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ['room.schemaLocation': "$projectDir/schemas".toString()]
+            }
+        }
     }
 
     signingConfigs {
