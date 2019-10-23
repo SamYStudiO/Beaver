@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="api_url">https://samystudio.github.io/beaver/api/</string>
+    <string name="api_url">https://samystudio.github.io/Beaver/api/</string>
 
     <string-array name="api_urls">
         <item>Prod</item>
