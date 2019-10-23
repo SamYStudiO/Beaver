@@ -1,20 +1,19 @@
 package net.samystudio.beaver.data.local
 
-import android.content.Context
 import com.f2prateek.rx.preferences2.RxSharedPreferences
-import net.samystudio.beaver.R
-import net.samystudio.beaver.di.qualifier.ApplicationContext
+import net.samystudio.beaver.data.model.Server
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class SharedPreferencesHelper @Inject constructor(
-    @ApplicationContext context: Context, rxSharedPreferences: RxSharedPreferences
+    rxSharedPreferences: RxSharedPreferences,
+    serverList: List<Server>
 ) {
     val apiUrl by lazy {
         rxSharedPreferences.getString(
             API_URL,
-            context.getString(R.string.api_url)
+            serverList[0].url
         )
     }
     val accountName by lazy { rxSharedPreferences.getString(ACCOUNT_NAME) }
