@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
 import com.f2prateek.rx.preferences2.RxSharedPreferences
+import com.google.android.gms.common.GoogleApiAvailability
 import dagger.Module
 import dagger.Provides
 import net.samystudio.beaver.di.qualifier.ApplicationContext
@@ -32,4 +33,10 @@ object SystemServiceModule {
     @JvmStatic
     fun provideAccountManager(@ApplicationContext context: Context): AccountManager =
         AccountManager.get(context)
+
+    @Provides
+    @Singleton
+    @JvmStatic
+    fun provideGoogleApiAvailability(): GoogleApiAvailability =
+        GoogleApiAvailability.getInstance()
 }
