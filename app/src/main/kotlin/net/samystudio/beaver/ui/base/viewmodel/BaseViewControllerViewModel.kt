@@ -32,7 +32,7 @@ abstract class BaseViewControllerViewModel : BaseViewModel() {
 
     open fun handleIntent(intent: Intent) {}
 
-    open fun handleResult(requestCode: Int, code: Int, data: Intent?) {}
+    open fun handleResult(requestCode: Int, resultCode: Int, data: Intent?) {}
 
     @CallSuper
     open fun handleRestoreInstanceState(savedInstanceState: Bundle) {
