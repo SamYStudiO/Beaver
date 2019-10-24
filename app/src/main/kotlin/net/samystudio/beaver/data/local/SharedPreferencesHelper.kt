@@ -7,8 +7,8 @@ import javax.inject.Singleton
 
 @Singleton
 class SharedPreferencesHelper @Inject constructor(
-    rxSharedPreferences: RxSharedPreferences,
-    serverList: List<Server>
+    private val rxSharedPreferences: RxSharedPreferences,
+    private val serverList: List<Server>
 ) {
     val apiUrl by lazy {
         rxSharedPreferences.getString(
