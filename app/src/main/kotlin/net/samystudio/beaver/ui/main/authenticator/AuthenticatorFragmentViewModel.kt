@@ -8,7 +8,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.functions.BiFunction
 import net.samystudio.beaver.data.AsyncState
 import net.samystudio.beaver.data.manager.AuthenticatorRepositoryManager
 import net.samystudio.beaver.data.manager.UserManager
@@ -67,7 +66,7 @@ class AuthenticatorFragmentViewModel @Inject constructor(private val authenticat
                                 userFlow.email,
                                 userFlow.password
                             )
-                        }.zipWith(Observable.just(""), BiFunction { t1, _ -> t1 })
+                        }
                 else -> Observable.error<AsyncState> {
                     IllegalArgumentException("Unknown user flow ${userFlow.getClassTag()}.")
                 }
