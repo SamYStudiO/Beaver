@@ -86,9 +86,7 @@ object NetworkModule {
     @Provides
     @Singleton
     @JvmStatic
-    fun provideGson(): Gson =
-        GsonBuilder()
-            .create()
+    fun provideGson(): Gson = GsonBuilder().create()
 
     @Provides
     @Singleton
