@@ -1,18 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primary">#3f51b5</color>
-    <color name="primary_variant">#3f51b5</color>
-    <color name="secondary">#ff4081</color>
-    <color name="secondary_variant">#ff4081</color>
-    <color name="background">#ffffff</color>
-    <color name="surface">#ffffff</color>
-    <color name="success">#08c27f</color>
-    <color name="error">#ff3c00</color>
-
-    <color name="on_primary">#ffffff</color>
-    <color name="on_secondary">#ffffff</color>
-    <color name="on_background">#666666</color>
-    <color name="on_surface">#666666</color>
-    <color name="on_success">#ffffff</color>
-    <color name="on_error">#ffffff</color>
+    <color name="brand_blue">#3f51b5</color>
+    <color name="brand_pink">#ff4081</color>
+    <color name="grey">#666666</color>
+    <color name="green">#08c27f</color>
+    <color name="red">#ff3c00</color>
 </resources>

@@ -26,4 +26,5 @@
     <style name="AppTextAppearance.Caption" parent="TextAppearance.MaterialComponents.Caption" />
 
     <style name="AppTextAppearance.Overline" parent="TextAppearance.MaterialComponents.Overline" />
+
 </resources>
