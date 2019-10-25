@@ -1,5 +1,6 @@
 package net.samystudio.beaver.data.local
 
+import com.f2prateek.rx.preferences2.BuildConfig
 import com.f2prateek.rx.preferences2.RxSharedPreferences
 import net.samystudio.beaver.data.model.Server
 import javax.inject.Inject
@@ -13,7 +14,8 @@ class SharedPreferencesHelper @Inject constructor(
     val apiUrl by lazy {
         rxSharedPreferences.getString(
             API_URL,
-            serverList[0].url
+            serverList.find { it.defaultForBuildType == BuildConfig.BUILD_TYPE }?.url
+                ?: serverList.firstOrNull()?.url ?: ""
         )
     }
     val accountName by lazy { rxSharedPreferences.getString(ACCOUNT_NAME) }
