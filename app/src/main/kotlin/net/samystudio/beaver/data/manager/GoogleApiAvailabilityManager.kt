@@ -49,6 +49,9 @@ class GoogleApiAvailabilityManager @Inject constructor(
 
     companion object {
         private const val REQUEST_CODE = 654
-        private val ERROR = Throwable("Google Api missing, can't go any further!")
+        private val ERROR = GoogleApiAvailabilityException()
     }
+
+    class GoogleApiAvailabilityException :
+        RuntimeException("Google Api missing, can't go any further!")
 }
