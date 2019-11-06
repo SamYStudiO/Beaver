@@ -96,11 +96,9 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(),
         viewModel.handleResult(requestCode, resultCode, data)
     }
 
-    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
-        savedInstanceState?.let {
-            savable.putAll(it.getBundle(getClassTag()))
-            viewModel.handleRestoreInstanceState(it)
-        }
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        savable.putAll(savedInstanceState.getBundle(getClassTag()))
+        viewModel.handleRestoreInstanceState(savedInstanceState)
 
         super.onRestoreInstanceState(savedInstanceState)
     }

@@ -95,7 +95,7 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
 
         if (!restoringState) {
             firebaseAnalytics.setCurrentScreen(
-                activity!!,
+                requireActivity(),
                 getClassTag(),
                 getClassTag()
             )

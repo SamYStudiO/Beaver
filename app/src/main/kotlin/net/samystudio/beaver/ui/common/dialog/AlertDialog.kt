@@ -23,7 +23,7 @@ open class AlertDialog : BaseFragment(),
     override val layoutViewRes: Int = 0
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog =
-        Builder(activity!!, arguments!!.getParcelable(PARAMS) as? Params).build(
+        Builder(requireContext(), requireArguments().getParcelable(PARAMS) as? Params).build(
             this,
             theme
         ).create()
@@ -343,7 +343,7 @@ open class AlertDialog : BaseFragment(),
             val dialog = AlertDialog()
             dialog.setTargetFragment(targetController, targetRequestCode)
             if (dialog.arguments == null) dialog.arguments = Bundle()
-            dialog.arguments!!.putParcelable(PARAMS, builder.toParams())
+            dialog.requireArguments().putParcelable(PARAMS, builder.toParams())
 
             return dialog
         }

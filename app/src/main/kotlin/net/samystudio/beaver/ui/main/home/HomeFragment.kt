@@ -32,9 +32,10 @@ class HomeFragment : BaseDataFetchFragment<HomeFragmentViewModel, Home>(), Alert
     }
 
     override fun dataFetchError(throwable: Throwable) {
-        fragmentManager?.let {
-            getGenericErrorDialog(context!!).showIfNonExistent(it, getMethodTag())
-        }
+        getGenericErrorDialog(requireContext()).showIfNonExistent(
+            requireFragmentManager(),
+            getMethodTag()
+        )
     }
 
     override fun dataFetchTerminate() {

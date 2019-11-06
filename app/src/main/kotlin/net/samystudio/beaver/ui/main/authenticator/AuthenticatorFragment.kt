@@ -124,9 +124,7 @@ class AuthenticatorFragment : BaseDataPushFragment<AuthenticatorFragmentViewMode
     }
 
     override fun dataPushError(throwable: Throwable) {
-        fragmentManager?.let {
-            getGenericErrorDialog(context!!).showNow(it, getMethodTag())
-        }
+        getGenericErrorDialog(requireContext()).showNow(requireFragmentManager(), getMethodTag())
     }
 
     override fun dataPushTerminate() {
