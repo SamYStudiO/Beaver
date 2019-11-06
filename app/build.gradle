@@ -163,6 +163,8 @@ dependencies {
     testImplementation "org.robolectric:robolectric:$versions.robolectric"
     testImplementation "org.mockito:mockito-core:$versions.mockito"
     testImplementation "com.squareup.okhttp3:mockwebserver:$versions.okhttp"
+    testImplementation "androidx.arch.core:core-testing:$versions.lifecycle"
+    testImplementation "androidx.room:room-testing:$versions.room"
     androidTestImplementation "androidx.test:runner:$versions.runner"
     androidTestImplementation "androidx.test.espresso:espresso-core:$versions.espresso_core"
     androidTestImplementation "org.mockito:mockito-android:$versions.mockito"

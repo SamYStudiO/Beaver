@@ -16,16 +16,16 @@ buildscript {
                 material            : '1.1.0-beta01',
                 lifecycle           : '2.1.0',
                 navigation          : '2.1.0',
-                room                : '2.2.0',
+                room                : '2.2.1',
 
                 // firebase
-                firebase_core       : '17.2.0',
+                firebase_core       : '17.2.1',
                 firebase_appindexing: '19.0.0',
                 firebase_perf       : '19.0.1',
                 crashlytics         : '2.10.1',
 
                 // dagger
-                dagger              : '2.24',
+                dagger              : '2.25.2',
                 assisted_inject     : '0.5.0',
 
                 // reactive
