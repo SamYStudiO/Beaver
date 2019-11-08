@@ -1,5 +1,3 @@
-@file:Suppress("ProtectedInFinal", "unused")
-
 package net.samystudio.beaver
 
 import com.squareup.leakcanary.LeakCanary
@@ -18,12 +16,12 @@ class BeaverApplication : DaggerApplication() {
      * @see [net.samystudio.beaver.di.module.CrashlyticsModule.provideFabric]
      */
     @Inject
-    protected lateinit var fabric: Fabric
+    lateinit var fabric: Fabric
     /**
      * @see [net.samystudio.beaver.di.module.TimberModule.provideTimberTree]
      */
     @Inject
-    protected lateinit var timberTree: Timber.Tree
+    lateinit var timberTree: Timber.Tree
 
     override fun onCreate() {
         super.onCreate()
