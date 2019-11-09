@@ -27,7 +27,7 @@ class BeaverApplication : DaggerApplication() {
      * @see [net.samystudio.beaver.di.module.ApplicationModule.provideTrimMemoryList]
      */
     @Inject
-    lateinit var trimMemoryList: List<TrimMemory>
+    lateinit var trimMemoryList: ArrayList<TrimMemory>
 
     override fun onCreate() {
         super.onCreate()

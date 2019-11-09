@@ -1,5 +1,6 @@
 package net.samystudio.beaver.ui.main.home
 
+import android.os.Bundle
 import androidx.lifecycle.LiveData
 import net.samystudio.beaver.data.ResultAsyncState
 import net.samystudio.beaver.data.manager.HomeRepositoryManager
@@ -18,8 +19,8 @@ class HomeFragmentViewModel @Inject constructor(homeRepositoryManager: HomeRepos
         ResultAsyncStateLiveData(homeRepositoryManager.home())
     override val dataFetchObservable: LiveData<ResultAsyncState<Home>> = _dataFetchObservable
 
-    override fun handleCreate() {
-        super.handleCreate()
+    override fun handleCreate(savedInstanceState: Bundle?) {
+        super.handleCreate(savedInstanceState)
         disposables.add(_dataFetchObservable)
     }
 

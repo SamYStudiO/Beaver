@@ -39,7 +39,7 @@ abstract class ApplicationModule {
         @Provides
         @Singleton
         @JvmStatic
-        fun provideTrimMemoryList(picassoTrimMemory: PicassoModule.PicassoTrimMemory): List<TrimMemory> =
-            listOf(picassoTrimMemory)
+        fun provideTrimMemoryList(picassoTrimMemory: PicassoModule.PicassoTrimMemory): ArrayList<TrimMemory> =
+            mutableListOf<TrimMemory>(picassoTrimMemory) as ArrayList<TrimMemory>
     }
 }
