@@ -6,8 +6,10 @@ import android.app.Application
 import android.content.Context
 import dagger.Binds
 import dagger.Module
+import dagger.Provides
 import dagger.android.support.AndroidSupportInjectionModule
 import net.samystudio.beaver.BeaverApplication
+import net.samystudio.beaver.data.TrimMemory
 import net.samystudio.beaver.data.service.ServiceBuilderModule
 import net.samystudio.beaver.di.qualifier.ApplicationContext
 import net.samystudio.beaver.ui.ActivityBuilderModule
@@ -27,4 +29,17 @@ abstract class ApplicationModule {
     @Singleton
     @ApplicationContext
     abstract fun bindApplicationContext(application: Application): Context
+
+    @Module
+    companion object {
+        /**
+         * Add to this list any application level data implementing [TrimMemory] that should clear
+         * some cache when app is running low on memory.
+         */
+        @Provides
+        @Singleton
+        @JvmStatic
+        fun provideTrimMemoryList(picassoTrimMemory: PicassoModule.PicassoTrimMemory): List<TrimMemory> =
+            listOf(picassoTrimMemory)
+    }
 }
