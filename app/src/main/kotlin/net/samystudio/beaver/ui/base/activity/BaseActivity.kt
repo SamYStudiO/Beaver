@@ -131,13 +131,24 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(),
         super.onSaveInstanceState(outState)
     }
 
-    override fun androidInjector(): AndroidInjector<Any> {
-        return androidInjector
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         destroyDisposable?.dispose()
+    }
+
+    override fun onTrimMemory(level: Int) {
+        super.onTrimMemory(level)
+
+        viewModel.handleTrimMemory(level)
+        supportFragmentManager.fragments.forEach {
+            (it as? BaseViewModelFragment<*>)?.onTrimMemory(
+                level
+            )
+        }
+    }
+
+    override fun androidInjector(): AndroidInjector<Any> {
+        return androidInjector
     }
 
     @Suppress("UNUSED_PARAMETER")

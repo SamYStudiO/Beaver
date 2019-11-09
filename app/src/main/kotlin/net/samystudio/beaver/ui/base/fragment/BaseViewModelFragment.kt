@@ -82,6 +82,10 @@ abstract class BaseViewModelFragment<VM : BaseFragmentViewModel> : BaseDaggerFra
         super.onSaveInstanceState(outState)
     }
 
+    fun onTrimMemory(level: Int) {
+        viewModel.handleTrimMemory(level)
+    }
+
     @Suppress("UNUSED_PARAMETER")
     protected inline fun <reified VM : ViewModel> viewModels(
         ownerProducer: () -> ViewModelStoreOwner = { this }

@@ -48,6 +48,13 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
         destroyDisposable = CompositeDisposable()
     }
 
+    @CallSuper
+    open fun onNewIntent(intent: Intent) {
+        childFragmentManager.fragments.forEach {
+            (it as? BaseFragment)?.onNewIntent(intent)
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -61,13 +68,6 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
         super.onViewCreated(view, savedInstanceState)
         destroyViewDisposable = CompositeDisposable()
         dialogDismissed = false
-    }
-
-    @CallSuper
-    open fun onNewIntent(intent: Intent) {
-        childFragmentManager.fragments.forEach {
-            (it as? BaseFragment)?.onNewIntent(intent)
-        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -117,6 +117,23 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
         outState.putBundle(getClassTag(), savable)
 
         super.onSaveInstanceState(outState)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        destroyViewDisposable?.dispose()
+        dialogDismissed = true
+
+        dialog?.let {
+            it.setOnShowListener(null)
+            it.setOnCancelListener(null)
+            it.setOnDismissListener(null)
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        destroyDisposable?.dispose()
     }
 
     @CallSuper
@@ -178,23 +195,6 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
 
             finished = true
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        destroyViewDisposable?.dispose()
-        dialogDismissed = true
-
-        dialog?.let {
-            it.setOnShowListener(null)
-            it.setOnCancelListener(null)
-            it.setOnDismissListener(null)
-        }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        destroyDisposable?.dispose()
     }
 
     protected fun <T> state(setterCallback: ((value: T) -> Unit)? = null) =

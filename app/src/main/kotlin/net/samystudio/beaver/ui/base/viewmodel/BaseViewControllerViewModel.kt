@@ -45,14 +45,16 @@ abstract class BaseViewControllerViewModel : BaseViewModel() {
      */
     open fun handleReady() {}
 
-    open fun handleUserConnected() {}
-
-    open fun handleUserDisconnected() {}
-
     @CallSuper
     open fun handleSaveInstanceState(outState: Bundle) {
         outState.putBundle(getClassTag(), savable)
     }
+
+    open fun handleTrimMemory(level: Int) {}
+
+    open fun handleUserConnected() {}
+
+    open fun handleUserDisconnected() {}
 
     fun navigate(navigationRequest: NavigationRequest) {
         _navigationCommand.value = navigationRequest
