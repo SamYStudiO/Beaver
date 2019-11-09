@@ -54,7 +54,7 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(),
         setContentView(layoutViewRes)
 
         destroyDisposable = CompositeDisposable()
-        viewModel.handleCreate()
+        viewModel.handleCreate(savedInstanceState)
         viewModel.handleIntent(intent)
         onViewModelCreated()
     }

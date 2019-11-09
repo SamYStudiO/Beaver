@@ -28,7 +28,7 @@ abstract class BaseViewModelFragment<VM : BaseFragmentViewModel> : BaseDaggerFra
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel.handleCreate()
+        viewModel.handleCreate(savedInstanceState)
         activity?.intent?.let { viewModel.handleIntent(it) }
         arguments?.let { viewModel.handleArguments(it) }
     }

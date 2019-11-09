@@ -22,7 +22,7 @@ abstract class BaseViewControllerViewModel : BaseViewModel() {
     val resultEvent: LiveData<Result> = _resultEvent
     private val savable = Bundle()
 
-    open fun handleCreate() {
+    open fun handleCreate(savedInstanceState: Bundle?) {
         disposables.add(userManager.statusObservable.toFlowable(BackpressureStrategy.LATEST)
             .subscribe {
                 if (it) handleUserConnected()
