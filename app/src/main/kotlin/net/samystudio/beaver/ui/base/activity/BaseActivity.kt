@@ -90,6 +90,11 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(),
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        stopDisposable = CompositeDisposable()
+    }
+
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -101,11 +106,6 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(),
         viewModel.handleRestoreInstanceState(savedInstanceState)
 
         super.onRestoreInstanceState(savedInstanceState)
-    }
-
-    override fun onStart() {
-        super.onStart()
-        stopDisposable = CompositeDisposable()
     }
 
     override fun onResume() {
