@@ -9,7 +9,6 @@ import java.io.Serializable
 import kotlin.reflect.KProperty
 
 abstract class InstanceStateProvider<T>(private val bundle: Bundle) {
-
     private var cache: T? = null
 
     open operator fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {

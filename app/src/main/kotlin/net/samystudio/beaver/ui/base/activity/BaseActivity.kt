@@ -36,7 +36,7 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(),
     @Inject
     protected lateinit var androidInjector: DispatchingAndroidInjector<Any>
     /**
-     * @see [net.samystudio.beaver.ui.base.activity.BaseActivityModule.bindViewModelFactory]
+     * @see [BaseActivityModule.bindViewModelFactory]
      */
     @Inject
     @field:ActivityContext

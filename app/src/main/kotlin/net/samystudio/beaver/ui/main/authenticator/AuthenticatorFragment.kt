@@ -20,11 +20,11 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class AuthenticatorFragment : BaseDataPushFragment<AuthenticatorFragmentViewModel>() {
-    override val viewModel by viewModels<AuthenticatorFragmentViewModel>()
-    override val layoutViewRes: Int = R.layout.fragment_authenticator
     private var disposables: CompositeDisposable? = null
     @Inject
     protected lateinit var sharedPreferencesHelper: SharedPreferencesHelper
+    override val viewModel by viewModels<AuthenticatorFragmentViewModel>()
+    override val layoutViewRes: Int = R.layout.fragment_authenticator
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

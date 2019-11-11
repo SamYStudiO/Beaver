@@ -16,7 +16,6 @@ class HomeFragment : BaseDataFetchFragment<HomeFragmentViewModel, Home>(), Alert
     override val viewModel by viewModels<HomeFragmentViewModel>()
     override val layoutViewRes = R.layout.fragment_home
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 

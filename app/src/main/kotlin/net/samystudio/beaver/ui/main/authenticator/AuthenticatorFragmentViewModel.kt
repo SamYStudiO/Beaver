@@ -22,14 +22,14 @@ import javax.inject.Inject
 @FragmentScope
 class AuthenticatorFragmentViewModel @Inject constructor(private val authenticatorRepositoryManager: AuthenticatorRepositoryManager) :
     BaseFragmentViewModel(), DataPushViewModel {
+    private var authenticatorResponse: AccountAuthenticatorResponse? = null
+    private lateinit var intent: Intent
     private val _dataPushCompletable: AsyncStateLiveData = AsyncStateLiveData()
     override val dataPushCompletable: LiveData<AsyncState> = _dataPushCompletable
     private val _signInVisibility: MutableLiveData<Boolean> = MutableLiveData()
-    private val _signUpVisibility: MutableLiveData<Boolean> = MutableLiveData()
     val signInVisibility: LiveData<Boolean> = _signInVisibility
+    private val _signUpVisibility: MutableLiveData<Boolean> = MutableLiveData()
     val signUpVisibility: LiveData<Boolean> = _signUpVisibility
-    private var authenticatorResponse: AccountAuthenticatorResponse? = null
-    private lateinit var intent: Intent
 
     override fun handleIntent(intent: Intent) {
         super.handleIntent(intent)
