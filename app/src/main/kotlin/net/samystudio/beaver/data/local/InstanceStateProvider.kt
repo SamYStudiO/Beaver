@@ -56,7 +56,6 @@ abstract class InstanceStateProvider<T>(private val bundle: Bundle) {
         override operator fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
             super.setValue(thisRef, property, value)
             setterCallback?.let { it(value) }
-            // setterCallback = null
         }
 
         operator fun getValue(thisRef: Any?, property: KProperty<*>): T? =
@@ -72,7 +71,6 @@ abstract class InstanceStateProvider<T>(private val bundle: Bundle) {
         override operator fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
             super.setValue(thisRef, property, value)
             setterCallback?.let { it(value) }
-            // setterCallback = null
         }
 
         operator fun getValue(thisRef: Any?, property: KProperty<*>): T =
