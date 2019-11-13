@@ -6,7 +6,6 @@ import java.util.*
 
 abstract class BaseAdapter<D, VH : BaseViewHolder<D>>(private val _items: MutableList<D> = ArrayList()) :
     RecyclerView.Adapter<VH>() {
-
     val items: List<D>
         get() = _items
 

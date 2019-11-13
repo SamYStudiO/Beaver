@@ -9,7 +9,7 @@ import io.reactivex.schedulers.Schedulers
 import net.samystudio.beaver.BuildConfig
 import net.samystudio.beaver.data.local.SharedPreferencesHelper
 import net.samystudio.beaver.data.manager.UserManager
-import net.samystudio.beaver.data.remote.api.AuthenticatorApiInterface
+import net.samystudio.beaver.data.remote.AuthenticatorApiInterface
 import okhttp3.Cache
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.Interceptor

@@ -33,6 +33,7 @@ import androidx.activity.viewModels as viewModelsInternal
 
 abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(),
     HasAndroidInjector {
+    private val savable = Bundle()
     @Inject
     protected lateinit var androidInjector: DispatchingAndroidInjector<Any>
     /**
@@ -41,16 +42,15 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(),
     @Inject
     @field:ActivityContext
     protected lateinit var viewModelFactory: ViewModelProvider.Factory
-    abstract val viewModel: VM
     @get:LayoutRes
     protected abstract val layoutViewRes: Int
     protected abstract val navController: NavController
+    @Inject
+    protected lateinit var userManager: UserManager
     protected var destroyDisposable: CompositeDisposable? = null
     protected var stopDisposable: CompositeDisposable? = null
     protected var pauseDisposable: CompositeDisposable? = null
-    @Inject
-    protected lateinit var userManager: UserManager
-    private val savable = Bundle()
+    abstract val viewModel: VM
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)

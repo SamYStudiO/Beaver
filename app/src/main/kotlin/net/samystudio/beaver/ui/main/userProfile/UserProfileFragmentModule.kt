@@ -7,7 +7,7 @@ import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.multibindings.IntoMap
-import net.samystudio.beaver.data.remote.api.UserProfileApiInterface
+import net.samystudio.beaver.data.remote.UserProfileApiInterface
 import net.samystudio.beaver.di.key.FragmentViewModelKey
 import net.samystudio.beaver.di.scope.FragmentScope
 import net.samystudio.beaver.ui.base.fragment.BaseViewModelFragmentModule

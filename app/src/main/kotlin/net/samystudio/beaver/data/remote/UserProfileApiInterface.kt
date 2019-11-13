@@ -1,4 +1,4 @@
-package net.samystudio.beaver.data.remote.api
+package net.samystudio.beaver.data.remote
 
 import io.reactivex.Single
 import net.samystudio.beaver.data.model.User

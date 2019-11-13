@@ -3,7 +3,7 @@ package net.samystudio.beaver.data.manager
 import io.reactivex.Observable
 import net.samystudio.beaver.data.ResultAsyncState
 import net.samystudio.beaver.data.model.User
-import net.samystudio.beaver.data.remote.api.UserProfileApiInterface
+import net.samystudio.beaver.data.remote.UserProfileApiInterface
 import net.samystudio.beaver.di.scope.FragmentScope
 import javax.inject.Inject
 
