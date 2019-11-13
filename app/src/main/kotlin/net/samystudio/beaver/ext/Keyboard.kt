@@ -11,44 +11,46 @@ fun Context.getInputMethodManager(): InputMethodManager? =
     getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
 
 
-fun Activity.showKeyboard(view: View, flags: Int = InputMethodManager.SHOW_IMPLICIT) {
+fun Activity.showKeyboard(view: View, flags: Int = InputMethodManager.SHOW_IMPLICIT): Boolean {
     view.requestFocus()
-    getInputMethodManager()?.showSoftInput(view, flags)
+    return getInputMethodManager()?.showSoftInput(view, flags) ?: false
 }
 
-fun Activity.hideKeyboard(view: View? = null, flags: Int = 0) {
+fun Activity.hideKeyboard(view: View? = null, flags: Int = 0): Boolean {
     (if (view != null) view.windowToken else currentFocus?.windowToken)?.let {
-        getInputMethodManager()?.hideSoftInputFromWindow(it, flags)
+        return getInputMethodManager()?.hideSoftInputFromWindow(it, flags) ?: false
     }
+
+    return false
 }
 
-fun Activity.hideKeyboard(windowToken: IBinder, flags: Int = 0) {
-    getInputMethodManager()?.hideSoftInputFromWindow(windowToken, flags)
-}
+fun Activity.hideKeyboard(windowToken: IBinder, flags: Int = 0) =
+    getInputMethodManager()?.hideSoftInputFromWindow(windowToken, flags) ?: false
 
 
-fun Fragment.showKeyboard(view: View, flags: Int = InputMethodManager.SHOW_IMPLICIT) {
+fun Fragment.showKeyboard(view: View, flags: Int = InputMethodManager.SHOW_IMPLICIT): Boolean {
     view.requestFocus()
-    context?.getInputMethodManager()?.showSoftInput(view, flags)
+    return context?.getInputMethodManager()?.showSoftInput(view, flags) ?: false
 }
 
-fun Fragment.hideKeyboard(view: View? = null, flags: Int = 0) {
+fun Fragment.hideKeyboard(view: View? = null, flags: Int = 0): Boolean {
     (if (view != null) view.windowToken else activity?.currentFocus?.windowToken)?.let {
-        context?.getInputMethodManager()?.hideSoftInputFromWindow(it, flags)
+        return context?.getInputMethodManager()?.hideSoftInputFromWindow(it, flags) ?: false
     }
+
+    return false
 }
 
-fun Fragment.hideKeyboard(windowToken: IBinder, flags: Int = 0) {
-    context?.getInputMethodManager()?.hideSoftInputFromWindow(windowToken, flags)
-}
+fun Fragment.hideKeyboard(windowToken: IBinder, flags: Int = 0) =
+    context?.getInputMethodManager()?.hideSoftInputFromWindow(windowToken, flags) ?: false
 
 
-fun View.showKeyboard(flags: Int = InputMethodManager.SHOW_IMPLICIT) {
+fun View.showKeyboard(flags: Int = InputMethodManager.SHOW_IMPLICIT): Boolean {
     requestFocus()
-    context?.getInputMethodManager()?.showSoftInput(this, flags)
+    return context?.getInputMethodManager()?.showSoftInput(this, flags) ?: false
 }
 
-fun View.hideKeyboard(flags: Int = 0) {
-    context?.getInputMethodManager()?.hideSoftInputFromWindow(windowToken, flags)
-}
+fun View.hideKeyboard(flags: Int = 0) =
+    context?.getInputMethodManager()?.hideSoftInputFromWindow(windowToken, flags) ?: false
+
 
