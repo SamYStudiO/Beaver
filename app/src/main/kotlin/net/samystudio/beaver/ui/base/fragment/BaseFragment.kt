@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatDialogFragment
@@ -31,6 +32,9 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
     private var dialogDismissed: Boolean = false
     private var restoringState: Boolean = false
     private val savable = Bundle()
+    private val onBackPressCallback = object : OnBackPressedCallback(false) {
+        override fun handleOnBackPressed() = onBackPressed()
+    }
     @get:LayoutRes
     protected abstract val layoutViewRes: Int
     protected val navController: NavController by lazy { findNavController() }
@@ -42,6 +46,7 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
     protected var destroyViewDisposable: CompositeDisposable? = null
     protected var stopDisposable: CompositeDisposable? = null
     protected var pauseDisposable: CompositeDisposable? = null
+    var enableBackPressed by state(false, { value -> onBackPressCallback.isEnabled = value })
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -162,6 +167,11 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
         dialogDismissed = true
         finish()
     }
+
+    /**
+     * Override [Activity.onBackPressed], this must be enabled first using [enableBackPressed].
+     */
+    open fun onBackPressed() {}
 
     fun setTargetRequestCode(requestCode: Int) {
         setTargetFragment(null, requestCode)
