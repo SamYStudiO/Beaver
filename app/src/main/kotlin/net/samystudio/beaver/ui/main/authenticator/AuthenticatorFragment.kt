@@ -9,7 +9,6 @@ import androidx.lifecycle.Observer
 import com.jakewharton.rxbinding3.view.clicks
 import com.jakewharton.rxbinding3.widget.textChanges
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.Observables
 import kotlinx.android.synthetic.main.fragment_authenticator.*
 import net.samystudio.beaver.R
@@ -20,7 +19,6 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class AuthenticatorFragment : BaseDataPushFragment<AuthenticatorFragmentViewModel>() {
-    private var disposables: CompositeDisposable? = null
     @Inject
     protected lateinit var sharedPreferencesHelper: SharedPreferencesHelper
     override val viewModel by viewModels<AuthenticatorFragmentViewModel>()
@@ -51,9 +49,7 @@ class AuthenticatorFragment : BaseDataPushFragment<AuthenticatorFragmentViewMode
                     )
                 })
 
-        disposables = CompositeDisposable()
-
-        disposables?.add(
+        destroyViewDisposable?.add(
             Observables
                 .combineLatest(
                     sign_in_email.textChanges()
@@ -79,7 +75,7 @@ class AuthenticatorFragment : BaseDataPushFragment<AuthenticatorFragmentViewMode
                 .startWith(false)
                 .subscribe { sign_in.isEnabled = it })
 
-        disposables?.add(
+        destroyViewDisposable?.add(
             Observables
                 .combineLatest(
                     sign_up_email.textChanges()
@@ -129,11 +125,5 @@ class AuthenticatorFragment : BaseDataPushFragment<AuthenticatorFragmentViewMode
 
     override fun dataPushTerminate() {
         // TODO hide loader
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-
-        disposables?.dispose()
     }
 }
