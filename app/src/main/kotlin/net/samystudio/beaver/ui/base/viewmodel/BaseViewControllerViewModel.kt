@@ -14,9 +14,9 @@ import net.samystudio.beaver.ui.common.viewmodel.SingleLiveEvent
 import javax.inject.Inject
 
 abstract class BaseViewControllerViewModel : BaseViewModel() {
-    @Inject
     private val savable = Bundle()
     private val _navigationCommand: NavigationEvent = NavigationEvent()
+    @Inject
     protected lateinit var userManager: UserManager
     val navigationCommand: LiveData<NavigationRequest> = _navigationCommand
     private val _resultEvent: SingleLiveEvent<Result> by lazy { SingleLiveEvent<Result>() }

@@ -37,7 +37,7 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(),
     @Inject
     protected lateinit var androidInjector: DispatchingAndroidInjector<Any>
     /**
-     * @see [BaseActivityModule.bindViewModelFactory]
+     * @see BaseActivityModule.bindViewModelFactory
      */
     @Inject
     @field:ActivityContext

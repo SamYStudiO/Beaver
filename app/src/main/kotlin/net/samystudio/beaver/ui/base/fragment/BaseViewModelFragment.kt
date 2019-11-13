@@ -18,7 +18,7 @@ import androidx.fragment.app.viewModels as viewModelsInternal
 abstract class BaseViewModelFragment<VM : BaseFragmentViewModel> : BaseDaggerFragment(),
     DialogInterface.OnShowListener {
     /**
-     * @see [BaseViewModelFragmentModule.bindViewModelFactory]
+     * @see BaseViewModelFragmentModule.bindViewModelFactory
      */
     @Inject
     @field:FragmentContext

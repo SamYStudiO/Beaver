@@ -13,7 +13,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 /**
- * @see [net.samystudio.beaver.di.module.SystemServiceModule.provideAccountManager]
+ * @see net.samystudio.beaver.di.module.SystemServiceModule.provideAccountManager
  */
 @Singleton
 class UserManager @Inject constructor(

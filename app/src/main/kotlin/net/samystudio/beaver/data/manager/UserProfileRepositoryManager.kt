@@ -8,7 +8,7 @@ import net.samystudio.beaver.di.scope.FragmentScope
 import javax.inject.Inject
 
 /**
- * @see [net.samystudio.beaver.ui.main.userProfile.UserProfileFragmentModule.provideUserProfileApiInterface]
+ * @see net.samystudio.beaver.ui.main.userProfile.UserProfileFragmentModule.provideUserProfileApiInterface
  */
 @FragmentScope
 class UserProfileRepositoryManager @Inject constructor(private val userProfileApiInterface: UserProfileApiInterface) {

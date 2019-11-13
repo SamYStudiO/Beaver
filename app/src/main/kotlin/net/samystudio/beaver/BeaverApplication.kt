@@ -14,17 +14,17 @@ class BeaverApplication : DaggerApplication() {
         .build()
 
     /**
-     * @see [net.samystudio.beaver.di.module.CrashlyticsModule.provideFabric]
+     * @see net.samystudio.beaver.di.module.CrashlyticsModule.provideFabric
      */
     @Inject
     lateinit var fabric: Fabric
     /**
-     * @see [net.samystudio.beaver.di.module.TimberModule.provideTimberTree]
+     * @see net.samystudio.beaver.di.module.TimberModule.provideTimberTree
      */
     @Inject
     lateinit var timberTree: Timber.Tree
     /**
-     * @see [net.samystudio.beaver.di.module.ApplicationModule.provideTrimMemoryList]
+     * @see net.samystudio.beaver.di.module.ApplicationModule.provideTrimMemoryList
      */
     @Inject
     lateinit var trimMemoryList: ArrayList<TrimMemory>

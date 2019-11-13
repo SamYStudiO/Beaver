@@ -7,7 +7,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 /**
- * @see [net.samystudio.beaver.di.module.NetworkModule.provideAuthenticatorApiInterface]
+ * @see net.samystudio.beaver.di.module.NetworkModule.provideAuthenticatorApiInterface
  */
 @Singleton
 class AuthenticatorRepositoryManager

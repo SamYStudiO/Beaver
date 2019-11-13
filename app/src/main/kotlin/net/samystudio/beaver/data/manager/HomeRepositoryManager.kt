@@ -8,7 +8,7 @@ import net.samystudio.beaver.di.scope.FragmentScope
 import javax.inject.Inject
 
 /**
- * @see [net.samystudio.beaver.ui.main.home.HomeFragmentModule.provideHomeApiInterface]
+ * @see net.samystudio.beaver.ui.main.home.HomeFragmentModule.provideHomeApiInterface
  */
 @FragmentScope
 class HomeRepositoryManager @Inject constructor(private val homeApiInterface: HomeApiInterface) {
