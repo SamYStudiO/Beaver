@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowInsets
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
@@ -27,7 +28,8 @@ import net.samystudio.beaver.ui.common.dialog.DialogListener
  * display really simple static content. If you want injection or view model, base class is
  * [BaseViewModelFragment].
  */
-abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowListener {
+abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowListener,
+    View.OnApplyWindowInsetsListener {
     private var finished: Boolean = false
     private var dialogDismissed: Boolean = false
     private var restoringState: Boolean = false
@@ -71,6 +73,7 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        view.setOnApplyWindowInsetsListener(this)
         destroyViewDisposable = CompositeDisposable()
         dialogDismissed = false
     }
@@ -140,6 +143,8 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
         super.onDestroy()
         destroyDisposable?.dispose()
     }
+
+    override fun onApplyWindowInsets(v: View, insets: WindowInsets) = insets
 
     @CallSuper
     override fun onShow(dialog: DialogInterface?) {
