@@ -41,12 +41,11 @@ buildscript {
                 retrofit                : '2.6.2',
                 picasso                 : '3.0.0-SNAPSHOT',
 
+                // misc
+
                 // debug
                 timber                  : '4.7.1',
                 leakcanary              : '1.6.3',
-
-                // misc
-                android_state           : '1.4.1',
 
                 // test
                 junit                   : '4.12',
