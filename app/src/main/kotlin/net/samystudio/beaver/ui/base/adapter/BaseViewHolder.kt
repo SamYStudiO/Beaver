@@ -5,8 +5,10 @@ import androidx.recyclerview.widget.RecyclerView
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.plusAssign
+import kotlinx.android.extensions.LayoutContainer
 
-abstract class BaseViewHolder<D>(itemView: View) : RecyclerView.ViewHolder(itemView),
+abstract class BaseViewHolder<D>(override val containerView: View) :
+    RecyclerView.ViewHolder(containerView), LayoutContainer,
     View.OnAttachStateChangeListener {
     private var needDataChangedDispatch = false
     private var disposables: CompositeDisposable? = null
