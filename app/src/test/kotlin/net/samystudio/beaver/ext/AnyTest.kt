@@ -7,6 +7,6 @@ class AnyTest {
 
     @Test
     fun testGetMethodTag() {
-        assertEquals("AnyTestgetMethodTag", getMethodTag())
+        assertEquals("net.samystudio.beaver.ext.AnyTest::getMethodTag", getMethodTag())
     }
 }
