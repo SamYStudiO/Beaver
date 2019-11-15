@@ -23,6 +23,9 @@ abstract class BaseViewControllerViewModel : BaseViewModel() {
     val resultEvent: LiveData<Result> = _resultEvent
 
     open fun handleCreate(savedInstanceState: Bundle?) {
+        if (savedInstanceState != null)
+            savable.putAll(savedInstanceState.getBundle(getClassTag()))
+
         disposables.add(userManager.statusObservable.toFlowable(BackpressureStrategy.LATEST)
             .subscribe {
                 if (it) handleUserConnected()
@@ -33,11 +36,6 @@ abstract class BaseViewControllerViewModel : BaseViewModel() {
     open fun handleIntent(intent: Intent) {}
 
     open fun handleResult(requestCode: Int, resultCode: Int, data: Intent?) {}
-
-    @CallSuper
-    open fun handleRestoreInstanceState(savedInstanceState: Bundle) {
-        savable.putAll(savedInstanceState.getBundle(getClassTag()))
-    }
 
     /**
      * View model is up and ready, all kind of params (intent, savedInstanceState, arguments) should

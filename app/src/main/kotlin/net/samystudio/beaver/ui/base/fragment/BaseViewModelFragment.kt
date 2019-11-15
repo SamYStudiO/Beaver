@@ -53,12 +53,6 @@ abstract class BaseViewModelFragment<VM : BaseFragmentViewModel> : BaseDaggerFra
         })
     }
 
-    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        savedInstanceState?.let { viewModel.handleRestoreInstanceState(it) }
-
-        super.onViewStateRestored(savedInstanceState)
-    }
-
     override fun onNewIntent(intent: Intent) {
         viewModel.handleIntent(intent)
 

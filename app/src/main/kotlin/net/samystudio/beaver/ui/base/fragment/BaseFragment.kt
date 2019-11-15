@@ -52,6 +52,10 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        if (savedInstanceState != null)
+            savable.putAll(savedInstanceState.getBundle(getClassTag()))
+
         destroyDisposable = CompositeDisposable()
     }
 
@@ -87,7 +91,6 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        savedInstanceState?.let { savable.putAll(it.getBundle(getClassTag())) }
         super.onViewStateRestored(savedInstanceState)
         restoringState = true
     }

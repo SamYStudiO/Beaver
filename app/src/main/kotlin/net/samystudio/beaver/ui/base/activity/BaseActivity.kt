@@ -55,6 +55,10 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(),
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
+
+        if (savedInstanceState != null)
+            savable.putAll(savedInstanceState.getBundle(getClassTag()))
+
         setContentView(layoutViewRes)
 
         destroyDisposable = CompositeDisposable()
@@ -103,13 +107,6 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(),
         super.onActivityResult(requestCode, resultCode, data)
 
         viewModel.handleResult(requestCode, resultCode, data)
-    }
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        savable.putAll(savedInstanceState.getBundle(getClassTag()))
-        viewModel.handleRestoreInstanceState(savedInstanceState)
-
-        super.onRestoreInstanceState(savedInstanceState)
     }
 
     override fun onResume() {
