@@ -85,7 +85,8 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        context?.let { firebaseAnalytics = FirebaseAnalytics.getInstance(it) }
+        requireActivity().onBackPressedDispatcher.addCallback(this, onBackPressCallback)
+        firebaseAnalytics = FirebaseAnalytics.getInstance(requireContext().applicationContext)
 
         if (showsDialog) dialog?.setOnShowListener(this)
     }
