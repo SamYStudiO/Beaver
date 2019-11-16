@@ -39,7 +39,8 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
     }
     @get:LayoutRes
     protected abstract val layoutViewRes: Int
-    protected val navController: NavController by lazy { findNavController() }
+    protected val navController: NavController
+        get() = findNavController()
     // Cannot inject here since we don't have dagger yet
     protected lateinit var firebaseAnalytics: FirebaseAnalytics
     protected var resultCode: Int by state(Activity.RESULT_CANCELED)

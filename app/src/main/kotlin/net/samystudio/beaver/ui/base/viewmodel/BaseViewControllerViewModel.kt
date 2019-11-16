@@ -19,7 +19,7 @@ abstract class BaseViewControllerViewModel : BaseViewModel() {
     @Inject
     protected lateinit var userManager: UserManager
     val navigationCommand: LiveData<NavigationRequest> = _navigationCommand
-    private val _resultEvent: SingleLiveEvent<Result> by lazy { SingleLiveEvent<Result>() }
+    private val _resultEvent: SingleLiveEvent<Result> = SingleLiveEvent()
     val resultEvent: LiveData<Result> = _resultEvent
 
     open fun handleCreate(savedInstanceState: Bundle?) {

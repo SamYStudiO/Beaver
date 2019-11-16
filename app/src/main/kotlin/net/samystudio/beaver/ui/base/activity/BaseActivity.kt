@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
@@ -44,7 +45,9 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(),
     protected lateinit var viewModelFactory: ViewModelProvider.Factory
     @get:LayoutRes
     protected abstract val layoutViewRes: Int
-    protected abstract val navController: NavController
+    protected abstract val navControllerId: Int
+    protected val navController: NavController
+        get() = findNavController(navControllerId)
     @Inject
     protected lateinit var userManager: UserManager
     protected var destroyDisposable: CompositeDisposable? = null
