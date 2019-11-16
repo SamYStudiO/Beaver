@@ -22,7 +22,6 @@ import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
 import io.reactivex.disposables.CompositeDisposable
 import net.samystudio.beaver.data.local.InstanceStateProvider
-import net.samystudio.beaver.data.manager.UserManager
 import net.samystudio.beaver.di.qualifier.ActivityContext
 import net.samystudio.beaver.ext.getClassTag
 import net.samystudio.beaver.ext.hideKeyboard
@@ -48,8 +47,6 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(),
     protected abstract val navControllerId: Int
     protected val navController: NavController
         get() = findNavController(navControllerId)
-    @Inject
-    protected lateinit var userManager: UserManager
     protected var destroyDisposable: CompositeDisposable? = null
     protected var stopDisposable: CompositeDisposable? = null
     protected var pauseDisposable: CompositeDisposable? = null
