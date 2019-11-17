@@ -1,6 +1,5 @@
 package net.samystudio.beaver
 
-import com.squareup.leakcanary.LeakCanary
 import dagger.android.support.DaggerApplication
 import io.fabric.sdk.android.Fabric
 import net.samystudio.beaver.data.TrimMemory
@@ -32,10 +31,6 @@ class BeaverApplication : DaggerApplication() {
     override fun onCreate() {
         super.onCreate()
 
-        if (LeakCanary.isInAnalyzerProcess(this))
-            return
-
-        LeakCanary.install(this)
         Timber.plant(timberTree)
 
         // Launch screen timeout, this is not material guideline compliant but client is king and

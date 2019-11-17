@@ -154,8 +154,6 @@ dependencies {
     // debug
     implementation "com.jakewharton.timber:timber:$versions.timber"
     debugImplementation "com.squareup.leakcanary:leakcanary-android:$versions.leakcanary"
-    debugImplementation "com.squareup.leakcanary:leakcanary-support-fragment:$versions.leakcanary"
-    releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$versions.leakcanary"
 
     // test
     testImplementation "junit:junit:$versions.junit"
