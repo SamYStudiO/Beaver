@@ -19,6 +19,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.firebase.analytics.FirebaseAnalytics
 import io.reactivex.disposables.CompositeDisposable
 import net.samystudio.beaver.data.local.InstanceStateProvider
+import net.samystudio.beaver.ext.getClassSimpleTag
 import net.samystudio.beaver.ext.getClassTag
 import net.samystudio.beaver.ui.base.activity.BaseActivity
 import net.samystudio.beaver.ui.common.dialog.DialogListener
@@ -109,8 +110,8 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
         if (!restoringState) {
             firebaseAnalytics.setCurrentScreen(
                 requireActivity(),
-                getClassTag(),
-                getClassTag()
+                getClassSimpleTag(),
+                null
             )
             restoringState = false
         }
