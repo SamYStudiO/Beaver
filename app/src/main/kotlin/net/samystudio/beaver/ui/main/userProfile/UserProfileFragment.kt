@@ -10,8 +10,8 @@ import net.samystudio.beaver.ui.common.dialog.AlertDialogListener
 
 class UserProfileFragment : BaseViewModelFragment<UserProfileFragmentViewModel>(),
     AlertDialogListener {
-    override val viewModel by viewModels<UserProfileFragmentViewModel>()
     override val layoutViewRes = R.layout.fragment_user_profile
+    override val viewModel by viewModels<UserProfileFragmentViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

@@ -94,7 +94,7 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
-        restoringState = true
+        restoringState = savedInstanceState != null
     }
 
     override fun onStart() {
