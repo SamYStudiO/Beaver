@@ -139,7 +139,7 @@ dependencies {
     //implementation "com.jakewharton.rxbinding3:rxbinding-recyclerview:$versions.rxbinding"
     //implementation "com.jakewharton.rxbinding3:rxbinding-slidingpanelayout:$versions.rxbinding"
     //implementation "com.jakewharton.rxbinding3:rxbinding-swiperefreshlayout:$versions.rxbinding"
-    //implementation "com.jakewharton.rxbinding3:rxbinding-viewpager:$versions.rxbinding"
+    //implementation "com.jakewharton.rxbinding3:rxbinding-viewpager2:$versions.rxbinding"
     implementation "com.f2prateek.rx.preferences2:rx-preferences:$versions.rxpreferences"
     implementation "net.samystudio.rxpicasso:rxpicasso-kotlin:$versions.rxpicasso"
 

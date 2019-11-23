@@ -32,7 +32,7 @@ buildscript {
                 rxjava                  : '2.2.14',
                 rxandroid               : '2.1.1',
                 rxkotlin                : '2.4.0',
-                rxbinding               : '3.0.0',
+                rxbinding               : '3.1.0',
                 rxpreferences           : '2.0.0',
                 rxpicasso               : '0.3.0',
 
