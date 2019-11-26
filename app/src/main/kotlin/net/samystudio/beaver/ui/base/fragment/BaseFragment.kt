@@ -59,6 +59,7 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
             savable.putAll(savedInstanceState.getBundle(getClassTag()))
 
         destroyDisposable = CompositeDisposable()
+        restoringState = savedInstanceState != null
     }
 
     @CallSuper
@@ -93,11 +94,6 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
         if (showsDialog) dialog?.setOnShowListener(this)
     }
 
-    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        super.onViewStateRestored(savedInstanceState)
-        restoringState = savedInstanceState != null
-    }
-
     override fun onStart() {
         super.onStart()
         stopDisposable = CompositeDisposable()
@@ -107,14 +103,11 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
         super.onResume()
         pauseDisposable = CompositeDisposable()
 
-        if (!restoringState) {
-            firebaseAnalytics.setCurrentScreen(
-                requireActivity(),
-                getClassSimpleTag(),
-                null
-            )
-            restoringState = false
-        }
+        firebaseAnalytics.setCurrentScreen(
+            requireActivity(),
+            getClassSimpleTag(),
+            null
+        )
     }
 
     override fun onPause() {
