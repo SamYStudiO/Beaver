@@ -54,9 +54,8 @@ abstract class BaseViewModelFragment<VM : BaseFragmentViewModel> : BaseDaggerFra
     }
 
     override fun onNewIntent(intent: Intent) {
-        viewModel.handleIntent(intent)
-
         super.onNewIntent(intent)
+        viewModel.handleIntent(intent)
     }
 
     @CallSuper
@@ -66,14 +65,12 @@ abstract class BaseViewModelFragment<VM : BaseFragmentViewModel> : BaseDaggerFra
 
     override fun onResume() {
         super.onResume()
-
         viewModel.handleReady()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        viewModel.handleSaveInstanceState(outState)
-
         super.onSaveInstanceState(outState)
+        viewModel.handleSaveInstanceState(outState)
     }
 
     fun onTrimMemory(level: Int) {

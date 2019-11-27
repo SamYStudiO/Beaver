@@ -47,10 +47,7 @@ abstract class BaseAdapter<D, VH : BaseViewHolder<D>>(private val _items: Mutabl
     fun setItemAt(position: Int, item: D) =
         _items.set(position, item).also { notifyItemChanged(position) }
 
-    fun clear() {
-        _items.clear()
-        notifyDataSetChanged()
-    }
+    fun clear() = _items.clear().also { notifyDataSetChanged() }
 
     fun getItemAt(position: Int) = items[position]
 }

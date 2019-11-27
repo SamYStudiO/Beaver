@@ -121,9 +121,8 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putBundle(getClassTag(), savable)
-
         super.onSaveInstanceState(outState)
+        outState.putBundle(getClassTag(), savable)
     }
 
     override fun onDestroyView() {
