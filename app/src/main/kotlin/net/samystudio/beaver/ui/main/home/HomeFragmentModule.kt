@@ -30,6 +30,7 @@ abstract class HomeFragmentModule {
     companion object {
         @Provides
         @FragmentScope
+        @JvmStatic
         fun provideHomeApiInterface(retrofit: Retrofit): HomeApiInterface =
             retrofit.create(HomeApiInterface::class.java)
     }

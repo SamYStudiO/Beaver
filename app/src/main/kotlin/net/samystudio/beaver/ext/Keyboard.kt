@@ -8,9 +8,13 @@ import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 
-fun Context.getInputMethodManager(): InputMethodManager? =
-    ContextCompat.getSystemService(this, InputMethodManager::class.java)
+private var inputMethodManager: InputMethodManager? = null
 
+fun Context.getInputMethodManager(): InputMethodManager? =
+    inputMethodManager ?: ContextCompat.getSystemService(
+        this,
+        InputMethodManager::class.java
+    ).also { inputMethodManager = it }
 
 fun Activity.showKeyboard(view: View, flags: Int = InputMethodManager.SHOW_IMPLICIT): Boolean {
     view.requestFocus()

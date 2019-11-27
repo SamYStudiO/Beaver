@@ -30,6 +30,7 @@ abstract class UserProfileFragmentModule {
     companion object {
         @Provides
         @FragmentScope
+        @JvmStatic
         fun provideUserProfileApiInterface(retrofit: Retrofit): UserProfileApiInterface =
             retrofit.create(UserProfileApiInterface::class.java)
     }
