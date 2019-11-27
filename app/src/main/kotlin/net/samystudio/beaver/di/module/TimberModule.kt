@@ -14,7 +14,6 @@ import javax.inject.Singleton
 object TimberModule {
     @Provides
     @Singleton
-    @JvmStatic
     fun provideTimberTree(): Timber.Tree =
         object : Timber.DebugTree() {
             override fun isLoggable(tag: String?, priority: Int) =

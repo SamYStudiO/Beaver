@@ -18,25 +18,21 @@ import javax.inject.Singleton
 object SystemServiceModule {
     @Provides
     @Singleton
-    @JvmStatic
     fun provideSharedPreferences(@ApplicationContext context: Context): SharedPreferences =
         PreferenceManager.getDefaultSharedPreferences(context)
 
     @Provides
     @Singleton
-    @JvmStatic
     fun provideRxSharedPreferences(sharedPreferences: SharedPreferences): RxSharedPreferences =
         RxSharedPreferences.create(sharedPreferences)
 
     @Provides
     @Singleton
-    @JvmStatic
     fun provideAccountManager(@ApplicationContext context: Context): AccountManager =
         AccountManager.get(context)
 
     @Provides
     @Singleton
-    @JvmStatic
     fun provideGoogleApiAvailability(): GoogleApiAvailability =
         GoogleApiAvailability.getInstance()
 }

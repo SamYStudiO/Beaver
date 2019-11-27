@@ -11,7 +11,6 @@ import javax.inject.Singleton
 object FirebaseModule {
     @Provides
     @Singleton
-    @JvmStatic
     fun provideFirebaseAnalytics(@ApplicationContext context: Context): FirebaseAnalytics =
         FirebaseAnalytics.getInstance(context)
 }

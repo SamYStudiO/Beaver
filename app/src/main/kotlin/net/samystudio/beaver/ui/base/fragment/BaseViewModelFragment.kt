@@ -23,10 +23,10 @@ abstract class BaseViewModelFragment<VM : BaseFragmentViewModel> : BaseDaggerFra
      * @see BaseViewModelFragmentModule.bindViewModelFactory
      */
     @Inject
-    @field:FragmentContext
+    @FragmentContext
     protected lateinit var viewModelFactory: ViewModelProvider.Factory
     @Inject
-    @field:ActivityContext
+    @ActivityContext
     protected lateinit var activityViewModelFactory: ViewModelProvider.Factory
     abstract val viewModel: VM
 

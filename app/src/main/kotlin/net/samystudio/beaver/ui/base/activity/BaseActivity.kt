@@ -40,7 +40,7 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(),
      * @see BaseActivityModule.bindViewModelFactory
      */
     @Inject
-    @field:ActivityContext
+    @ActivityContext
     protected lateinit var viewModelFactory: ViewModelProvider.Factory
     @get:LayoutRes
     protected abstract val layoutViewRes: Int

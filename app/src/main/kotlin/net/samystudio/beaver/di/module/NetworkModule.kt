@@ -29,13 +29,11 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    @JvmStatic
     fun provideCache(application: Application): Cache =
         Cache(application.cacheDir, 20L * 1024 * 1024) //20 mo
 
     @Provides
     @Singleton
-    @JvmStatic
     fun provideHttpLoggingInterceptor() = HttpLoggingInterceptor().apply {
         level =
             if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY
@@ -44,7 +42,6 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    @JvmStatic
     fun provideOkHttpClient(
         cache: Cache,
         httpLoggingInterceptor: HttpLoggingInterceptor,
@@ -58,7 +55,6 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    @JvmStatic
     fun provideRequestInterceptor(
         sharedPreferencesHelper: SharedPreferencesHelper,
         userManager: UserManager
@@ -85,18 +81,15 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    @JvmStatic
     fun provideGson(): Gson = GsonBuilder().create()
 
     @Provides
     @Singleton
-    @JvmStatic
     fun provideGsonConverterFactory(gson: Gson): GsonConverterFactory =
         GsonConverterFactory.create(gson)
 
     @Provides
     @Singleton
-    @JvmStatic
     fun provideNullOrEmptyConverterFactory(): Converter.Factory =
         object : Converter.Factory() {
             override fun responseBodyConverter(
@@ -119,13 +112,11 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    @JvmStatic
     fun provideRxJava2CallAdapterFactory(): RxJava2CallAdapterFactory =
         RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io())
 
     @Provides
     @Singleton
-    @JvmStatic
     fun provideRetrofit(
         okHttpClient: OkHttpClient,
         rxJava2CallAdapterFactory: RxJava2CallAdapterFactory,
@@ -142,7 +133,6 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    @JvmStatic
     fun provideAuthenticatorApiInterface(retrofit: Retrofit): AuthenticatorApiInterface =
         retrofit.create(AuthenticatorApiInterface::class.java)
 }

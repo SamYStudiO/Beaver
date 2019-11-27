@@ -17,13 +17,11 @@ import javax.inject.Singleton
 object PicassoModule {
     @Provides
     @Singleton
-    @JvmStatic
     fun provideOkHttp3Downloader(okHttpClient: OkHttpClient): OkHttp3Downloader =
         OkHttp3Downloader(okHttpClient)
 
     @Provides
     @Singleton
-    @JvmStatic
     fun providePicasso(@ApplicationContext context: Context, okHttp3Downloader: OkHttp3Downloader): Picasso =
         Picasso.Builder(context)
             .downloader(okHttp3Downloader)
