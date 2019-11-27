@@ -9,10 +9,12 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
+import net.samystudio.beaver.di.qualifier.ActivityContext
 import net.samystudio.beaver.di.qualifier.FragmentContext
 import net.samystudio.beaver.ext.navigate
 import net.samystudio.beaver.ui.base.viewmodel.BaseFragmentViewModel
 import javax.inject.Inject
+import androidx.fragment.app.activityViewModels as activityViewModelsInternal
 import androidx.fragment.app.viewModels as viewModelsInternal
 
 abstract class BaseViewModelFragment<VM : BaseFragmentViewModel> : BaseDaggerFragment(),
@@ -23,6 +25,9 @@ abstract class BaseViewModelFragment<VM : BaseFragmentViewModel> : BaseDaggerFra
     @Inject
     @field:FragmentContext
     protected lateinit var viewModelFactory: ViewModelProvider.Factory
+    @Inject
+    @field:ActivityContext
+    protected lateinit var activityViewModelFactory: ViewModelProvider.Factory
     abstract val viewModel: VM
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -81,4 +86,7 @@ abstract class BaseViewModelFragment<VM : BaseFragmentViewModel> : BaseDaggerFra
     protected inline fun <reified VM : ViewModel> viewModels(
         ownerProducer: () -> ViewModelStoreOwner = { this }
     ) = viewModelsInternal<VM> { viewModelFactory }
+
+    protected inline fun <reified VM : ViewModel> activityViewModels() =
+        activityViewModelsInternal<VM> { activityViewModelFactory }
 }
