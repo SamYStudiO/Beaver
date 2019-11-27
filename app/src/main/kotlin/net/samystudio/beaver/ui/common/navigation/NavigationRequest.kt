@@ -5,6 +5,10 @@ import androidx.annotation.IdRes
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigator
 
+/**
+ * To make Navigation request from a
+ * [net.samystudio.beaver.ui.base.viewmodel.BaseViewControllerViewModel].
+ */
 sealed class NavigationRequest {
     class Pop(
         @param:IdRes @get:IdRes val destinationId: Int? = null,

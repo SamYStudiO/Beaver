@@ -92,9 +92,7 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(),
         viewModel.handleIntent(intent)
 
         supportFragmentManager.fragments.forEach {
-            (it as? BaseViewModelFragment<*>)?.onNewIntent(
-                intent
-            )
+            (it as? BaseViewModelFragment<*>)?.onNewIntent(intent)
         }
     }
 
@@ -157,9 +155,7 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(),
 
         viewModel.handleTrimMemory(level)
         supportFragmentManager.fragments.forEach {
-            (it as? BaseViewModelFragment<*>)?.onTrimMemory(
-                level
-            )
+            (it as? BaseViewModelFragment<*>)?.onTrimMemory(level)
         }
     }
 

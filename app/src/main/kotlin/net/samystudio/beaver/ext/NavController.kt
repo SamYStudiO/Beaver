@@ -9,24 +9,20 @@ fun NavController.navigate(
     activity: FragmentActivity? = null
 ) {
     when (request) {
-        is NavigationRequest.Pop -> {
-            if (request.destinationId != null && (request.destinationId > 0)) popBackStack(
-                request.destinationId,
-                request.inclusive
-            )
-            else popBackStack()
+        is NavigationRequest.Pop       -> {
+            if (request.destinationId != null && (request.destinationId > 0))
+                popBackStack(request.destinationId, request.inclusive)
+            else
+                popBackStack()
         }
-        is NavigationRequest.PopToRoot -> popBackStack(
-            graph.startDestination,
-            request.inclusive
-        )
-        is NavigationRequest.Push -> navigate(
+        is NavigationRequest.PopToRoot -> popBackStack(graph.startDestination, request.inclusive)
+        is NavigationRequest.Push      -> navigate(
             request.destinationId,
             request.args,
             request.options,
             request.extras
         )
-        is NavigationRequest.Finish -> {
+        is NavigationRequest.Finish    -> {
             requireNotNull(activity) { "You cannot finish an Activity using NavController.navigate with a null activity argument" }
             activity.finish()
         }

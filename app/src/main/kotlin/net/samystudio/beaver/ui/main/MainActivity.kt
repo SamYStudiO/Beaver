@@ -8,8 +8,8 @@ import net.samystudio.beaver.ui.base.activity.BaseToolbarActivity
 
 class MainActivity : BaseToolbarActivity<MainActivityViewModel>() {
     override val layoutViewRes = R.layout.activity_main
-    override val viewModel by viewModels<MainActivityViewModel>()
     override val navControllerId: Int = R.id.nav_host
+    override val viewModel by viewModels<MainActivityViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // We set launch screen theme from manifest, we need to get back to our Theme to remove

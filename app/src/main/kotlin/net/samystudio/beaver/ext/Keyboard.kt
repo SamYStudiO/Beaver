@@ -5,10 +5,11 @@ import android.content.Context
 import android.os.IBinder
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 
 fun Context.getInputMethodManager(): InputMethodManager? =
-    getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+    ContextCompat.getSystemService(this, InputMethodManager::class.java)
 
 
 fun Activity.showKeyboard(view: View, flags: Int = InputMethodManager.SHOW_IMPLICIT): Boolean {

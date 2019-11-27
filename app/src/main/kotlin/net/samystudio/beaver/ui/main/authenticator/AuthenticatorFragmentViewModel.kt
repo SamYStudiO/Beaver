@@ -22,8 +22,8 @@ import javax.inject.Inject
 @FragmentScope
 class AuthenticatorFragmentViewModel @Inject constructor(private val authenticatorRepositoryManager: AuthenticatorRepositoryManager) :
     BaseFragmentViewModel(), DataPushViewModel {
-    private var authenticatorResponse: AccountAuthenticatorResponse? = null
     private lateinit var intent: Intent
+    private var authenticatorResponse: AccountAuthenticatorResponse? = null
     private val _dataPushCompletable: AsyncStateLiveData = AsyncStateLiveData()
     override val dataPushCompletable: LiveData<AsyncState> = _dataPushCompletable
     private val _signInVisibility: MutableLiveData<Boolean> = MutableLiveData()
