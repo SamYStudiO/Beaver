@@ -5,6 +5,7 @@ import android.accounts.AccountManager
 import android.content.Intent
 import io.reactivex.android.schedulers.AndroidSchedulers
 import net.samystudio.beaver.R
+import net.samystudio.beaver.data.AsyncState
 import net.samystudio.beaver.data.manager.GoogleApiAvailabilityManager
 import net.samystudio.beaver.di.scope.ActivityScope
 import net.samystudio.beaver.ui.base.viewmodel.BaseActivityViewModel
@@ -24,11 +25,6 @@ class MainActivityViewModel @Inject constructor(private val googleApiAvailabilit
         ) != null
     }
 
-    override fun handleResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.handleResult(requestCode, resultCode, data)
-        googleApiAvailabilityManager.onDialogResult(requestCode, resultCode)
-    }
-
     override fun handleReady() {
         super.handleReady()
 
@@ -37,11 +33,16 @@ class MainActivityViewModel @Inject constructor(private val googleApiAvailabilit
         if (hasAuthenticatorResponse) navigate(NavigationRequest.Push(R.id.action_global_authenticator))
 
         disposables.add(
-            googleApiAvailabilityManager.isAvailable()
+            googleApiAvailabilityManager.availabilityObservable
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ }, {
-                    // TODO notify app incompatible
-                })
+                .subscribe {
+                    if (it is AsyncState.Failed
+                        && it.error is GoogleApiAvailabilityManager.GoogleApiAvailabilityException
+                        && !it.error.isResolvable
+                    ) {
+                        // TODO notify app incompatible
+                    }
+                }
         )
     }
 }
