@@ -1,14 +1,12 @@
 package net.samystudio.beaver.ext
 
 import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavController
 import net.samystudio.beaver.ui.common.navigation.NavigationRequest
 
 fun NavController.navigate(
     request: NavigationRequest,
-    activity: FragmentActivity? = null,
-    fragmentManager: FragmentManager? = null
+    activity: FragmentActivity? = null
 ) {
     when (request) {
         is NavigationRequest.Pop -> {
@@ -28,13 +26,6 @@ fun NavController.navigate(
             request.options,
             request.extras
         )
-        is NavigationRequest.Dialog -> {
-            val tag: String = request.tag ?: request.destination.getClassTag()
-
-            val fm = fragmentManager ?: activity?.supportFragmentManager
-            ?: throw IllegalArgumentException("You cannot navigate to a Dialog using NavController.navigate without either an activity or a fragmentManager argument")
-            request.destination.show(fm, tag)
-        }
         is NavigationRequest.Finish -> {
             requireNotNull(activity) { "You cannot finish an Activity using NavController.navigate with a null activity argument" }
             activity.finish()

@@ -72,7 +72,7 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(),
         viewModel.navigationCommand.observe(this,
             Observer { request ->
                 request?.let {
-                    navController.navigate(it, this, supportFragmentManager)
+                    navController.navigate(it, this)
                 }
             })
         viewModel.resultEvent.observe(this, Observer

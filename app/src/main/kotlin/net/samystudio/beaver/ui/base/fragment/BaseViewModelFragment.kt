@@ -40,7 +40,7 @@ abstract class BaseViewModelFragment<VM : BaseFragmentViewModel> : BaseDaggerFra
             viewLifecycleOwner,
             Observer { request ->
                 request?.let {
-                    navController.navigate(it, activity, fragmentManager)
+                    navController.navigate(it, activity)
                 }
             })
 

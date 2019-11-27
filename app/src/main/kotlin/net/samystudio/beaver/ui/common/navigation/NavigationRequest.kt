@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.annotation.IdRes
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigator
-import net.samystudio.beaver.ui.base.fragment.BaseFragment
 
 sealed class NavigationRequest {
     class Pop(
@@ -20,6 +19,5 @@ sealed class NavigationRequest {
         val extras: Navigator.Extras? = null
     ) : NavigationRequest()
 
-    class Dialog(val destination: BaseFragment, val tag: String? = null) : NavigationRequest()
     object Finish : NavigationRequest()
 }
