@@ -16,13 +16,13 @@ import org.robolectric.annotation.Config
 @RunWith(RobolectricTestRunner::class)
 class BaseAdapterTest {
 
-    private lateinit var adapter: BaseAdapter<Int, BaseViewHolder<Int>>
+    private lateinit var adapter: BaseMutableAdapter<Int, BaseViewHolder<Int>>
 
     @Before
     fun setUp() {
         val view = mock(View::class.java)
         val list = listOf(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
-        adapter = object : BaseAdapter<Int, BaseViewHolder<Int>>(list.toMutableList()) {
+        adapter = object : BaseMutableAdapter<Int, BaseViewHolder<Int>>(list.toMutableList()) {
             override fun onCreateViewHolder(
                 parent: ViewGroup,
                 viewType: Int
