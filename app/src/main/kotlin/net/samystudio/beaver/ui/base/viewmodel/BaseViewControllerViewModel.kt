@@ -65,10 +65,10 @@ abstract class BaseViewControllerViewModel : BaseViewModel() {
         _resultEvent.value = Result(code, intent, finish)
     }
 
-    protected fun <T> state(setterCallback: (value: T) -> Unit) =
+    protected fun <T> state(setterCallback: ((value: T) -> Unit)? = null) =
         InstanceStateProvider.Nullable(savable, setterCallback)
 
-    protected fun <T> state(defaultValue: T, setterCallback: (value: T) -> Unit) =
+    protected fun <T> state(defaultValue: T, setterCallback: ((value: T) -> Unit)? = null) =
         InstanceStateProvider.NotNull(savable, defaultValue, setterCallback)
 
     data class Result(var code: Int, var intent: Intent?, var finish: Boolean)
