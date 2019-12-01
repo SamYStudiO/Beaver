@@ -25,6 +25,9 @@ abstract class BaseViewModelFragment<VM : BaseFragmentViewModel> : BaseDaggerFra
     @Inject
     @FragmentContext
     protected lateinit var viewModelFactory: ViewModelProvider.Factory
+    /**
+     * @see net.samystudio.beaver.ui.base.activity.BaseActivityModule.bindViewModelFactory
+     */
     @Inject
     @ActivityContext
     protected lateinit var activityViewModelFactory: ViewModelProvider.Factory
