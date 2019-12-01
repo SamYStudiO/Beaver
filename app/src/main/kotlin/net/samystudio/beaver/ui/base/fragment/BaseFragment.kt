@@ -145,7 +145,7 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
     override fun onApplyWindowInsets(v: View, insets: WindowInsets) = insets
 
     @CallSuper
-    override fun onShow(dialog: DialogInterface?) {
+    override fun onShow(dialog: DialogInterface) {
         (activity as? DialogListener)?.onDialogShow(targetRequestCode)
         (targetFragment as? DialogListener)?.onDialogShow(targetRequestCode)
     }
