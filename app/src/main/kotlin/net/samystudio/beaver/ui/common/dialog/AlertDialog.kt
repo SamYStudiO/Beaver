@@ -3,351 +3,196 @@
 package net.samystudio.beaver.ui.common.dialog
 
 import android.app.Dialog
-import android.content.Context
 import android.content.DialogInterface
+import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.os.Parcelable
-import android.util.TypedValue
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ListAdapter
 import androidx.annotation.*
-import kotlinx.android.parcel.Parcelize
 import net.samystudio.beaver.ui.base.fragment.BaseFragment
-import java.util.*
 import androidx.appcompat.app.AlertDialog as AndroidAlertDialog
 
 /**
  * AlertDialog using [androidx.fragment.app.DialogFragment].
  */
-open class AlertDialog : BaseFragment(),
+open class AlertDialog(
+    @StringRes val titleRes: Int = 0,
+    val title: CharSequence? = null,
+    val customTitle: View? = null,
+    @StringRes val messageRes: Int = 0,
+    val message: CharSequence? = null,
+    @DrawableRes val iconRes: Int = 0,
+    val icon: Drawable? = null,
+    @AttrRes val iconAttribute: Int = 0,
+    @StringRes val positiveButtonRes: Int = 0,
+    val positiveButton: CharSequence? = null,
+    @DrawableRes val positiveButtonIconRes: Int = 0,
+    val positiveButtonIcon: Drawable? = null,
+    val positiveListener: DialogInterface.OnClickListener? = null,
+    @StringRes val negativeButtonRes: Int = 0,
+    val negativeButton: CharSequence? = null,
+    @DrawableRes val negativeButtonIconRes: Int = 0,
+    val negativeButtonIcon: Drawable? = null,
+    val negativeListener: DialogInterface.OnClickListener? = null,
+    @StringRes val neutralButtonRes: Int = 0,
+    val neutralButton: CharSequence? = null,
+    @DrawableRes val neutralButtonIconRes: Int = 0,
+    val neutralButtonIcon: Drawable? = null,
+    val neutralListener: DialogInterface.OnClickListener? = null,
+    val cancelable: Boolean = false,
+    val onCancelListener: DialogInterface.OnCancelListener? = null,
+    val onDismissListener: DialogInterface.OnDismissListener? = null,
+    val onKeyListener: DialogInterface.OnKeyListener? = null,
+    @ArrayRes val itemsRes: Int = 0,
+    val items: Array<CharSequence>? = null,
+    val itemsListener: DialogInterface.OnClickListener? = null,
+    val adapter: ListAdapter? = null,
+    @ArrayRes val multiChoiceItemsRes: Int = 0,
+    val multiChoiceItems: Array<CharSequence>? = null,
+    val multiChoiceCheckedItems: BooleanArray? = null,
+    val multiChoiceListener: DialogInterface.OnMultiChoiceClickListener? = null,
+    @ArrayRes val singleChoiceItemsRes: Int = 0,
+    val singleChoiceItems: Array<CharSequence>? = null,
+    val singleChoiceAdapter: ListAdapter? = null,
+    val singleChoiceCheckedItem: Int = -1,
+    val singleChoiceListener: DialogInterface.OnClickListener? = null,
+    val onItemSelectedListener: AdapterView.OnItemSelectedListener? = null,
+    @LayoutRes val customViewRes: Int = 0,
+    val customView: View? = null,
+    val targetFragment: BaseFragment? = null,
+    val targetRequestCode: Int? = null
+) : BaseFragment(),
     DialogInterface.OnClickListener,
     DialogInterface.OnMultiChoiceClickListener {
     override val layoutViewRes: Int = 0
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog =
-        Builder(requireContext(), requireArguments().getParcelable(PARAMS) as? Params).build(
-            this,
-            theme
-        ).create()
-
-
-    override fun onClick(dialog: DialogInterface?, which: Int) {
-        (activity as? AlertDialogListener)?.let {
-            when (which) {
-                DialogInterface.BUTTON_POSITIVE -> it.onDialogPositive(targetRequestCode)
-                DialogInterface.BUTTON_NEGATIVE -> it.onDialogNegative(targetRequestCode)
-                DialogInterface.BUTTON_NEUTRAL -> it.onDialogNeutral(targetRequestCode)
-                else -> it.onDialogClick(targetRequestCode, which)
-            }
-        }
-
-        (targetFragment as? AlertDialogListener)?.let {
-            when (which) {
-                DialogInterface.BUTTON_POSITIVE -> it.onDialogPositive(targetRequestCode)
-                DialogInterface.BUTTON_NEGATIVE -> it.onDialogNegative(targetRequestCode)
-                DialogInterface.BUTTON_NEUTRAL -> it.onDialogNeutral(targetRequestCode)
-                else -> it.onDialogClick(targetRequestCode, which)
-            }
-        }
-    }
-
-    override fun onClick(dialog: DialogInterface?, which: Int, isChecked: Boolean) {
-        (activity as? AlertDialogListener)?.onDialogClick(targetRequestCode, which, isChecked)
-
-        (targetFragment as? AlertDialogListener)?.onDialogClick(
-            targetRequestCode, which,
-            isChecked
-        )
-    }
-
-    /**
-     * @see [AndroidAlertDialog.Builder]
-     */
-    class Builder(private val context: Context) {
-        /**
-         * @hide
-         */
-        constructor(context: Context, params: Params?) : this(context) {
-            if (params != null) {
-                themeResId = params.themeResId
-                title = params.title
-                message = params.message
-                titleIconId = params.titleIconId
-                positiveButton = params.positiveButtonText
-                negativeButton = params.negativeButtonText
-                neutralButtonText = params.neutralButtonText
-                items = params.items
-                checkedItem = params.checkedItem
-                checkedItems = params.checkedItems
-                multiChoice = params.multiChoice
-                singleChoice = params.singleChoice
-                cancelable = params.cancelable
-            }
-        }
-
-        @StyleRes
-        private var themeResId: Int = 0
-        private var title: CharSequence? = null
-        private var message: CharSequence? = null
-        @DrawableRes
-        private var titleIconId: Int = 0
-        private var positiveButton: CharSequence? = null
-        private var negativeButton: CharSequence? = null
-        private var neutralButtonText: CharSequence? = null
-        private var items: Array<CharSequence>? = null
-        private var checkedItem: Int = 0
-        private var checkedItems: BooleanArray? = null
-        private var multiChoice: Boolean = false
-        private var singleChoice: Boolean = false
-        private var cancelable: Boolean = true
-
-        /**
-         * If not set [BaseFragment.getTheme] will be used
-         *
-         * @see [AndroidAlertDialog.Builder.mTheme]
-         */
-        fun theme(@StyleRes themeResId: Int) = apply { this.themeResId = themeResId }
-
-        /**
-         * @see [AndroidAlertDialog.Builder.setTitle]
-         */
-        fun title(@StringRes titleId: Int) = title(context.getText(titleId))
-
-        /**
-         * @see [AndroidAlertDialog.Builder.setTitle]
-         */
-        fun title(title: CharSequence?) = apply { this.title = title }
-
-        /**
-         * @see [AndroidAlertDialog.Builder.setMessage]
-         */
-        fun message(@StringRes messageId: Int) = message(context.getText(messageId))
-
-        /**
-         * @see [AndroidAlertDialog.Builder.setMessage]
-         */
-        fun message(message: CharSequence?) = apply { this.message = message }
-
-        /**
-         * @see [AndroidAlertDialog.Builder.setIcon]
-         */
-        fun titleIconId(@DrawableRes titleIconId: Int) = apply { this.titleIconId = titleIconId }
-
-        /**
-         * @see [AndroidAlertDialog.Builder.setIconAttribute]
-         */
-        fun titleIconAttr(@AttrRes attrId: Int) = apply {
-            val out = TypedValue()
-            context.theme.resolveAttribute(attrId, out, true)
-            titleIconId = out.resourceId
-        }
-
-        /**
-         * @see [AndroidAlertDialog.Builder.setPositiveButton]
-         */
-        fun positiveButton(@StringRes textId: Int) = positiveButton(context.getText(textId))
-
-        /**
-         * @see [AndroidAlertDialog.Builder.setPositiveButton]
-         */
-        fun positiveButton(text: CharSequence) = apply { positiveButton = text }
-
-        /**
-         * @see [AndroidAlertDialog.Builder.setNegativeButton]
-         */
-        fun setNegativeButton(@StringRes textId: Int) = negativeButton(context.getText(textId))
-
-        /**
-         * @see [AndroidAlertDialog.Builder.setNegativeButton]
-         */
-        fun negativeButton(text: CharSequence) = apply { negativeButton = text }
-
-        /**
-         * @see [AndroidAlertDialog.Builder.setNeutralButton]
-         */
-        fun neutralButton(@StringRes textId: Int) = neutralButton(context.getText(textId))
-
-        /**
-         * @see [AndroidAlertDialog.Builder.setNeutralButton]
-         */
-        fun neutralButton(text: CharSequence) = apply { neutralButtonText = text }
-
-        /**
-         * @see [AndroidAlertDialog.Builder.setItems]
-         */
-        fun items(@ArrayRes itemsId: Int) = items(context.resources.getTextArray(itemsId))
-
-        /**
-         * @see [AndroidAlertDialog.Builder.setItems]
-         */
-        fun items(items: Array<CharSequence>) = apply {
-            this.items = items
-            singleChoice = false
-            multiChoice = false
-        }
-
-        /**
-         * @see [AndroidAlertDialog.Builder.setMultiChoiceItems]
-         */
-        fun multiChoiceItems(@ArrayRes itemsId: Int, checkedItems: BooleanArray) =
-            multiChoiceItems(context.resources.getTextArray(itemsId), checkedItems)
-
-        /**
-         * @see [AndroidAlertDialog.Builder.setMultiChoiceItems]
-         */
-        fun multiChoiceItems(items: Array<CharSequence>, checkedItems: BooleanArray) = apply {
-            this.items = items
-            this.checkedItems = checkedItems
-            singleChoice = false
-            multiChoice = true
-        }
-
-        /**
-         * @see [AndroidAlertDialog.Builder.setSingleChoiceItems]
-         */
-        fun singleChoiceItems(@ArrayRes itemsId: Int, checkedItem: Int) =
-            singleChoiceItems(context.resources.getTextArray(itemsId), checkedItem)
-
-        /**
-         * @see [AndroidAlertDialog.Builder.setSingleChoiceItems]
-         */
-        fun singleChoiceItems(items: Array<CharSequence>, checkedItem: Int) = apply {
-            this.items = items
-            this.checkedItem = checkedItem
-            singleChoice = true
-            multiChoice = false
-        }
-
-        /**
-         * @see [AndroidAlertDialog.Builder.setCancelable]
-         */
-        fun setCancelable(cancelable: Boolean) = apply { this.cancelable = cancelable }
-
-        fun toParams() =
-            Params(
-                themeResId,
-                title,
-                message,
-                titleIconId,
-                positiveButton,
-                negativeButton,
-                neutralButtonText,
-                items,
-                checkedItem,
-                checkedItems,
-                multiChoice,
-                singleChoice,
-                cancelable
+        AndroidAlertDialog.Builder(requireContext())
+            .setCustomTitle(customTitle)
+            .setIcon(iconRes)
+            .setIcon(icon)
+            .setIconAttribute(iconAttribute)
+            .setCancelable(cancelable)
+            .setOnCancelListener(onCancelListener)
+            .setOnDismissListener(onDismissListener)
+            .setOnKeyListener(onKeyListener)
+            .setAdapter(adapter, this)
+            .setSingleChoiceItems(
+                singleChoiceAdapter,
+                singleChoiceCheckedItem,
+                singleChoiceListener ?: this
             )
+            .setOnItemSelectedListener(onItemSelectedListener).apply {
+                if (titleRes > 0)
+                    setTitle(titleRes)
+                else
+                    setTitle(title)
 
-        fun build(dialog: AlertDialog, @StyleRes themeResId: Int): AndroidAlertDialog.Builder =
-            AndroidAlertDialog.Builder(
-                context,
-                if (this.themeResId == 0) themeResId else this.themeResId
-            ).apply {
-                setTitle(title)
-                setMessage(message)
-                setIcon(titleIconId)
-                setPositiveButton(positiveButton, dialog)
-                setNegativeButton(negativeButton, dialog)
-                setNegativeButton(neutralButtonText, dialog)
-                if (!singleChoice && !multiChoice)
-                    setItems(items, dialog)
-                else if (multiChoice)
-                    setMultiChoiceItems(items, checkedItems, dialog)
-                else if (singleChoice)
-                    setSingleChoiceItems(items, checkedItem, dialog)
-                setCancelable(cancelable)
+                if (messageRes > 0)
+                    setMessage(messageRes)
+                else
+                    setMessage(message)
+
+                if (positiveButtonRes > 0)
+                    setPositiveButton(positiveButtonRes, positiveListener ?: this@AlertDialog)
+                else
+                    setPositiveButton(positiveButton, positiveListener ?: this@AlertDialog)
+
+
+                if (positiveButtonIconRes > 0)
+                    setPositiveButtonIcon(requireContext().getDrawable(positiveButtonIconRes))
+                else
+                    setPositiveButtonIcon(positiveButtonIcon)
+
+                if (negativeButtonRes > 0)
+                    setNegativeButton(negativeButtonRes, negativeListener ?: this@AlertDialog)
+                else
+                    setNegativeButton(negativeButton, negativeListener ?: this@AlertDialog)
+
+                if (negativeButtonIconRes > 0)
+                    setNegativeButtonIcon(requireContext().getDrawable(negativeButtonIconRes))
+                else
+                    setNegativeButtonIcon(negativeButtonIcon)
+
+                if (neutralButtonRes > 0)
+                    setNeutralButton(neutralButtonRes, neutralListener ?: this@AlertDialog)
+                else
+                    setNeutralButton(neutralButton, neutralListener ?: this@AlertDialog)
+
+                if (neutralButtonIconRes > 0)
+                    setNeutralButtonIcon(requireContext().getDrawable(neutralButtonIconRes))
+                else
+                    setNeutralButtonIcon(neutralButtonIcon)
+
+                if (itemsRes > 0)
+                    setItems(itemsRes, itemsListener ?: this@AlertDialog)
+                else
+                    setItems(items, itemsListener ?: this@AlertDialog)
+
+                if (multiChoiceItemsRes > 0)
+                    setMultiChoiceItems(
+                        multiChoiceItemsRes,
+                        multiChoiceCheckedItems,
+                        multiChoiceListener ?: this@AlertDialog
+                    )
+                else
+                    setMultiChoiceItems(
+                        multiChoiceItems,
+                        multiChoiceCheckedItems,
+                        multiChoiceListener ?: this@AlertDialog
+                    )
+
+                if (singleChoiceItemsRes > 0)
+                    setSingleChoiceItems(
+                        singleChoiceItemsRes,
+                        singleChoiceCheckedItem,
+                        singleChoiceListener ?: this@AlertDialog
+                    )
+                else
+                    setSingleChoiceItems(
+                        singleChoiceItems,
+                        singleChoiceCheckedItem,
+                        singleChoiceListener ?: this@AlertDialog
+                    )
+
+                if (customViewRes > 0)
+                    setView(customViewRes)
+                else
+                    setView(customView)
+            }
+            .create()
+
+    override fun onClick(dialog: DialogInterface, which: Int) {
+        targetRequestCode?.let { targetRequestCode ->
+            (activity as? AlertDialogListener)?.let {
+                when (which) {
+                    DialogInterface.BUTTON_POSITIVE -> it.onDialogPositive(targetRequestCode)
+                    DialogInterface.BUTTON_NEGATIVE -> it.onDialogNegative(targetRequestCode)
+                    DialogInterface.BUTTON_NEUTRAL -> it.onDialogNeutral(targetRequestCode)
+                    else -> it.onDialogClick(targetRequestCode, which)
+                }
             }
 
-        /**
-         * @see newInstance
-         */
-        fun create(
-            targetController: BaseFragment? = null,
-            targetRequestCode: Int = 0
-        ): AlertDialog =
-            newInstance(this, targetController, targetRequestCode)
-    }
-
-    @Parcelize
-    data class Params(
-        @StyleRes val themeResId: Int,
-        val title: CharSequence?,
-        val message: CharSequence?,
-        val titleIconId: Int,
-        val positiveButtonText: CharSequence?,
-        val negativeButtonText: CharSequence?,
-        val neutralButtonText: CharSequence?,
-        val items: Array<CharSequence>?,
-        val checkedItem: Int,
-        val checkedItems: BooleanArray?,
-        val multiChoice: Boolean,
-        val singleChoice: Boolean,
-        val cancelable: Boolean
-    ) : Parcelable {
-        override fun equals(other: Any?): Boolean {
-            if (this === other) return true
-            if (javaClass != other?.javaClass) return false
-
-            other as Params
-
-            if (themeResId != other.themeResId) return false
-            if (title != other.title) return false
-            if (message != other.message) return false
-            if (titleIconId != other.titleIconId) return false
-            if (positiveButtonText != other.positiveButtonText) return false
-            if (negativeButtonText != other.negativeButtonText) return false
-            if (neutralButtonText != other.neutralButtonText) return false
-            if (!Arrays.equals(items, other.items)) return false
-            if (checkedItem != other.checkedItem) return false
-            if (!Arrays.equals(checkedItems, other.checkedItems)) return false
-            if (multiChoice != other.multiChoice) return false
-            if (singleChoice != other.singleChoice) return false
-            if (cancelable != other.cancelable) return false
-
-            return true
-        }
-
-        override fun hashCode(): Int {
-            var result = themeResId
-            result = 31 * result + (title?.hashCode() ?: 0)
-            result = 31 * result + (message?.hashCode() ?: 0)
-            result = 31 * result + titleIconId
-            result = 31 * result + (positiveButtonText?.hashCode() ?: 0)
-            result = 31 * result + (negativeButtonText?.hashCode() ?: 0)
-            result = 31 * result + (neutralButtonText?.hashCode() ?: 0)
-            result = 31 * result + (items?.contentHashCode() ?: 0)
-            result = 31 * result + checkedItem
-            result = 31 * result + (checkedItems?.contentHashCode() ?: 0)
-            result = 31 * result + multiChoice.hashCode()
-            result = 31 * result + singleChoice.hashCode()
-            result = 31 * result + cancelable.hashCode()
-            return result
+            (targetFragment as? AlertDialogListener)?.let {
+                when (which) {
+                    DialogInterface.BUTTON_POSITIVE -> it.onDialogPositive(targetRequestCode)
+                    DialogInterface.BUTTON_NEGATIVE -> it.onDialogNegative(targetRequestCode)
+                    DialogInterface.BUTTON_NEUTRAL -> it.onDialogNeutral(targetRequestCode)
+                    else -> it.onDialogClick(targetRequestCode, which)
+                }
+            }
         }
     }
 
-    companion object {
-        /**
-         * Create a new Alert dialog instance.
-         * If you want to get result from dialog or received events ([AlertDialogListener]), you
-         * must passed target [BaseFragment] calling this dialog and that target need to
-         * implement [AlertDialogListener]. Additionally if you open several dialogs you may pass
-         * [targetRequestCode] to then identify which dialog your result or events come from.
-         * Note you may receive events as well from activity host if activity implements
-         * [AlertDialogListener].
-         */
-        fun newInstance(
-            builder: Builder,
-            targetController: BaseFragment? = null,
-            targetRequestCode: Int = 0
-        ): AlertDialog {
-            val dialog = AlertDialog()
-            dialog.setTargetFragment(targetController, targetRequestCode)
-            if (dialog.arguments == null) dialog.arguments = Bundle()
-            dialog.requireArguments().putParcelable(PARAMS, builder.toParams())
+    override fun onClick(dialog: DialogInterface, which: Int, isChecked: Boolean) {
+        targetRequestCode?.let { targetRequestCode ->
+            (activity as? AlertDialogListener)?.onDialogClick(targetRequestCode, which, isChecked)
 
-            return dialog
+            (targetFragment as? AlertDialogListener)?.onDialogClick(
+                targetRequestCode, which,
+                isChecked
+            )
         }
-
-        private const val PARAMS = "params"
     }
 }
