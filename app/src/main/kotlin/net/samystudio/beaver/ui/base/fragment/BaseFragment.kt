@@ -14,6 +14,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatDialogFragment
+import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -178,6 +179,9 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
      */
     open fun onBackPressed() {}
 
+    fun show(manager: FragmentManager) =
+        (getClassSimpleTag() + count++).apply { super.show(manager, this) }
+
     fun setTargetRequestCode(requestCode: Int) {
         setTargetFragment(null, requestCode)
     }
@@ -217,4 +221,8 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
 
     protected fun <T> state(defaultValue: T, setterCallback: ((value: T) -> Unit)? = null) =
         InstanceStateProvider.NotNull(savable, defaultValue, setterCallback)
+
+    companion object {
+        private var count: Int = 0
+    }
 }
