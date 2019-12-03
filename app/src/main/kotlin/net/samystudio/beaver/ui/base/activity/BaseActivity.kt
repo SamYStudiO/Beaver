@@ -99,7 +99,6 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(),
 
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
         viewModel.handleResult(requestCode, resultCode, data)
     }
 
@@ -122,7 +121,6 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(),
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putBundle(getClassTag(), savable)
         viewModel.handleSaveInstanceState(outState)
-
         super.onSaveInstanceState(outState)
     }
 

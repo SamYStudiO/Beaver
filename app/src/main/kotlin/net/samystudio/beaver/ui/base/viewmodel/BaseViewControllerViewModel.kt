@@ -4,33 +4,23 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.annotation.CallSuper
 import androidx.lifecycle.LiveData
-import io.reactivex.BackpressureStrategy
 import net.samystudio.beaver.data.local.InstanceStateProvider
-import net.samystudio.beaver.data.manager.UserManager
 import net.samystudio.beaver.ext.getClassTag
 import net.samystudio.beaver.ui.common.navigation.NavigationRequest
 import net.samystudio.beaver.ui.common.viewmodel.NavigationEvent
 import net.samystudio.beaver.ui.common.viewmodel.SingleLiveEvent
-import javax.inject.Inject
 
 abstract class BaseViewControllerViewModel : BaseViewModel() {
     private val savable = Bundle()
     private val _navigationCommand: NavigationEvent = NavigationEvent()
-    @Inject
-    protected lateinit var userManager: UserManager
     val navigationCommand: LiveData<NavigationRequest> = _navigationCommand
     private val _resultEvent: SingleLiveEvent<Result> = SingleLiveEvent()
     val resultEvent: LiveData<Result> = _resultEvent
 
+    @CallSuper
     open fun handleCreate(savedInstanceState: Bundle?) {
         if (savedInstanceState != null)
             savable.putAll(savedInstanceState.getBundle(getClassTag()))
-
-        disposables.add(userManager.statusObservable.toFlowable(BackpressureStrategy.LATEST)
-            .subscribe {
-                if (it) handleUserConnected()
-                else handleUserDisconnected()
-            })
     }
 
     open fun handleIntent(intent: Intent) {}
@@ -49,10 +39,6 @@ abstract class BaseViewControllerViewModel : BaseViewModel() {
     }
 
     open fun handleTrimMemory(level: Int) {}
-
-    open fun handleUserConnected() {}
-
-    open fun handleUserDisconnected() {}
 
     fun navigate(navigationRequest: NavigationRequest) {
         _navigationCommand.value = navigationRequest
