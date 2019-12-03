@@ -31,13 +31,13 @@ import net.samystudio.beaver.ui.common.dialog.DialogListener
  */
 abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowListener,
     View.OnApplyWindowInsetsListener {
-    private var finished: Boolean = false
-    private var dialogDismissed: Boolean = false
-    private var restoringState: Boolean = false
     private val savable = Bundle()
     private val onBackPressCallback = object : OnBackPressedCallback(false) {
         override fun handleOnBackPressed() = onBackPressed()
     }
+    private var finished: Boolean = false
+    private var dialogDismissed: Boolean = false
+    private var restoringState: Boolean = false
     @get:LayoutRes
     protected abstract val layoutViewRes: Int
     protected val navController: NavController
@@ -86,12 +86,14 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
+        // Before super cause super implementation restore state and may call show, so we need to
+        // add listener before.
+        if (showsDialog) dialog?.setOnShowListener(this)
+
         super.onActivityCreated(savedInstanceState)
 
         requireActivity().onBackPressedDispatcher.addCallback(this, onBackPressCallback)
         firebaseAnalytics = FirebaseAnalytics.getInstance(requireContext().applicationContext)
-
-        if (showsDialog) dialog?.setOnShowListener(this)
     }
 
     override fun onStart() {
