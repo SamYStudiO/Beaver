@@ -157,6 +157,10 @@ dependencies {
     implementation "com.squareup.retrofit2:adapter-rxjava2:$versions.retrofit"
     implementation "com.squareup.picasso:picasso:$versions.picasso"
 
+    // misc
+    implementation "org.permissionsdispatcher:permissionsdispatcher:$versions.permissionsdispatcher"
+    kapt "org.permissionsdispatcher:permissionsdispatcher-processor:$versions.permissionsdispatcher"
+
     // debug
     implementation "com.jakewharton.timber:timber:$versions.timber"
     debugImplementation "com.squareup.leakcanary:leakcanary-android:$versions.leakcanary"
