@@ -2,6 +2,7 @@
 
 package net.samystudio.beaver.ui.base.activity
 
+import android.content.ComponentCallbacks2
 import android.content.Intent
 import android.os.Bundle
 import androidx.annotation.CallSuper
@@ -134,7 +135,7 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(),
 
         viewModel.handleTrimMemory(level)
         supportFragmentManager.fragments.forEach {
-            (it as? BaseViewModelFragment<*>)?.onTrimMemory(level)
+            (it as? ComponentCallbacks2)?.onTrimMemory(level)
         }
     }
 
