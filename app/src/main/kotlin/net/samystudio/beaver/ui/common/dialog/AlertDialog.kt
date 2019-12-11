@@ -168,11 +168,11 @@ open class AlertDialog : BaseFragment(),
          * [AlertDialogListener].
          */
         fun build(
-            targetController: BaseFragment? = null,
+            targetFragment: BaseFragment? = null,
             targetRequestCode: Int = 0
         ): AlertDialog {
             val dialog = AlertDialog()
-            dialog.setTargetFragment(targetController, targetRequestCode)
+            dialog.setTargetFragment(targetFragment, targetRequestCode)
             if (dialog.arguments == null) dialog.arguments = Bundle()
             dialog.arguments?.putParcelable(BUILDER, this)
             return dialog

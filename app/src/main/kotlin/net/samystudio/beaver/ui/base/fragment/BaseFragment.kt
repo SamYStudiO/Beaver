@@ -155,12 +155,9 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
 
     @CallSuper
     override fun onCancel(dialog: DialogInterface) {
-        super.onCancel(dialog)
-
+        setResult(Activity.RESULT_CANCELED, null)
         (activity as? DialogListener)?.onDialogCancel(targetRequestCode)
         (targetFragment as? DialogListener)?.onDialogCancel(targetRequestCode)
-
-        setResult(Activity.RESULT_CANCELED, null)
     }
 
     @CallSuper
