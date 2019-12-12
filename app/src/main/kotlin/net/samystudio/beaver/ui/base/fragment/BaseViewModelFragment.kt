@@ -1,5 +1,6 @@
 package net.samystudio.beaver.ui.base.fragment
 
+import android.content.ComponentCallbacks2
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
@@ -18,7 +19,7 @@ import androidx.fragment.app.activityViewModels as activityViewModelsInternal
 import androidx.fragment.app.viewModels as viewModelsInternal
 
 abstract class BaseViewModelFragment<VM : BaseFragmentViewModel> : BaseDaggerFragment(),
-    DialogInterface.OnShowListener {
+    ComponentCallbacks2, DialogInterface.OnShowListener {
     /**
      * @see BaseViewModelFragmentModule.bindViewModelFactory
      */
@@ -81,7 +82,7 @@ abstract class BaseViewModelFragment<VM : BaseFragmentViewModel> : BaseDaggerFra
         viewModel.handleSaveInstanceState(outState)
     }
 
-    fun onTrimMemory(level: Int) {
+    override fun onTrimMemory(level: Int) {
         viewModel.handleTrimMemory(level)
     }
 
