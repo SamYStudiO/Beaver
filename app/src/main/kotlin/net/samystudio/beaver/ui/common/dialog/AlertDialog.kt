@@ -96,6 +96,8 @@ open class AlertDialog : BaseFragment(),
 
                 if (it.customViewRes > 0)
                     setView(it.customViewRes)
+
+                setCancelable(it.cancelable)
             }
         }.create()
     }
