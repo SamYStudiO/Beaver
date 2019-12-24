@@ -7,6 +7,7 @@ import android.content.DialogInterface
 import android.os.Bundle
 import android.os.Parcelable
 import androidx.annotation.*
+import androidx.fragment.app.Fragment
 import kotlinx.android.parcel.Parcelize
 import net.samystudio.beaver.ui.base.fragment.BaseFragment
 import androidx.appcompat.app.AlertDialog as AndroidAlertDialog
@@ -163,14 +164,14 @@ open class AlertDialog : BaseFragment(),
         /**
          * Create a new Alert dialog instance.
          * If you want to get result from dialog or received events, you must passed target
-         * [BaseFragment] calling this dialog and that target need to implement
+         * [Fragment] calling this dialog and that target need to implement
          * [AlertDialogListener]. Additionally if you open several dialogs you may pass
          * [targetRequestCode] to then identify which dialog your result or events come from.
          * Note you may receive events as well from activity host if activity implements
          * [AlertDialogListener].
          */
         fun build(
-            targetFragment: BaseFragment? = null,
+            targetFragment: Fragment? = null,
             targetRequestCode: Int = 0
         ): AlertDialog {
             val dialog = AlertDialog()
