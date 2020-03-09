@@ -29,8 +29,8 @@ class AuthenticatorFragment : BaseDataPushFragment<AuthenticatorFragmentViewMode
 
         sign_in_email.setText(sharedPreferencesHelper.accountName.get())
 
-        viewModel.signInVisibility.observe(this, Observer { sign_in_layout.isVisible = it })
-        viewModel.signUpVisibility.observe(this, Observer { sign_up_layout.isVisible = it })
+        viewModel.signInVisibility.observe(viewLifecycleOwner, Observer { sign_in_layout.isVisible = it })
+        viewModel.signUpVisibility.observe(viewLifecycleOwner, Observer { sign_up_layout.isVisible = it })
 
         viewModel.addUserFlow(
             sign_in.clicks()
@@ -120,7 +120,7 @@ class AuthenticatorFragment : BaseDataPushFragment<AuthenticatorFragmentViewMode
     }
 
     override fun dataPushError(throwable: Throwable) {
-        getGenericErrorDialog().showNow(requireFragmentManager(), getMethodTag())
+        getGenericErrorDialog().showNow(parentFragmentManager, getMethodTag())
     }
 
     override fun dataPushTerminate() {

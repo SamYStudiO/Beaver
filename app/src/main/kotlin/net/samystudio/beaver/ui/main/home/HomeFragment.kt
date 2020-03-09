@@ -32,7 +32,7 @@ class HomeFragment : BaseDataFetchFragment<HomeFragmentViewModel, Home>(), Alert
 
     override fun dataFetchError(throwable: Throwable) {
         getGenericErrorDialog().showIfNonExistent(
-            requireFragmentManager(),
+            parentFragmentManager,
             getMethodTag()
         )
     }
