@@ -1,7 +1,9 @@
 package net.samystudio.beaver.ui.common.navigation
 
+import android.net.Uri
 import android.os.Bundle
 import androidx.annotation.IdRes
+import androidx.navigation.NavDirections
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigator
 
@@ -19,6 +21,18 @@ sealed class NavigationRequest {
     class Push(
         @param:IdRes @get:IdRes val destinationId: Int,
         val args: Bundle? = null,
+        val options: NavOptions? = null,
+        val extras: Navigator.Extras? = null
+    ) : NavigationRequest()
+
+    class PushDeepLink(
+        val deepLink: Uri,
+        val options: NavOptions? = null,
+        val extras: Navigator.Extras? = null
+    ) : NavigationRequest()
+
+    class PushDirection(
+        val direction: NavDirections,
         val options: NavOptions? = null,
         val extras: Navigator.Extras? = null
     ) : NavigationRequest()
