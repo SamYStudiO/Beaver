@@ -3,12 +3,13 @@ package net.samystudio.beaver.ui.base.fragment
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
+import androidx.viewbinding.ViewBinding
 import net.samystudio.beaver.data.AsyncState
 import net.samystudio.beaver.ui.base.viewmodel.BaseFragmentViewModel
 import net.samystudio.beaver.ui.base.viewmodel.DataPushViewModel
 
-abstract class BaseDataPushFragment<VM> :
-    BaseViewModelFragment<VM>() where VM : BaseFragmentViewModel, VM : DataPushViewModel {
+abstract class BaseDataPushFragment<VB : ViewBinding,VM> :
+    BaseViewModelFragment<VB, VM>() where VM : BaseFragmentViewModel, VM : DataPushViewModel {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 

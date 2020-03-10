@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
+import androidx.viewbinding.ViewBinding
 import net.samystudio.beaver.di.qualifier.ActivityContext
 import net.samystudio.beaver.di.qualifier.FragmentContext
 import net.samystudio.beaver.ext.navigate
@@ -18,7 +19,8 @@ import javax.inject.Inject
 import androidx.fragment.app.activityViewModels as activityViewModelsInternal
 import androidx.fragment.app.viewModels as viewModelsInternal
 
-abstract class BaseViewModelFragment<VM : BaseFragmentViewModel> : BaseDaggerFragment(),
+abstract class BaseViewModelFragment<VB : ViewBinding, VM : BaseFragmentViewModel> :
+    BaseDaggerFragment<VB>(),
     ComponentCallbacks2, DialogInterface.OnShowListener {
     /**
      * @see BaseViewModelFragmentModule.bindViewModelFactory
@@ -26,6 +28,7 @@ abstract class BaseViewModelFragment<VM : BaseFragmentViewModel> : BaseDaggerFra
     @Inject
     @FragmentContext
     protected lateinit var viewModelFactory: ViewModelProvider.Factory
+
     /**
      * @see net.samystudio.beaver.ui.base.activity.BaseActivityModule.bindViewModelFactory
      */

@@ -62,6 +62,10 @@ android {
         androidTest.java.srcDirs += 'src/androidTest/kotlin'
     }
 
+    viewBinding {
+        enabled = true
+    }
+
     androidExtensions {
         experimental = true
     }

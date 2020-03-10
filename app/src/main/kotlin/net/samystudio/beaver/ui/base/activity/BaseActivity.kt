@@ -6,7 +6,6 @@ import android.content.ComponentCallbacks2
 import android.content.Intent
 import android.os.Bundle
 import androidx.annotation.CallSuper
-import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
@@ -31,16 +30,16 @@ import androidx.activity.viewModels as viewModelsInternal
 abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(),
     HasAndroidInjector {
     private val savable = Bundle()
+
     @Inject
     protected lateinit var androidInjector: DispatchingAndroidInjector<Any>
+
     /**
      * @see BaseActivityModule.bindViewModelFactory
      */
     @Inject
     @ActivityContext
     protected lateinit var viewModelFactory: ViewModelProvider.Factory
-    @get:LayoutRes
-    protected abstract val layoutViewRes: Int
     protected abstract val navControllerId: Int
     protected val navController: NavController
         get() = findNavController(navControllerId)
@@ -55,8 +54,6 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(),
 
         if (savedInstanceState != null)
             savable.putAll(savedInstanceState.getBundle(getClassTag()))
-
-        setContentView(layoutViewRes)
 
         destroyDisposable = CompositeDisposable()
         viewModel.handleCreate(savedInstanceState)
@@ -89,7 +86,7 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(),
         viewModel.handleIntent(intent)
 
         supportFragmentManager.fragments.forEach {
-            (it as? BaseViewModelFragment<*>)?.onNewIntent(intent)
+            (it as? BaseViewModelFragment<*, *>)?.onNewIntent(intent)
         }
     }
 

@@ -2,13 +2,13 @@ package net.samystudio.beaver.ui.main
 
 import android.os.Bundle
 import androidx.appcompat.widget.Toolbar
-import kotlinx.android.synthetic.main.activity_main.*
 import net.samystudio.beaver.R
+import net.samystudio.beaver.databinding.ActivityMainBinding
 import net.samystudio.beaver.ui.base.activity.BaseToolbarActivity
 
-class MainActivity : BaseToolbarActivity<MainActivityViewModel>() {
-    override val layoutViewRes = R.layout.activity_main
+class MainActivity : BaseToolbarActivity<ActivityMainBinding, MainActivityViewModel>() {
     override val navControllerId: Int = R.id.nav_host
+    override val binding: ActivityMainBinding by viewBinding { ActivityMainBinding.inflate(it) }
     override val viewModel by viewModels<MainActivityViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,7 +19,8 @@ class MainActivity : BaseToolbarActivity<MainActivityViewModel>() {
         super.onCreate(savedInstanceState)
     }
 
-    override fun getToolbar(): Toolbar = header
+    override fun getToolbar(): Toolbar = binding.header
 
     override fun onSupportNavigateUp(): Boolean = navController.navigateUp()
+
 }

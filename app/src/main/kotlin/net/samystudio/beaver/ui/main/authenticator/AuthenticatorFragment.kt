@@ -10,106 +10,107 @@ import com.jakewharton.rxbinding3.view.clicks
 import com.jakewharton.rxbinding3.widget.textChanges
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.Observables
-import kotlinx.android.synthetic.main.fragment_authenticator.*
-import net.samystudio.beaver.R
 import net.samystudio.beaver.data.local.SharedPreferencesHelper
+import net.samystudio.beaver.databinding.FragmentAuthenticatorBinding
 import net.samystudio.beaver.ext.*
 import net.samystudio.beaver.ui.base.fragment.BaseDataPushFragment
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-class AuthenticatorFragment : BaseDataPushFragment<AuthenticatorFragmentViewModel>() {
+class AuthenticatorFragment : BaseDataPushFragment<FragmentAuthenticatorBinding, AuthenticatorFragmentViewModel>() {
     @Inject
     protected lateinit var sharedPreferencesHelper: SharedPreferencesHelper
-    override val layoutViewRes = R.layout.fragment_authenticator
+    override val binding: FragmentAuthenticatorBinding by viewBinding { inflater, container ->
+        FragmentAuthenticatorBinding.inflate(inflater, container, false)
+    }
     override val viewModel by viewModels<AuthenticatorFragmentViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        sign_in_email.setText(sharedPreferencesHelper.accountName.get())
+        binding.signInEmail.setText(sharedPreferencesHelper.accountName.get())
 
-        viewModel.signInVisibility.observe(viewLifecycleOwner, Observer { sign_in_layout.isVisible = it })
-        viewModel.signUpVisibility.observe(viewLifecycleOwner, Observer { sign_up_layout.isVisible = it })
+        viewModel.signInVisibility.observe(viewLifecycleOwner, Observer { binding.signInLayout.isVisible = it })
+        viewModel.signUpVisibility.observe(viewLifecycleOwner, Observer { binding.signUpEmailLayout.isVisible = it })
 
         viewModel.addUserFlow(
-            sign_in.clicks()
+            binding.signIn.clicks()
                 .map {
                     AuthenticatorUserFlow.SignIn(
-                        sign_in_email.text.toString(),
-                        sign_in_password.text.toString()
+                        binding.signInEmail.text.toString(),
+                        binding.signInPassword.text.toString()
                     )
                 })
         viewModel.addUserFlow(
-            sign_up.clicks()
+            binding.signUp.clicks()
                 .map {
                     AuthenticatorUserFlow.SignUp(
-                        sign_up_email.text.toString(),
-                        sign_up_password.text.toString()
+                        binding.signInEmail.text.toString(),
+                        binding.signInPassword.text.toString()
                     )
                 })
 
         destroyViewDisposable?.add(
             Observables
                 .combineLatest(
-                    sign_in_email.textChanges()
+                    binding.signInEmail.textChanges()
                         .debounce(500, TimeUnit.MILLISECONDS)
                         .observeOn(AndroidSchedulers.mainThread())
                         .map { t ->
                             val emailValid = t.validate(EMAIL_VALIDATOR)
-                            sign_in_email_layout.error =
+                            binding.signInEmailLayout.error =
                                 if (t.isNotEmpty() && !emailValid) "Invalid email" else null
                             emailValid
                         },
-                    sign_in_password.textChanges()
+                    binding.signInPassword.textChanges()
                         .debounce(500, TimeUnit.MILLISECONDS)
                         .observeOn(AndroidSchedulers.mainThread())
                         .map { t ->
                             val passwordValid = t.validate(PASSWORD_VALIDATOR)
-                            sign_in_password_layout.error =
+                            binding.signInPasswordLayout.error =
                                 if (t.isNotEmpty() && !passwordValid) "Invalid password (minimum 8 chars)" else null
                             passwordValid
                         }
                 ) { t1, t2 -> t1 && t2 }
                 .observeOn(AndroidSchedulers.mainThread())
                 .startWith(false)
-                .subscribe { sign_in.isEnabled = it })
+                .subscribe { binding.signIn.isEnabled = it })
 
         destroyViewDisposable?.add(
             Observables
                 .combineLatest(
-                    sign_up_email.textChanges()
+                    binding.signUpEmail.textChanges()
                         .debounce(500, TimeUnit.MILLISECONDS)
                         .observeOn(AndroidSchedulers.mainThread())
                         .map { t ->
                             val emailValid = t.validate(EMAIL_VALIDATOR)
-                            sign_up_email_layout.error =
+                            binding.signUpEmailLayout.error =
                                 if (t.isNotEmpty() && !emailValid) "Invalid email" else null
                             emailValid
                         },
-                    sign_up_password.textChanges()
+                    binding.signUpPassword.textChanges()
                         .debounce(500, TimeUnit.MILLISECONDS)
                         .observeOn(AndroidSchedulers.mainThread())
                         .map { t ->
                             val passwordValid = t.validate(PASSWORD_VALIDATOR)
-                            sign_up_password_layout.error =
+                            binding.signUpPasswordLayout.error =
                                 if (t.isNotEmpty() && !passwordValid) "Invalid password (minimum 8 chars)" else null
                             passwordValid
                         },
-                    sign_up_confirm_password.textChanges()
+                    binding.signUpConfirmPassword.textChanges()
                         .debounce(500, TimeUnit.MILLISECONDS)
                         .observeOn(AndroidSchedulers.mainThread())
                         .map { t ->
-                            val password = sign_up_password.text.toString()
+                            val password = binding.signUpPassword.text.toString()
                             val passwordMatchValid = t.toString() == password
-                            sign_up_confirm_password_layout.error =
+                            binding.signUpConfirmPasswordLayout.error =
                                 if (password.validate(PASSWORD_VALIDATOR) && !passwordMatchValid) "Passwords don't match" else null
                             passwordMatchValid
                         }
                 ) { t1, t2, t3 -> t1 && t2 && t3 }
                 .observeOn(AndroidSchedulers.mainThread())
                 .startWith(false)
-                .subscribe { sign_up.isEnabled = it })
+                .subscribe { binding.signUp.isEnabled = it })
     }
 
     override fun dataPushStart() {

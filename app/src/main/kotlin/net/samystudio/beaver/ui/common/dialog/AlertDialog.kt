@@ -16,8 +16,6 @@ import androidx.appcompat.app.AlertDialog as AndroidAlertDialog
 open class AlertDialog : BaseFragment(),
     DialogInterface.OnClickListener,
     DialogInterface.OnMultiChoiceClickListener {
-    override val layoutViewRes: Int = 0
-
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return AndroidAlertDialog.Builder(requireContext(), theme).apply {
             arguments?.apply {

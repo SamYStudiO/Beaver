@@ -6,13 +6,10 @@ import android.app.Activity
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.view.WindowInsets
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.CallSuper
-import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavController
@@ -39,10 +36,9 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
     private var finished: Boolean = false
     private var dialogDismissed: Boolean = false
     private var restoringState: Boolean = false
-    @get:LayoutRes
-    protected abstract val layoutViewRes: Int
     protected val navController: NavController
         get() = findNavController()
+
     // Cannot inject here since we don't have dagger yet
     protected lateinit var firebaseAnalytics: FirebaseAnalytics
     protected var resultCode: Int by state(Activity.RESULT_CANCELED)
@@ -68,15 +64,6 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
         childFragmentManager.fragments.forEach {
             (it as? BaseFragment)?.onNewIntent(intent)
         }
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return if (layoutViewRes > 0) inflater.inflate(layoutViewRes, container, false)
-        else null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

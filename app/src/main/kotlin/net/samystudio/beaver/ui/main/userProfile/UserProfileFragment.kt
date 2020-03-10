@@ -3,19 +3,21 @@ package net.samystudio.beaver.ui.main.userProfile
 import android.os.Bundle
 import android.view.View
 import com.jakewharton.rxbinding3.view.clicks
-import kotlinx.android.synthetic.main.fragment_user_profile.*
-import net.samystudio.beaver.R
+import net.samystudio.beaver.databinding.FragmentUserProfileBinding
 import net.samystudio.beaver.ui.base.fragment.BaseViewModelFragment
 import net.samystudio.beaver.ui.common.dialog.AlertDialogListener
 
-class UserProfileFragment : BaseViewModelFragment<UserProfileFragmentViewModel>(),
+class UserProfileFragment :
+    BaseViewModelFragment<FragmentUserProfileBinding, UserProfileFragmentViewModel>(),
     AlertDialogListener {
-    override val layoutViewRes = R.layout.fragment_user_profile
+    override val binding: FragmentUserProfileBinding by viewBinding { inflater, container ->
+        FragmentUserProfileBinding.inflate(inflater, container, false)
+    }
     override val viewModel by viewModels<UserProfileFragmentViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.addUserFlow(disconnect.clicks().map { UserProfileUserFlow.Disconnect })
+        viewModel.addUserFlow(binding.disconnect.clicks().map { UserProfileUserFlow.Disconnect })
     }
 }
