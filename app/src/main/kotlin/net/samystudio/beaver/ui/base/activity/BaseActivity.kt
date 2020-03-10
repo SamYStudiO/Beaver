@@ -23,6 +23,7 @@ import net.samystudio.beaver.di.qualifier.ActivityContext
 import net.samystudio.beaver.ext.getClassTag
 import net.samystudio.beaver.ext.navigate
 import net.samystudio.beaver.ui.base.fragment.BaseViewModelFragment
+import net.samystudio.beaver.ui.base.fragment.BaseViewModelPreferenceFragment
 import net.samystudio.beaver.ui.base.viewmodel.BaseActivityViewModel
 import javax.inject.Inject
 import androidx.activity.viewModels as viewModelsInternal
@@ -87,6 +88,7 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(),
 
         supportFragmentManager.fragments.forEach {
             (it as? BaseViewModelFragment<*, *>)?.onNewIntent(intent)
+            (it as? BaseViewModelPreferenceFragment<*>)?.onNewIntent(intent)
         }
     }
 
