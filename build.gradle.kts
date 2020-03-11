@@ -12,7 +12,7 @@ buildscript {
         classpath("com.google.firebase:perf-plugin:${Versions.firebase_perf_plugin}")
         classpath("io.fabric.tools:gradle:${Versions.fabric_tools}")
         classpath("android.arch.navigation:navigation-safe-args-gradle-plugin:${Versions.navigation_safe_args_plugin}")
-        //classpath("com.github.ben-manes:gradle-versions-plugin:${Versions.gradle_versions_plugin}")
+        classpath("com.github.ben-manes:gradle-versions-plugin:${Versions.gradle_versions_plugin}")
     }
 }
 
@@ -25,8 +25,25 @@ allprojects {
     }
 }
 
-plugins {
-    //id("com.github.ben-manes.versions")
+apply(plugin = "com.github.ben-manes.versions")
+
+fun isNonStable(version: String): Boolean {
+    val stableKeyword = listOf("RELEASE", "FINAL", "GA").any { version.toUpperCase().contains(it) }
+    val regex = "^[0-9,.v-]+(-r)?$".toRegex()
+    val isStable = stableKeyword || regex.matches(version)
+    return isStable.not()
+}
+
+tasks.withType<com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask> {
+    resolutionStrategy {
+        componentSelection {
+            all {
+                if (isNonStable(candidate.version) && !isNonStable(currentVersion)) {
+                    reject("Release candidate")
+                }
+            }
+        }
+    }
 }
 
 tasks.register("clean", Delete::class) {
