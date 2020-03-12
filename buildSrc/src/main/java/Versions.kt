@@ -40,7 +40,7 @@ object Versions {
     const val rxandroid = "2.1.1"
     const val rxkotlin = "2.4.0"
     const val rxbinding = "3.1.0"
-    const val rxpreferences = "2.0.0"
+    const val rx_preferences = "2.0.0"
     const val rxpicasso = "0.3.0"
 
     // network

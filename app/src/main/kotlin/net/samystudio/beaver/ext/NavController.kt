@@ -2,7 +2,6 @@ package net.samystudio.beaver.ext
 
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
-import androidx.navigation.Navigator
 import net.samystudio.beaver.ui.common.navigation.NavigationRequest
 
 fun NavController.navigate(
@@ -10,14 +9,14 @@ fun NavController.navigate(
     activity: FragmentActivity? = null
 ) {
     when (request) {
-        is NavigationRequest.Pop       -> {
+        is NavigationRequest.Pop -> {
             if (request.destinationId != null && (request.destinationId > 0))
                 popBackStack(request.destinationId, request.inclusive)
             else
                 popBackStack()
         }
         is NavigationRequest.PopToRoot -> popBackStack(graph.startDestination, request.inclusive)
-        is NavigationRequest.Push      -> navigate(
+        is NavigationRequest.Push -> navigate(
             request.destinationId,
             request.args,
             request.options,
@@ -31,13 +30,15 @@ fun NavController.navigate(
         is NavigationRequest.PushDirection -> request.options?.let {
             navigate(
                 request.direction,
-                request.options
+                it
             )
-        } ?: navigate(
-            request.direction,
-            request.extras as Navigator.Extras
-        )
-        is NavigationRequest.Finish    -> {
+        } ?: request.extras?.let {
+            navigate(
+                request.direction,
+                it
+            )
+        } ?: navigate(request.direction)
+        is NavigationRequest.Finish -> {
             requireNotNull(activity) { "You cannot finish an Activity using NavController.navigate with a null activity argument" }
             activity.finish()
         }

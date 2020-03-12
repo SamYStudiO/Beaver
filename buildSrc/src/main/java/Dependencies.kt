@@ -17,9 +17,8 @@ object Dependencies {
     const val lifecycle_common = "androidx.lifecycle:lifecycle-common-java8:${Versions.lifecycle}"
     const val lifecycle_reactivestreams_ktx =
         "androidx.lifecycle:lifecycle-reactivestreams-ktx:${Versions.lifecycle}"
-
-    const val lifecycle_service = "androidx.lifecycle:lifecycle-service:{Versions.lifecycle}"
-    const val lifecycle_process = "androidx.lifecycle:lifecycle-process:{Versions.lifecycle}"
+    const val lifecycle_service = "androidx.lifecycle:lifecycle-service:${Versions.lifecycle}"
+    const val lifecycle_process = "androidx.lifecycle:lifecycle-process:${Versions.lifecycle}"
     const val navigation_fragment_ktx =
         "androidx.navigation:navigation-fragment-ktx:${Versions.navigation}"
     const val navigation_ui_ktx = "androidx.navigation:navigation-ui-ktx:${Versions.navigation}"
@@ -53,24 +52,23 @@ object Dependencies {
     const val rxandroid = "io.reactivex.rxjava2:rxandroid:${Versions.rxandroid}"
     const val rxkotlin = "io.reactivex.rxjava2:rxkotlin:${Versions.rxkotlin}"
     const val rxbinding = "com.jakewharton.rxbinding3:rxbinding:${Versions.rxbinding}"
-
     const val rxbinding_appcompat =
-        "com.jakewharton.rxbinding3:rxbinding-appcompat:{Versions.rxbinding}"
+        "com.jakewharton.rxbinding3:rxbinding-appcompat:${Versions.rxbinding}"
     const val rxbinding_drawerlayout =
-        "com.jakewharton.rxbinding3:rxbinding-drawerlayout:{Versions.rxbinding}"
+        "com.jakewharton.rxbinding3:rxbinding-drawerlayout:${Versions.rxbinding}"
     const val rxbinding_leanback =
-        "com.jakewharton.rxbinding3:rxbinding-leanback:{Versions.rxbinding}"
+        "com.jakewharton.rxbinding3:rxbinding-leanback:${Versions.rxbinding}"
     const val rxbinding_recyclerview =
-        "com.jakewharton.rxbinding3:rxbinding-recyclerview:{Versions.rxbinding}"
+        "com.jakewharton.rxbinding3:rxbinding-recyclerview:${Versions.rxbinding}"
     const val rxbinding_slidingpanelayout =
-        "com.jakewharton.rxbinding3:rxbinding-slidingpanelayout:{Versions.rxbinding}"
+        "com.jakewharton.rxbinding3:rxbinding-slidingpanelayout:${Versions.rxbinding}"
     const val rxbinding_swiperefreshlayout =
-        "com.jakewharton.rxbinding3:rxbinding-swiperefreshlayout:{Versions.rxbinding}"
+        "com.jakewharton.rxbinding3:rxbinding-swiperefreshlayout:${Versions.rxbinding}"
     const val rxbinding_viewpager2 =
-        "com.jakewharton.rxbinding3:rxbinding-viewpager2:{Versions.rxbinding}"
+        "com.jakewharton.rxbinding3:rxbinding-viewpager2:${Versions.rxbinding}"
     const val rx_preferences =
-        "com.f2prateek.rx.preferences2:rx-preferences:${Versions.rxpreferences}"
-    const val rx_picasso = "net.samystudio.rxpicasso:rxpicasso-kotlin:${Versions.rxpicasso}"
+        "com.f2prateek.rx.preferences2:rx-preferences:${Versions.rx_preferences}"
+    const val rxpicasso = "net.samystudio.rxpicasso:rxpicasso-kotlin:${Versions.rxpicasso}"
 
     // network
     const val okhttp = "com.squareup.okhttp3:okhttp:${Versions.okhttp}"
@@ -157,7 +155,7 @@ fun DependencyHandler.reactive() {
     implementation(Dependencies.rxkotlin)
     implementation(Dependencies.rxbinding)
     implementation(Dependencies.rx_preferences)
-    implementation(Dependencies.rx_picasso)
+    implementation(Dependencies.rxpicasso)
 }
 
 fun DependencyHandler.network() {
