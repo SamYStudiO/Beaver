@@ -18,14 +18,10 @@ abstract class BaseDataFetchPushFragment<VB : ViewBinding, VM, D> :
             requestState?.let {
                 when (it) {
                     is AsyncState.Started -> dataPushStart()
-                    is AsyncState.Completed -> {
-                        dataPushSuccess()
-                        dataPushTerminate()
-                    }
-                    is AsyncState.Failed -> {
-                        dataPushError(it.error)
-                        dataPushTerminate()
-                    }
+                    is AsyncState.Completed -> dataPushSuccess()
+                    is AsyncState.Failed -> dataPushError(it.error)
+                    is AsyncState.Canceled -> dataPushCanceled()
+                    is AsyncState.Terminate -> dataPushTerminate()
                 }
             }
         })
@@ -34,5 +30,6 @@ abstract class BaseDataFetchPushFragment<VB : ViewBinding, VM, D> :
     protected abstract fun dataPushStart()
     protected abstract fun dataPushSuccess()
     protected abstract fun dataPushError(throwable: Throwable)
+    protected abstract fun dataPushCanceled()
     protected abstract fun dataPushTerminate()
 }

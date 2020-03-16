@@ -4,6 +4,7 @@ import io.reactivex.Observable
 import net.samystudio.beaver.data.ResultAsyncState
 import net.samystudio.beaver.data.model.User
 import net.samystudio.beaver.data.remote.UserProfileApiInterface
+import net.samystudio.beaver.data.toResultAsyncState
 import net.samystudio.beaver.di.scope.FragmentScope
 import javax.inject.Inject
 
@@ -13,9 +14,5 @@ import javax.inject.Inject
 @FragmentScope
 class UserProfileRepositoryManager @Inject constructor(private val userProfileApiInterface: UserProfileApiInterface) {
     fun userProfile(): Observable<ResultAsyncState<User>> =
-        userProfileApiInterface.userProfile()
-            .toObservable()
-            .map { ResultAsyncState.Completed(it) as ResultAsyncState<User> }
-            .onErrorReturn { ResultAsyncState.Failed(it) }
-            .startWith(ResultAsyncState.Started())
+        userProfileApiInterface.userProfile().toResultAsyncState()
 }

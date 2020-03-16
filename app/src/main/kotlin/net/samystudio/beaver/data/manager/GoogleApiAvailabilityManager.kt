@@ -6,6 +6,7 @@ import com.google.android.gms.common.GoogleApiAvailability
 import io.reactivex.Observable
 import io.reactivex.Single
 import net.samystudio.beaver.data.AsyncState
+import net.samystudio.beaver.data.toAsyncState
 import net.samystudio.beaver.di.qualifier.ApplicationContext
 import net.samystudio.beaver.di.scope.ActivityScope
 import javax.inject.Inject
@@ -21,23 +22,20 @@ class GoogleApiAvailabilityManager @Inject constructor(
      * user app is incompatible.
      */
     val availabilityObservable: Observable<AsyncState> = Single.create<Boolean> { emitter ->
-        val status: Int =
-            googleApiAvailability.isGooglePlayServicesAvailable(context)
-        if (status == ConnectionResult.SUCCESS)
-            emitter.onSuccess(true)
-        else
-            emitter.onError(
-                GoogleApiAvailabilityException(
-                    status,
-                    googleApiAvailability.isUserResolvableError(status),
-                    googleApiAvailability
+            val status: Int =
+                googleApiAvailability.isGooglePlayServicesAvailable(context)
+            if (status == ConnectionResult.SUCCESS)
+                emitter.onSuccess(true)
+            else
+                emitter.onError(
+                    GoogleApiAvailabilityException(
+                        status,
+                        googleApiAvailability.isUserResolvableError(status),
+                        googleApiAvailability
+                    )
                 )
-            )
 
-    }.toObservable()
-        .map { AsyncState.Completed as AsyncState }
-        .startWith(AsyncState.Started)
-        .onErrorReturn { AsyncState.Failed(it) }
+        }.toAsyncState()
         .replay()
         .refCount()
 

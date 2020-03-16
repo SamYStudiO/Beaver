@@ -17,14 +17,10 @@ abstract class BaseDataFetchFragment<VB : ViewBinding, VM, D> :
             requestState?.let {
                 when (it) {
                     is ResultAsyncState.Started -> dataFetchStart()
-                    is ResultAsyncState.Completed -> {
-                        dataFetchSuccess(it.data)
-                        dataFetchTerminate()
-                    }
-                    is ResultAsyncState.Failed -> {
-                        dataFetchError(it.error)
-                        dataFetchTerminate()
-                    }
+                    is ResultAsyncState.Completed -> dataFetchSuccess(it.data)
+                    is ResultAsyncState.Failed -> dataFetchError(it.error)
+                    is ResultAsyncState.Canceled -> dataFetchCanceled()
+                    is ResultAsyncState.Terminate -> dataFetchTerminate()
                 }
             }
         })
@@ -37,5 +33,6 @@ abstract class BaseDataFetchFragment<VB : ViewBinding, VM, D> :
     protected abstract fun dataFetchStart()
     protected abstract fun dataFetchSuccess(data: D)
     protected abstract fun dataFetchError(throwable: Throwable)
+    protected abstract fun dataFetchCanceled()
     protected abstract fun dataFetchTerminate()
 }

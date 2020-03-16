@@ -17,7 +17,8 @@ import net.samystudio.beaver.ui.base.fragment.BaseDataPushFragment
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-class AuthenticatorFragment : BaseDataPushFragment<FragmentAuthenticatorBinding, AuthenticatorFragmentViewModel>() {
+class AuthenticatorFragment :
+    BaseDataPushFragment<FragmentAuthenticatorBinding, AuthenticatorFragmentViewModel>() {
     @Inject
     protected lateinit var sharedPreferencesHelper: SharedPreferencesHelper
     override val binding: FragmentAuthenticatorBinding by viewBinding { inflater, container ->
@@ -30,8 +31,12 @@ class AuthenticatorFragment : BaseDataPushFragment<FragmentAuthenticatorBinding,
 
         binding.signInEmail.setText(sharedPreferencesHelper.accountName.get())
 
-        viewModel.signInVisibility.observe(viewLifecycleOwner, Observer { binding.signInLayout.isVisible = it })
-        viewModel.signUpVisibility.observe(viewLifecycleOwner, Observer { binding.signUpEmailLayout.isVisible = it })
+        viewModel.signInVisibility.observe(
+            viewLifecycleOwner,
+            Observer { binding.signInLayout.isVisible = it })
+        viewModel.signUpVisibility.observe(
+            viewLifecycleOwner,
+            Observer { binding.signUpEmailLayout.isVisible = it })
 
         viewModel.addUserFlow(
             binding.signIn.clicks()
@@ -122,6 +127,9 @@ class AuthenticatorFragment : BaseDataPushFragment<FragmentAuthenticatorBinding,
 
     override fun dataPushError(throwable: Throwable) {
         getGenericErrorDialog().showNow(parentFragmentManager, getMethodTag())
+    }
+
+    override fun dataPushCanceled() {
     }
 
     override fun dataPushTerminate() {

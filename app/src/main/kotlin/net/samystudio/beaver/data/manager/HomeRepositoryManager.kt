@@ -4,6 +4,7 @@ import io.reactivex.Observable
 import net.samystudio.beaver.data.ResultAsyncState
 import net.samystudio.beaver.data.model.Home
 import net.samystudio.beaver.data.remote.HomeApiInterface
+import net.samystudio.beaver.data.toResultAsyncState
 import net.samystudio.beaver.di.scope.FragmentScope
 import javax.inject.Inject
 
@@ -13,9 +14,5 @@ import javax.inject.Inject
 @FragmentScope
 class HomeRepositoryManager @Inject constructor(private val homeApiInterface: HomeApiInterface) {
     fun home(): Observable<ResultAsyncState<Home>> =
-        homeApiInterface.home()
-            .toObservable()
-            .map { ResultAsyncState.Completed(it) as ResultAsyncState<Home> }
-            .onErrorReturn { ResultAsyncState.Failed(it) }
-            .startWith(ResultAsyncState.Started())
+        homeApiInterface.home().toResultAsyncState()
 }

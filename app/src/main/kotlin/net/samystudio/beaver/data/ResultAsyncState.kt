@@ -11,6 +11,8 @@ sealed class ResultAsyncState<T> {
     class Started<T> : ResultAsyncState<T>()
     class Completed<T>(var data: T) : ResultAsyncState<T>()
     class Failed<T>(val error: Throwable) : ResultAsyncState<T>()
+    class Canceled<T> : ResultAsyncState<T>()
+    class Terminate<T> : ResultAsyncState<T>()
 }
 
 fun <T> Single<T>.toResultAsyncState(): Observable<ResultAsyncState<T>> =
@@ -21,7 +23,13 @@ fun <T> Observable<T>.toResultAsyncState(): Observable<ResultAsyncState<T>> =
 
 private fun <T> resultAsyncStateTransformer(): ObservableTransformer<T, ResultAsyncState<T>> =
     ObservableTransformer { upstream ->
-        upstream.map { ResultAsyncState.Completed(it) as ResultAsyncState<T> }
+        upstream.map {
+                @Suppress("USELESS_CAST")
+                ResultAsyncState.Completed(it) as ResultAsyncState<T>
+            }
             .startWith(ResultAsyncState.Started())
+            .doOnDispose { ResultAsyncState.Canceled<T>() }
             .onErrorReturn { ResultAsyncState.Failed(it) }
+            .doFinally { ResultAsyncState.Terminate<T>() }
+
     }
