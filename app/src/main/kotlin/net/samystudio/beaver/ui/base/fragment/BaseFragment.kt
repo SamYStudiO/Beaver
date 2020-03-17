@@ -96,7 +96,7 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
 
         firebaseAnalytics.setCurrentScreen(
             requireActivity(),
-            getClassSimpleTag(),
+            getScreenTag(),
             null
         )
     }
@@ -207,6 +207,11 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
             finished = true
         }
     }
+
+    /**
+     * Tag for google analytics, override if you don't want to use class name.
+     */
+    protected fun getScreenTag() = getClassSimpleTag()
 
     protected fun <T> state(setterCallback: ((value: T) -> Unit)? = null) =
         InstanceStateProvider.Nullable(savable, setterCallback)
