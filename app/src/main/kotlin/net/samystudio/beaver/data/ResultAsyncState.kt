@@ -1,8 +1,10 @@
 package net.samystudio.beaver.data
 
 import io.reactivex.Observable
+import io.reactivex.ObservableSource
 import io.reactivex.ObservableTransformer
 import io.reactivex.Single
+import io.reactivex.functions.Function
 
 /**
  * Async request states, response contains data of type [T].
@@ -28,8 +30,13 @@ private fun <T> resultAsyncStateTransformer(): ObservableTransformer<T, ResultAs
                 ResultAsyncState.Completed(it) as ResultAsyncState<T>
             }
             .startWith(ResultAsyncState.Started())
+            .onErrorResumeNext(Function<Throwable?, ObservableSource<out ResultAsyncState<T>>?> {
+                Observable.fromArray(
+                    ResultAsyncState.Failed(it),
+                    ResultAsyncState.Terminate()
+                )
+            })
             .doOnDispose { ResultAsyncState.Canceled<T>() }
-            .onErrorReturn { ResultAsyncState.Failed(it) }
             .doFinally { ResultAsyncState.Terminate<T>() }
 
     }
