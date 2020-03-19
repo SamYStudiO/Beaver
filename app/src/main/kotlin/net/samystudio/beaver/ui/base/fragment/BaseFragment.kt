@@ -16,6 +16,8 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.analytics.FirebaseAnalytics
 import io.reactivex.disposables.CompositeDisposable
 import net.samystudio.beaver.data.local.InstanceStateProvider
@@ -37,6 +39,7 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
     }
     private var finished: Boolean = false
     private var dialogDismissed: Boolean = false
+    private var bottomSheetWaitingForDismissAllowingStateLoss = false
     protected val navController: NavController
         get() = findNavController()
 
@@ -135,6 +138,18 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
 
     override fun onApplyWindowInsets(v: View, insets: WindowInsets) = insets
 
+    override fun dismiss() {
+        if (dialog !is BottomSheetDialog || !tryDismissWithAnimation(false)) {
+            super.dismiss()
+        }
+    }
+
+    override fun dismissAllowingStateLoss() {
+        if (dialog !is BottomSheetDialog || !tryDismissWithAnimation(true)) {
+            super.dismissAllowingStateLoss()
+        }
+    }
+
     @CallSuper
     override fun onShow(dialog: DialogInterface) {
         (activity as? DialogListener)?.onDialogShow(targetRequestCode)
@@ -218,6 +233,61 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
 
     protected fun <T> state(defaultValue: T, setterCallback: ((value: T) -> Unit)? = null) =
         InstanceStateProvider.NotNull(savable, defaultValue, setterCallback)
+
+    private fun tryDismissWithAnimation(allowingStateLoss: Boolean): Boolean {
+        val baseDialog = dialog
+        if (baseDialog is BottomSheetDialog) {
+            val behavior: BottomSheetBehavior<*> = baseDialog.behavior
+            if (behavior.isHideable && baseDialog.dismissWithAnimation) {
+                dismissWithAnimation(behavior, allowingStateLoss)
+                return true
+            }
+        }
+        return false
+    }
+
+    private fun dismissWithAnimation(
+        behavior: BottomSheetBehavior<*>, allowingStateLoss: Boolean
+    ) {
+        bottomSheetWaitingForDismissAllowingStateLoss = allowingStateLoss
+        if (behavior.state == BottomSheetBehavior.STATE_HIDDEN) {
+            dismissAfterAnimation()
+        } else {
+            if (dialog is BottomSheetDialog) {
+                // We would like to call BottomSheetDialog.removeDefaultCallback here but this is
+                // internal function, closest public api is to clear all callbacks.
+                @Suppress("DEPRECATION")
+                (dialog as BottomSheetDialog).behavior.setBottomSheetCallback(null)
+            }
+            behavior.addBottomSheetCallback(BottomSheetDismissCallback())
+            behavior.setState(BottomSheetBehavior.STATE_HIDDEN)
+        }
+    }
+
+    private fun dismissAfterAnimation() {
+        if (bottomSheetWaitingForDismissAllowingStateLoss) {
+            super.dismissAllowingStateLoss()
+        } else {
+            super.dismiss()
+        }
+    }
+
+    private inner class BottomSheetDismissCallback : BottomSheetBehavior.BottomSheetCallback() {
+        override fun onStateChanged(
+            bottomSheet: View,
+            newState: Int
+        ) {
+            if (newState == BottomSheetBehavior.STATE_HIDDEN) {
+                dismissAfterAnimation()
+            }
+        }
+
+        override fun onSlide(
+            bottomSheet: View,
+            slideOffset: Float
+        ) {
+        }
+    }
 
     companion object {
         private var count: Int = 0
