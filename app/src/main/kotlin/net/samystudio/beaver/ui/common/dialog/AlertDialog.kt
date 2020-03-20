@@ -125,6 +125,12 @@ open class AlertDialog : BaseFragment(),
                 else -> it.onDialogClick(targetRequestCode, which)
             }
         }
+
+        // This is a single choice callback, if we have not set a positive button let's assume we
+        // want to dismiss dialog when an item is selected.
+        if (arguments?.getInt(KEY_POSITIVE_BUTTON_RES) == 0
+            && arguments?.getCharSequence(KEY_POSITIVE_BUTTON).isNullOrBlank()
+        ) dismissAllowingStateLoss()
     }
 
     override fun onClick(dialog: DialogInterface, which: Int, isChecked: Boolean) {
