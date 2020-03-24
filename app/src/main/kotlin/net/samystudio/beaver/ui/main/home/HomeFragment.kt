@@ -40,9 +40,6 @@ class HomeFragment : BaseDataFetchFragment<FragmentHomeBinding, HomeFragmentView
         )
     }
 
-    override fun dataFetchCanceled() {
-    }
-
     override fun dataFetchTerminate() {
         // TODO hide loader
     }

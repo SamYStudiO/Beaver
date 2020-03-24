@@ -1,7 +1,10 @@
 package net.samystudio.beaver.data
 
-import io.reactivex.*
-import io.reactivex.functions.Function
+import io.reactivex.Completable
+import io.reactivex.Observable
+import io.reactivex.ObservableTransformer
+import io.reactivex.Single
+import io.reactivex.subjects.PublishSubject
 
 
 /**
@@ -11,7 +14,6 @@ sealed class AsyncState {
     object Started : AsyncState()
     object Completed : AsyncState()
     class Failed(val error: Throwable) : AsyncState()
-    object Canceled : AsyncState()
     object Terminate : AsyncState()
 }
 
@@ -26,17 +28,12 @@ fun Observable<*>.toAsyncState(): Observable<AsyncState> =
 
 private fun asyncStateTransformer(): ObservableTransformer<Any, AsyncState> =
     ObservableTransformer { upstream ->
-        upstream.map {
+        upstream
+            .map {
                 @Suppress("USELESS_CAST")
                 AsyncState.Completed as AsyncState
             }
             .startWith(AsyncState.Started)
-            .onErrorResumeNext(Function<Throwable?, ObservableSource<out AsyncState>?> {
-                Observable.fromArray(
-                    AsyncState.Failed(it),
-                    AsyncState.Terminate
-                )
-            })
-            .doOnDispose { AsyncState.Canceled }
-            .doFinally { AsyncState.Terminate }
+            .onErrorReturn { AsyncState.Failed(it) }
+            .concatWith(Observable.just(AsyncState.Terminate))
     }

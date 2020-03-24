@@ -129,9 +129,6 @@ class AuthenticatorFragment :
         getGenericErrorDialog().showNow(parentFragmentManager, getMethodTag())
     }
 
-    override fun dataPushCanceled() {
-    }
-
     override fun dataPushTerminate() {
         // TODO hide loader
     }

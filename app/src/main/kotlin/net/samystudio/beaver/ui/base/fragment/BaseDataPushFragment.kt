@@ -19,7 +19,6 @@ abstract class BaseDataPushFragment<VB : ViewBinding, VM> :
                     is AsyncState.Started -> dataPushStart()
                     is AsyncState.Completed -> dataPushSuccess()
                     is AsyncState.Failed -> dataPushError(it.error)
-                    is AsyncState.Canceled -> dataPushCanceled()
                     is AsyncState.Terminate -> dataPushTerminate()
                 }
             }
@@ -29,6 +28,5 @@ abstract class BaseDataPushFragment<VB : ViewBinding, VM> :
     protected abstract fun dataPushStart()
     protected abstract fun dataPushSuccess()
     protected abstract fun dataPushError(throwable: Throwable)
-    protected abstract fun dataPushCanceled()
     protected abstract fun dataPushTerminate()
 }
