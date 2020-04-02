@@ -4,7 +4,7 @@ object Versions {
     const val targetSdk = 29
 
     // tools
-    const val android_build_tools = "3.6.1"
+    const val android_build_tools = "3.6.2"
     const val google_services = "4.3.3"
     const val firebase_perf_plugin = "1.3.1"
     const val fabric_tools = "1.31.2"
@@ -12,7 +12,7 @@ object Versions {
     const val gradle_versions_plugin = "0.28.0"
 
     // kotlin
-    const val kotlin = "1.3.70"
+    const val kotlin = "1.3.71"
 
     // android
     const val core_ktx = "1.2.0"
@@ -22,21 +22,21 @@ object Versions {
     const val arch_version = "2.1.0"
     const val lifecycle = "2.2.0"
     const val navigation = "2.2.1"
-    const val room = "2.2.4"
+    const val room = "2.2.5"
     const val material = "1.2.0-alpha05"
 
     // firebase
-    const val firebase_core = "17.2.3"
+    const val firebase_core = "17.3.0"
     const val firebase_appindexing = "19.1.0"
     const val firebase_perf = "19.0.5"
     const val firebase_crashlytics = "2.10.1"
 
     // dagger
-    const val dagger = "2.26"
+    const val dagger = "2.27"
     const val assisted_inject = "0.5.2"
 
     // reactive
-    const val rxjava = "2.2.18"
+    const val rxjava = "2.2.19"
     const val rxandroid = "2.1.1"
     const val rxkotlin = "2.4.0"
     const val rxbinding = "3.1.0"
@@ -44,12 +44,12 @@ object Versions {
     const val rxpicasso = "0.3.0"
 
     // network
-    const val okhttp = "4.4.0"
-    const val retrofit = "2.7.1"
+    const val okhttp = "4.4.1"
+    const val retrofit = "2.8.1"
     const val picasso = "3.0.0-SNAPSHOT"
 
     // misc
-    const val permissionsdispatcher = "4.6.0"
+    const val permissionsdispatcher = "4.7.0"
 
     // debug
     const val timber = "4.7.1"
@@ -59,7 +59,7 @@ object Versions {
     const val junit = "4.13"
     const val test_core = "1.2.0"
     const val robolectric = "4.3.1"
-    const val mockito = "3.3.1"
+    const val mockito = "3.3.3"
     const val test_runner = "1.2.0"
     const val espresso_core = "3.2.0"
 }
