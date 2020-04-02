@@ -40,7 +40,7 @@ class MainActivityViewModel @Inject constructor(private val googleApiAvailabilit
                         && it.error is GoogleApiAvailabilityManager.GoogleApiAvailabilityException
                         && !it.error.isResolvable
                     ) {
-                        // TODO notify app incompatible
+                        // TODO Notify app incompatible.
                     }
                 }
         )

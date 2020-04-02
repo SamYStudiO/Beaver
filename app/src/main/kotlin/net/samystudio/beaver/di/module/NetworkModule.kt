@@ -64,16 +64,16 @@ object NetworkModule {
             val request = chain.request()
             val url = request.url.toString()
 
-            // rewriting url is not necessary when using a unique production server url, but in most
+            // Rewriting url is not necessary when using a unique production server url, but in most
             // case we'll use multiple server urls  (test/prod/...) and this is the way to go if we
-            // want to update Retrofit base url at runtime
+            // want to update Retrofit base url at runtime.
             val newBuilder = request.newBuilder()
 
             url.replace(BASE_URL, sharedPreferencesHelper.apiUrl.get()).toHttpUrlOrNull()?.let {
                 newBuilder.url(it)
             }
 
-            // let's add token if we got one
+            // Let's add token if we got one.
             userManager.token?.let { newBuilder.header("Authorization", "Bearer $it") }
 
             chain.proceed(newBuilder.build())

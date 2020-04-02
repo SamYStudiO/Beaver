@@ -20,14 +20,14 @@ constructor(
     fun signIn(email: String, password: String): Observable<AsyncState> =
         authenticatorApiInterface
             .signIn(email, password)
-            .onErrorReturnItem("token") // TODO remove this line, for debug only
+            .onErrorReturnItem("token") // TODO Remove this line, for debug only.
             .map { userManager.connect(email, password, it) }
             .toAsyncState()
 
     fun signUp(email: String, password: String): Observable<AsyncState> =
         authenticatorApiInterface
             .signUp(email, password)
-            .onErrorReturnItem("token") // TODO remove this line, for debug only
+            .onErrorReturnItem("token") // TODO Remove this line, for debug only.
             .map { userManager.createAccount(email, password) }
             .toAsyncState()
 }

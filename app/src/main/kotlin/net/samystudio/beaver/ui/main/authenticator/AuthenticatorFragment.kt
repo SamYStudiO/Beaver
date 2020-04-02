@@ -4,10 +4,7 @@ package net.samystudio.beaver.ui.main.authenticator
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
-import com.jakewharton.rxbinding3.view.clicks
-import com.jakewharton.rxbinding3.widget.textChanges
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.Observables
 import net.samystudio.beaver.data.local.SharedPreferencesHelper
@@ -119,7 +116,7 @@ class AuthenticatorFragment :
     }
 
     override fun dataPushStart() {
-        // TODO show loader
+        // TODO Show loader.
     }
 
     override fun dataPushSuccess() {
@@ -130,6 +127,6 @@ class AuthenticatorFragment :
     }
 
     override fun dataPushTerminate() {
-        // TODO hide loader
+        // TODO Hide loader.
     }
 }

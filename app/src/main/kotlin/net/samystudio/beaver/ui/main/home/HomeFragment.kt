@@ -26,7 +26,7 @@ class HomeFragment : BaseDataFetchFragment<FragmentHomeBinding, HomeFragmentView
     }
 
     override fun dataFetchStart() {
-        // TODO show loader
+        // TODO Show loader.
     }
 
     override fun dataFetchSuccess(data: Home) {
@@ -41,6 +41,6 @@ class HomeFragment : BaseDataFetchFragment<FragmentHomeBinding, HomeFragmentView
     }
 
     override fun dataFetchTerminate() {
-        // TODO hide loader
+        // TODO Hide loader.
     }
 }

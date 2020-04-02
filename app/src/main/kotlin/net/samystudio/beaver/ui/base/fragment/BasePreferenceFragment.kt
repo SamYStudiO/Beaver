@@ -35,7 +35,7 @@ abstract class BasePreferenceFragment : PreferenceFragmentCompat(),
     protected val navController: NavController
         get() = findNavController()
 
-    // Cannot inject here since we don't have dagger yet
+    // Cannot inject here since we don't have dagger yet.
     protected lateinit var firebaseAnalytics: FirebaseAnalytics
     protected var resultCode: Int by state(Activity.RESULT_CANCELED)
     protected var resultIntent: Intent? by state()

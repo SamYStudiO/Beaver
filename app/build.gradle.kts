@@ -81,13 +81,13 @@ android {
         jvmTarget = "1.8"
     }
 
-    // For assisted-inject library
+    // For assisted-inject library.
     // https://kotlinlang.org/docs/reference/kapt.html#non-existent-type-correction
     kapt {
         correctErrorTypes = true
     }
 
-    // better output apk naming : {projectName}_{flavor(s)}_{buildType}_{versionName}_build_{buildVersion}.apk
+    // Better output apk naming : {projectName}_{flavor(s)}_{buildType}_{versionName}_build_{buildVersion}.apk.
     applicationVariants.all {
         outputs.all {
             val outputImpl = this as com.android.build.gradle.internal.api.BaseVariantOutputImpl
