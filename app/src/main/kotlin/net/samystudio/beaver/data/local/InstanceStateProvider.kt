@@ -49,12 +49,10 @@ abstract class InstanceStateProvider<T>(private val bundle: Bundle) {
     protected fun getAndCache(key: String): T? =
         cache ?: (bundle.get(key) as T?).apply { cache = this }
 
-    class Nullable<T>(savable: Bundle, private var setterCallback: ((value: T) -> Unit)? = null) :
+    class Nullable<T>(savable: Bundle, private var setterCallback: ((value: T) -> T)? = null) :
         InstanceStateProvider<T>(savable) {
-
         override operator fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
-            super.setValue(thisRef, property, value)
-            setterCallback?.let { it(value) }
+            super.setValue(thisRef, property, setterCallback?.let { it(value) } ?: value)
         }
 
         operator fun getValue(thisRef: Any?, property: KProperty<*>): T? =
@@ -64,12 +62,10 @@ abstract class InstanceStateProvider<T>(private val bundle: Bundle) {
     class NotNull<T>(
         savable: Bundle,
         private val defaultValue: T,
-        private var setterCallback: ((value: T) -> Unit)? = null
-    ) :
-        InstanceStateProvider<T>(savable) {
+        private var setterCallback: ((value: T) -> T)? = null
+    ) : InstanceStateProvider<T>(savable) {
         override operator fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
-            super.setValue(thisRef, property, value)
-            setterCallback?.let { it(value) }
+            super.setValue(thisRef, property, setterCallback?.let { it(value) } ?: value)
         }
 
         operator fun getValue(thisRef: Any?, property: KProperty<*>): T =

@@ -51,7 +51,10 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
     protected var destroyViewDisposable: CompositeDisposable? = null
     protected var stopDisposable: CompositeDisposable? = null
     protected var pauseDisposable: CompositeDisposable? = null
-    var enableBackPressed by state(false, { value -> onBackPressCallback.isEnabled = value })
+    var enableBackPressed by state(false, { value ->
+        onBackPressCallback.isEnabled = value
+        value
+    })
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -228,10 +231,10 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
      */
     protected fun getScreenTag() = getClassSimpleTag()
 
-    protected fun <T> state(setterCallback: ((value: T) -> Unit)? = null) =
+    protected fun <T> state(setterCallback: ((value: T) -> T)? = null) =
         InstanceStateProvider.Nullable(savable, setterCallback)
 
-    protected fun <T> state(defaultValue: T, setterCallback: ((value: T) -> Unit)? = null) =
+    protected fun <T> state(defaultValue: T, setterCallback: ((value: T) -> T)? = null) =
         InstanceStateProvider.NotNull(savable, defaultValue, setterCallback)
 
     private fun tryDismissWithAnimation(allowingStateLoss: Boolean): Boolean {
