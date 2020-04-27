@@ -37,7 +37,9 @@ open class AlertDialog : BaseFragment(),
                     if (it != 0)
                         setPositiveButton(it, this@AlertDialog)
                     else
-                        setPositiveButton(getCharSequence(KEY_POSITIVE_BUTTON), this@AlertDialog)
+                        getCharSequence(KEY_POSITIVE_BUTTON)?.let { text ->
+                            setPositiveButton(text, this@AlertDialog)
+                        }
                 }
                 getInt(KEY_POSITIVE_BUTTON_ICON_RES).let {
                     if (it != 0) setPositiveButtonIcon(
@@ -48,7 +50,9 @@ open class AlertDialog : BaseFragment(),
                     if (it != 0)
                         setNegativeButton(it, this@AlertDialog)
                     else
-                        setNegativeButton(getCharSequence(KEY_NEGATIVE_BUTTON), this@AlertDialog)
+                        getCharSequence(KEY_NEGATIVE_BUTTON)?.let { text ->
+                            setNegativeButton(text, this@AlertDialog)
+                        }
                 }
                 getInt(KEY_NEGATIVE_BUTTON_ICON_RES).let {
                     if (it != 0) setNegativeButtonIcon(
@@ -59,7 +63,9 @@ open class AlertDialog : BaseFragment(),
                     if (it != 0)
                         setNeutralButton(it, this@AlertDialog)
                     else
-                        setNeutralButton(getCharSequence(KEY_NEUTRAL_BUTTON), this@AlertDialog)
+                        getCharSequence(KEY_NEUTRAL_BUTTON)?.let { text ->
+                            setNeutralButton(text, this@AlertDialog)
+                        }
                 }
                 getInt(KEY_NEUTRAL_BUTTON_ICON_RES).let {
                     if (it != 0) setNegativeButtonIcon(
@@ -71,7 +77,9 @@ open class AlertDialog : BaseFragment(),
                     if (it != 0)
                         setItems(it, this@AlertDialog)
                     else
-                        setItems(getCharSequenceArray(KEY_ITEMS), this@AlertDialog)
+                        getCharSequenceArray(KEY_ITEMS)?.let { items ->
+                            setItems(items, this@AlertDialog)
+                        }
                 }
                 getInt(KEY_MULTI_CHOICE_ITEMS_RES).let {
                     if (it != 0)
@@ -80,13 +88,14 @@ open class AlertDialog : BaseFragment(),
                             getBooleanArray(KEY_MULTI_CHOICE_CHECKED_ITEMS),
                             this@AlertDialog
                         )
-                }
-                getCharSequenceArray(KEY_MULTI_CHOICE_ITEMS)?.let {
-                    setMultiChoiceItems(
-                        it,
-                        getBooleanArray(KEY_MULTI_CHOICE_CHECKED_ITEMS),
-                        this@AlertDialog
-                    )
+                    else
+                        getCharSequenceArray(KEY_MULTI_CHOICE_ITEMS)?.let { items ->
+                            setMultiChoiceItems(
+                                items,
+                                getBooleanArray(KEY_MULTI_CHOICE_CHECKED_ITEMS),
+                                this@AlertDialog
+                            )
+                        }
                 }
                 getInt(KEY_SINGLE_CHOICE_ITEMS_RES).let {
                     if (it != 0)
@@ -95,11 +104,12 @@ open class AlertDialog : BaseFragment(),
                             getInt(KEY_SINGLE_CHOICE_CHECKED_ITEM),
                             this@AlertDialog
                         )
-                }
-                getCharSequenceArray(KEY_SINGLE_CHOICE_ITEMS)?.let {
-                    setSingleChoiceItems(
-                        it, getInt(KEY_SINGLE_CHOICE_CHECKED_ITEM), this@AlertDialog
-                    )
+                    else
+                        getCharSequenceArray(KEY_SINGLE_CHOICE_ITEMS)?.let { items ->
+                            setSingleChoiceItems(
+                                items, getInt(KEY_SINGLE_CHOICE_CHECKED_ITEM), this@AlertDialog
+                            )
+                        }
                 }
                 getInt(KEY_CUSTOM_VIEW_RES).let { if (it != 0) setView(it) }
             }
