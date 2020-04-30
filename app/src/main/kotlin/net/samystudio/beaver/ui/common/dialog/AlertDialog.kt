@@ -144,8 +144,23 @@ open class AlertDialog : BaseFragment(),
     }
 
     override fun onClick(dialog: DialogInterface, which: Int, isChecked: Boolean) {
-        (activity as? AlertDialogListener)?.onDialogClick(targetRequestCode, which, isChecked)
-        (targetFragment as? AlertDialogListener)?.onDialogClick(targetRequestCode, which, isChecked)
+        (activity as? AlertDialogListener)?.let {
+            when (which) {
+                DialogInterface.BUTTON_POSITIVE -> it.onDialogPositive(targetRequestCode)
+                DialogInterface.BUTTON_NEGATIVE -> it.onDialogNegative(targetRequestCode)
+                DialogInterface.BUTTON_NEUTRAL -> it.onDialogNeutral(targetRequestCode)
+                else -> it.onDialogClick(targetRequestCode, which, isChecked)
+            }
+        }
+
+        (targetFragment as? AlertDialogListener)?.let {
+            when (which) {
+                DialogInterface.BUTTON_POSITIVE -> it.onDialogPositive(targetRequestCode)
+                DialogInterface.BUTTON_NEGATIVE -> it.onDialogNegative(targetRequestCode)
+                DialogInterface.BUTTON_NEUTRAL -> it.onDialogNeutral(targetRequestCode)
+                else -> it.onDialogClick(targetRequestCode, which, isChecked)
+            }
+        }
     }
 
     protected open fun onPrepareDialogBuilder(builder: AndroidAlertDialog.Builder) {}
@@ -291,10 +306,16 @@ open class AlertDialog : BaseFragment(),
             putBoolean(KEY_CANCELABLE, cancelable)
             if (itemsRes != 0) putInt(KEY_ITEMS_RES, itemsRes)
             putCharSequenceArray(KEY_ITEMS, items)
-            if (multiChoiceItemsRes != 0) putInt(KEY_MULTI_CHOICE_ITEMS_RES, multiChoiceItemsRes)
+            if (multiChoiceItemsRes != 0) putInt(
+                KEY_MULTI_CHOICE_ITEMS_RES,
+                multiChoiceItemsRes
+            )
             putCharSequenceArray(KEY_MULTI_CHOICE_ITEMS, multiChoiceItems)
             putBooleanArray(KEY_MULTI_CHOICE_CHECKED_ITEMS, multiChoiceCheckedItems)
-            if (singleChoiceItemsRes != 0) putInt(KEY_SINGLE_CHOICE_ITEMS_RES, singleChoiceItemsRes)
+            if (singleChoiceItemsRes != 0) putInt(
+                KEY_SINGLE_CHOICE_ITEMS_RES,
+                singleChoiceItemsRes
+            )
             putCharSequenceArray(KEY_SINGLE_CHOICE_ITEMS, singleChoiceItems)
             putInt(KEY_SINGLE_CHOICE_CHECKED_ITEM, singleChoiceCheckedItem)
             putInt(KEY_CUSTOM_VIEW_RES, customViewRes)
