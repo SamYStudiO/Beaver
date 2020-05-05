@@ -74,7 +74,10 @@ abstract class BasePreferenceFragment : PreferenceFragmentCompat(),
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        requireActivity().onBackPressedDispatcher.addCallback(this, onBackPressCallback)
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            onBackPressCallback
+        )
         firebaseAnalytics = FirebaseAnalytics.getInstance(requireContext().applicationContext)
     }
 

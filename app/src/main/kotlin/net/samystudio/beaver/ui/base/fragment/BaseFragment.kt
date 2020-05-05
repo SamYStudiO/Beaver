@@ -87,7 +87,10 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
 
         super.onActivityCreated(savedInstanceState)
 
-        requireActivity().onBackPressedDispatcher.addCallback(this, onBackPressCallback)
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            onBackPressCallback
+        )
         firebaseAnalytics = FirebaseAnalytics.getInstance(requireContext().applicationContext)
     }
 
