@@ -51,9 +51,8 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
     protected var destroyViewDisposable: CompositeDisposable? = null
     protected var stopDisposable: CompositeDisposable? = null
     protected var pauseDisposable: CompositeDisposable? = null
-    var enableBackPressed by state(false, { value ->
+    var enableBackPressed by state(false, afterSetCallback = { value ->
         onBackPressCallback.isEnabled = value
-        value
     })
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -234,11 +233,18 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
      */
     protected fun getScreenTag() = getClassSimpleTag()
 
-    protected fun <T> state(setterCallback: ((value: T) -> T)? = null) =
-        InstanceStateProvider.Nullable(savable, setterCallback)
+    protected fun <T> state(
+        beforeSetCallback: ((value: T) -> T)? = null,
+        afterSetCallback: ((value: T) -> Unit)? = null
+    ) =
+        InstanceStateProvider.Nullable(savable, beforeSetCallback, afterSetCallback)
 
-    protected fun <T> state(defaultValue: T, setterCallback: ((value: T) -> T)? = null) =
-        InstanceStateProvider.NotNull(savable, defaultValue, setterCallback)
+    protected fun <T> state(
+        defaultValue: T,
+        beforeSetCallback: ((value: T) -> T)? = null,
+        afterSetCallback: ((value: T) -> Unit)? = null
+    ) =
+        InstanceStateProvider.NotNull(savable, defaultValue, beforeSetCallback, afterSetCallback)
 
     private fun tryDismissWithAnimation(allowingStateLoss: Boolean): Boolean {
         val baseDialog = dialog

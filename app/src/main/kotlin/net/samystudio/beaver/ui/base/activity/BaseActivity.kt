@@ -147,9 +147,16 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(),
         ownerProducer: () -> ViewModelStoreOwner = { this }
     ) = viewModelsInternal<VM> { viewModelFactory }
 
-    protected fun <T> state(setterCallback: ((value: T) -> T)? = null) =
-        InstanceStateProvider.Nullable(savable, setterCallback)
+    protected fun <T> state(
+        beforeSetCallback: ((value: T) -> T)? = null,
+        afterSetCallback: ((value: T) -> Unit)? = null
+    ) =
+        InstanceStateProvider.Nullable(savable, beforeSetCallback, afterSetCallback)
 
-    protected fun <T> state(defaultValue: T, setterCallback: ((value: T) -> T)? = null) =
-        InstanceStateProvider.NotNull(savable, defaultValue, setterCallback)
+    protected fun <T> state(
+        defaultValue: T,
+        beforeSetCallback: ((value: T) -> T)? = null,
+        afterSetCallback: ((value: T) -> Unit)? = null
+    ) =
+        InstanceStateProvider.NotNull(savable, defaultValue, beforeSetCallback, afterSetCallback)
 }

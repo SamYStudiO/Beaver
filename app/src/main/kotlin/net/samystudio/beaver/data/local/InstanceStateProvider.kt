@@ -8,53 +8,60 @@ import android.util.SizeF
 import java.io.Serializable
 import kotlin.reflect.KProperty
 
-abstract class InstanceStateProvider<T>(private val bundle: Bundle) {
+abstract class InstanceStateProvider<T>(
+    private val bundle: Bundle,
+    private var beforeSetCallback: ((value: T) -> T)? = null,
+    private var afterSetCallback: ((value: T) -> Unit)? = null
+) {
     private var cache: T? = null
 
-    open operator fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
-        cache = value
-        if (value == null) {
+    operator fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
+        val v = (beforeSetCallback?.let { it(value) } ?: value)
+
+        cache = v
+        if (v == null) {
             bundle.remove(property.name)
             return
         }
-        when (value) {
-            is Byte -> bundle.putByte(property.name, value)
-            is ByteArray -> bundle.putByteArray(property.name, value)
-            is Short -> bundle.putShort(property.name, value)
-            is ShortArray -> bundle.putShortArray(property.name, value)
-            is Int -> bundle.putInt(property.name, value)
-            is IntArray -> bundle.putIntArray(property.name, value)
-            is Long -> bundle.putLong(property.name, value)
-            is LongArray -> bundle.putLongArray(property.name, value)
-            is Float -> bundle.putFloat(property.name, value)
-            is FloatArray -> bundle.putFloatArray(property.name, value)
-            is Double -> bundle.putDouble(property.name, value)
-            is DoubleArray -> bundle.putDoubleArray(property.name, value)
-            is Boolean -> bundle.putBoolean(property.name, value)
-            is BooleanArray -> bundle.putBooleanArray(property.name, value)
-            is Char -> bundle.putChar(property.name, value)
-            is CharArray -> bundle.putCharArray(property.name, value)
-            is CharSequence -> bundle.putCharSequence(property.name, value)
-            is String -> bundle.putString(property.name, value)
-            is Size -> bundle.putSize(property.name, value)
-            is SizeF -> bundle.putSizeF(property.name, value)
-            is Bundle -> bundle.putBundle(property.name, value)
-            is Serializable -> bundle.putSerializable(property.name, value)
-            is Parcelable -> bundle.putParcelable(property.name, value)
-            is IBinder -> bundle.putBinder(property.name, value)
+        when (v) {
+            is Byte -> bundle.putByte(property.name, v)
+            is ByteArray -> bundle.putByteArray(property.name, v)
+            is Short -> bundle.putShort(property.name, v)
+            is ShortArray -> bundle.putShortArray(property.name, v)
+            is Int -> bundle.putInt(property.name, v)
+            is IntArray -> bundle.putIntArray(property.name, v)
+            is Long -> bundle.putLong(property.name, v)
+            is LongArray -> bundle.putLongArray(property.name, v)
+            is Float -> bundle.putFloat(property.name, v)
+            is FloatArray -> bundle.putFloatArray(property.name, v)
+            is Double -> bundle.putDouble(property.name, v)
+            is DoubleArray -> bundle.putDoubleArray(property.name, v)
+            is Boolean -> bundle.putBoolean(property.name, v)
+            is BooleanArray -> bundle.putBooleanArray(property.name, v)
+            is Char -> bundle.putChar(property.name, v)
+            is CharArray -> bundle.putCharArray(property.name, v)
+            is CharSequence -> bundle.putCharSequence(property.name, v)
+            is String -> bundle.putString(property.name, v)
+            is Size -> bundle.putSize(property.name, v)
+            is SizeF -> bundle.putSizeF(property.name, v)
+            is Bundle -> bundle.putBundle(property.name, v)
+            is Serializable -> bundle.putSerializable(property.name, v)
+            is Parcelable -> bundle.putParcelable(property.name, v)
+            is IBinder -> bundle.putBinder(property.name, v)
         }
+
+        afterSetCallback?.let { it(v) }
     }
 
     @Suppress("UNCHECKED_CAST")
     protected fun getAndCache(key: String): T? =
         cache ?: (bundle.get(key) as T?).apply { cache = this }
 
-    class Nullable<T>(savable: Bundle, private var setterCallback: ((value: T) -> T)? = null) :
-        InstanceStateProvider<T>(savable) {
-        override operator fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
-            super.setValue(thisRef, property, setterCallback?.let { it(value) } ?: value)
-        }
-
+    class Nullable<T>(
+        savable: Bundle,
+        beforeSetCallback: ((value: T) -> T)? = null,
+        afterSetCallback: ((value: T) -> Unit)? = null
+    ) : InstanceStateProvider<T>(savable, beforeSetCallback, afterSetCallback) {
         operator fun getValue(thisRef: Any?, property: KProperty<*>): T? =
             getAndCache(property.name)
     }
@@ -62,12 +69,9 @@ abstract class InstanceStateProvider<T>(private val bundle: Bundle) {
     class NotNull<T>(
         savable: Bundle,
         private val defaultValue: T,
-        private var setterCallback: ((value: T) -> T)? = null
-    ) : InstanceStateProvider<T>(savable) {
-        override operator fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
-            super.setValue(thisRef, property, setterCallback?.let { it(value) } ?: value)
-        }
-
+        beforeSetCallback: ((value: T) -> T)? = null,
+        afterSetCallback: ((value: T) -> Unit)? = null
+    ) : InstanceStateProvider<T>(savable, beforeSetCallback, afterSetCallback) {
         operator fun getValue(thisRef: Any?, property: KProperty<*>): T =
             getAndCache(property.name) ?: defaultValue
     }
