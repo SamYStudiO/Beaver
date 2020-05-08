@@ -6,12 +6,13 @@ import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
 import androidx.annotation.*
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import net.samystudio.beaver.ui.base.fragment.BaseFragment
 import androidx.appcompat.app.AlertDialog as AndroidAlertDialog
 
 /**
- * AlertDialog using [androidx.fragment.app.DialogFragment].
+ * AlertDialog using [DialogFragment].
  */
 open class AlertDialog : BaseFragment(),
     DialogInterface.OnClickListener,

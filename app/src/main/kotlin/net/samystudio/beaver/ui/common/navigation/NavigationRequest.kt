@@ -6,10 +6,10 @@ import androidx.annotation.IdRes
 import androidx.navigation.NavDirections
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigator
+import net.samystudio.beaver.ui.base.viewmodel.BaseViewControllerViewModel
 
 /**
- * To make Navigation request from a
- * [net.samystudio.beaver.ui.base.viewmodel.BaseViewControllerViewModel].
+ * To make Navigation request from a [BaseViewControllerViewModel].
  */
 sealed class NavigationRequest {
     class Pop(

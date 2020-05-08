@@ -199,7 +199,7 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
     }
 
     /**
-     * @see [android.app.Activity.setResult]
+     * @see [Activity.setResult]
      */
     fun setResult(code: Int, intent: Intent?) {
         resultCode = code
@@ -207,8 +207,8 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
     }
 
     /**
-     * Same as [android.app.Activity.finish], if [BaseFragment] is a dialog it will be dismissed
-     * otherwise [androidx.fragment.app.FragmentManager] stack will pop.
+     * Same as [Activity.finish], if [BaseFragment] is a dialog it will be dismissed otherwise
+     * [FragmentManager] stack will pop.
      */
     fun finish() {
         if (finished) return

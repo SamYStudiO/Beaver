@@ -11,6 +11,7 @@ import android.view.WindowInsets
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.CallSuper
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceFragmentCompat
@@ -138,7 +139,7 @@ abstract class BasePreferenceFragment : PreferenceFragmentCompat(),
     }
 
     /**
-     * @see [android.app.Activity.setResult]
+     * @see [Activity.setResult]
      */
     fun setResult(code: Int, intent: Intent?) {
         resultCode = code
@@ -146,8 +147,8 @@ abstract class BasePreferenceFragment : PreferenceFragmentCompat(),
     }
 
     /**
-     * Same as [android.app.Activity.finish], if [BaseFragment] is a dialog it will be dismissed
-     * otherwise [androidx.fragment.app.FragmentManager] stack will pop.
+     * Same as [Activity.finish], if [BaseFragment] is a dialog it will be dismissed otherwise
+     * [FragmentManager] stack will pop.
      */
     fun finish() {
         if (finished) return
