@@ -4,6 +4,9 @@ import dagger.android.support.DaggerApplication
 import io.fabric.sdk.android.Fabric
 import net.samystudio.beaver.data.TrimMemory
 import net.samystudio.beaver.di.component.DaggerApplicationComponent
+import net.samystudio.beaver.di.module.ApplicationModule
+import net.samystudio.beaver.di.module.CrashlyticsModule
+import net.samystudio.beaver.di.module.TimberModule
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -13,17 +16,19 @@ class BeaverApplication : DaggerApplication() {
         .build()
 
     /**
-     * @see net.samystudio.beaver.di.module.CrashlyticsModule.provideFabric
+     * @see CrashlyticsModule.provideFabric
      */
     @Inject
     lateinit var fabric: Fabric
+
     /**
-     * @see net.samystudio.beaver.di.module.TimberModule.provideTimberTree
+     * @see TimberModule.provideTimberTree
      */
     @Inject
     lateinit var timberTree: Timber.Tree
+
     /**
-     * @see net.samystudio.beaver.di.module.ApplicationModule.provideTrimMemoryList
+     * @see ApplicationModule.provideTrimMemoryList
      */
     @Inject
     lateinit var trimMemoryList: ArrayList<TrimMemory>

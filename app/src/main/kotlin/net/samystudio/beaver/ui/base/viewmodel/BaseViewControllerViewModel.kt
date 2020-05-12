@@ -1,5 +1,6 @@
 package net.samystudio.beaver.ui.base.viewmodel
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.annotation.CallSuper
@@ -59,7 +60,7 @@ abstract class BaseViewControllerViewModel : BaseViewModel() {
     }
 
     /**
-     * @see android.app.Activity.setResult
+     * @see Activity.setResult
      */
     fun setResult(code: Int, intent: Intent?, finish: Boolean = true) {
         _resultEvent.value = Result(code, intent, finish)

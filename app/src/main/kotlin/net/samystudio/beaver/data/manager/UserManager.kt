@@ -9,11 +9,12 @@ import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import net.samystudio.beaver.BuildConfig
 import net.samystudio.beaver.data.local.SharedPreferencesHelper
+import net.samystudio.beaver.di.module.SystemServiceModule
 import javax.inject.Inject
 import javax.inject.Singleton
 
 /**
- * @see net.samystudio.beaver.di.module.SystemServiceModule.provideAccountManager
+ * @see SystemServiceModule.provideAccountManager
  */
 @Singleton
 class UserManager @Inject constructor(

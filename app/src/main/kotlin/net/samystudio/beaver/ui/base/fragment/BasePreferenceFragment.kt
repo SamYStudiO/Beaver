@@ -139,7 +139,7 @@ abstract class BasePreferenceFragment : PreferenceFragmentCompat(),
     }
 
     /**
-     * @see [Activity.setResult]
+     * @see Activity.setResult
      */
     fun setResult(code: Int, intent: Intent?) {
         resultCode = code

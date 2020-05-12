@@ -199,7 +199,7 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
     }
 
     /**
-     * @see [Activity.setResult]
+     * @see Activity.setResult
      */
     fun setResult(code: Int, intent: Intent?) {
         resultCode = code

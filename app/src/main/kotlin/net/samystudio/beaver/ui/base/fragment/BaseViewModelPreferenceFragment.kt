@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelStoreOwner
 import net.samystudio.beaver.di.qualifier.ActivityContext
 import net.samystudio.beaver.di.qualifier.FragmentContext
 import net.samystudio.beaver.ext.navigate
+import net.samystudio.beaver.ui.base.activity.BaseActivityModule
 import net.samystudio.beaver.ui.base.viewmodel.BaseFragmentViewModel
 import javax.inject.Inject
 import androidx.fragment.app.activityViewModels as activityViewModelsInternal
@@ -27,7 +28,7 @@ abstract class BaseViewModelPreferenceFragment<VM : BaseFragmentViewModel> :
     protected lateinit var viewModelFactory: ViewModelProvider.Factory
 
     /**
-     * @see net.samystudio.beaver.ui.base.activity.BaseActivityModule.bindViewModelFactory
+     * @see BaseActivityModule.bindViewModelFactory
      */
     @Inject
     @ActivityContext
