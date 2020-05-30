@@ -64,8 +64,8 @@ android {
         getByName("androidTest").java.srcDir("src/androidTest/kotlin")
     }
 
-    viewBinding {
-        isEnabled = true
+    buildFeatures {
+        viewBinding = true
     }
 
     androidExtensions {
