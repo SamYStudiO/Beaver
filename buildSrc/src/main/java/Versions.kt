@@ -4,7 +4,7 @@ object Versions {
     const val targetSdk = 29
 
     // tools
-    const val android_build_tools = "3.6.3"
+    const val android_build_tools = "4.0.0"
     const val google_services = "4.3.3"
     const val firebase_perf_plugin = "1.3.1"
     const val fabric_tools = "1.31.2"
