@@ -12,10 +12,10 @@ object Versions {
     const val gradle_versions_plugin = "0.28.0"
 
     // kotlin
-    const val kotlin = "1.3.71"
+    const val kotlin = "1.3.72"
 
     // android
-    const val core_ktx = "1.2.0"
+    const val core_ktx = "1.3.0"
     const val appcompat = "1.1.0"
     const val preference_ktx = "1.1.1"
     const val constraintlayout = "1.1.3"
@@ -23,16 +23,16 @@ object Versions {
     const val lifecycle = "2.2.0"
     const val navigation = "2.2.2"
     const val room = "2.2.5"
-    const val material = "1.2.0-alpha06"
+    const val material = "1.2.0-beta01"
 
     // firebase
-    const val firebase_core = "17.4.0"
+    const val firebase_core = "17.4.2"
     const val firebase_appindexing = "19.1.0"
     const val firebase_perf = "19.0.7"
     const val firebase_crashlytics = "2.10.1"
 
     // dagger
-    const val dagger = "2.27"
+    const val dagger = "2.28"
     const val assisted_inject = "0.5.2"
 
     // reactive
@@ -44,8 +44,8 @@ object Versions {
     const val rxpicasso = "0.3.0"
 
     // network
-    const val okhttp = "4.5.0"
-    const val retrofit = "2.8.1"
+    const val okhttp = "4.7.2"
+    const val retrofit = "2.9.0"
     const val picasso = "3.0.0-SNAPSHOT"
 
     // misc
@@ -53,7 +53,7 @@ object Versions {
 
     // debug
     const val timber = "4.7.1"
-    const val leakcanary = "2.2"
+    const val leakcanary = "2.3"
 
     // test
     const val junit = "4.13"
