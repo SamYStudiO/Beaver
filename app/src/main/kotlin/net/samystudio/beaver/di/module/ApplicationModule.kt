@@ -30,7 +30,6 @@ abstract class ApplicationModule {
     @ApplicationContext
     abstract fun bindApplicationContext(application: Application): Context
 
-    @Module
     companion object {
         /**
          * Add to this list any application level data implementing [TrimMemory] that should clear
@@ -38,7 +37,6 @@ abstract class ApplicationModule {
          */
         @Provides
         @Singleton
-        @JvmStatic
         fun provideTrimMemoryList(picassoTrimMemory: PicassoModule.PicassoTrimMemory): ArrayList<TrimMemory> =
             mutableListOf<TrimMemory>(picassoTrimMemory) as ArrayList<TrimMemory>
     }
