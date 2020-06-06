@@ -11,9 +11,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class BeaverApplication : DaggerApplication() {
-    private val applicationInjector = DaggerApplicationComponent.builder()
-        .application(this)
-        .build()
+    private val applicationInjector = DaggerApplicationComponent.factory().create(this)
 
     /**
      * @see CrashlyticsModule.provideFabric
