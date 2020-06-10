@@ -6,8 +6,8 @@ object Versions {
     // tools
     const val android_build_tools = "4.0.0"
     const val google_services = "4.3.3"
+    const val firebase_crashlytics_plugin = "2.1.1"
     const val firebase_perf_plugin = "1.3.1"
-    const val fabric_tools = "1.31.2"
     const val navigation_safe_args_plugin = "1.0.0"
     const val gradle_versions_plugin = "0.28.0"
 
@@ -28,8 +28,9 @@ object Versions {
     // firebase
     const val firebase_core = "17.4.2"
     const val firebase_appindexing = "19.1.0"
+    const val firebase_crashlytics = "17.0.1"
+    const val firebase_analytics = "17.4.3"
     const val firebase_perf = "19.0.7"
-    const val firebase_crashlytics = "2.10.1"
 
     // dagger
     const val dagger = "2.28"

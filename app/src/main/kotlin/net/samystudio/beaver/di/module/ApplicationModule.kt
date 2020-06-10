@@ -16,7 +16,7 @@ import net.samystudio.beaver.ui.ActivityBuilderModule
 import javax.inject.Singleton
 
 @Module(
-    includes = [CrashlyticsModule::class, TimberModule::class, AndroidSupportInjectionModule::class,
+    includes = [TimberModule::class, AndroidSupportInjectionModule::class,
         ActivityBuilderModule::class, ServiceBuilderModule::class, SystemServiceModule::class,
         NetworkModule::class, FirebaseModule::class, DataModule::class, PicassoModule::class]
 )

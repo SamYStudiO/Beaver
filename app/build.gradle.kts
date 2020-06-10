@@ -3,8 +3,8 @@ plugins {
     kotlin("android")
     kotlin("android.extensions")
     kotlin("kapt")
+    id("com.google.firebase.crashlytics")
     id("com.google.firebase.firebase-perf")
-    id("io.fabric")
     id("androidx.navigation.safeargs.kotlin")
 }
 
@@ -46,18 +46,17 @@ android {
 
     buildTypes {
         getByName("debug") {
-            (this as ExtensionAware).apply {
-                extra["alwaysUpdateBuildId"] = false
-                extra["enableCrashlytics"] = false
+            isMinifyEnabled = false
+            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+            firebaseCrashlytics {
+                mappingFileUploadEnabled = false
             }
-            manifestPlaceholders = mapOf("crashlyticsEnabled" to false)
         }
 
         getByName("release") {
             isMinifyEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
             signingConfig = signingConfigs.getByName("release")
-            manifestPlaceholders = mapOf("crashlyticsEnabled" to true)
         }
     }
 

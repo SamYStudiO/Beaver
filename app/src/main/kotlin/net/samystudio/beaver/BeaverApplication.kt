@@ -1,11 +1,11 @@
 package net.samystudio.beaver
 
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import dagger.android.support.DaggerApplication
-import io.fabric.sdk.android.Fabric
 import net.samystudio.beaver.data.TrimMemory
 import net.samystudio.beaver.di.component.DaggerApplicationComponent
 import net.samystudio.beaver.di.module.ApplicationModule
-import net.samystudio.beaver.di.module.CrashlyticsModule
+import net.samystudio.beaver.di.module.FirebaseModule
 import net.samystudio.beaver.di.module.TimberModule
 import timber.log.Timber
 import javax.inject.Inject
@@ -14,10 +14,10 @@ class BeaverApplication : DaggerApplication() {
     private val applicationInjector = DaggerApplicationComponent.factory().create(this)
 
     /**
-     * @see CrashlyticsModule.provideFabric
+     * @see FirebaseModule.provideFirebaseCrashlytics
      */
     @Inject
-    lateinit var fabric: Fabric
+    lateinit var crashlytics: FirebaseCrashlytics
 
     /**
      * @see TimberModule.provideTimberTree
@@ -34,6 +34,7 @@ class BeaverApplication : DaggerApplication() {
     override fun onCreate() {
         super.onCreate()
 
+        crashlytics.setCrashlyticsCollectionEnabled(!BuildConfig.DEBUG)
         Timber.plant(timberTree)
 
         // Launch screen timeout, this is not material guideline compliant but client is king and
