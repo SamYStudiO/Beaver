@@ -5,8 +5,8 @@ package net.samystudio.beaver.data.manager
 import android.accounts.Account
 import android.accounts.AccountManager
 import android.accounts.OnAccountsUpdateListener
-import io.reactivex.Observable
-import io.reactivex.subjects.BehaviorSubject
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.subjects.BehaviorSubject
 import net.samystudio.beaver.BuildConfig
 import net.samystudio.beaver.data.local.SharedPreferencesHelper
 import net.samystudio.beaver.di.module.SystemServiceModule

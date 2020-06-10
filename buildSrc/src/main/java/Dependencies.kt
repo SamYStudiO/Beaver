@@ -50,24 +50,26 @@ object Dependencies {
         "com.squareup.inject:assisted-inject-processor-dagger2:${Versions.assisted_inject}"
 
     // reactive
-    const val rxjava = "io.reactivex.rxjava2:rxjava:${Versions.rxjava}"
-    const val rxandroid = "io.reactivex.rxjava2:rxandroid:${Versions.rxandroid}"
-    const val rxkotlin = "io.reactivex.rxjava2:rxkotlin:${Versions.rxkotlin}"
-    const val rxbinding = "com.jakewharton.rxbinding3:rxbinding:${Versions.rxbinding}"
+    const val rxjava = "io.reactivex.rxjava3:rxjava:${Versions.rxjava}"
+    const val rxandroid = "io.reactivex.rxjava3:rxandroid:${Versions.rxandroid}"
+    const val rxkotlin = "io.reactivex.rxjava3:rxkotlin:${Versions.rxkotlin}"
+    const val rxbinding = "com.jakewharton.rxbinding4:rxbinding:${Versions.rxbinding}"
+    const val rxbinding_core =
+        "com.jakewharton.rxbinding4:rxbinding-core:${Versions.rxbinding}"
     const val rxbinding_appcompat =
-        "com.jakewharton.rxbinding3:rxbinding-appcompat:${Versions.rxbinding}"
+        "com.jakewharton.rxbinding4:rxbinding-appcompat:${Versions.rxbinding}"
     const val rxbinding_drawerlayout =
-        "com.jakewharton.rxbinding3:rxbinding-drawerlayout:${Versions.rxbinding}"
+        "com.jakewharton.rxbinding4:rxbinding-drawerlayout:${Versions.rxbinding}"
     const val rxbinding_leanback =
-        "com.jakewharton.rxbinding3:rxbinding-leanback:${Versions.rxbinding}"
+        "com.jakewharton.rxbinding4:rxbinding-leanback:${Versions.rxbinding}"
     const val rxbinding_recyclerview =
-        "com.jakewharton.rxbinding3:rxbinding-recyclerview:${Versions.rxbinding}"
+        "com.jakewharton.rxbinding4:rxbinding-recyclerview:${Versions.rxbinding}"
     const val rxbinding_slidingpanelayout =
-        "com.jakewharton.rxbinding3:rxbinding-slidingpanelayout:${Versions.rxbinding}"
+        "com.jakewharton.rxbinding4:rxbinding-slidingpanelayout:${Versions.rxbinding}"
     const val rxbinding_swiperefreshlayout =
-        "com.jakewharton.rxbinding3:rxbinding-swiperefreshlayout:${Versions.rxbinding}"
+        "com.jakewharton.rxbinding4:rxbinding-swiperefreshlayout:${Versions.rxbinding}"
     const val rxbinding_viewpager2 =
-        "com.jakewharton.rxbinding3:rxbinding-viewpager2:${Versions.rxbinding}"
+        "com.jakewharton.rxbinding4:rxbinding-viewpager2:${Versions.rxbinding}"
     const val rx_preferences =
         "com.f2prateek.rx.preferences2:rx-preferences:${Versions.rx_preferences}"
     const val rxpicasso = "net.samystudio.rxpicasso:rxpicasso-kotlin:${Versions.rxpicasso}"
@@ -78,8 +80,8 @@ object Dependencies {
         "com.squareup.okhttp3:logging-interceptor:${Versions.okhttp}"
     const val retrofit = "com.squareup.retrofit2:retrofit:${Versions.retrofit}"
     const val retrofit_converter_gson = "com.squareup.retrofit2:converter-gson:${Versions.retrofit}"
-    const val retrofit_adapter_rxjava2 =
-        "com.squareup.retrofit2:adapter-rxjava2:${Versions.retrofit}"
+    const val retrofit_adapter_rxjava3 =
+        "com.squareup.retrofit2:adapter-rxjava3:${Versions.retrofit}"
     const val picasso = "com.squareup.picasso:picasso:${Versions.picasso}"
 
     // misc
@@ -166,7 +168,7 @@ fun DependencyHandler.network() {
     implementation(Dependencies.okhttp_logging_interceptor)
     implementation(Dependencies.retrofit)
     implementation(Dependencies.retrofit_converter_gson)
-    implementation(Dependencies.retrofit_adapter_rxjava2)
+    implementation(Dependencies.retrofit_adapter_rxjava3)
     implementation(Dependencies.picasso)
     testImplementation(Dependencies.okhttp_mockwebserver)
 }

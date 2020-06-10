@@ -2,9 +2,9 @@ package net.samystudio.beaver.ui.base.adapter
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
-import io.reactivex.rxkotlin.plusAssign
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.disposables.Disposable
+import io.reactivex.rxjava3.kotlin.plusAssign
 import kotlinx.android.extensions.LayoutContainer
 
 abstract class BaseViewHolder<D>(override val containerView: View) :

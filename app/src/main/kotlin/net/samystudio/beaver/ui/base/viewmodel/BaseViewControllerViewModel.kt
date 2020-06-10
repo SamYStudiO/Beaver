@@ -5,7 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.annotation.CallSuper
 import androidx.lifecycle.LiveData
-import io.reactivex.BackpressureStrategy
+import io.reactivex.rxjava3.core.BackpressureStrategy
 import net.samystudio.beaver.data.local.InstanceStateProvider
 import net.samystudio.beaver.data.manager.UserManager
 import net.samystudio.beaver.ext.getClassTag

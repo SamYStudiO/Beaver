@@ -3,7 +3,7 @@ package net.samystudio.beaver.ui.main
 import android.accounts.AccountAuthenticatorResponse
 import android.accounts.AccountManager
 import android.content.Intent
-import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import net.samystudio.beaver.R
 import net.samystudio.beaver.data.AsyncState
 import net.samystudio.beaver.data.manager.GoogleApiAvailabilityManager

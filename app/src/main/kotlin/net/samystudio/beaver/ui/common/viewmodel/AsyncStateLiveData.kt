@@ -1,8 +1,8 @@
 package net.samystudio.beaver.ui.common.viewmodel
 
 import androidx.lifecycle.LiveData
-import io.reactivex.Flowable
-import io.reactivex.Observable
+import io.reactivex.rxjava3.core.Flowable
+import io.reactivex.rxjava3.core.Observable
 import net.samystudio.beaver.data.AsyncState
 
 class AsyncStateLiveData : LiveData<AsyncState>() {

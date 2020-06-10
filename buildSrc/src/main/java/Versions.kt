@@ -37,10 +37,10 @@ object Versions {
     const val assisted_inject = "0.5.2"
 
     // reactive
-    const val rxjava = "2.2.19"
-    const val rxandroid = "2.1.1"
-    const val rxkotlin = "2.4.0"
-    const val rxbinding = "3.1.0"
+    const val rxjava = "3.0.4"
+    const val rxandroid = "3.0.0"
+    const val rxkotlin = "3.0.0"
+    const val rxbinding = "4.0.0"
     const val rx_preferences = "2.0.0"
     const val rxpicasso = "0.3.0"
 

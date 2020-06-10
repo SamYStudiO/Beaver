@@ -5,7 +5,7 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
-import io.reactivex.schedulers.Schedulers
+import io.reactivex.rxjava3.schedulers.Schedulers
 import net.samystudio.beaver.BuildConfig
 import net.samystudio.beaver.data.local.SharedPreferencesHelper
 import net.samystudio.beaver.data.manager.UserManager
@@ -18,7 +18,7 @@ import okhttp3.ResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Converter
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.lang.reflect.Type
 import javax.inject.Singleton
@@ -112,20 +112,20 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideRxJava2CallAdapterFactory(): RxJava2CallAdapterFactory =
-        RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io())
+    fun provideRxJava3CallAdapterFactory(): RxJava3CallAdapterFactory =
+        RxJava3CallAdapterFactory.createWithScheduler(Schedulers.io())
 
     @Provides
     @Singleton
     fun provideRetrofit(
         okHttpClient: OkHttpClient,
-        rxJava2CallAdapterFactory: RxJava2CallAdapterFactory,
+        rxJava3CallAdapterFactory: RxJava3CallAdapterFactory,
         nullOrEmptyConverterFactory: Converter.Factory,
         gsonConverterFactory: GsonConverterFactory
     ): Retrofit =
         Retrofit.Builder()
             .client(okHttpClient)
-            .addCallAdapterFactory(rxJava2CallAdapterFactory)
+            .addCallAdapterFactory(rxJava3CallAdapterFactory)
             .addConverterFactory(nullOrEmptyConverterFactory)
             .addConverterFactory(gsonConverterFactory)
             .baseUrl(BASE_URL)

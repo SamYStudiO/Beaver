@@ -1,9 +1,8 @@
 package net.samystudio.beaver.data
 
-import io.reactivex.Observable
-import io.reactivex.ObservableTransformer
-import io.reactivex.Single
-import io.reactivex.subjects.PublishSubject
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.ObservableTransformer
+import io.reactivex.rxjava3.core.Single
 
 /**
  * Async request states, response contains data of type [T].
@@ -21,6 +20,7 @@ fun <T> Single<T>.toResultAsyncState(): Observable<ResultAsyncState<T>> =
 fun <T> Observable<T>.toResultAsyncState(): Observable<ResultAsyncState<T>> =
     compose(resultAsyncStateTransformer())
 
+@Suppress("RemoveExplicitTypeArguments")
 private fun <T> resultAsyncStateTransformer(): ObservableTransformer<T, ResultAsyncState<T>> =
     ObservableTransformer { upstream ->
         upstream
@@ -28,7 +28,7 @@ private fun <T> resultAsyncStateTransformer(): ObservableTransformer<T, ResultAs
                 @Suppress("USELESS_CAST")
                 ResultAsyncState.Completed<T>(it) as ResultAsyncState<T>
             }
-            .startWith(ResultAsyncState.Started<T>())
+            .startWithItem(ResultAsyncState.Started<T>())
             .onErrorReturn { ResultAsyncState.Failed<T>(it) }
             .concatWith(Observable.just(ResultAsyncState.Terminate<T>()))
     }

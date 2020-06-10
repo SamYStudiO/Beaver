@@ -1,9 +1,9 @@
 package net.samystudio.beaver.ui.common.viewmodel
 
 import androidx.lifecycle.LiveData
-import io.reactivex.Observable
-import io.reactivex.disposables.Disposable
-import io.reactivex.subjects.PublishSubject
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.disposables.Disposable
+import io.reactivex.rxjava3.subjects.PublishSubject
 import net.samystudio.beaver.data.ResultAsyncState
 
 class ResultAsyncStateLiveData<T>(private var bindObservable: Observable<ResultAsyncState<T>>? = null) :

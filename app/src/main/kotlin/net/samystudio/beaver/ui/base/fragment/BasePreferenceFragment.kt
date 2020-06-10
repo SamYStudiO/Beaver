@@ -16,7 +16,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceFragmentCompat
 import com.google.firebase.analytics.FirebaseAnalytics
-import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 import net.samystudio.beaver.data.local.InstanceStateProvider
 import net.samystudio.beaver.ext.getClassSimpleTag
 import net.samystudio.beaver.ext.getClassTag

@@ -1,6 +1,6 @@
 package net.samystudio.beaver.ui.main.userProfile
 
-import io.reactivex.Observable
+import io.reactivex.rxjava3.core.Observable
 import net.samystudio.beaver.R
 import net.samystudio.beaver.di.scope.FragmentScope
 import net.samystudio.beaver.ui.base.viewmodel.BaseFragmentViewModel

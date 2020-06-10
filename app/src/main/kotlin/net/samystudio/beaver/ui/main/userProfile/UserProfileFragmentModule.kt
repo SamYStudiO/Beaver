@@ -26,11 +26,9 @@ abstract class UserProfileFragmentModule {
     @FragmentScope
     abstract fun bindViewModel(viewModel: UserProfileFragmentViewModel): BaseFragmentViewModel
 
-    @Module
     companion object {
         @Provides
         @FragmentScope
-        @JvmStatic
         fun provideUserProfileApiInterface(retrofit: Retrofit): UserProfileApiInterface =
             retrofit.create(UserProfileApiInterface::class.java)
     }

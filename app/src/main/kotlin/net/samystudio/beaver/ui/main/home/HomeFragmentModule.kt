@@ -26,11 +26,9 @@ abstract class HomeFragmentModule {
     @FragmentScope
     abstract fun bindViewModel(viewModel: HomeFragmentViewModel): BaseFragmentViewModel
 
-    @Module
     companion object {
         @Provides
         @FragmentScope
-        @JvmStatic
         fun provideHomeApiInterface(retrofit: Retrofit): HomeApiInterface =
             retrofit.create(HomeApiInterface::class.java)
     }

@@ -1,10 +1,9 @@
 package net.samystudio.beaver.data
 
-import io.reactivex.Completable
-import io.reactivex.Observable
-import io.reactivex.ObservableTransformer
-import io.reactivex.Single
-import io.reactivex.subjects.PublishSubject
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.ObservableTransformer
+import io.reactivex.rxjava3.core.Single
 
 
 /**
@@ -33,7 +32,7 @@ private fun asyncStateTransformer(): ObservableTransformer<Any, AsyncState> =
                 @Suppress("USELESS_CAST")
                 AsyncState.Completed as AsyncState
             }
-            .startWith(AsyncState.Started)
+            .startWithItem(AsyncState.Started)
             .onErrorReturn { AsyncState.Failed(it) }
             .concatWith(Observable.just(AsyncState.Terminate))
     }

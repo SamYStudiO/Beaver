@@ -19,7 +19,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.analytics.FirebaseAnalytics
-import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 import net.samystudio.beaver.data.local.InstanceStateProvider
 import net.samystudio.beaver.ext.getClassSimpleTag
 import net.samystudio.beaver.ext.getClassTag

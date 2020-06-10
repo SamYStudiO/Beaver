@@ -6,10 +6,10 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
-import com.jakewharton.rxbinding3.view.clicks
-import com.jakewharton.rxbinding3.widget.textChanges
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.rxkotlin.Observables
+import com.jakewharton.rxbinding4.view.clicks
+import com.jakewharton.rxbinding4.widget.textChanges
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.kotlin.Observables
 import net.samystudio.beaver.data.local.SharedPreferencesHelper
 import net.samystudio.beaver.databinding.FragmentAuthenticatorBinding
 import net.samystudio.beaver.ext.*
@@ -78,7 +78,7 @@ class AuthenticatorFragment :
                         }
                 ) { t1, t2 -> t1 && t2 }
                 .observeOn(AndroidSchedulers.mainThread())
-                .startWith(false)
+                .startWithItem(false)
                 .subscribe { binding.signIn.isEnabled = it })
 
         destroyViewDisposable?.add(
@@ -114,7 +114,7 @@ class AuthenticatorFragment :
                         }
                 ) { t1, t2, t3 -> t1 && t2 && t3 }
                 .observeOn(AndroidSchedulers.mainThread())
-                .startWith(false)
+                .startWithItem(false)
                 .subscribe { binding.signUp.isEnabled = it })
     }
 

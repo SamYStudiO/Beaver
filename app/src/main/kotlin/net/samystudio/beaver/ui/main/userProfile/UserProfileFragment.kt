@@ -2,7 +2,7 @@ package net.samystudio.beaver.ui.main.userProfile
 
 import android.os.Bundle
 import android.view.View
-import com.jakewharton.rxbinding3.view.clicks
+import com.jakewharton.rxbinding4.view.clicks
 import net.samystudio.beaver.databinding.FragmentUserProfileBinding
 import net.samystudio.beaver.ui.base.fragment.BaseViewModelFragment
 import net.samystudio.beaver.ui.common.dialog.AlertDialogListener

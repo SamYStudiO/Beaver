@@ -1,6 +1,6 @@
 package net.samystudio.beaver.data.manager
 
-import io.reactivex.Observable
+import io.reactivex.rxjava3.core.Observable
 import net.samystudio.beaver.data.ResultAsyncState
 import net.samystudio.beaver.data.model.User
 import net.samystudio.beaver.data.remote.UserProfileApiInterface
