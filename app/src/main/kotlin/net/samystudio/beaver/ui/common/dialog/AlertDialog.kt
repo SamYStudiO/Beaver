@@ -4,8 +4,10 @@ package net.samystudio.beaver.ui.common.dialog
 
 import android.app.Dialog
 import android.content.DialogInterface
+import android.content.res.ColorStateList
 import android.os.Bundle
 import androidx.annotation.*
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import net.samystudio.beaver.ui.base.fragment.BaseFragment
@@ -118,6 +120,14 @@ open class AlertDialog : BaseFragment(),
         }.create()
     }
 
+    override fun onShow(dialog: DialogInterface) {
+        super.onShow(dialog)
+
+        setButtonColor(DialogInterface.BUTTON_POSITIVE)
+        setButtonColor(DialogInterface.BUTTON_NEGATIVE)
+        setButtonColor(DialogInterface.BUTTON_NEUTRAL)
+    }
+
     override fun onClick(dialog: DialogInterface, which: Int) {
         (activity as? AlertDialogListener)?.let {
             when (which) {
@@ -166,6 +176,57 @@ open class AlertDialog : BaseFragment(),
 
     protected open fun onPrepareDialogBuilder(builder: AndroidAlertDialog.Builder) {}
 
+    private fun setButtonColor(whichButton: Int) {
+        val keyButtonColorStateListRes = when (whichButton) {
+            DialogInterface.BUTTON_POSITIVE -> KEY_POSITIVE_BUTTON_COLOR_STATE_LIST_RES
+            DialogInterface.BUTTON_NEGATIVE -> KEY_NEGATIVE_BUTTON_COLOR_STATE_LIST_RES
+            DialogInterface.BUTTON_NEUTRAL -> KEY_NEUTRAL_BUTTON_COLOR_STATE_LIST_RES
+            else -> ""
+        }
+
+        val keyButtonColorStateList = when (whichButton) {
+            DialogInterface.BUTTON_POSITIVE -> KEY_POSITIVE_BUTTON_COLOR_STATE_LIST
+            DialogInterface.BUTTON_NEGATIVE -> KEY_NEGATIVE_BUTTON_COLOR_STATE_LIST
+            DialogInterface.BUTTON_NEUTRAL -> KEY_NEUTRAL_BUTTON_COLOR_STATE_LIST
+            else -> ""
+        }
+
+        val keyButtonColorRes = when (whichButton) {
+            DialogInterface.BUTTON_POSITIVE -> KEY_POSITIVE_BUTTON_COLOR_RES
+            DialogInterface.BUTTON_NEGATIVE -> KEY_NEGATIVE_BUTTON_COLOR_RES
+            DialogInterface.BUTTON_NEUTRAL -> KEY_NEUTRAL_BUTTON_COLOR_RES
+            else -> ""
+        }
+
+        val keyButtonColor = when (whichButton) {
+            DialogInterface.BUTTON_POSITIVE -> KEY_POSITIVE_BUTTON_COLOR
+            DialogInterface.BUTTON_NEGATIVE -> KEY_NEGATIVE_BUTTON_COLOR
+            DialogInterface.BUTTON_NEUTRAL -> KEY_NEUTRAL_BUTTON_COLOR
+            else -> ""
+        }
+
+        (dialog as? AndroidAlertDialog)?.getButton(whichButton)?.let { button ->
+            arguments?.getInt(keyButtonColorStateListRes)?.let {
+                if (it != 0) {
+                    ContextCompat.getColorStateList(requireContext(), it)
+                        .let { colorStateList -> button.setTextColor(colorStateList) }
+                } else {
+                    arguments?.getParcelable<ColorStateList>(keyButtonColorStateList)
+                        ?.let { colorStateList -> button.setTextColor(colorStateList) } ?: run {
+                        arguments?.getInt(keyButtonColorRes)?.let { color ->
+                            if (color != 0)
+                                button.setTextColor(ContextCompat.getColor(requireContext(), it))
+                            else if (arguments?.containsKey(keyButtonColor) == true)
+                                button.setTextColor(
+                                    arguments?.getInt(keyButtonColor) ?: 0
+                                )
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     companion object {
         const val KEY_TITLE_RES = "titleRes"
         const val KEY_TITLE = "title"
@@ -176,12 +237,24 @@ open class AlertDialog : BaseFragment(),
         const val KEY_POSITIVE_BUTTON_RES = "positiveButtonRes"
         const val KEY_POSITIVE_BUTTON = "positiveButton"
         const val KEY_POSITIVE_BUTTON_ICON_RES = "positiveButtonIconRes"
+        const val KEY_POSITIVE_BUTTON_COLOR = "positiveButtonColor"
+        const val KEY_POSITIVE_BUTTON_COLOR_RES = "positiveButtonColorRes"
+        const val KEY_POSITIVE_BUTTON_COLOR_STATE_LIST = "positiveButtonColorStateList"
+        const val KEY_POSITIVE_BUTTON_COLOR_STATE_LIST_RES = "positiveButtonColorStateListRes"
         const val KEY_NEGATIVE_BUTTON_RES = "negativeButtonRes"
         const val KEY_NEGATIVE_BUTTON = "negativeButton"
         const val KEY_NEGATIVE_BUTTON_ICON_RES = "negativeButtonIconRes"
+        const val KEY_NEGATIVE_BUTTON_COLOR = "negativeButtonColor"
+        const val KEY_NEGATIVE_BUTTON_COLOR_RES = "negativeButtonColorRes"
+        const val KEY_NEGATIVE_BUTTON_COLOR_STATE_LIST = "negativeButtonColorStateList"
+        const val KEY_NEGATIVE_BUTTON_COLOR_STATE_LIST_RES = "negativeButtonColorStateListRes"
         const val KEY_NEUTRAL_BUTTON_RES = "neutralButtonRes"
         const val KEY_NEUTRAL_BUTTON = "neutralButton"
         const val KEY_NEUTRAL_BUTTON_ICON_RES = "neutralButtonIconRes"
+        const val KEY_NEUTRAL_BUTTON_COLOR = "neutralButtonColor"
+        const val KEY_NEUTRAL_BUTTON_COLOR_RES = "neutralButtonColorRes"
+        const val KEY_NEUTRAL_BUTTON_COLOR_STATE_LIST = "neutralButtonColorStateList"
+        const val KEY_NEUTRAL_BUTTON_COLOR_STATE_LIST_RES = "neutralButtonColorStateListRes"
         const val KEY_CANCELABLE = "cancelable"
         const val KEY_ITEMS_RES = "itemsRes"
         const val KEY_ITEMS = "items"
@@ -212,12 +285,24 @@ open class AlertDialog : BaseFragment(),
             @StringRes positiveButtonRes: Int = 0,
             positiveButton: CharSequence? = null,
             @DrawableRes positiveButtonIconRes: Int = 0,
+            @ColorInt positiveButtonColor: Int? = null,
+            @ColorRes positiveButtonColorRes: Int = 0,
+            positiveButtonColorStateList: ColorStateList? = null,
+            @ColorRes positiveButtonColorStateListRes: Int = 0,
             @StringRes negativeButtonRes: Int = 0,
             negativeButton: CharSequence? = null,
             @DrawableRes negativeButtonIconRes: Int = 0,
+            @ColorInt negativeButtonColor: Int? = null,
+            @ColorRes negativeButtonColorRes: Int = 0,
+            negativeButtonColorStateList: ColorStateList? = null,
+            @ColorRes negativeButtonColorStateListRes: Int = 0,
             @StringRes neutralButtonRes: Int = 0,
             neutralButton: CharSequence? = null,
             @DrawableRes neutralButtonIconRes: Int = 0,
+            @ColorInt neutralButtonColor: Int? = null,
+            @ColorRes neutralButtonColorRes: Int = 0,
+            neutralButtonColorStateList: ColorStateList? = null,
+            @ColorRes neutralButtonColorStateListRes: Int = 0,
             cancelable: Boolean = true,
             @ArrayRes itemsRes: Int = 0,
             items: Array<CharSequence>? = null,
@@ -242,12 +327,24 @@ open class AlertDialog : BaseFragment(),
                 positiveButtonRes,
                 positiveButton,
                 positiveButtonIconRes,
+                positiveButtonColor,
+                positiveButtonColorRes,
+                positiveButtonColorStateList,
+                positiveButtonColorStateListRes,
                 negativeButtonRes,
                 negativeButton,
                 negativeButtonIconRes,
+                negativeButtonColor,
+                negativeButtonColorRes,
+                negativeButtonColorStateList,
+                negativeButtonColorStateListRes,
                 neutralButtonRes,
                 neutralButton,
                 neutralButtonIconRes,
+                neutralButtonColor,
+                neutralButtonColorRes,
+                neutralButtonColorStateList,
+                neutralButtonColorStateListRes,
                 cancelable,
                 itemsRes,
                 items,
@@ -272,12 +369,24 @@ open class AlertDialog : BaseFragment(),
             @StringRes positiveButtonRes: Int = 0,
             positiveButton: CharSequence? = null,
             @DrawableRes positiveButtonIconRes: Int = 0,
+            @ColorInt positiveButtonColor: Int? = null,
+            @ColorRes positiveButtonColorRes: Int = 0,
+            positiveButtonColorStateList: ColorStateList? = null,
+            @ColorRes positiveButtonColorStateListRes: Int = 0,
             @StringRes negativeButtonRes: Int = 0,
             negativeButton: CharSequence? = null,
             @DrawableRes negativeButtonIconRes: Int = 0,
+            @ColorInt negativeButtonColor: Int? = null,
+            @ColorRes negativeButtonColorRes: Int = 0,
+            negativeButtonColorStateList: ColorStateList? = null,
+            @ColorRes negativeButtonColorStateListRes: Int = 0,
             @StringRes neutralButtonRes: Int = 0,
             neutralButton: CharSequence? = null,
             @DrawableRes neutralButtonIconRes: Int = 0,
+            @ColorInt neutralButtonColor: Int? = null,
+            @ColorRes neutralButtonColorRes: Int = 0,
+            neutralButtonColorStateList: ColorStateList? = null,
+            @ColorRes neutralButtonColorStateListRes: Int = 0,
             cancelable: Boolean = true,
             @ArrayRes itemsRes: Int = 0,
             items: Array<CharSequence>? = null,
@@ -298,12 +407,39 @@ open class AlertDialog : BaseFragment(),
             if (positiveButtonRes != 0) putInt(KEY_POSITIVE_BUTTON_RES, positiveButtonRes)
             putCharSequence(KEY_POSITIVE_BUTTON, positiveButton)
             putInt(KEY_POSITIVE_BUTTON_ICON_RES, positiveButtonIconRes)
+            positiveButtonColor?.let { putInt(KEY_POSITIVE_BUTTON_COLOR, it) }
+            if (positiveButtonRes != 0) putInt(
+                KEY_POSITIVE_BUTTON_COLOR_RES,
+                positiveButtonColorRes
+            )
+            putParcelable(KEY_POSITIVE_BUTTON_COLOR_STATE_LIST, positiveButtonColorStateList)
+            if (positiveButtonColorStateListRes != 0) putInt(
+                KEY_POSITIVE_BUTTON_COLOR_STATE_LIST_RES,
+                positiveButtonColorStateListRes
+            )
             if (negativeButtonRes != 0) putInt(KEY_NEGATIVE_BUTTON_RES, negativeButtonRes)
             putCharSequence(KEY_NEGATIVE_BUTTON, negativeButton)
             putInt(KEY_NEGATIVE_BUTTON_ICON_RES, negativeButtonIconRes)
+            negativeButtonColor?.let { putInt(KEY_NEGATIVE_BUTTON_COLOR, it) }
+            if (negativeButtonRes != 0) putInt(
+                KEY_NEGATIVE_BUTTON_COLOR_RES,
+                negativeButtonColorRes
+            )
+            putParcelable(KEY_NEGATIVE_BUTTON_COLOR_STATE_LIST, negativeButtonColorStateList)
+            if (negativeButtonColorStateListRes != 0) putInt(
+                KEY_NEGATIVE_BUTTON_COLOR_STATE_LIST_RES,
+                negativeButtonColorStateListRes
+            )
             if (neutralButtonRes != 0) putInt(KEY_NEUTRAL_BUTTON_RES, neutralButtonRes)
             putCharSequence(KEY_NEUTRAL_BUTTON, neutralButton)
             putInt(KEY_NEUTRAL_BUTTON_ICON_RES, neutralButtonIconRes)
+            neutralButtonColor?.let { putInt(KEY_NEUTRAL_BUTTON_COLOR, it) }
+            if (neutralButtonRes != 0) putInt(KEY_NEUTRAL_BUTTON_COLOR_RES, neutralButtonColorRes)
+            putParcelable(KEY_NEUTRAL_BUTTON_COLOR_STATE_LIST, neutralButtonColorStateList)
+            if (neutralButtonColorStateListRes != 0) putInt(
+                KEY_NEUTRAL_BUTTON_COLOR_STATE_LIST_RES,
+                neutralButtonColorStateListRes
+            )
             putBoolean(KEY_CANCELABLE, cancelable)
             if (itemsRes != 0) putInt(KEY_ITEMS_RES, itemsRes)
             putCharSequenceArray(KEY_ITEMS, items)
