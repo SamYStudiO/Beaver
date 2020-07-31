@@ -8,39 +8,18 @@ import android.os.Bundle
 import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelStoreOwner
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
-import dagger.android.AndroidInjection
-import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasAndroidInjector
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import net.samystudio.beaver.data.local.InstanceStateProvider
-import net.samystudio.beaver.di.qualifier.ActivityContext
 import net.samystudio.beaver.ext.getClassTag
 import net.samystudio.beaver.ext.navigate
 import net.samystudio.beaver.ui.base.fragment.BaseViewModelFragment
 import net.samystudio.beaver.ui.base.fragment.BaseViewModelPreferenceFragment
 import net.samystudio.beaver.ui.base.viewmodel.BaseActivityViewModel
-import javax.inject.Inject
-import androidx.activity.viewModels as viewModelsInternal
 
-abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(),
-    HasAndroidInjector {
+abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity() {
     private val savable = Bundle()
-
-    @Inject
-    protected lateinit var androidInjector: DispatchingAndroidInjector<Any>
-
-    /**
-     * @see BaseActivityModule.bindViewModelFactory
-     */
-    @Inject
-    @ActivityContext
-    protected lateinit var viewModelFactory: ViewModelProvider.Factory
     protected abstract val navControllerId: Int
     protected val navController: NavController
         get() = findNavController(navControllerId)
@@ -50,7 +29,6 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(),
     abstract val viewModel: VM
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
 
         if (savedInstanceState != null)
@@ -137,15 +115,6 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity(),
             (it as? ComponentCallbacks2)?.onTrimMemory(level)
         }
     }
-
-    override fun androidInjector(): AndroidInjector<Any> {
-        return androidInjector
-    }
-
-    @Suppress("UNUSED_PARAMETER")
-    protected inline fun <reified VM : ViewModel> viewModels(
-        ownerProducer: () -> ViewModelStoreOwner = { this }
-    ) = viewModelsInternal<VM> { viewModelFactory }
 
     protected fun <T> state(
         beforeSetCallback: ((value: T) -> T)? = null,

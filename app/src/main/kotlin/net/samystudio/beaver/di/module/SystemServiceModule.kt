@@ -8,13 +8,16 @@ import com.f2prateek.rx.preferences2.RxSharedPreferences
 import com.google.android.gms.common.GoogleApiAvailability
 import dagger.Module
 import dagger.Provides
-import net.samystudio.beaver.di.qualifier.ApplicationContext
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ApplicationComponent
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Singleton
 
 /**
  * All kind of data provided by Android system.
  */
 @Module
+@InstallIn(ApplicationComponent::class)
 object SystemServiceModule {
     @Provides
     @Singleton

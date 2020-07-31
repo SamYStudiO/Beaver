@@ -1,35 +1,27 @@
 package net.samystudio.beaver
 
+import android.app.Application
+import androidx.hilt.work.HiltWorkerFactory
+import androidx.work.Configuration
 import com.google.firebase.crashlytics.FirebaseCrashlytics
-import dagger.android.support.DaggerApplication
+import dagger.hilt.android.HiltAndroidApp
 import net.samystudio.beaver.data.TrimMemory
-import net.samystudio.beaver.di.component.DaggerApplicationComponent
-import net.samystudio.beaver.di.module.ApplicationModule
-import net.samystudio.beaver.di.module.FirebaseModule
-import net.samystudio.beaver.di.module.TimberModule
 import timber.log.Timber
 import javax.inject.Inject
 
-class BeaverApplication : DaggerApplication() {
-    private val applicationInjector = DaggerApplicationComponent.factory().create(this)
-
-    /**
-     * @see FirebaseModule.provideFirebaseCrashlytics
-     */
+@HiltAndroidApp
+class BeaverApplication : Application(), Configuration.Provider {
     @Inject
     lateinit var crashlytics: FirebaseCrashlytics
 
-    /**
-     * @see TimberModule.provideTimberTree
-     */
     @Inject
     lateinit var timberTree: Timber.Tree
 
-    /**
-     * @see ApplicationModule.provideTrimMemoryList
-     */
     @Inject
     lateinit var trimMemoryList: ArrayList<TrimMemory>
+
+    @Inject
+    lateinit var workerFactory: HiltWorkerFactory
 
     override fun onCreate() {
         super.onCreate()
@@ -47,5 +39,9 @@ class BeaverApplication : DaggerApplication() {
         trimMemoryList.forEach { it.onTrimMemory(level) }
     }
 
-    override fun applicationInjector() = applicationInjector
+    override fun getWorkManagerConfiguration(): Configuration {
+        return Configuration.Builder()
+            .setWorkerFactory(workerFactory)
+            .build()
+    }
 }

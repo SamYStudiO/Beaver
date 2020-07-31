@@ -1,11 +1,14 @@
 package net.samystudio.beaver.ui.main
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.widget.Toolbar
+import dagger.hilt.android.AndroidEntryPoint
 import net.samystudio.beaver.R
 import net.samystudio.beaver.databinding.ActivityMainBinding
 import net.samystudio.beaver.ui.base.activity.BaseToolbarActivity
 
+@AndroidEntryPoint
 class MainActivity : BaseToolbarActivity<ActivityMainBinding, MainActivityViewModel>() {
     override val navControllerId: Int = R.id.nav_host
     override val binding: ActivityMainBinding by viewBinding { ActivityMainBinding.inflate(it) }

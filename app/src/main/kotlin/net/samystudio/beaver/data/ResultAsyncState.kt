@@ -11,7 +11,6 @@ sealed class ResultAsyncState<T> {
     class Started<T> : ResultAsyncState<T>()
     class Completed<T>(var data: T) : ResultAsyncState<T>()
     class Failed<T>(val error: Throwable) : ResultAsyncState<T>()
-    class Terminate<T> : ResultAsyncState<T>()
 }
 
 fun <T> Single<T>.toResultAsyncState(): Observable<ResultAsyncState<T>> =
@@ -30,5 +29,4 @@ private fun <T> resultAsyncStateTransformer(): ObservableTransformer<T, ResultAs
             }
             .startWithItem(ResultAsyncState.Started<T>())
             .onErrorReturn { ResultAsyncState.Failed<T>(it) }
-            .concatWith(Observable.just(ResultAsyncState.Terminate<T>()))
     }

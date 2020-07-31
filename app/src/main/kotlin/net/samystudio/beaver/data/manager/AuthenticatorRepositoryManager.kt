@@ -4,13 +4,9 @@ import io.reactivex.rxjava3.core.Observable
 import net.samystudio.beaver.data.AsyncState
 import net.samystudio.beaver.data.remote.AuthenticatorApiInterface
 import net.samystudio.beaver.data.toAsyncState
-import net.samystudio.beaver.di.module.NetworkModule
 import javax.inject.Inject
 import javax.inject.Singleton
 
-/**
- * @see NetworkModule.provideAuthenticatorApiInterface
- */
 @Singleton
 class AuthenticatorRepositoryManager
 @Inject

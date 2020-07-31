@@ -17,9 +17,14 @@ abstract class BaseDataPushFragment<VB : ViewBinding, VM> :
             requestState?.let {
                 when (it) {
                     is AsyncState.Started -> dataPushStart()
-                    is AsyncState.Completed -> dataPushSuccess()
-                    is AsyncState.Failed -> dataPushError(it.error)
-                    is AsyncState.Terminate -> dataPushTerminate()
+                    is AsyncState.Completed -> {
+                        dataPushSuccess()
+                        dataPushTerminate()
+                    }
+                    is AsyncState.Failed -> {
+                        dataPushError(it.error)
+                        dataPushTerminate()
+                    }
                 }
             }
         })

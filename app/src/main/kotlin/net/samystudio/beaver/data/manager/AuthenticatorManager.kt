@@ -5,21 +5,15 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.core.os.bundleOf
+import dagger.hilt.android.qualifiers.ApplicationContext
 import net.samystudio.beaver.data.remote.AuthenticatorApiInterface
-import net.samystudio.beaver.di.module.NetworkModule
-import net.samystudio.beaver.di.module.SystemServiceModule
-import net.samystudio.beaver.di.qualifier.ApplicationContext
 import net.samystudio.beaver.ui.main.MainActivity
 import javax.inject.Inject
 import javax.inject.Singleton
 
-/**
- * @see SystemServiceModule.provideAccountManager
- * @see NetworkModule.provideAuthenticatorApiInterface
- */
 @Singleton
 class AuthenticatorManager @Inject constructor(
-    @param:ApplicationContext private val context: Context,
+    @ApplicationContext private val context: Context,
     private val accountManager: AccountManager,
     private val authenticatorApiInterface: AuthenticatorApiInterface
 ) : AbstractAccountAuthenticator(context) {

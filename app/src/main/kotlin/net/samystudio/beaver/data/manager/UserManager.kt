@@ -9,13 +9,9 @@ import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import net.samystudio.beaver.BuildConfig
 import net.samystudio.beaver.data.local.SharedPreferencesHelper
-import net.samystudio.beaver.di.module.SystemServiceModule
 import javax.inject.Inject
 import javax.inject.Singleton
 
-/**
- * @see SystemServiceModule.provideAccountManager
- */
 @Singleton
 class UserManager @Inject constructor(
     private val accountManager: AccountManager,

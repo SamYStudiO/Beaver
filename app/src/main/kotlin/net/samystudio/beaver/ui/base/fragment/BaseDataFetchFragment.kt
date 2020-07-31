@@ -7,6 +7,7 @@ import androidx.viewbinding.ViewBinding
 import net.samystudio.beaver.data.ResultAsyncState
 import net.samystudio.beaver.ui.base.viewmodel.BaseFragmentViewModel
 import net.samystudio.beaver.ui.base.viewmodel.DataFetchViewModel
+import timber.log.Timber
 
 abstract class BaseDataFetchFragment<VB : ViewBinding, VM, D> :
     BaseViewModelFragment<VB, VM>() where VM : BaseFragmentViewModel, VM : DataFetchViewModel<D> {
@@ -15,11 +16,17 @@ abstract class BaseDataFetchFragment<VB : ViewBinding, VM, D> :
 
         viewModel.dataFetchObservable.observe(viewLifecycleOwner, Observer { requestState ->
             requestState?.let {
+                Timber.d("onViewCreated: %s", it)
                 when (it) {
                     is ResultAsyncState.Started -> dataFetchStart()
-                    is ResultAsyncState.Completed -> dataFetchSuccess(it.data)
-                    is ResultAsyncState.Failed -> dataFetchError(it.error)
-                    is ResultAsyncState.Terminate -> dataFetchTerminate()
+                    is ResultAsyncState.Completed -> {
+                        dataFetchSuccess(it.data)
+                        dataFetchTerminate()
+                    }
+                    is ResultAsyncState.Failed -> {
+                        dataFetchError(it.error)
+                        dataFetchTerminate()
+                    }
                 }
             }
         })

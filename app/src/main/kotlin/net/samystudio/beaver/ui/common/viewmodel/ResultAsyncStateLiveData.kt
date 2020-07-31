@@ -5,6 +5,7 @@ import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.subjects.PublishSubject
 import net.samystudio.beaver.data.ResultAsyncState
+import timber.log.Timber
 
 class ResultAsyncStateLiveData<T>(private var bindObservable: Observable<ResultAsyncState<T>>? = null) :
     LiveData<ResultAsyncState<T>>(), Disposable {
@@ -12,15 +13,21 @@ class ResultAsyncStateLiveData<T>(private var bindObservable: Observable<ResultA
     private val disposable: Disposable
 
     init {
-        disposable = trigger.flatMap { _ ->
-            bindObservable?.doOnNext { postValue(it) } ?: Observable.just(Unit)
+        disposable = trigger.switchMap { _ ->
+            bindObservable?.doOnNext {
+                Timber.d("ResultAsyncStateLiveData: %s", it)
+                postValue(it)
+            } ?: Observable.just(Unit)
         }.subscribe()
     }
 
     override fun onActive() {
         super.onActive()
 
-        bindObservable?.let { if (value == null || value is ResultAsyncState.Failed) refresh() }
+        bindObservable?.let {
+            if (value == null || value is ResultAsyncState.Failed
+            ) refresh()
+        }
     }
 
     fun refresh() {

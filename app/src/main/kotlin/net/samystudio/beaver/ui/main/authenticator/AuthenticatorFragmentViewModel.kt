@@ -4,6 +4,7 @@ import android.accounts.AccountAuthenticatorResponse
 import android.accounts.AccountManager
 import android.content.Intent
 import androidx.core.os.bundleOf
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -11,16 +12,13 @@ import io.reactivex.rxjava3.core.Observable
 import net.samystudio.beaver.data.AsyncState
 import net.samystudio.beaver.data.manager.AuthenticatorRepositoryManager
 import net.samystudio.beaver.data.manager.UserManager
-import net.samystudio.beaver.di.scope.FragmentScope
 import net.samystudio.beaver.ext.getClassTag
 import net.samystudio.beaver.ui.base.viewmodel.BaseFragmentViewModel
 import net.samystudio.beaver.ui.base.viewmodel.DataPushViewModel
 import net.samystudio.beaver.ui.common.navigation.NavigationRequest
 import net.samystudio.beaver.ui.common.viewmodel.AsyncStateLiveData
-import javax.inject.Inject
 
-@FragmentScope
-class AuthenticatorFragmentViewModel @Inject constructor(private val authenticatorRepositoryManager: AuthenticatorRepositoryManager) :
+class AuthenticatorFragmentViewModel @ViewModelInject constructor(private val authenticatorRepositoryManager: AuthenticatorRepositoryManager) :
     BaseFragmentViewModel(), DataPushViewModel {
     private lateinit var intent: Intent
     private var authenticatorResponse: AccountAuthenticatorResponse? = null
@@ -37,7 +35,7 @@ class AuthenticatorFragmentViewModel @Inject constructor(private val authenticat
         this.intent = intent
 
         authenticatorResponse =
-                intent.getParcelableExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE)
+            intent.getParcelableExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE)
         authenticatorResponse?.onRequestContinued()
 
         _signInVisibility.value = !intent.hasExtra(UserManager.KEY_CREATE_ACCOUNT)

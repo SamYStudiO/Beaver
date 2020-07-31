@@ -2,13 +2,15 @@
 
 package net.samystudio.beaver.data.service
 
+import android.app.Service
 import android.content.Intent
 import android.os.IBinder
-import dagger.android.DaggerService
+import dagger.hilt.android.AndroidEntryPoint
 import net.samystudio.beaver.data.manager.AuthenticatorManager
 import javax.inject.Inject
 
-class AuthenticatorService : DaggerService() {
+@AndroidEntryPoint
+class AuthenticatorService : Service() {
     @Inject
     protected lateinit var authenticatorManager: AuthenticatorManager
 

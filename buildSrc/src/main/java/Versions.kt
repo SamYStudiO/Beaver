@@ -4,11 +4,12 @@ object Versions {
     const val targetSdk = 29
 
     // tools
-    const val android_build_tools = "4.0.0"
+    const val android_build_tools = "4.0.1"
     const val google_services = "4.3.3"
     const val firebase_crashlytics_plugin = "2.1.1"
     const val firebase_perf_plugin = "1.3.1"
     const val navigation_safe_args_plugin = "1.0.0"
+    const val hilt_android_plugin = "2.28-alpha"
     const val gradle_versions_plugin = "0.28.0"
 
     // kotlin
@@ -35,6 +36,8 @@ object Versions {
     // dagger
     const val dagger = "2.28"
     const val assisted_inject = "0.5.2"
+    const val hilt_android = "2.28-alpha"
+    const val hilt_androidx = "1.0.0-alpha02"
 
     // reactive
     const val rxjava = "3.0.4"

@@ -6,14 +6,17 @@ import com.squareup.picasso.OkHttp3Downloader
 import com.squareup.picasso.Picasso
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ApplicationComponent
+import dagger.hilt.android.qualifiers.ApplicationContext
 import net.samystudio.beaver.BuildConfig
 import net.samystudio.beaver.data.TrimMemory
-import net.samystudio.beaver.di.qualifier.ApplicationContext
 import okhttp3.OkHttpClient
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Module
+@InstallIn(ApplicationComponent::class)
 object PicassoModule {
     @Provides
     @Singleton

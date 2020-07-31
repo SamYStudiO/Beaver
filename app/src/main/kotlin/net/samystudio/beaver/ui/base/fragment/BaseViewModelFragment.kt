@@ -7,35 +7,13 @@ import android.os.Bundle
 import android.view.View
 import androidx.annotation.CallSuper
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelStoreOwner
 import androidx.viewbinding.ViewBinding
-import net.samystudio.beaver.di.qualifier.ActivityContext
-import net.samystudio.beaver.di.qualifier.FragmentContext
 import net.samystudio.beaver.ext.navigate
-import net.samystudio.beaver.ui.base.activity.BaseActivityModule
 import net.samystudio.beaver.ui.base.viewmodel.BaseFragmentViewModel
-import javax.inject.Inject
-import androidx.fragment.app.activityViewModels as activityViewModelsInternal
-import androidx.fragment.app.viewModels as viewModelsInternal
 
 abstract class BaseViewModelFragment<VB : ViewBinding, VM : BaseFragmentViewModel> :
-    BaseDaggerFragment<VB>(),
+    BaseViewBindingFragment<VB>(),
     ComponentCallbacks2, DialogInterface.OnShowListener {
-    /**
-     * @see BaseViewModelFragmentModule.bindViewModelFactory
-     */
-    @Inject
-    @FragmentContext
-    protected lateinit var viewModelFactory: ViewModelProvider.Factory
-
-    /**
-     * @see BaseActivityModule.bindViewModelFactory
-     */
-    @Inject
-    @ActivityContext
-    protected lateinit var activityViewModelFactory: ViewModelProvider.Factory
     abstract val viewModel: VM
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -89,12 +67,4 @@ abstract class BaseViewModelFragment<VB : ViewBinding, VM : BaseFragmentViewMode
     override fun onTrimMemory(level: Int) {
         viewModel.handleTrimMemory(level)
     }
-
-    @Suppress("UNUSED_PARAMETER")
-    protected inline fun <reified VM : ViewModel> viewModels(
-        ownerProducer: () -> ViewModelStoreOwner = { this }
-    ) = viewModelsInternal<VM> { viewModelFactory }
-
-    protected inline fun <reified VM : ViewModel> activityViewModels() =
-        activityViewModelsInternal<VM> { activityViewModelFactory }
 }

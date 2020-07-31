@@ -48,6 +48,16 @@ object Dependencies {
         "com.squareup.inject:assisted-inject-annotations-dagger2:${Versions.assisted_inject}"
     const val assisted_inject_processor =
         "com.squareup.inject:assisted-inject-processor-dagger2:${Versions.assisted_inject}"
+    const val hilt_android =
+        "com.google.dagger:hilt-android:${Versions.hilt_android}"
+    const val hilt_android_compiler =
+        "com.google.dagger:hilt-android-compiler:${Versions.hilt_android}"
+    const val hilt_lifecycle_viewmodel =
+        "androidx.hilt:hilt-lifecycle-viewmodel:${Versions.hilt_androidx}"
+    const val hilt_work =
+        "androidx.hilt:hilt-work:${Versions.hilt_androidx}"
+    const val hilt_androidx_compiler =
+        "androidx.hilt:hilt-compiler:${Versions.hilt_androidx}"
 
     // reactive
     const val rxjava = "io.reactivex.rxjava3:rxjava:${Versions.rxjava}"
@@ -97,14 +107,15 @@ object Dependencies {
     // test
     const val junit = "junit:junit:${Versions.junit}"
     const val test_core = "androidx.test:core:${Versions.test_core}"
+    const val test_runner = "androidx.test:runner:${Versions.test_runner}"
+    const val espresso_core = "androidx.test.espresso:espresso-core:${Versions.espresso_core}"
     const val robolectric = "org.robolectric:robolectric:${Versions.robolectric}"
     const val mockito_core = "org.mockito:mockito-core:${Versions.mockito}"
     const val mockito_android = "org.mockito:mockito-android:${Versions.mockito}"
     const val okhttp_mockwebserver = "com.squareup.okhttp3:mockwebserver:${Versions.okhttp}"
     const val arch_core_testing = "androidx.arch.core:core-testing:${Versions.arch_version}"
     const val room_testing = "androidx.room:room-testing:${Versions.room}"
-    const val test_runner = "androidx.test:runner:${Versions.test_runner}"
-    const val espresso_core = "androidx.test.espresso:espresso-core:${Versions.espresso_core}"
+    const val hilt_testing = "com.google.dagger:hilt-android-testing:${Versions.hilt_android}"
 }
 
 fun DependencyHandler.base() {
@@ -152,6 +163,15 @@ fun DependencyHandler.dagger() {
     kapt(Dependencies.dagger_android_processor)
     compileOnly(Dependencies.assisted_inject_annotations)
     kapt(Dependencies.assisted_inject_processor)
+    implementation(Dependencies.hilt_android)
+    kapt(Dependencies.hilt_android_compiler)
+    implementation(Dependencies.hilt_lifecycle_viewmodel)
+    implementation(Dependencies.hilt_work)
+    kapt(Dependencies.hilt_androidx_compiler)
+    //testImplementation(Dependencies.hilt_testing)
+    //kaptTest(Dependencies.hilt_android_compiler)
+    //androidTestImplementation(Dependencies.hilt_testing)
+    //kaptAndroidTest(Dependencies.hilt_android_compiler)
 }
 
 fun DependencyHandler.reactive() {
@@ -213,4 +233,12 @@ private fun DependencyHandler.testImplementation(depName: String) {
 
 private fun DependencyHandler.androidTestImplementation(depName: String) {
     add("androidTestImplementation", depName)
+}
+
+private fun DependencyHandler.kaptAndroidTest(depName: String) {
+    add("kaptAndroidTest", depName)
+}
+
+private fun DependencyHandler.kaptTest(depName: String) {
+    add("kaptTest", depName)
 }

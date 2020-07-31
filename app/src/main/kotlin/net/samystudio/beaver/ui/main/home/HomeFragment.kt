@@ -2,7 +2,9 @@ package net.samystudio.beaver.ui.main.home
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
+import dagger.hilt.android.AndroidEntryPoint
 import net.samystudio.beaver.R
 import net.samystudio.beaver.data.model.Home
 import net.samystudio.beaver.databinding.FragmentHomeBinding
@@ -12,6 +14,7 @@ import net.samystudio.beaver.ext.showIfNonExistent
 import net.samystudio.beaver.ui.base.fragment.BaseDataFetchFragment
 import net.samystudio.beaver.ui.common.dialog.AlertDialogListener
 
+@AndroidEntryPoint
 class HomeFragment : BaseDataFetchFragment<FragmentHomeBinding, HomeFragmentViewModel, Home>(),
     AlertDialogListener {
     override val binding: FragmentHomeBinding by viewBinding { inflater, container ->

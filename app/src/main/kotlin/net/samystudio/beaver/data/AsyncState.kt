@@ -13,7 +13,6 @@ sealed class AsyncState {
     object Started : AsyncState()
     object Completed : AsyncState()
     class Failed(val error: Throwable) : AsyncState()
-    object Terminate : AsyncState()
 }
 
 fun Completable.toAsyncState(): Observable<AsyncState> =
@@ -34,5 +33,4 @@ private fun asyncStateTransformer(): ObservableTransformer<Any, AsyncState> =
             }
             .startWithItem(AsyncState.Started)
             .onErrorReturn { AsyncState.Failed(it) }
-            .concatWith(Observable.just(AsyncState.Terminate))
     }

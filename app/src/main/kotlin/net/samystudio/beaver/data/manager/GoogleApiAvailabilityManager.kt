@@ -3,15 +3,15 @@ package net.samystudio.beaver.data.manager
 import android.content.Context
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.android.scopes.ActivityScoped
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import net.samystudio.beaver.data.AsyncState
 import net.samystudio.beaver.data.toAsyncState
-import net.samystudio.beaver.di.qualifier.ApplicationContext
-import net.samystudio.beaver.di.scope.ActivityScope
 import javax.inject.Inject
 
-@ActivityScope
+@ActivityScoped
 class GoogleApiAvailabilityManager @Inject constructor(
     @ApplicationContext
     private val context: Context,

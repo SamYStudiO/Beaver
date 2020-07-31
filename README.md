@@ -1,6 +1,6 @@
 # Beaver
 
-Android Project template using View Model [MVVM](https://developer.android.com/topic/libraries/architecture/index.html) and Repository Data pattern, with [Dagger 2](https://github.com/google/dagger) and [Jetpack (Androidx)](https://developer.android.com/jetpack/) libraries.
+Android Project template using View Model [MVVM](https://developer.android.com/topic/libraries/architecture/index.html) and Repository Data pattern, with [Dagger 2 / Hilt](https://github.com/google/dagger) and [Jetpack (Androidx)](https://developer.android.com/jetpack/) libraries.
 
 Also includes a bunch of common use libraries (may be easily replaced or removed) :
 - [Firebase app indexing](https://firebase.google.com/docs/app-indexing/)

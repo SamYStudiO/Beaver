@@ -4,10 +4,13 @@ package net.samystudio.beaver.ui.main.authenticator
 
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.jakewharton.rxbinding4.view.clicks
 import com.jakewharton.rxbinding4.widget.textChanges
+import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.kotlin.Observables
 import net.samystudio.beaver.data.local.SharedPreferencesHelper
@@ -17,6 +20,7 @@ import net.samystudio.beaver.ui.base.fragment.BaseDataPushFragment
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class AuthenticatorFragment :
     BaseDataPushFragment<FragmentAuthenticatorBinding, AuthenticatorFragmentViewModel>() {
     @Inject
@@ -28,6 +32,9 @@ class AuthenticatorFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        (requireActivity() as? AppCompatActivity)?.supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        enableBackPressed = true
 
         binding.signInEmail.setText(sharedPreferencesHelper.accountName.get())
 
@@ -116,6 +123,10 @@ class AuthenticatorFragment :
                 .observeOn(AndroidSchedulers.mainThread())
                 .startWithItem(false)
                 .subscribe { binding.signUp.isEnabled = it })
+    }
+
+    override fun onBackPressed() {
+        activity?.finish()
     }
 
     override fun dataPushStart() {

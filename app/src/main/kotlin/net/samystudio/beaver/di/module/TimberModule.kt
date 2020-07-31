@@ -3,6 +3,8 @@ package net.samystudio.beaver.di.module
 import android.util.Log
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ApplicationComponent
 import net.samystudio.beaver.BuildConfig
 import timber.log.Timber
 import javax.inject.Singleton
@@ -11,6 +13,7 @@ import javax.inject.Singleton
  * https://github.com/JakeWharton/timber
  */
 @Module
+@InstallIn(ApplicationComponent::class)
 object TimberModule {
     @Provides
     @Singleton
