@@ -13,7 +13,9 @@ import androidx.activity.OnBackPressedCallback
 import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -23,7 +25,6 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable
 import net.samystudio.beaver.data.local.InstanceStateProvider
 import net.samystudio.beaver.ext.getClassSimpleTag
 import net.samystudio.beaver.ext.getClassTag
-import net.samystudio.beaver.ui.base.activity.BaseActivity
 import net.samystudio.beaver.ui.common.dialog.DialogListener
 
 /**
@@ -45,8 +46,6 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
 
     // Cannot inject here since we don't have dagger yet.
     protected lateinit var firebaseAnalytics: FirebaseAnalytics
-    protected var resultCode: Int by state(Activity.RESULT_CANCELED)
-    protected var resultIntent: Intent? by state()
     protected var destroyDisposable: CompositeDisposable? = null
     protected var destroyViewDisposable: CompositeDisposable? = null
     protected var stopDisposable: CompositeDisposable? = null
@@ -165,7 +164,6 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
     override fun onCancel(dialog: DialogInterface) {
         super.onCancel(dialog)
 
-        setResult(Activity.RESULT_CANCELED, null)
         (activity as? DialogListener)?.onDialogCancel(targetRequestCode)
         (targetFragment as? DialogListener)?.onDialogCancel(targetRequestCode)
     }
@@ -194,17 +192,24 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
     fun show(manager: FragmentManager) =
         (getClassSimpleTag() + count++).apply { super.show(manager, this) }
 
-    fun setTargetRequestCode(requestCode: Int) {
-        setTargetFragment(null, requestCode)
+    fun <T> setResult(key: String, value: T) {
+        setResult(bundleOf(key to value))
     }
 
-    /**
-     * @see Activity.setResult
-     */
-    fun setResult(code: Int, intent: Intent?) {
-        resultCode = code
-        resultIntent = intent
+    fun setResult(bundle: Bundle) {
+        bundle.keySet().forEach {
+            navController.previousBackStackEntry?.savedStateHandle?.set(it, bundle[it])
+        }
     }
+
+    fun <T> addResultListener(key: String) {
+        navController.currentBackStackEntry?.savedStateHandle?.getLiveData<T>(key)
+            ?.observe(viewLifecycleOwner, Observer {
+                onResult(key, it)
+            })
+    }
+
+    open fun <T> onResult(key: String, value: T) {}
 
     /**
      * Same as [Activity.finish], if [BaseFragment] is a dialog it will be dismissed otherwise
@@ -216,13 +221,6 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
         if (showsDialog && !dialogDismissed) dismiss()
         else {
             if (!showsDialog) navController.popBackStack()
-
-            (activity as? BaseActivity<*>)?.onActivityResult(
-                targetRequestCode,
-                resultCode,
-                resultIntent
-            )
-            targetFragment?.onActivityResult(targetRequestCode, resultCode, resultIntent)
 
             finished = true
         }
@@ -244,7 +242,12 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
         beforeSetCallback: ((value: T) -> T)? = null,
         afterSetCallback: ((value: T) -> Unit)? = null
     ) =
-        InstanceStateProvider.NotNull(savable, defaultValue, beforeSetCallback, afterSetCallback)
+        InstanceStateProvider.NotNull(
+            savable,
+            defaultValue,
+            beforeSetCallback,
+            afterSetCallback
+        )
 
     private fun tryDismissWithAnimation(allowingStateLoss: Boolean): Boolean {
         val baseDialog = dialog

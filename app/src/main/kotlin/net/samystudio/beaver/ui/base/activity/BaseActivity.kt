@@ -40,24 +40,6 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity() {
         onViewModelCreated()
     }
 
-    @CallSuper
-    protected open fun onViewModelCreated() {
-        viewModel.navigationCommand.observe(this,
-            Observer { request ->
-                request?.let {
-                    navController.navigate(it, this)
-                }
-            })
-        viewModel.resultEvent.observe(this, Observer
-        { result ->
-            result?.let {
-                setResult(it.code, it.intent)
-                if (it.finish)
-                    finish()
-            }
-        })
-    }
-
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
 
@@ -75,7 +57,7 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity() {
         stopDisposable = CompositeDisposable()
     }
 
-    public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         viewModel.handleResult(requestCode, resultCode, data)
     }
@@ -114,6 +96,24 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity() {
         supportFragmentManager.fragments.forEach {
             (it as? ComponentCallbacks2)?.onTrimMemory(level)
         }
+    }
+
+    @CallSuper
+    protected open fun onViewModelCreated() {
+        viewModel.navigationCommand.observe(this,
+            Observer { request ->
+                request?.let {
+                    navController.navigate(it, this)
+                }
+            })
+        viewModel.resultEvent.observe(this, Observer
+        { result ->
+            result?.let {
+                setResult(it.code, it.intent)
+                if (it.finish)
+                    finish()
+            }
+        })
     }
 
     protected fun <T> state(

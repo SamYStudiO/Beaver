@@ -20,7 +20,6 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable
 import net.samystudio.beaver.data.local.InstanceStateProvider
 import net.samystudio.beaver.ext.getClassSimpleTag
 import net.samystudio.beaver.ext.getClassTag
-import net.samystudio.beaver.ui.base.activity.BaseActivity
 
 /**
  * Same as [BaseFragment] for [PreferenceFragmentCompat], note this cannot be displayed as dialog
@@ -38,8 +37,6 @@ abstract class BasePreferenceFragment : PreferenceFragmentCompat(),
 
     // Cannot inject here since we don't have dagger yet.
     protected lateinit var firebaseAnalytics: FirebaseAnalytics
-    protected var resultCode: Int by state(Activity.RESULT_CANCELED)
-    protected var resultIntent: Intent? by state()
     protected var destroyDisposable: CompositeDisposable? = null
     protected var destroyViewDisposable: CompositeDisposable? = null
     protected var stopDisposable: CompositeDisposable? = null
@@ -134,16 +131,14 @@ abstract class BasePreferenceFragment : PreferenceFragmentCompat(),
         permission
     ) == PackageManager.PERMISSION_GRANTED
 
-    fun setTargetRequestCode(requestCode: Int) {
-        setTargetFragment(null, requestCode)
+    fun setResult(key: String, value: Any?) {
+        navController.previousBackStackEntry?.savedStateHandle?.set(key, value)
     }
 
-    /**
-     * @see Activity.setResult
-     */
-    fun setResult(code: Int, intent: Intent?) {
-        resultCode = code
-        resultIntent = intent
+    fun setResult(bundle: Bundle) {
+        bundle.keySet().forEach {
+            navController.previousBackStackEntry?.savedStateHandle?.set(it, bundle[it])
+        }
     }
 
     /**
@@ -153,13 +148,6 @@ abstract class BasePreferenceFragment : PreferenceFragmentCompat(),
     fun finish() {
         if (finished) return
         navController.popBackStack()
-
-        (activity as? BaseActivity<*>)?.onActivityResult(
-            targetRequestCode,
-            resultCode,
-            resultIntent
-        )
-        targetFragment?.onActivityResult(targetRequestCode, resultCode, resultIntent)
 
         finished = true
     }
