@@ -11,6 +11,7 @@ import android.view.WindowInsets
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.CallSuper
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
@@ -131,8 +132,8 @@ abstract class BasePreferenceFragment : PreferenceFragmentCompat(),
         permission
     ) == PackageManager.PERMISSION_GRANTED
 
-    fun setResult(key: String, value: Any?) {
-        navController.previousBackStackEntry?.savedStateHandle?.set(key, value)
+    fun <T> setResult(key: String, value: T) {
+        setResult(bundleOf(key to value))
     }
 
     fun setResult(bundle: Bundle) {
