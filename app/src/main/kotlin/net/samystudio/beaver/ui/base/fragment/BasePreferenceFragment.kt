@@ -13,6 +13,7 @@ import androidx.annotation.CallSuper
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceFragmentCompat
@@ -141,6 +142,15 @@ abstract class BasePreferenceFragment : PreferenceFragmentCompat(),
             navController.previousBackStackEntry?.savedStateHandle?.set(it, bundle[it])
         }
     }
+
+    fun <T> addResultListener(key: String) {
+        navController.currentBackStackEntry?.savedStateHandle?.getLiveData<T>(key)
+            ?.observe(viewLifecycleOwner, Observer {
+                onResult(key, it)
+            })
+    }
+
+    open fun <T> onResult(key: String, value: T) {}
 
     /**
      * Same as [Activity.finish], if [BaseFragment] is a dialog it will be dismissed otherwise
