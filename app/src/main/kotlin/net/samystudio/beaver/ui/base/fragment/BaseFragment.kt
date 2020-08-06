@@ -76,6 +76,11 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
         view.setOnApplyWindowInsetsListener(this)
         destroyViewDisposable = CompositeDisposable()
         dialogDismissed = false
+
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            onBackPressCallback
+        )
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -85,10 +90,6 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
 
         super.onActivityCreated(savedInstanceState)
 
-        requireActivity().onBackPressedDispatcher.addCallback(
-            viewLifecycleOwner,
-            onBackPressCallback
-        )
         firebaseAnalytics = FirebaseAnalytics.getInstance(requireContext().applicationContext)
     }
 
@@ -101,11 +102,13 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
         super.onResume()
         pauseDisposable = CompositeDisposable()
 
-        firebaseAnalytics.setCurrentScreen(
-            requireActivity(),
-            getScreenTag(),
-            null
-        )
+        getScreenTag()?.let {
+            firebaseAnalytics.setCurrentScreen(
+                requireActivity(),
+                it,
+                null
+            )
+        }
     }
 
     override fun onPause() {
@@ -229,7 +232,7 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
     /**
      * Tag for google analytics, override if you don't want to use class name.
      */
-    protected fun getScreenTag() = getClassSimpleTag()
+    protected open fun getScreenTag(): String? = getClassSimpleTag()
 
     protected fun <T> state(
         beforeSetCallback: ((value: T) -> T)? = null,

@@ -68,15 +68,16 @@ abstract class BasePreferenceFragment : PreferenceFragmentCompat(),
         super.onViewCreated(view, savedInstanceState)
         view.setOnApplyWindowInsetsListener(this)
         destroyViewDisposable = CompositeDisposable()
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
 
         requireActivity().onBackPressedDispatcher.addCallback(
             viewLifecycleOwner,
             onBackPressCallback
         )
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
         firebaseAnalytics = FirebaseAnalytics.getInstance(requireContext().applicationContext)
     }
 
@@ -89,11 +90,13 @@ abstract class BasePreferenceFragment : PreferenceFragmentCompat(),
         super.onResume()
         pauseDisposable = CompositeDisposable()
 
-        firebaseAnalytics.setCurrentScreen(
-            requireActivity(),
-            getClassSimpleTag(),
-            null
-        )
+        getScreenTag()?.let {
+            firebaseAnalytics.setCurrentScreen(
+                requireActivity(),
+                it,
+                null
+            )
+        }
     }
 
     override fun onPause() {
@@ -143,14 +146,12 @@ abstract class BasePreferenceFragment : PreferenceFragmentCompat(),
         }
     }
 
-    fun <T> addResultListener(key: String) {
+    fun <T> addResultListener(key: String, listener: (key: String, value: T) -> Unit) {
         navController.currentBackStackEntry?.savedStateHandle?.getLiveData<T>(key)
             ?.observe(viewLifecycleOwner, Observer {
-                onResult(key, it)
+                listener(key, it)
             })
     }
-
-    open fun <T> onResult(key: String, value: T) {}
 
     /**
      * Same as [Activity.finish], if [BaseFragment] is a dialog it will be dismissed otherwise
@@ -162,6 +163,11 @@ abstract class BasePreferenceFragment : PreferenceFragmentCompat(),
 
         finished = true
     }
+
+    /**
+     * Tag for google analytics, override if you don't want to use class name.
+     */
+    protected open fun getScreenTag(): String? = getClassSimpleTag()
 
     protected fun <T> state(
         beforeSetCallback: ((value: T) -> T)? = null,
