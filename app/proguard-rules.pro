@@ -23,9 +23,6 @@
 # Crashlytics --------------------------------------------------------------------------------------
 -keepattributes *Annotation*
 -keep public class * extends java.lang.Exception
--keep class com.crashlytics.** { *; }
--dontwarn com.crashlytics.**
--printmapping mapping.txt
 
 # Okhttp --------------------------------------------------------------------------------------
 # JSR 305 annotations are for embedding nullability information.
