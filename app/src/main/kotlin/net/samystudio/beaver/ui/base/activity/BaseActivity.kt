@@ -57,7 +57,7 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity() {
         stopDisposable = CompositeDisposable()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         viewModel.handleResult(requestCode, resultCode, data)
     }

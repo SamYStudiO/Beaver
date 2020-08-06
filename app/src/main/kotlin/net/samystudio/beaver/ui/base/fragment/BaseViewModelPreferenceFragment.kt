@@ -34,7 +34,7 @@ abstract class BaseViewModelPreferenceFragment<VM : BaseFragmentViewModel> :
 
         viewModel.resultEvent.observe(viewLifecycleOwner, Observer { result ->
             result?.let {
-                setResult(it.bundle)
+                setResult(it.code, it.intent)
                 if (it.finish)
                     finish()
             }

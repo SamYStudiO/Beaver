@@ -11,9 +11,7 @@ import android.view.WindowInsets
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.CallSuper
 import androidx.core.content.ContextCompat
-import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentManager
-import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceFragmentCompat
@@ -22,6 +20,7 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable
 import net.samystudio.beaver.data.local.InstanceStateProvider
 import net.samystudio.beaver.ext.getClassSimpleTag
 import net.samystudio.beaver.ext.getClassTag
+import net.samystudio.beaver.ui.base.activity.BaseActivity
 
 /**
  * Same as [BaseFragment] for [PreferenceFragmentCompat], note this cannot be displayed as dialog
@@ -39,6 +38,8 @@ abstract class BasePreferenceFragment : PreferenceFragmentCompat(),
 
     // Cannot inject here since we don't have dagger yet.
     protected lateinit var firebaseAnalytics: FirebaseAnalytics
+    protected var resultCode: Int by state(Activity.RESULT_CANCELED)
+    protected var resultIntent: Intent? by state()
     protected var destroyDisposable: CompositeDisposable? = null
     protected var destroyViewDisposable: CompositeDisposable? = null
     protected var stopDisposable: CompositeDisposable? = null
@@ -136,21 +137,16 @@ abstract class BasePreferenceFragment : PreferenceFragmentCompat(),
         permission
     ) == PackageManager.PERMISSION_GRANTED
 
-    fun <T> setResult(key: String, value: T) {
-        setResult(bundleOf(key to value))
+    fun setTargetRequestCode(requestCode: Int) {
+        setTargetFragment(null, requestCode)
     }
 
-    fun setResult(bundle: Bundle) {
-        bundle.keySet().forEach {
-            navController.previousBackStackEntry?.savedStateHandle?.set(it, bundle[it])
-        }
-    }
-
-    fun <T> addResultListener(key: String, listener: (key: String, value: T) -> Unit) {
-        navController.currentBackStackEntry?.savedStateHandle?.getLiveData<T>(key)
-            ?.observe(viewLifecycleOwner, Observer {
-                listener(key, it)
-            })
+    /**
+     * @see Activity.setResult
+     */
+    fun setResult(code: Int, intent: Intent?) {
+        resultCode = code
+        resultIntent = intent
     }
 
     /**
@@ -160,6 +156,13 @@ abstract class BasePreferenceFragment : PreferenceFragmentCompat(),
     fun finish() {
         if (finished) return
         navController.popBackStack()
+
+        (activity as? BaseActivity<*>)?.onActivityResult(
+            targetRequestCode,
+            resultCode,
+            resultIntent
+        )
+        targetFragment?.onActivityResult(targetRequestCode, resultCode, resultIntent)
 
         finished = true
     }

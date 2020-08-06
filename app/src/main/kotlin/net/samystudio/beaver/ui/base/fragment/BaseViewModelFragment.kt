@@ -37,7 +37,7 @@ abstract class BaseViewModelFragment<VB : ViewBinding, VM : BaseFragmentViewMode
 
         viewModel.resultEvent.observe(viewLifecycleOwner, Observer { result ->
             result?.let {
-                setResult(it.bundle)
+                setResult(it.code, it.intent)
                 if (it.finish)
                     finish()
             }
@@ -52,10 +52,6 @@ abstract class BaseViewModelFragment<VB : ViewBinding, VM : BaseFragmentViewMode
     @CallSuper
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         viewModel.handleResult(requestCode, resultCode, data)
-    }
-
-    override fun <T> onResult(key: String, value: T) {
-        viewModel.handleResult(key, value)
     }
 
     override fun onResume() {
