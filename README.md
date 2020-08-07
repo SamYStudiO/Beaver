@@ -8,7 +8,7 @@ Also includes a bunch of common use libraries (may be easily replaced or removed
 - [AccountManager](https://developer.android.com/reference/android/accounts/AccountManager.html)
 - [Retrofit](https://github.com/square/retrofit)
 - [Picasso](https://github.com/square/picasso)
-- [RxJava](https://github.com/ReactiveX/RxJava)
+- [RxJava3](https://github.com/ReactiveX/RxJava)
 - [RxPreferences](https://github.com/f2prateek/rx-preferences)
 - [Timber](https://github.com/JakeWharton/timber)
 
