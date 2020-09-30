@@ -17,7 +17,7 @@ class MainActivity : BaseToolbarActivity<ActivityMainBinding, MainActivityViewMo
     override fun onCreate(savedInstanceState: Bundle?) {
         // We set launch screen theme from manifest, we need to get back to our Theme to remove
         // launch screen.
-        setTheme(R.style.AppTheme)
+        setTheme(R.style.Theme_MyApp)
 
         super.onCreate(savedInstanceState)
     }

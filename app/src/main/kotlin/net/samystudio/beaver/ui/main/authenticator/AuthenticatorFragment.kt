@@ -12,7 +12,7 @@ import com.jakewharton.rxbinding4.view.clicks
 import com.jakewharton.rxbinding4.widget.textChanges
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.kotlin.Observables
+import io.reactivex.rxjava3.core.Observable
 import net.samystudio.beaver.data.local.SharedPreferencesHelper
 import net.samystudio.beaver.databinding.FragmentAuthenticatorBinding
 import net.samystudio.beaver.ext.*
@@ -63,7 +63,7 @@ class AuthenticatorFragment :
                 })
 
         destroyViewDisposable?.add(
-            Observables
+            Observable
                 .combineLatest(
                     binding.signInEmail.textChanges()
                         .debounce(500, TimeUnit.MILLISECONDS)
@@ -89,7 +89,7 @@ class AuthenticatorFragment :
                 .subscribe { binding.signIn.isEnabled = it })
 
         destroyViewDisposable?.add(
-            Observables
+            Observable
                 .combineLatest(
                     binding.signUpEmail.textChanges()
                         .debounce(500, TimeUnit.MILLISECONDS)

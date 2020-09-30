@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AppTheme" parent="Base.AppTheme">
+    <style name="Theme.MyApp" parent="Base.Theme.MyApp">
         <item name="android:windowSplashscreenContent">@drawable/bg_launch</item>
     </style>
 
-    <style name="AppTheme.Launcher">
+    <style name="Theme.MyApp.Launcher">
         <item name="android:windowFullscreen">true</item>
     </style>
 

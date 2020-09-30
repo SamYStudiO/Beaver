@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Base.AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="Base.Theme.MyApp" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="android:colorBackground">@android:color/white</item>
 
         <item name="colorPrimary">@color/brand_blue</item>
@@ -18,19 +18,19 @@
         <item name="colorOnBackground">@color/grey</item>
         <item name="colorOnSurface">@color/grey</item>
 
-        <item name="textAppearanceHeadline1">@style/AppTextAppearance.Headline1</item>
-        <item name="textAppearanceHeadline2">@style/AppTextAppearance.Headline2</item>
-        <item name="textAppearanceHeadline3">@style/AppTextAppearance.Headline3</item>
-        <item name="textAppearanceHeadline4">@style/AppTextAppearance.Headline4</item>
-        <item name="textAppearanceHeadline5">@style/AppTextAppearance.Headline5</item>
-        <item name="textAppearanceHeadline6">@style/AppTextAppearance.Headline6</item>
-        <item name="textAppearanceSubtitle1">@style/AppTextAppearance.Subtitle1</item>
-        <item name="textAppearanceSubtitle2">@style/AppTextAppearance.Subtitle2</item>
-        <item name="textAppearanceBody1">@style/AppTextAppearance.Body1</item>
-        <item name="textAppearanceBody2">@style/AppTextAppearance.Body2</item>
-        <item name="textAppearanceButton">@style/AppTextAppearance.Button</item>
-        <item name="textAppearanceOverline">@style/AppTextAppearance.Overline</item>
-        <item name="textAppearanceCaption">@style/AppTextAppearance.Caption</item>
+        <item name="textAppearanceHeadline1">@style/TextAppearance.MyApp.Headline1</item>
+        <item name="textAppearanceHeadline2">@style/TextAppearance.MyApp.Headline2</item>
+        <item name="textAppearanceHeadline3">@style/TextAppearance.MyApp.Headline3</item>
+        <item name="textAppearanceHeadline4">@style/TextAppearance.MyApp.Headline4</item>
+        <item name="textAppearanceHeadline5">@style/TextAppearance.MyApp.Headline5</item>
+        <item name="textAppearanceHeadline6">@style/TextAppearance.MyApp.Headline6</item>
+        <item name="textAppearanceSubtitle1">@style/TextAppearance.MyApp.Subtitle1</item>
+        <item name="textAppearanceSubtitle2">@style/TextAppearance.MyApp.Subtitle2</item>
+        <item name="textAppearanceBody1">@style/TextAppearance.MyApp.Body1</item>
+        <item name="textAppearanceBody2">@style/TextAppearance.MyApp.Body2</item>
+        <item name="textAppearanceButton">@style/TextAppearance.MyApp.Button</item>
+        <item name="textAppearanceOverline">@style/TextAppearance.MyApp.Overline</item>
+        <item name="textAppearanceCaption">@style/TextAppearance.MyApp.Caption</item>
 
         <item name="android:textColorPrimary">@color/grey</item>
         <item name="android:textColorSecondary">@color/grey</item>
@@ -40,9 +40,9 @@
         <item name="android:textColorTertiaryInverse">@color/grey</item>
     </style>
 
-    <style name="AppTheme" parent="Base.AppTheme" />
+    <style name="Theme.MyApp" parent="Base.Theme.MyApp" />
 
-    <style name="AppTheme.Launcher">
+    <style name="Theme.MyApp.Launcher">
         <item name="android:windowBackground">@drawable/bg_launch</item>
         <item name="android:windowFullscreen">true</item>
     </style>
