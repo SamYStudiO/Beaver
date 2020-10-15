@@ -165,13 +165,10 @@ fun DependencyHandler.dagger() {
     kapt(Dependencies.assisted_inject_processor)
     implementation(Dependencies.hilt_android)
     kapt(Dependencies.hilt_android_compiler)
+    androidTestImplementation(Dependencies.hilt_testing)
     implementation(Dependencies.hilt_lifecycle_viewmodel)
     implementation(Dependencies.hilt_work)
     kapt(Dependencies.hilt_androidx_compiler)
-    //testImplementation(Dependencies.hilt_testing)
-    //kaptTest(Dependencies.hilt_android_compiler)
-    //androidTestImplementation(Dependencies.hilt_testing)
-    //kaptAndroidTest(Dependencies.hilt_android_compiler)
 }
 
 fun DependencyHandler.reactive() {

@@ -1,13 +1,13 @@
 object Versions {
-    const val compileSdk = 29
+    const val compileSdk = 30
     const val minSdk = 21
-    const val targetSdk = 29
+    const val targetSdk = 30
 
     // tools
-    const val android_build_tools = "4.0.1"
+    const val android_build_tools = "4.1.0"
     const val google_services = "4.3.4"
     const val firebase_crashlytics_plugin = "2.3.0"
-    const val firebase_perf_plugin = "1.3.1"
+    const val firebase_perf_plugin = "1.3.2"
     const val navigation_safe_args_plugin = "1.0.0"
     const val hilt_android_plugin = "2.29.1-alpha"
     const val gradle_versions_plugin = "0.33.0"
@@ -16,21 +16,21 @@ object Versions {
     const val kotlin = "1.4.10"
 
     // android
-    const val core_ktx = "1.3.1"
+    const val core_ktx = "1.3.2"
     const val appcompat = "1.2.0"
     const val preference_ktx = "1.1.1"
-    const val constraintlayout = "2.0.1"
+    const val constraintlayout = "2.0.2"
     const val arch_version = "2.1.0"
     const val lifecycle = "2.2.0"
-    const val navigation = "2.3.0"
+    const val navigation = "2.3.1"
     const val room = "2.2.5"
-    const val material = "1.3.0-alpha02"
+    const val material = "1.3.0-alpha03"
 
     // firebase
-    const val firebase_core = "17.5.0"
+    const val firebase_core = "17.5.1"
     const val firebase_appindexing = "19.1.0"
     const val firebase_crashlytics = "17.2.2"
-    const val firebase_analytics = "17.5.0"
+    const val firebase_analytics = "17.6.0"
     const val firebase_perf = "19.0.9"
 
     // dagger
@@ -40,7 +40,7 @@ object Versions {
     const val hilt_androidx = "1.0.0-alpha02"
 
     // reactive
-    const val rxjava = "3.0.6"
+    const val rxjava = "3.0.7"
     const val rxandroid = "3.0.0"
     const val rxkotlin = "3.0.1"
     const val rxbinding = "4.0.0"
@@ -57,10 +57,10 @@ object Versions {
 
     // debug
     const val timber = "4.7.1"
-    const val leakcanary = "2.4"
+    const val leakcanary = "2.5"
 
     // test
-    const val junit = "4.13"
+    const val junit = "4.13.1"
     const val test_core = "1.3.0"
     const val robolectric = "4.4"
     const val mockito = "3.5.13"
