@@ -12,7 +12,7 @@ plugins {
 val versionMajor = 1
 val versionMinor = 0
 val versionPatch = 0
-val versionBuild = 0
+val versionBuild = ((System.currentTimeMillis() - 1517443200000) / 60000).toInt()
 
 android {
     compileSdkVersion(Versions.compileSdk)
@@ -21,7 +21,7 @@ android {
         applicationId = "net.samystudio.beaver".also { resValue("string", "application_id", it) }
         minSdkVersion(Versions.minSdk)
         targetSdkVersion(Versions.targetSdk)
-        versionCode = versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
+        versionCode = versionBuild
         versionName = "$versionMajor.$versionMinor.$versionPatch"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "FULL_VERSION_NAME", "\"$versionName.$versionCode\"")
