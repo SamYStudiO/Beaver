@@ -8,7 +8,7 @@ object Versions {
     const val google_services = "4.3.4"
     const val firebase_crashlytics_plugin = "2.3.0"
     const val firebase_perf_plugin = "1.3.2"
-    const val navigation_safe_args_plugin = "1.0.0"
+    const val navigation_safe_args_plugin = "2.3.1"
     const val hilt_android_plugin = "2.29.1-alpha"
     const val gradle_versions_plugin = "0.33.0"
 

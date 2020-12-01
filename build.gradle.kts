@@ -9,7 +9,7 @@ buildscript {
         classpath("com.google.gms:google-services:${Versions.google_services}")
         classpath("com.google.firebase:firebase-crashlytics-gradle:${Versions.firebase_crashlytics_plugin}")
         classpath("com.google.firebase:perf-plugin:${Versions.firebase_perf_plugin}")
-        classpath("android.arch.navigation:navigation-safe-args-gradle-plugin:${Versions.navigation_safe_args_plugin}")
+        classpath("androidx.navigation:navigation-safe-args-gradle-plugin:${Versions.navigation_safe_args_plugin}")
         classpath("com.google.dagger:hilt-android-gradle-plugin:${Versions.hilt_android_plugin}")
         classpath("com.github.ben-manes:gradle-versions-plugin:${Versions.gradle_versions_plugin}")
     }
