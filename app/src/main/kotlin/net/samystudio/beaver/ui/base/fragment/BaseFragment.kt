@@ -13,6 +13,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
@@ -104,10 +105,12 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
         pauseDisposable = CompositeDisposable()
 
         getScreenTag()?.let {
-            firebaseAnalytics.setCurrentScreen(
-                requireActivity(),
-                it,
-                null
+            firebaseAnalytics.logEvent(
+                FirebaseAnalytics.Event.SCREEN_VIEW,
+                bundleOf(
+                    FirebaseAnalytics.Param.SCREEN_NAME to it,
+                    FirebaseAnalytics.Param.SCREEN_CLASS to it,
+                )
             )
         }
     }
