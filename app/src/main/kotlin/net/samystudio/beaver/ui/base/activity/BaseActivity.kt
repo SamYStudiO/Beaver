@@ -7,7 +7,6 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import io.reactivex.rxjava3.disposables.CompositeDisposable
@@ -101,13 +100,12 @@ abstract class BaseActivity<VM : BaseActivityViewModel> : AppCompatActivity() {
     @CallSuper
     protected open fun onViewModelCreated() {
         viewModel.navigationCommand.observe(this,
-            Observer { request ->
+            { request ->
                 request?.let {
                     navController.navigate(it, this)
                 }
             })
-        viewModel.resultEvent.observe(this, Observer
-        { result ->
+        viewModel.resultEvent.observe(this, { result ->
             result?.let {
                 setResult(it.code, it.intent)
                 if (it.finish)

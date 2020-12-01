@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.CallSuper
-import androidx.lifecycle.Observer
 import net.samystudio.beaver.ext.navigate
 import net.samystudio.beaver.ui.base.viewmodel.BaseFragmentViewModel
 
@@ -26,13 +25,13 @@ abstract class BaseViewModelPreferenceFragment<VM : BaseFragmentViewModel> :
 
         viewModel.navigationCommand.observe(
             viewLifecycleOwner,
-            Observer { request ->
+            { request ->
                 request?.let {
                     navController.navigate(it, activity)
                 }
             })
 
-        viewModel.resultEvent.observe(viewLifecycleOwner, Observer { result ->
+        viewModel.resultEvent.observe(viewLifecycleOwner, { result ->
             result?.let {
                 setResult(it.code, it.intent)
                 if (it.finish)

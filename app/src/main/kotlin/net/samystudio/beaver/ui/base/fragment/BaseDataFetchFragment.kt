@@ -2,7 +2,6 @@ package net.samystudio.beaver.ui.base.fragment
 
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.Observer
 import androidx.viewbinding.ViewBinding
 import net.samystudio.beaver.data.ResultAsyncState
 import net.samystudio.beaver.ui.base.viewmodel.BaseFragmentViewModel
@@ -14,7 +13,7 @@ abstract class BaseDataFetchFragment<VB : ViewBinding, VM, D> :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.dataFetchObservable.observe(viewLifecycleOwner, Observer { requestState ->
+        viewModel.dataFetchObservable.observe(viewLifecycleOwner, { requestState ->
             requestState?.let {
                 Timber.d("onViewCreated: %s", it)
                 when (it) {

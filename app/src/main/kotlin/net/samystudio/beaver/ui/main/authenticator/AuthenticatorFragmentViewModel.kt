@@ -10,15 +10,15 @@ import androidx.lifecycle.MutableLiveData
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import net.samystudio.beaver.data.AsyncState
-import net.samystudio.beaver.data.manager.AuthenticatorRepositoryManager
 import net.samystudio.beaver.data.manager.UserManager
+import net.samystudio.beaver.data.remote.AuthenticatorApiInterfaceImpl
 import net.samystudio.beaver.ext.getClassTag
 import net.samystudio.beaver.ui.base.viewmodel.BaseFragmentViewModel
 import net.samystudio.beaver.ui.base.viewmodel.DataPushViewModel
 import net.samystudio.beaver.ui.common.navigation.NavigationRequest
 import net.samystudio.beaver.ui.common.viewmodel.AsyncStateLiveData
 
-class AuthenticatorFragmentViewModel @ViewModelInject constructor(private val authenticatorRepositoryManager: AuthenticatorRepositoryManager) :
+class AuthenticatorFragmentViewModel @ViewModelInject constructor(private val authenticatorApiInterfaceImpl: AuthenticatorApiInterfaceImpl) :
     BaseFragmentViewModel(), DataPushViewModel {
     private lateinit var intent: Intent
     private var authenticatorResponse: AccountAuthenticatorResponse? = null
@@ -47,7 +47,7 @@ class AuthenticatorFragmentViewModel @ViewModelInject constructor(private val au
             when (userFlow) {
                 is AuthenticatorUserFlow.SignIn ->
                     _dataPushCompletable.bind(
-                        authenticatorRepositoryManager.signIn(userFlow.email, userFlow.password)
+                        authenticatorApiInterfaceImpl.signIn(userFlow.email, userFlow.password)
                     ).observeOn(AndroidSchedulers.mainThread())
                         .doOnNext {
                             if (it is AsyncState.Completed) handleSignResult(
@@ -57,7 +57,7 @@ class AuthenticatorFragmentViewModel @ViewModelInject constructor(private val au
                         }
                 is AuthenticatorUserFlow.SignUp ->
                     _dataPushCompletable.bind(
-                        authenticatorRepositoryManager.signUp(userFlow.email, userFlow.password)
+                        authenticatorApiInterfaceImpl.signUp(userFlow.email, userFlow.password)
                     ).observeOn(AndroidSchedulers.mainThread())
                         .doOnNext {
                             if (it is AsyncState.Completed) handleSignResult(
@@ -65,7 +65,7 @@ class AuthenticatorFragmentViewModel @ViewModelInject constructor(private val au
                                 userFlow.password
                             )
                         }
-                else -> Observable.error<AsyncState> {
+                else -> Observable.error {
                     IllegalArgumentException("Unknown user flow ${userFlow.getClassTag()}.")
                 }
             }
