@@ -27,7 +27,6 @@ object Versions {
     const val material = "1.3.0-alpha04"
 
     // firebase
-    const val firebase_core = "18.0.0"
     const val firebase_appindexing = "19.1.0"
     const val firebase_crashlytics = "17.3.0"
     const val firebase_analytics = "18.0.0"

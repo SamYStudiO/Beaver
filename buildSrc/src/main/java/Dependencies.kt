@@ -28,14 +28,13 @@ object Dependencies {
     const val material = "com.google.android.material:material:${Versions.material}"
 
     // firebase
-    const val firebase_core = "com.google.firebase:firebase-core:${Versions.firebase_core}"
     const val firebase_appindexing =
         "com.google.firebase:firebase-appindexing:${Versions.firebase_appindexing}"
     const val firebase_crashlytics =
-        "com.google.firebase:firebase-crashlytics:${Versions.firebase_crashlytics}"
+        "com.google.firebase:firebase-crashlytics-ktxs:${Versions.firebase_crashlytics}"
     const val firebase_analytics =
-        "com.google.firebase:firebase-analytics:${Versions.firebase_analytics}"
-    const val firebase_perf = "com.google.firebase:firebase-perf:${Versions.firebase_perf}"
+        "com.google.firebase:firebase-analytics-ktx:${Versions.firebase_analytics}"
+    const val firebase_perf = "com.google.firebase:firebase-perf-ktx:${Versions.firebase_perf}"
 
     // dagger
     const val dagger = "com.google.dagger:dagger:${Versions.dagger}"
@@ -148,7 +147,6 @@ fun DependencyHandler.room() {
 }
 
 fun DependencyHandler.firebase() {
-    implementation(Dependencies.firebase_core)
     implementation(Dependencies.firebase_appindexing)
     implementation(Dependencies.firebase_crashlytics)
     implementation(Dependencies.firebase_analytics)
