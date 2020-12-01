@@ -31,7 +31,7 @@ object Dependencies {
     const val firebase_appindexing =
         "com.google.firebase:firebase-appindexing:${Versions.firebase_appindexing}"
     const val firebase_crashlytics =
-        "com.google.firebase:firebase-crashlytics-ktxs:${Versions.firebase_crashlytics}"
+        "com.google.firebase:firebase-crashlytics-ktx:${Versions.firebase_crashlytics}"
     const val firebase_analytics =
         "com.google.firebase:firebase-analytics-ktx:${Versions.firebase_analytics}"
     const val firebase_perf = "com.google.firebase:firebase-perf-ktx:${Versions.firebase_perf}"
