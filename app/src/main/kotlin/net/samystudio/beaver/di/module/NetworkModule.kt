@@ -6,7 +6,7 @@ import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ApplicationComponent
+import dagger.hilt.components.SingletonComponent
 import io.reactivex.rxjava3.schedulers.Schedulers
 import net.samystudio.beaver.BuildConfig
 import net.samystudio.beaver.data.local.SharedPreferencesHelper
@@ -26,7 +26,7 @@ import java.lang.reflect.Type
 import javax.inject.Singleton
 
 @Module
-@InstallIn(ApplicationComponent::class)
+@InstallIn(SingletonComponent::class)
 object NetworkModule {
     private const val BASE_URL: String = "https://root/"
 

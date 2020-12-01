@@ -7,8 +7,8 @@ import com.squareup.picasso.Picasso
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ApplicationComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import net.samystudio.beaver.BuildConfig
 import net.samystudio.beaver.data.TrimMemory
 import okhttp3.OkHttpClient
@@ -16,7 +16,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Module
-@InstallIn(ApplicationComponent::class)
+@InstallIn(SingletonComponent::class)
 object PicassoModule {
     @Provides
     @Singleton
@@ -25,7 +25,10 @@ object PicassoModule {
 
     @Provides
     @Singleton
-    fun providePicasso(@ApplicationContext context: Context, okHttp3Downloader: OkHttp3Downloader): Picasso =
+    fun providePicasso(
+        @ApplicationContext context: Context,
+        okHttp3Downloader: OkHttp3Downloader
+    ): Picasso =
         Picasso.Builder(context)
             .downloader(okHttp3Downloader)
             .indicatorsEnabled(BuildConfig.DEBUG)

@@ -8,15 +8,15 @@ import com.google.gson.reflect.TypeToken
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ApplicationComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import net.samystudio.beaver.R
 import net.samystudio.beaver.data.local.BeaverDatabase
 import net.samystudio.beaver.data.model.Server
 import javax.inject.Singleton
 
 @Module
-@InstallIn(ApplicationComponent::class)
+@InstallIn(SingletonComponent::class)
 object DataModule {
     private const val DATABASE_NAME: String = "database-beaver"
 
