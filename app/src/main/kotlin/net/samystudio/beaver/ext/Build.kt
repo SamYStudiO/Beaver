@@ -10,4 +10,4 @@ val isEmulator
             || Build.MODEL.contains("Android SDK built for x86")
             || Build.MANUFACTURER.contains("Genymotion")
             || (Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic"))
-            || Build.PRODUCT == "google_sdk"
+            || Build.PRODUCT == "sdk_gphone_x86"
