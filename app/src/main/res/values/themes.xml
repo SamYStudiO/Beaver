@@ -32,6 +32,13 @@
         <item name="textAppearanceOverline">@style/TextAppearance.MyApp.Overline</item>
         <item name="textAppearanceCaption">@style/TextAppearance.MyApp.Caption</item>
 
+        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.MyApp.SmallComponent
+        </item>
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.MyApp.MediumComponent
+        </item>
+        <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.MyApp.LargeComponent
+        </item>
+
         <item name="android:textColorPrimary">@color/grey</item>
         <item name="android:textColorSecondary">@color/grey</item>
         <item name="android:textColorTertiary">@color/grey</item>
