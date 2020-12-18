@@ -96,7 +96,7 @@ android {
     // Better output apk naming : {projectName}_{flavor(s)}_{buildType}_{versionName}_build_{buildVersion}.apk.
     applicationVariants.all {
         outputs.all {
-            val outputImpl = this as com.android.build.gradle.internal.api.BaseVariantOutputImpl
+            val outputImpl = this as com.android.build.gradle.internal.api.ApkVariantOutputImpl
             val sep = "_"
             val version = versionName
             val build = versionCode
@@ -109,6 +109,11 @@ android {
                     "${buildType.name}${sep}" +
                     "${version}${sep}" +
                     "build${sep}${build}.apk"
+
+            // Since we're using date for versionCode, manifest will change each time we compile and
+            // so we won't be able to use "Apply codee changes" features as it doesn't work when
+            // manifest is modified. To avoid that we force a versionCode to 1 for debug build.
+            if (name.contains("debug")) outputImpl.versionCodeOverride = 1
         }
     }
 }
