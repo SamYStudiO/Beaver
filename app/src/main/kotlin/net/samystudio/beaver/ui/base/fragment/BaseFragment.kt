@@ -45,7 +45,7 @@ abstract class BaseFragment : AppCompatDialogFragment(), DialogInterface.OnShowL
         get() = findNavController()
 
     // Cannot inject here since we don't have dagger yet.
-    protected lateinit var firebaseAnalytics: FirebaseAnalytics
+    protected val firebaseAnalytics by lazy { FirebaseAnalytics.getInstance(requireContext().applicationContext) }
     protected var resultCode: Int by state(Activity.RESULT_CANCELED)
     protected var resultIntent: Intent? by state()
     protected var destroyDisposable: CompositeDisposable? = null

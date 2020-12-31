@@ -1,7 +1,6 @@
 plugins {
     id("com.android.application")
     kotlin("android")
-    kotlin("android.extensions")
     kotlin("kapt")
     id("com.google.android.gms.strict-version-matcher-plugin")
     id("com.google.gms.google-services")
@@ -9,6 +8,7 @@ plugins {
     id("com.google.firebase.firebase-perf")
     id("androidx.navigation.safeargs.kotlin")
     id("dagger.hilt.android.plugin")
+    id("kotlin-parcelize")
 }
 
 val versionMajor = 1
@@ -83,10 +83,6 @@ android {
 
     buildFeatures {
         viewBinding = true
-    }
-
-    androidExtensions {
-        isExperimental = true
     }
 
     compileOptions {
