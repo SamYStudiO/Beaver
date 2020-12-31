@@ -7,6 +7,7 @@ buildscript {
         classpath("com.android.tools.build:gradle:${Versions.android_build_tools}")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}")
         classpath("com.google.gms:google-services:${Versions.google_services}")
+        classpath("com.google.android.gms:strict-version-matcher-plugin:${Versions.strict_version_matcher_plugin}")
         classpath("com.google.firebase:firebase-crashlytics-gradle:${Versions.firebase_crashlytics_plugin}")
         classpath("com.google.firebase:perf-plugin:${Versions.firebase_perf_plugin}")
         classpath("androidx.navigation:navigation-safe-args-gradle-plugin:${Versions.navigation_safe_args_plugin}")

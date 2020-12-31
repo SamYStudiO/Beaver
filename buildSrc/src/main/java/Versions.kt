@@ -6,6 +6,7 @@ object Versions {
     // tools
     const val android_build_tools = "4.1.1"
     const val google_services = "4.3.4"
+    const val strict_version_matcher_plugin = "1.2.2"
     const val firebase_crashlytics_plugin = "2.4.1"
     const val firebase_perf_plugin = "1.3.4"
     const val navigation_safe_args_plugin = "2.3.1"

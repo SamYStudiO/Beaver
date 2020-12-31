@@ -3,6 +3,8 @@ plugins {
     kotlin("android")
     kotlin("android.extensions")
     kotlin("kapt")
+    id("com.google.android.gms.strict-version-matcher-plugin")
+    id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
     id("com.google.firebase.firebase-perf")
     id("androidx.navigation.safeargs.kotlin")
@@ -102,6 +104,10 @@ android {
         correctErrorTypes = true
     }
 
+    hilt {
+        enableTransformForLocalTests = true
+    }
+
     // Better output apk naming : {projectName}_{flavor(s)}_{buildType}_{versionName}_build_{buildVersion}.apk.
     applicationVariants.all {
         outputs.all {
@@ -143,5 +149,3 @@ dependencies {
     implementation(Dependencies.permissionsdispatcher)
     kapt(Dependencies.permissionsdispatcher_processor)
 }
-
-apply(mapOf("plugin" to "com.google.gms.google-services"))
