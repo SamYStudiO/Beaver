@@ -17,7 +17,7 @@ This is a build number base on date. This solution is better than using a build 
 on version number because play console need a build number greater each time a new apk is uploaded.
 When using a build number based on version if your current beta apk is 1.3.0 and you want to publish
 an update to your 1.2.0 production version you won't be able to do so. We can't use build number
-based on milliseconds time though becauseof 2100000000 version code limitation. Here we make a build
+based on milliseconds time though because of 2100000000 version code limitation. Here we make a build
 number that increment only every minute so we should never reach 2100000000.
 */
 val projectStartTimeMillis = 1517443200000
