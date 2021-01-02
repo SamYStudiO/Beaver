@@ -6,20 +6,11 @@ Template includes basic implementation for a launch screen, a home screen, an au
 Authentication is implemented using OAuth2 and automatically refresh token when a 401 HTTP exception is thrown.
 
 Also features :
-- An AlertDialog implementation using DialogFragment that survive state lost and returns actions/results using [setFragmentResultListener API](https://developer.android.com/guide/fragments/communicate#fragment-result). Check AlertDialog extensions at bottom of file net.samystudio.beaver.ui.common.dialog.AlertDialog :
-  - setDialogDismissListener
-  - setDialogCancelListener
-  - setDialogPositiveClickListener
-  - setDialogNegativeClickListener
-  - setDialogNeutralClickListener
-  - setDialogNeutralClickListener
-  - setDialogItemClickListener
-  - setDialogItemResultListener
-  - setDialogItemsResultListener
-- Some utilities (check ext package).
-- Base classes for Adapter/ListAdapter and ViewHolder.
-- Dynamic retrofit url to handle multiple server url (production, pre production, etc...), selector screen/dialog for server not implemented here.
-- Structured values resources file as recommended( themes, styles, shapes, types).
+- An [AlertDialog](https://github.com/SamYStudiO/Beaver/blob/master/app/src/main/kotlin/net/samystudio/beaver/ui/common/dialog/AlertDialog.kt) implementation using DialogFragment that survive state lost and returns actions/results using [setFragmentResultListener API](https://developer.android.com/guide/fragments/communicate#fragment-result). Some [kotlin extensions](https://github.com/SamYStudiO/Beaver/blob/master/app/src/main/kotlin/net/samystudio/beaver/ui/common/dialog/AlertDialog.kt#L568) are available to make results even straightforward.
+- Some [utilities](https://github.com/SamYStudiO/Beaver/tree/master/app/src/main/kotlin/net/samystudio/beaver/ext).
+- [Base classes](https://github.com/SamYStudiO/Beaver/tree/master/app/src/main/kotlin/net/samystudio/beaver/ui/base/adapter) for Adapter/ListAdapter and ViewHolder.
+- Dynamic retrofit url to handle multiple server url (production, pre production, etc...), selector screen/dialog for server not implemented here though.
+- [Structured values resources files](https://github.com/SamYStudiO/Beaver/tree/master/app/src/main/res/values) as recommended( themes, styles, shapes, types).
 - Gradle kotlin DSL.
 
 Common used libraries :
