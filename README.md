@@ -6,7 +6,7 @@ Template includes basic implementation for a launch screen, a home screen, an au
 Authentication is implemented using OAuth2 and automatically refresh token when a 401 HTTP exception is thrown.
 
 Also features :
-- An AlertDialog implementation using DialogFragment that survive state lost and returns actions/results using [setFragmentResultListener API](https://developer.android.com/guide/fragments/communicate). Check AlertDialog extensions at bottom of file net.samystudio.beaver.ui.common.dialog.AlertDialog :
+- An AlertDialog implementation using DialogFragment that survive state lost and returns actions/results using [setFragmentResultListener API](https://developer.android.com/guide/fragments/communicate#fragment-result). Check AlertDialog extensions at bottom of file net.samystudio.beaver.ui.common.dialog.AlertDialog :
   - setDialogDismissListener
   - setDialogCancelListener
   - setDialogPositiveClickListener
