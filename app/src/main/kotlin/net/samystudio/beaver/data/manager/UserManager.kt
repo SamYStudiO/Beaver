@@ -2,127 +2,102 @@
 
 package net.samystudio.beaver.data.manager
 
-import android.accounts.Account
-import android.accounts.AccountManager
-import android.accounts.OnAccountsUpdateListener
+import android.content.ComponentCallbacks2
+import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Single
+import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.BehaviorSubject
-import net.samystudio.beaver.BuildConfig
+import net.samystudio.beaver.data.TrimMemory
 import net.samystudio.beaver.data.local.SharedPreferencesHelper
+import net.samystudio.beaver.data.local.UserDao
+import net.samystudio.beaver.data.model.Token
+import net.samystudio.beaver.data.model.User
+import net.samystudio.beaver.data.remote.AuthenticatorApiInterfaceImpl
+import net.samystudio.beaver.data.remote.UserApiInterfaceImpl
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class UserManager @Inject constructor(
-    private val accountManager: AccountManager,
-    private val sharedPreferencesHelper: SharedPreferencesHelper
-) : OnAccountsUpdateListener {
-    private val _statusObservable: BehaviorSubject<Boolean> = BehaviorSubject.create()
-    val statusObservable: Observable<Boolean> = _statusObservable
-    val token: String?
-        get() {
-            val token = sharedPreferencesHelper.accountToken.get()
-            return if (token.isNotBlank()) token
-            else getCurrentAccount()?.let {
-                accountManager.peekAuthToken(
-                    it,
-                    DEFAULT_AUTH_TOKEN_TYPE
-                )
+    private val sharedPreferencesHelper: SharedPreferencesHelper,
+    private val authenticationApiInterfaceImpl: AuthenticatorApiInterfaceImpl,
+    private val userApiInterfaceImpl: UserApiInterfaceImpl,
+    private val userDao: UserDao,
+) : TrimMemory {
+    private val _statusObservable: BehaviorSubject<Boolean> =
+        BehaviorSubject.createDefault(isConnected)
+    val statusObservable: Observable<Boolean> = _statusObservable.distinctUntilChanged()
+    private val _userObservable = BehaviorSubject.create<User>()
+    val userObservable: Observable<User> = _userObservable.distinctUntilChanged()
+    val token
+        get() = sharedPreferencesHelper.accountToken
+    val isConnected
+        get() = token != null
+    private var userCache: User? = null
+
+    override fun onTrimMemory(level: Int) {
+        when (level) {
+            ComponentCallbacks2.TRIM_MEMORY_UI_HIDDEN,
+            ComponentCallbacks2.TRIM_MEMORY_COMPLETE,
+            ComponentCallbacks2.TRIM_MEMORY_RUNNING_CRITICAL,
+            -> clearCache()
+            else -> {
             }
         }
-
-    init {
-        accountManager.addOnAccountsUpdatedListener(this, null, true)
     }
 
-    override fun onAccountsUpdated(accounts: Array<out Account>?) {
-        val connected = isConnected()
-        if (_statusObservable.value != connected)
-            _statusObservable.onNext(connected)
-    }
+    fun signIn(email: String, password: String): Completable =
+        authenticationApiInterfaceImpl.signIn(email, password).doOnSuccess { writeToken(it) }
+            .ignoreElement()
+
+    fun signUp(email: String, password: String): Completable =
+        authenticationApiInterfaceImpl.signUp(email, password).doOnSuccess { writeToken(it) }
+            .ignoreElement()
+
+    fun refreshToken(): Completable =
+        token?.let { token ->
+            authenticationApiInterfaceImpl.refreshToken(token.refreshToken)
+                .doOnSuccess { writeToken(it) }
+                .doOnError { disconnect() }
+                .ignoreElement()
+        } ?: Completable.error(TokenException())
+
+
+    fun getUserRemote(): Single<User> =
+        userApiInterfaceImpl.getUser().doOnSuccess { writeUser(it) }
+
+    fun getUser(): Single<User> =
+        userCache?.let { user -> Single.just(user) }
+            ?: userDao.getUserByEmail(sharedPreferencesHelper.accountName.get())
+                .subscribeOn(Schedulers.io()).flatMap { users ->
+                    if (users.isNotEmpty()) {
+                        users.first().let {
+                            writeUser(it)
+                            Single.just(it)
+                        }
+                    } else getUserRemote()
+                }
 
     fun disconnect() {
-        getCurrentAccount()?.let {
-            accountManager.invalidateAuthToken(
-                ACCOUNT_TYPE,
-                accountManager.peekAuthToken(it, DEFAULT_AUTH_TOKEN_TYPE)
-            )
-            accountManager.clearPassword(it)
-            sharedPreferencesHelper.accountToken.delete()
-
-            if (_statusObservable.value != false)
-                _statusObservable.onNext(false)
-        }
+        sharedPreferencesHelper.accountToken = null
+        _statusObservable.onNext(false)
     }
 
-    fun isConnected() = !token.isNullOrBlank()
-
-    /**
-     * Only meant to be called when sign up api responds successfully.
-     */
-    /*private*/internal fun createAccount(email: String, password: String, token: String? = null) {
-        if (token != null) connect(email, password, token)
-        else if (accountManager.addAccountExplicitly(
-                Account(email, ACCOUNT_TYPE),
-                password,
-                null
-            )
-        ) sharedPreferencesHelper.accountName.set(email)
+    fun clearCache() {
+        userCache = null
     }
 
-    /**
-     * Only meant to be called when sign in api responds successfully.
-     */
-    /*private*/internal fun connect(email: String, password: String, token: String) {
-        val account = getAccount(email)
-
-        if (account == null)
-            createAccount(email, password)
-
-        getAccount(email)?.let {
-            accountManager.setPassword(it, password)
-            accountManager.setAuthToken(it, DEFAULT_AUTH_TOKEN_TYPE, token)
-            sharedPreferencesHelper.accountName.set(email)
-            sharedPreferencesHelper.accountToken.set(token)
-
-            if (_statusObservable.value != true)
-                _statusObservable.onNext(true)
-        }
+    private fun writeUser(user: User) {
+        userDao.insertUser(user)
+        sharedPreferencesHelper.accountName.set(user.email)
+        userCache = user
+        _userObservable.onNext(user)
     }
 
-    private fun getAccount(email: String): Account? {
-        accountManager.accounts.forEach {
-            if (it.name == email) return it
-        }
-
-        return null
+    private fun writeToken(token: Token) {
+        sharedPreferencesHelper.accountToken = token
     }
 
-    private fun getCurrentAccount(): Account? {
-        val accountName = sharedPreferencesHelper.accountName.get()
-
-        if (accountName.isBlank()) return null
-
-        val accounts = accountManager.accounts
-        accounts.forEach { account ->
-            if (accountName == account.name)
-                return account
-        }
-
-        sharedPreferencesHelper.accountName.delete()
-        return null
-    }
-
-    companion object {
-        const val KEY_AUTH_TOKEN_TYPE = "authTokenType"
-        const val KEY_FEATURES = "features"
-        const val KEY_CREATE_ACCOUNT = "createAccount"
-        const val KEY_CONFIRM_ACCOUNT = "confirmAccount"
-        const val DEFAULT_AUTH_TOKEN_TYPE = "defaultAuthTokenType"
-        const val ACCOUNT_TYPE = BuildConfig.APPLICATION_ID
-        const val ACCOUNT_TYPE_GOOGLE = "com.google"
-        const val ACCOUNT_TYPE_FACEBOOK = "com.facebook.auth.login"
-        const val ACCOUNT_TYPE_TWITTER = "com.twitter.android.oauth.token"
-        const val REQUEST_CODE_CHOOSE_ACCOUNT = 354
-    }
+    class TokenException : RuntimeException("No valid token available")
 }

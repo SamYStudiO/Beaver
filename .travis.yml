@@ -27,3 +27,4 @@ before_install:
 
 script:
   - ./gradlew build check
+  -

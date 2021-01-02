@@ -1,22 +1,16 @@
 package net.samystudio.beaver.ui.main.home
 
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.LiveData
-import net.samystudio.beaver.data.ResultAsyncState
-import net.samystudio.beaver.data.model.Home
+import androidx.lifecycle.LiveDataReactiveStreams
+import io.reactivex.rxjava3.core.BackpressureStrategy
 import net.samystudio.beaver.data.remote.HomeApiInterfaceImpl
-import net.samystudio.beaver.ui.base.viewmodel.BaseFragmentViewModel
-import net.samystudio.beaver.ui.base.viewmodel.DataFetchViewModel
-import net.samystudio.beaver.ui.common.viewmodel.ResultAsyncStateLiveData
+import net.samystudio.beaver.data.toResultAsyncState
+import net.samystudio.beaver.ui.base.viewmodel.BaseDisposablesViewModel
 
-class HomeFragmentViewModel @ViewModelInject constructor(homeApiInterfaceImpl: HomeApiInterfaceImpl) :
-    BaseFragmentViewModel(),
-    DataFetchViewModel<Home> {
-    private val _dataFetchObservable: ResultAsyncStateLiveData<Home> =
-        ResultAsyncStateLiveData(homeApiInterfaceImpl.home()).also { disposables.add(it) }
-    override val dataFetchObservable: LiveData<ResultAsyncState<Home>> = _dataFetchObservable
-
-    override fun refreshData() {
-        _dataFetchObservable.refresh()
-    }
+class HomeFragmentViewModel @ViewModelInject constructor(
+    homeApiInterfaceImpl: HomeApiInterfaceImpl
+) : BaseDisposablesViewModel() {
+    val homeLiveData = LiveDataReactiveStreams.fromPublisher(
+        homeApiInterfaceImpl.home().toResultAsyncState().toFlowable(BackpressureStrategy.LATEST)
+    )
 }

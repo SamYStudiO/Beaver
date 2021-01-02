@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="brand_blue">#3f51b5</color>
-    <color name="brand_pink">#ff4081</color>
-    <color name="grey">#666666</color>
-    <color name="green">#08c27f</color>
-    <color name="red">#ff3c00</color>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="grey">#FF666666</color>
+    <color name="green">#FF08C27F</color>
+    <color name="red">#FFFF3C00</color>
 </resources>

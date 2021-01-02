@@ -2,48 +2,64 @@ package net.samystudio.beaver.ui.main.home
 
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
+import androidx.core.view.*
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
+import com.google.android.material.transition.MaterialFadeThrough
 import dagger.hilt.android.AndroidEntryPoint
 import net.samystudio.beaver.R
-import net.samystudio.beaver.data.model.Home
+import net.samystudio.beaver.data.ResultAsyncState
 import net.samystudio.beaver.databinding.FragmentHomeBinding
-import net.samystudio.beaver.ext.getGenericErrorDialog
-import net.samystudio.beaver.ext.getMethodTag
-import net.samystudio.beaver.ext.showIfNonExistent
-import net.samystudio.beaver.ui.base.fragment.BaseDataFetchFragment
-import net.samystudio.beaver.ui.common.dialog.AlertDialogListener
+import net.samystudio.beaver.ext.*
 
 @AndroidEntryPoint
-class HomeFragment : BaseDataFetchFragment<FragmentHomeBinding, HomeFragmentViewModel, Home>(),
-    AlertDialogListener {
-    override val binding: FragmentHomeBinding by viewBinding { inflater, container ->
-        FragmentHomeBinding.inflate(inflater, container, false)
-    }
-    override val viewModel by viewModels<HomeFragmentViewModel>()
+class HomeFragment : Fragment(R.layout.fragment_home), OnApplyWindowInsetsListener {
+    private val binding by viewBinding { FragmentHomeBinding.bind(it) }
+    private val viewModel by viewModels<HomeFragmentViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.invalidate.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_home_to_userProfile))
+        exitTransition = MaterialFadeThrough().apply {
+            duration = TRANSITION_DURATION
+        }
+        ViewCompat.setOnApplyWindowInsetsListener(view, this)
+        toggleLightStatusBars(false)
+        toggleLightNavigationBars(true)
+        hideLoaderDialog()
+
+        binding.toolbar.title = "Home"
+        binding.profileButton.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_home_to_userProfile))
+
+        viewModel.homeLiveData.observe(viewLifecycleOwner, {
+            when (it) {
+                is ResultAsyncState.Started -> {
+                    showLoaderDialog()
+                }
+                is ResultAsyncState.Completed -> {
+                    binding.textView.text = it.data.content
+                    hideLoaderDialog()
+                }
+                is ResultAsyncState.Failed -> {
+                    hideLoaderDialog()
+                    findNavController().navigate(HomeFragmentDirections.actionGlobalGenericErrorDialog())
+                }
+            }
+        })
     }
 
-    override fun dataFetchStart() {
-        // TODO Show loader.
-    }
+    override fun onApplyWindowInsets(v: View, insets: WindowInsetsCompat): WindowInsetsCompat {
+        val stableSystemBarsInsets =
+            insets.getInsetsIgnoringVisibility(WindowInsetsCompat.Type.systemBars())
 
-    override fun dataFetchSuccess(data: Home) {
-        binding.textView.text = data.content
-    }
-
-    override fun dataFetchError(throwable: Throwable) {
-        getGenericErrorDialog().showIfNonExistent(
-            parentFragmentManager,
-            getMethodTag()
-        )
-    }
-
-    override fun dataFetchTerminate() {
-        // TODO Hide loader.
+        binding.toolbar.updatePadding(top = stableSystemBarsInsets.top)
+        binding.profileButton.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+            bottomMargin =
+                stableSystemBarsInsets.bottom + resources.getDimensionPixelSize(R.dimen.screen_padding)
+        }
+        return insets
     }
 }

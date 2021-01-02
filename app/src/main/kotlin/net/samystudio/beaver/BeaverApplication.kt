@@ -25,13 +25,8 @@ class BeaverApplication : Application(), Configuration.Provider {
 
     override fun onCreate() {
         super.onCreate()
-
         crashlytics.setCrashlyticsCollectionEnabled(!BuildConfig.DEBUG)
         Timber.plant(timberTree)
-
-        // Launch screen timeout, this is not material guideline compliant but client is king and
-        // most want it displayed longer, just remove if client is material compliant ^^.
-        Thread.sleep(1000)
     }
 
     override fun onTrimMemory(level: Int) {

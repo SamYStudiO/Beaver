@@ -2,6 +2,7 @@ object Versions {
     const val compileSdk = 30
     const val minSdk = 21
     const val targetSdk = 30
+    const val buildToolsVersion = "30.0.3"
 
     // tools
     const val android_build_tools = "4.1.1"
@@ -9,7 +10,7 @@ object Versions {
     const val strict_version_matcher_plugin = "1.2.2"
     const val firebase_crashlytics_plugin = "2.4.1"
     const val firebase_perf_plugin = "1.3.4"
-    const val navigation_safe_args_plugin = "2.3.1"
+    const val navigation_safe_args_plugin = "2.3.2"
     const val hilt_android_plugin = "2.30.1-alpha"
     const val gradle_versions_plugin = "0.36.0"
 
@@ -17,14 +18,14 @@ object Versions {
     const val kotlin = "1.4.20"
 
     // android
-    const val core_ktx = "1.3.2"
+    const val core_ktx = "1.5.0-alpha05"
     const val appcompat = "1.2.0"
     const val preference_ktx = "1.1.1"
     const val constraintlayout = "2.0.4"
     const val arch_version = "2.1.0"
     const val lifecycle = "2.2.0"
-    const val navigation = "2.3.1"
-    const val room = "2.2.5"
+    const val navigation = "2.3.2"
+    const val room = "2.3.0-alpha03"
     const val material = "1.3.0-alpha04"
 
     // firebase
@@ -40,7 +41,7 @@ object Versions {
     const val hilt_androidx = "1.0.0-alpha02"
 
     // reactive
-    const val rxjava = "3.0.7"
+    const val rxjava3 = "3.0.7"
     const val rxandroid = "3.0.0"
     const val rxkotlin = "3.0.1"
     const val rxbinding = "4.0.0"
@@ -53,7 +54,7 @@ object Versions {
     const val picasso = "3.0.0-SNAPSHOT"
 
     // misc
-    const val permissionsdispatcher = "4.8.0"
+    const val permissionsdispatcher = "1.0.1"
 
     // debug
     const val timber = "4.7.1"
@@ -61,9 +62,9 @@ object Versions {
 
     // test
     const val junit = "4.13.1"
-    const val test_core = "1.3.0"
+    const val test = "1.3.0"
+    const val test_junit = "1.1.2"
+    const val espresso = "3.3.0"
     const val robolectric = "4.4"
     const val mockito = "3.6.28"
-    const val test_runner = "1.3.0"
-    const val espresso_core = "3.3.0"
 }

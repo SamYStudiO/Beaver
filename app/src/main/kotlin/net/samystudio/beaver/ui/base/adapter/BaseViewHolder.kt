@@ -5,34 +5,29 @@ import androidx.recyclerview.widget.RecyclerView
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.kotlin.plusAssign
-import kotlinx.android.extensions.LayoutContainer
 
-abstract class BaseViewHolder<D>(override val containerView: View) :
-    RecyclerView.ViewHolder(containerView), LayoutContainer,
+@Suppress("LeakingThis")
+abstract class BaseViewHolder<D>(itemView: View) :
+    RecyclerView.ViewHolder(itemView),
     View.OnAttachStateChangeListener {
-    private var needDataChangedDispatch = false
     private var disposables: CompositeDisposable? = null
     var data: D? = null
         set(value) {
             if (field != value) {
                 field = value
-                if (itemView.isAttachedToWindow) onDataChanged()
-                else needDataChangedDispatch = true
+                onDataChanged()
             }
         }
 
     init {
-        @Suppress("LeakingThis")
         itemView.addOnAttachStateChangeListener(this)
     }
 
-    override fun onViewAttachedToWindow(v: View?) {
+    override fun onViewAttachedToWindow(v: View) {
         disposables = CompositeDisposable()
-
-        if (needDataChangedDispatch) onDataChanged()
     }
 
-    override fun onViewDetachedFromWindow(v: View?) {
+    override fun onViewDetachedFromWindow(v: View) {
         disposables?.dispose()
     }
 

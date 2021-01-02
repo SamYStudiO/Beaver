@@ -19,14 +19,15 @@ This is a build number base on date. This solution is better than using a build 
 on version number because play console need a build number greater each time a new apk is uploaded.
 When using a build number based on version if your current beta apk is 1.3.0 and you want to publish
 an update to your 1.2.0 production version you won't be able to do so. We can't use build number
-based on milliseconds time though because of 2100000000 version code limitation. Here we make a build
-number that increment only every minute so we should never reach 2100000000.
+based on milliseconds time though because of 2100000000 version code limitation. Here we make a
+build number that increment only every minute so we should never reach 2100000000.
 */
 val projectStartTimeMillis = 1517443200000
 val versionBuild = ((System.currentTimeMillis() - projectStartTimeMillis) / 60000).toInt()
 
 android {
     compileSdkVersion(Versions.compileSdk)
+    buildToolsVersion(Versions.buildToolsVersion)
 
     defaultConfig {
         applicationId = "net.samystudio.beaver".also { resValue("string", "application_id", it) }
@@ -35,7 +36,7 @@ android {
         versionCode = versionBuild
         versionName = "$versionMajor.$versionMinor.$versionPatch"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField("String", "FULL_VERSION_NAME", "\"$versionName.$versionCode\"")
+        buildConfigField("String", "FULL_VERSION_NAME", "\"$versionName build $versionCode\"")
 
         javaCompileOptions {
             annotationProcessorOptions {
@@ -143,5 +144,10 @@ dependencies {
     androidTest()
 
     implementation(Dependencies.permissionsdispatcher)
-    kapt(Dependencies.permissionsdispatcher_processor)
+
+    // TODO when officially released remove these, it fixed issues when popping backstack and with transitions.
+    implementation("androidx.activity:activity:1.2.0-rc01")
+    implementation("androidx.activity:activity-ktx:1.2.0-rc01")
+    implementation("androidx.fragment:fragment:1.3.0-rc01")
+    implementation("androidx.fragment:fragment-ktx:1.3.0-rc01")
 }

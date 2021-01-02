@@ -6,7 +6,7 @@
     </style>
 
     <style name="Theme.MyApp.Launcher">
-        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowBackground">?attr/colorPrimary</item>
     </style>
 
 </resources>

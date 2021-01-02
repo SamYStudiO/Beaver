@@ -4,65 +4,73 @@ package net.samystudio.beaver.ui.main.authenticator
 
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
+import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
+import androidx.core.view.OnApplyWindowInsetsListener
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
-import com.jakewharton.rxbinding4.view.clicks
+import androidx.navigation.fragment.findNavController
+import com.google.android.material.transition.MaterialSharedAxis
 import com.jakewharton.rxbinding4.widget.textChanges
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import net.samystudio.beaver.R
+import net.samystudio.beaver.data.AsyncState
 import net.samystudio.beaver.data.local.SharedPreferencesHelper
 import net.samystudio.beaver.databinding.FragmentAuthenticatorBinding
 import net.samystudio.beaver.ext.*
-import net.samystudio.beaver.ui.base.fragment.BaseDataPushFragment
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class AuthenticatorFragment :
-    BaseDataPushFragment<FragmentAuthenticatorBinding, AuthenticatorFragmentViewModel>() {
+class AuthenticatorFragment : Fragment(R.layout.fragment_authenticator),
+    OnApplyWindowInsetsListener {
+    private val binding by viewBinding { FragmentAuthenticatorBinding.bind(it) }
+    private val viewModel by viewModels<AuthenticatorFragmentViewModel>()
+    private var compositeDisposable: CompositeDisposable? = null
+
     @Inject
     protected lateinit var sharedPreferencesHelper: SharedPreferencesHelper
-    override val binding: FragmentAuthenticatorBinding by viewBinding { inflater, container ->
-        FragmentAuthenticatorBinding.inflate(inflater, container, false)
-    }
-    override val viewModel by viewModels<AuthenticatorFragmentViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        (requireActivity() as? AppCompatActivity)?.supportActionBar?.setDisplayHomeAsUpEnabled(false)
-        enableBackPressed = true
+        compositeDisposable = CompositeDisposable()
+        enterTransition =
+            MaterialSharedAxis(MaterialSharedAxis.Y, true).apply { duration = TRANSITION_DURATION }
+        ViewCompat.setOnApplyWindowInsetsListener(view, this)
+        toggleLightBars(true)
+        hideLoaderDialog()
+
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    activity?.finish()
+                }
+            })
 
         binding.signInEmail.setText(sharedPreferencesHelper.accountName.get())
 
-        viewModel.signInVisibility.observe(
-            viewLifecycleOwner,
-            Observer { binding.signInLayout.isVisible = it })
-        viewModel.signUpVisibility.observe(
-            viewLifecycleOwner,
-            Observer { binding.signUpEmailLayout.isVisible = it })
+        binding.signIn.setOnClickListener {
+            viewModel.signIn(
+                binding.signInEmail.text.toString(),
+                binding.signInPassword.text.toString()
+            )
+        }
+        binding.signUp.setOnClickListener {
+            viewModel.signUp(
+                binding.signUpEmail.text.toString(),
+                binding.signUpPassword.text.toString()
+            )
+        }
 
-        viewModel.addUserFlow(
-            binding.signIn.clicks()
-                .map {
-                    AuthenticatorUserFlow.SignIn(
-                        binding.signInEmail.text.toString(),
-                        binding.signInPassword.text.toString()
-                    )
-                })
-        viewModel.addUserFlow(
-            binding.signUp.clicks()
-                .map {
-                    AuthenticatorUserFlow.SignUp(
-                        binding.signInEmail.text.toString(),
-                        binding.signInPassword.text.toString()
-                    )
-                })
-
-        destroyViewDisposable?.add(
+        compositeDisposable?.add(
             Observable
                 .combineLatest(
                     binding.signInEmail.textChanges()
@@ -88,7 +96,7 @@ class AuthenticatorFragment :
                 .startWithItem(false)
                 .subscribe { binding.signIn.isEnabled = it })
 
-        destroyViewDisposable?.add(
+        compositeDisposable?.add(
             Observable
                 .combineLatest(
                     binding.signUpEmail.textChanges()
@@ -123,24 +131,36 @@ class AuthenticatorFragment :
                 .observeOn(AndroidSchedulers.mainThread())
                 .startWithItem(false)
                 .subscribe { binding.signUp.isEnabled = it })
+
+        viewModel.signLiveData.observe(viewLifecycleOwner, {
+            when (it) {
+                is AsyncState.Started -> showLoaderDialog()
+                is AsyncState.Completed -> {
+                    hideLoaderDialog()
+                    findNavController().popBackStack()
+                }
+                is AsyncState.Failed -> {
+                    hideLoaderDialog()
+                    findNavController().navigate(AuthenticatorFragmentDirections.actionGlobalGenericErrorDialog())
+                }
+            }
+        })
     }
 
-    override fun onBackPressed() {
-        activity?.finish()
+    override fun onApplyWindowInsets(v: View, insets: WindowInsetsCompat): WindowInsetsCompat {
+        val stableSystemBarsInsets =
+            insets.getInsetsIgnoringVisibility(WindowInsetsCompat.Type.systemBars())
+
+        binding.signInEmailLayout.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+            topMargin = stableSystemBarsInsets.top
+        }
+
+        return insets
     }
 
-    override fun dataPushStart() {
-        // TODO Show loader.
-    }
-
-    override fun dataPushSuccess() {
-    }
-
-    override fun dataPushError(throwable: Throwable) {
-        getGenericErrorDialog().showNow(parentFragmentManager, getMethodTag())
-    }
-
-    override fun dataPushTerminate() {
-        // TODO Hide loader.
+    override fun onDestroyView() {
+        super.onDestroyView()
+        compositeDisposable?.dispose()
+        compositeDisposable = null
     }
 }

@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">beaver</string>
+    <string name="global_ok">"OK"</string>
+    <string name="global_cancel">"Cancel"</string>
+    <string name="global_error_title">"Whoops !"</string>
+    <string name="global_error_message">"An error occurred !"</string>
 </resources>

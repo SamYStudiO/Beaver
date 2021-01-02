@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="@dimen/screen_padding">
-
+    android:layout_margin="@dimen/screen_padding"
+    android:transitionGroup="true">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/sign_in_email_layout"
@@ -55,7 +55,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginBottom="20dp"
-        android:text="signin"
+        android:text="signin (anything work)"
         app:layout_constraintBottom_toTopOf="@+id/sign_up_email_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -122,7 +122,7 @@
         android:id="@+id/sign_up"
         android:layout_width="384dp"
         android:layout_height="wrap_content"
-        android:text="signup"
+        android:text="signup (anything work)"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

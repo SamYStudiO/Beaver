@@ -10,10 +10,9 @@ import dagger.hilt.components.SingletonComponent
 import io.reactivex.rxjava3.schedulers.Schedulers
 import net.samystudio.beaver.BuildConfig
 import net.samystudio.beaver.data.local.SharedPreferencesHelper
-import net.samystudio.beaver.data.manager.UserManager
-import net.samystudio.beaver.data.remote.AuthenticatorApiInterface
+import net.samystudio.beaver.data.remote.retrofit.RxErrorHandlingCallAdapterFactory
 import okhttp3.Cache
-import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
+import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
@@ -60,7 +59,6 @@ object NetworkModule {
     @Singleton
     fun provideRequestInterceptor(
         sharedPreferencesHelper: SharedPreferencesHelper,
-        userManager: UserManager
     ): Interceptor =
         Interceptor { chain ->
             // Request interceptor to update root url and add user token if exist.
@@ -72,12 +70,16 @@ object NetworkModule {
             // want to update Retrofit base url at runtime.
             val newBuilder = request.newBuilder()
 
-            url.replace(BASE_URL, sharedPreferencesHelper.apiUrl.get()).toHttpUrlOrNull()?.let {
-                newBuilder.url(it)
-            }
+            // Let's set selected server url.
+            newBuilder.url(url.replace(BASE_URL, sharedPreferencesHelper.server.url).toHttpUrl())
 
             // Let's add token if we got one.
-            userManager.token?.let { newBuilder.header("Authorization", "Bearer $it") }
+            sharedPreferencesHelper.accountToken?.let {
+                newBuilder.header(
+                    "Authorization",
+                    "${it.tokenType} ${it.accessToken}"
+                )
+            }
 
             chain.proceed(newBuilder.build())
         }
@@ -122,20 +124,15 @@ object NetworkModule {
     @Singleton
     fun provideRetrofit(
         okHttpClient: OkHttpClient,
-        rxJava3CallAdapterFactory: RxJava3CallAdapterFactory,
+        rxErrorHandlingCallAdapterFactory: RxErrorHandlingCallAdapterFactory,
         nullOrEmptyConverterFactory: Converter.Factory,
         gsonConverterFactory: GsonConverterFactory
     ): Retrofit =
         Retrofit.Builder()
             .client(okHttpClient)
-            .addCallAdapterFactory(rxJava3CallAdapterFactory)
+            .addCallAdapterFactory(rxErrorHandlingCallAdapterFactory)
             .addConverterFactory(nullOrEmptyConverterFactory)
             .addConverterFactory(gsonConverterFactory)
             .baseUrl(BASE_URL)
             .build()
-
-    @Provides
-    @Singleton
-    fun provideAuthenticatorApiInterface(retrofit: Retrofit): AuthenticatorApiInterface =
-        retrofit.create(AuthenticatorApiInterface::class.java)
 }

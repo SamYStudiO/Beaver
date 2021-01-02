@@ -20,4 +20,3 @@ private class PasswordValidator : Validator<CharSequence> {
 }
 
 val PASSWORD_VALIDATOR: Validator<CharSequence> = PasswordValidator()
-

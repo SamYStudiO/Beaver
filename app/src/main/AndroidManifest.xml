@@ -12,16 +12,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <uses-permission
-        android:name="android.permission.AUTHENTICATE_ACCOUNTS"
-        android:maxSdkVersion="22" />
-    <uses-permission
-        android:name="android.permission.USE_CREDENTIALS"
-        android:maxSdkVersion="22" />
-    <uses-permission
-        android:name="android.permission.MANAGE_ACCOUNTS"
-        android:maxSdkVersion="22" />
 
     <application
         android:name=".BeaverApplication"
@@ -33,7 +23,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApp"
-        tools:ignore="GoogleAppIndexingWarning,UnusedAttribute">
+        tools:targetApi="n">
 
         <activity
             android:name=".ui.main.MainActivity"
@@ -45,17 +35,10 @@
             </intent-filter>
         </activity>
 
-        <service
-            android:name=".data.service.AuthenticatorService"
-            android:process=":authenticator"
-            tools:ignore="ExportedService">
-            <intent-filter>
-                <action android:name="android.accounts.AccountAuthenticator" />
-            </intent-filter>
-            <meta-data
-                android:name="android.accounts.AccountAuthenticator"
-                android:resource="@xml/account_authenticator" />
-        </service>
+        <provider
+            android:name=".ContextProvider"
+            android:authorities="${applicationId}"
+            android:exported="false" />
 
         <provider
             android:name="androidx.work.impl.WorkManagerInitializer"

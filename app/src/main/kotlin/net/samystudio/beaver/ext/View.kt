@@ -1,6 +1,10 @@
 package net.samystudio.beaver.ext
 
 import android.view.View
+import com.jakewharton.rxbinding4.view.clicks
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Observable
+import java.util.concurrent.TimeUnit
 
 fun View.requestApplyInsetsWhenAttached() {
     if (isAttachedToWindow) {
@@ -19,3 +23,13 @@ fun View.requestApplyInsetsWhenAttached() {
         })
     }
 }
+
+fun View.multipleClick(clickCount: Int = 2): Observable<Int> =
+    clicks()
+        .share()
+        .let {
+            it.buffer(it.debounce(if (clickCount > 3) 300 else 200, TimeUnit.MILLISECONDS))
+        }
+        .filter { it.size % clickCount == 0 }
+        .map { clickCount }
+        .observeOn(AndroidSchedulers.mainThread())

@@ -57,5 +57,3 @@ fun View.showKeyboard(flags: Int = InputMethodManager.SHOW_IMPLICIT): Boolean {
 
 fun View.hideKeyboard(flags: Int = 0) =
     context?.getInputMethodManager()?.hideSoftInputFromWindow(windowToken, flags) ?: false
-
-

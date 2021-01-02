@@ -22,20 +22,20 @@ class GoogleApiAvailabilityManager @Inject constructor(
      * user app is incompatible.
      */
     val availabilityObservable: Observable<AsyncState> = Single.create<Boolean> { emitter ->
-            val status: Int =
-                googleApiAvailability.isGooglePlayServicesAvailable(context)
-            if (status == ConnectionResult.SUCCESS)
-                emitter.onSuccess(true)
-            else
-                emitter.onError(
-                    GoogleApiAvailabilityException(
-                        status,
-                        googleApiAvailability.isUserResolvableError(status),
-                        googleApiAvailability
-                    )
+        val status: Int =
+            googleApiAvailability.isGooglePlayServicesAvailable(context)
+        if (status == ConnectionResult.SUCCESS)
+            emitter.onSuccess(true)
+        else
+            emitter.onError(
+                GoogleApiAvailabilityException(
+                    status,
+                    googleApiAvailability.isUserResolvableError(status),
+                    googleApiAvailability
                 )
+            )
 
-        }.toAsyncState()
+    }.toAsyncState()
         .replay()
         .refCount()
 
