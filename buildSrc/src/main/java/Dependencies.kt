@@ -5,9 +5,9 @@ object Dependencies {
     const val kotlin = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${Versions.kotlin}"
 
     // android
-    const val core_ktx = "androidx.core:core-ktx:${Versions.core_ktx}"
+    const val core_ktx = "androidx.core:core-ktx:${Versions.core}"
     const val appcompat = "androidx.appcompat:appcompat:${Versions.appcompat}"
-    const val preference_ktx = "androidx.preference:preference-ktx:${Versions.preference_ktx}"
+    const val preference_ktx = "androidx.preference:preference-ktx:${Versions.preference}"
     const val constraintlayout =
         "androidx.constraintlayout:constraintlayout:${Versions.constraintlayout}"
     const val lifecycle_viewmodel_ktx =
@@ -32,11 +32,11 @@ object Dependencies {
     // firebase
     const val firebase_appindexing =
         "com.google.firebase:firebase-appindexing:${Versions.firebase_appindexing}"
-    const val firebase_crashlytics =
+    const val firebase_crashlytics_ktx =
         "com.google.firebase:firebase-crashlytics-ktx:${Versions.firebase_crashlytics}"
-    const val firebase_analytics =
+    const val firebase_analytics_ktx =
         "com.google.firebase:firebase-analytics-ktx:${Versions.firebase_analytics}"
-    const val firebase_perf = "com.google.firebase:firebase-perf-ktx:${Versions.firebase_perf}"
+    const val firebase_perf_ktx = "com.google.firebase:firebase-perf-ktx:${Versions.firebase_perf}"
 
     // dagger
     const val dagger = "com.google.dagger:dagger:${Versions.dagger}"
@@ -50,10 +50,10 @@ object Dependencies {
     const val assisted_inject_processor =
         "com.squareup.inject:assisted-inject-processor-dagger2:${Versions.assisted_inject}"
     const val hilt_android =
-        "com.google.dagger:hilt-android:${Versions.hilt_android}"
-    const val hilt_android_compiler =
-        "com.google.dagger:hilt-compiler:${Versions.hilt_android}"
-    const val hilt_testing = "com.google.dagger:hilt-android-testing:${Versions.hilt_android}"
+        "com.google.dagger:hilt-android:${Versions.hilt}"
+    const val hilt_compiler =
+        "com.google.dagger:hilt-compiler:${Versions.hilt}"
+    const val hilt_android_testing = "com.google.dagger:hilt-android-testing:${Versions.hilt}"
     const val hilt_lifecycle_viewmodel =
         "androidx.hilt:hilt-lifecycle-viewmodel:${Versions.hilt_androidx}"
     const val hilt_work =
@@ -62,48 +62,50 @@ object Dependencies {
         "androidx.hilt:hilt-compiler:${Versions.hilt_androidx}"
 
     // reactive
-    const val rxjava3 = "io.reactivex.rxjava3:rxjava:${Versions.rxjava3}"
+    const val rxjava = "io.reactivex.rxjava3:rxjava:${Versions.rxjava3}"
     const val rxandroid = "io.reactivex.rxjava3:rxandroid:${Versions.rxandroid}"
     const val rxkotlin = "io.reactivex.rxjava3:rxkotlin:${Versions.rxkotlin}"
-    const val rxbinding = "com.jakewharton.rxbinding4:rxbinding:${Versions.rxbinding}"
+    const val rxbinding = "com.jakewharton.rxbinding4:rxbinding:${Versions.rxbinding4}"
     const val rxbinding_core =
-        "com.jakewharton.rxbinding4:rxbinding-core:${Versions.rxbinding}"
+        "com.jakewharton.rxbinding4:rxbinding-core:${Versions.rxbinding4}"
     const val rxbinding_appcompat =
-        "com.jakewharton.rxbinding4:rxbinding-appcompat:${Versions.rxbinding}"
+        "com.jakewharton.rxbinding4:rxbinding-appcompat:${Versions.rxbinding4}"
     const val rxbinding_drawerlayout =
-        "com.jakewharton.rxbinding4:rxbinding-drawerlayout:${Versions.rxbinding}"
+        "com.jakewharton.rxbinding4:rxbinding-drawerlayout:${Versions.rxbinding4}"
     const val rxbinding_leanback =
-        "com.jakewharton.rxbinding4:rxbinding-leanback:${Versions.rxbinding}"
+        "com.jakewharton.rxbinding4:rxbinding-leanback:${Versions.rxbinding4}"
     const val rxbinding_recyclerview =
-        "com.jakewharton.rxbinding4:rxbinding-recyclerview:${Versions.rxbinding}"
+        "com.jakewharton.rxbinding4:rxbinding-recyclerview:${Versions.rxbinding4}"
     const val rxbinding_slidingpanelayout =
-        "com.jakewharton.rxbinding4:rxbinding-slidingpanelayout:${Versions.rxbinding}"
+        "com.jakewharton.rxbinding4:rxbinding-slidingpanelayout:${Versions.rxbinding4}"
     const val rxbinding_swiperefreshlayout =
-        "com.jakewharton.rxbinding4:rxbinding-swiperefreshlayout:${Versions.rxbinding}"
+        "com.jakewharton.rxbinding4:rxbinding-swiperefreshlayout:${Versions.rxbinding4}"
     const val rxbinding_viewpager2 =
-        "com.jakewharton.rxbinding4:rxbinding-viewpager2:${Versions.rxbinding}"
+        "com.jakewharton.rxbinding4:rxbinding-viewpager2:${Versions.rxbinding4}"
     const val rx_preferences =
         "com.f2prateek.rx.preferences2:rx-preferences:${Versions.rx_preferences}"
-    const val rxpicasso = "net.samystudio.rxpicasso:rxpicasso-kotlin:${Versions.rxpicasso}"
+    const val rxpicasso_kotlin = "net.samystudio.rxpicasso:rxpicasso-kotlin:${Versions.rxpicasso}"
 
     // network
-    const val okhttp = "com.squareup.okhttp3:okhttp:${Versions.okhttp}"
+    const val okhttp = "com.squareup.okhttp3:okhttp:${Versions.okhttp3}"
     const val okhttp_logging_interceptor =
-        "com.squareup.okhttp3:logging-interceptor:${Versions.okhttp}"
-    const val okhttp_mockwebserver = "com.squareup.okhttp3:mockwebserver:${Versions.okhttp}"
-    const val retrofit = "com.squareup.retrofit2:retrofit:${Versions.retrofit}"
-    const val retrofit_converter_gson = "com.squareup.retrofit2:converter-gson:${Versions.retrofit}"
+        "com.squareup.okhttp3:logging-interceptor:${Versions.okhttp3}"
+    const val okhttp_mockwebserver = "com.squareup.okhttp3:mockwebserver:${Versions.okhttp3}"
+    const val retrofit = "com.squareup.retrofit2:retrofit:${Versions.retrofit2}"
+    const val retrofit_converter_gson =
+        "com.squareup.retrofit2:converter-gson:${Versions.retrofit2}"
     const val retrofit_adapter_rxjava3 =
-        "com.squareup.retrofit2:adapter-rxjava3:${Versions.retrofit}"
+        "com.squareup.retrofit2:adapter-rxjava3:${Versions.retrofit2}"
     const val picasso = "com.squareup.picasso:picasso:${Versions.picasso}"
 
     // misc
-    const val permissionsdispatcher =
+    const val permissionsdispatcher_ktx =
         "org.permissionsdispatcher:permissionsdispatcher-ktx:${Versions.permissionsdispatcher}"
 
     // debug
     const val timber = "com.jakewharton.timber:timber:${Versions.timber}"
-    const val leakcanary = "com.squareup.leakcanary:leakcanary-android:${Versions.leakcanary}"
+    const val leakcanary_android =
+        "com.squareup.leakcanary:leakcanary-android:${Versions.leakcanary}"
 
     // test
     const val junit = "junit:junit:${Versions.junit}"
@@ -160,9 +162,9 @@ fun DependencyHandler.room() {
 
 fun DependencyHandler.firebase() {
     implementation(Dependencies.firebase_appindexing)
-    implementation(Dependencies.firebase_crashlytics)
-    implementation(Dependencies.firebase_analytics)
-    implementation(Dependencies.firebase_perf)
+    implementation(Dependencies.firebase_crashlytics_ktx)
+    implementation(Dependencies.firebase_analytics_ktx)
+    implementation(Dependencies.firebase_perf_ktx)
 }
 
 fun DependencyHandler.dagger() {
@@ -174,16 +176,16 @@ fun DependencyHandler.dagger() {
     compileOnly(Dependencies.assisted_inject_annotations)
     kapt(Dependencies.assisted_inject_processor)
     implementation(Dependencies.hilt_android)
-    kapt(Dependencies.hilt_android_compiler)
-    testImplementation(Dependencies.hilt_testing)
-    androidTestImplementation(Dependencies.hilt_testing)
+    kapt(Dependencies.hilt_compiler)
+    testImplementation(Dependencies.hilt_android_testing)
+    androidTestImplementation(Dependencies.hilt_android_testing)
     implementation(Dependencies.hilt_lifecycle_viewmodel)
     implementation(Dependencies.hilt_work)
     kapt(Dependencies.hilt_androidx_compiler)
 }
 
 fun DependencyHandler.reactive() {
-    implementation(Dependencies.rxjava3)
+    implementation(Dependencies.rxjava)
     implementation(Dependencies.rxandroid)
     implementation(Dependencies.rxkotlin)
     implementation(Dependencies.rxbinding)
@@ -195,7 +197,7 @@ fun DependencyHandler.reactive() {
     //implementation(Dependencies.rxbinding_swiperefreshlayout)
     //implementation(Dependencies.rxbinding_viewpager2)
     implementation(Dependencies.rx_preferences)
-    implementation(Dependencies.rxpicasso)
+    implementation(Dependencies.rxpicasso_kotlin)
 }
 
 fun DependencyHandler.network() {
@@ -210,7 +212,7 @@ fun DependencyHandler.network() {
 
 fun DependencyHandler.debug() {
     implementation(Dependencies.timber)
-    debugImplementation(Dependencies.leakcanary)
+    debugImplementation(Dependencies.leakcanary_android)
 }
 
 fun DependencyHandler.test() {

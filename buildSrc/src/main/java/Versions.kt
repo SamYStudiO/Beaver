@@ -18,9 +18,9 @@ object Versions {
     const val kotlin = "1.4.20"
 
     // android
-    const val core_ktx = "1.5.0-alpha05"
+    const val core = "1.5.0-alpha05"
     const val appcompat = "1.2.0"
-    const val preference_ktx = "1.1.1"
+    const val preference = "1.1.1"
     const val constraintlayout = "2.0.4"
     const val arch_version = "2.1.0"
     const val lifecycle = "2.2.0"
@@ -37,20 +37,20 @@ object Versions {
     // dagger
     const val dagger = "2.30.1"
     const val assisted_inject = "0.6.0"
-    const val hilt_android = "2.30.1-alpha"
+    const val hilt = "2.30.1-alpha"
     const val hilt_androidx = "1.0.0-alpha02"
 
     // reactive
     const val rxjava3 = "3.0.7"
     const val rxandroid = "3.0.0"
     const val rxkotlin = "3.0.1"
-    const val rxbinding = "4.0.0"
+    const val rxbinding4 = "4.0.0"
     const val rx_preferences = "2.0.1"
     const val rxpicasso = "0.3.0"
 
     // network
-    const val okhttp = "4.9.0"
-    const val retrofit = "2.9.0"
+    const val okhttp3 = "4.9.0"
+    const val retrofit2 = "2.9.0"
     const val picasso = "3.0.0-SNAPSHOT"
 
     // misc

@@ -143,7 +143,7 @@ dependencies {
     test()
     androidTest()
 
-    implementation(Dependencies.permissionsdispatcher)
+    implementation(Dependencies.permissionsdispatcher_ktx)
 
     // TODO when officially released remove these, it fixed issues when popping backstack and with transitions.
     implementation("androidx.activity:activity:1.2.0-rc01")
