@@ -2,10 +2,13 @@
 
 package net.samystudio.beaver.di.module
 
+import android.content.Context
 import android.util.Log
+import androidx.work.WorkManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import net.samystudio.beaver.BuildConfig
 import net.samystudio.beaver.data.TrimMemory
@@ -31,4 +34,9 @@ object ApplicationModule {
     @Singleton
     fun provideTrimMemoryList(picassoTrimMemory: PicassoModule.PicassoTrimMemory): ArrayList<TrimMemory> =
         mutableListOf<TrimMemory>(picassoTrimMemory) as ArrayList<TrimMemory>
+
+    @Provides
+    @Singleton
+    fun provideWorkManager(@ApplicationContext context: Context): WorkManager =
+        WorkManager.getInstance(context)
 }
