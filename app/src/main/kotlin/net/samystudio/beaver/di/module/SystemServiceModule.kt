@@ -1,6 +1,5 @@
 package net.samystudio.beaver.di.module
 
-import android.accounts.AccountManager
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
@@ -28,11 +27,6 @@ object SystemServiceModule {
     @Singleton
     fun provideRxSharedPreferences(sharedPreferences: SharedPreferences): RxSharedPreferences =
         RxSharedPreferences.create(sharedPreferences)
-
-    @Provides
-    @Singleton
-    fun provideAccountManager(@ApplicationContext context: Context): AccountManager =
-        AccountManager.get(context)
 
     @Provides
     @Singleton
