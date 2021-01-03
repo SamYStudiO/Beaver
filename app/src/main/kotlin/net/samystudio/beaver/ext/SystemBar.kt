@@ -16,36 +16,63 @@ import androidx.fragment.app.FragmentActivity
 
 private val translucentBarColor = Color.parseColor("#80000000")
 
+/**
+ * @see WindowInsetsControllerCompat.isAppearanceLightStatusBars
+ */
 val Window.isLightStatusBars
     get() = WindowCompat.getInsetsController(
         this,
         decorView
     )?.isAppearanceLightStatusBars == true
 
+/**
+ * @see WindowInsetsControllerCompat.isAppearanceLightNavigationBars
+ */
 val Window.isLightNavigationBars
     get() = WindowCompat.getInsetsController(
         this,
         decorView
     )?.isAppearanceLightNavigationBars == true
 
+/**
+ * @see Window.isLightStatusBars
+ */
 val FragmentActivity.isLightStatusBars
     get() = window.isLightStatusBars
 
+/**
+ * @see Window.isLightNavigationBars
+ */
 val FragmentActivity.isLightNavigationBars
     get() = window.isLightNavigationBars
 
+/**
+ * @see FragmentActivity.isLightStatusBars
+ */
 val Fragment.isLightStatusBars
     get() = activity?.isLightStatusBars == true
 
+/**
+ * @see FragmentActivity.isLightNavigationBars
+ */
 val Fragment.isLightNavigationBars
     get() = activity?.isLightNavigationBars == true
 
+/**
+ * @see Window.isLightStatusBars
+ */
 val AppCompatDialogFragment.isLightStatusBars
     get() = dialog?.window?.isLightStatusBars
 
+/**
+ * @see Window.isLightNavigationBars
+ */
 val AppCompatDialogFragment.isLightNavigationBars
     get() = dialog?.window?.isLightNavigationBars
 
+/**
+ * @see WindowInsetsControllerCompat.setAppearanceLightStatusBars
+ */
 fun Window.toggleLightStatusBars(light: Boolean? = null) {
     WindowCompat.getInsetsController(this, decorView)?.let {
         val l = light ?: !it.isAppearanceLightStatusBars
@@ -57,6 +84,9 @@ fun Window.toggleLightStatusBars(light: Boolean? = null) {
     }
 }
 
+/**
+ * @see WindowInsetsControllerCompat.setAppearanceLightNavigationBars
+ */
 fun Window.toggleLightNavigationBars(light: Boolean? = null) {
     WindowCompat.getInsetsController(this, decorView)?.let {
         val l = light ?: !it.isAppearanceLightNavigationBars
@@ -82,14 +112,26 @@ fun Window.show(@InsetsType vararg types: Int) {
     types.forEach { WindowCompat.getInsetsController(this, decorView)?.show(it) }
 }
 
+/**
+ * @see Window.toggleLightStatusBars
+ */
 fun FragmentActivity.toggleLightStatusBars(light: Boolean? = null) {
     window.toggleLightStatusBars(light)
 }
 
+/**
+ * @see Window.toggleLightNavigationBars
+ */
 fun FragmentActivity.toggleLightNavigationBars(light: Boolean? = null) {
     window.toggleLightNavigationBars(light)
 }
 
+/**
+ * Toggle light status/navigation bars independently.
+ *
+ * @see Window.toggleLightStatusBars
+ * @see Window.toggleLightNavigationBars
+ */
 fun FragmentActivity.toggleLightBars(
     lightStatus: Boolean? = null,
     lightNavigation: Boolean? = null,
@@ -98,63 +140,99 @@ fun FragmentActivity.toggleLightBars(
     window.toggleLightNavigationBars(lightNavigation)
 }
 
+/**
+ * Toggle light status/navigation bars with same value.
+ *
+ * @see Window.toggleLightStatusBars
+ * @see Window.toggleLightNavigationBars
+ */
 fun FragmentActivity.toggleLightBars(light: Boolean? = null) {
     window.toggleLightStatusBars(light)
     window.toggleLightNavigationBars(light)
 }
 
 /**
- * @see WindowInsetsControllerCompat.hide
+ * @see Window.hide
  */
 fun FragmentActivity.hide(@InsetsType vararg types: Int) {
     window.hide(*types)
 }
 
 /**
- * @see WindowInsetsControllerCompat.show
+ * @see Window.show
  */
 fun FragmentActivity.show(@InsetsType vararg types: Int) {
     window.show(*types)
 }
 
+/**
+ * @see FragmentActivity.toggleLightStatusBars
+ */
 fun Fragment.toggleLightStatusBars(light: Boolean? = null) {
     activity?.toggleLightStatusBars(light)
 }
 
+/**
+ * @see FragmentActivity.toggleLightNavigationBars
+ */
 fun Fragment.toggleLightNavigationBars(light: Boolean? = null) {
     activity?.toggleLightNavigationBars(light)
 }
 
+/**
+ * Toggle light status/navigation bars independently.
+ *
+ * @see FragmentActivity.toggleLightStatusBars
+ * @see FragmentActivity.toggleLightNavigationBars
+ */
 fun Fragment.toggleLightBars(lightStatus: Boolean? = null, lightNavigation: Boolean? = null) {
     activity?.toggleLightBars(lightStatus, lightNavigation)
 }
 
+/**
+ * Toggle light status/navigation bars with same value.
+ *
+ * @see FragmentActivity.toggleLightStatusBars
+ * @see FragmentActivity.toggleLightNavigationBars
+ */
 fun Fragment.toggleLightBars(light: Boolean? = null) {
     activity?.toggleLightBars(light)
 }
 
 /**
- * @see WindowInsetsControllerCompat.hide
+ * @see FragmentActivity.hide
  */
 fun Fragment.hide(@InsetsType vararg types: Int) {
     activity?.hide(*types)
 }
 
 /**
- * @see WindowInsetsControllerCompat.show
+ * @see FragmentActivity.show
  */
 fun Fragment.show(@InsetsType vararg types: Int) {
     activity?.show(*types)
 }
 
+/**
+ * @see Window.toggleLightStatusBars
+ */
 fun AppCompatDialogFragment.toggleLightStatusBars(light: Boolean? = null) {
     dialog?.window?.toggleLightStatusBars(light)
 }
 
+/**
+ * @see Window.toggleLightNavigationBars
+ */
 fun AppCompatDialogFragment.toggleLightNavigationBars(light: Boolean? = null) {
     dialog?.window?.toggleLightNavigationBars(light)
 }
 
+/**
+ * Toggle light status/navigation bars independently.
+ *
+ * @see Window.toggleLightStatusBars
+ * @see Window.toggleLightNavigationBars
+ */
 fun AppCompatDialogFragment.toggleLightBars(
     lightStatus: Boolean? = null,
     lightNavigation: Boolean? = null,
@@ -163,20 +241,26 @@ fun AppCompatDialogFragment.toggleLightBars(
     dialog?.window?.toggleLightNavigationBars(lightNavigation)
 }
 
+/**
+ * Toggle light status/navigation bars with same value.
+ *
+ * @see Window.toggleLightStatusBars
+ * @see Window.toggleLightNavigationBars
+ */
 fun AppCompatDialogFragment.toggleLightBars(light: Boolean? = null) {
     dialog?.window?.toggleLightStatusBars(light)
     dialog?.window?.toggleLightNavigationBars(light)
 }
 
 /**
- * @see WindowInsetsControllerCompat.hide
+ * @see Window.hide
  */
 fun AppCompatDialogFragment.hide(@InsetsType vararg types: Int) {
     dialog?.window?.hide(*types)
 }
 
 /**
- * @see WindowInsetsControllerCompat.show
+ * @see Window.show
  */
 fun AppCompatDialogFragment.show(@InsetsType vararg types: Int) {
     dialog?.window?.show(*types)
