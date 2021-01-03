@@ -10,7 +10,7 @@ Also features :
 - Some [utilities](https://github.com/SamYStudiO/Beaver/tree/master/app/src/main/kotlin/net/samystudio/beaver/ext).
 - [Base classes](https://github.com/SamYStudiO/Beaver/tree/master/app/src/main/kotlin/net/samystudio/beaver/ui/base/adapter) for Adapter/ListAdapter and ViewHolder.
 - Dynamic retrofit url to handle multiple server url (production, pre production, etc...), selector screen/dialog for server not implemented here though.
-- [Structured values resources files](https://github.com/SamYStudiO/Beaver/tree/master/app/src/main/res/values) as recommended( themes, styles, shapes, types).
+- [Structured values resources files](https://github.com/SamYStudiO/Beaver/tree/master/app/src/main/res/values) as recommended(themes, styles, shapes, types).
 - Gradle kotlin DSL.
 
 Common used libraries :
