@@ -5,6 +5,7 @@ import android.os.Build
 import android.view.Window
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsCompat.Type.InsetsType
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
@@ -105,11 +106,35 @@ fun Window.hide(@InsetsType vararg types: Int) {
     types.forEach { WindowCompat.getInsetsController(this, decorView)?.hide(it) }
 }
 
+fun Window.hideStatusBar() {
+    hide(WindowInsetsCompat.Type.statusBars())
+}
+
+fun Window.hideNavigationBar() {
+    hide(WindowInsetsCompat.Type.navigationBars())
+}
+
+fun Window.hideBars() {
+    hide(WindowInsetsCompat.Type.systemBars())
+}
+
 /**
  * @see WindowInsetsControllerCompat.show
  */
 fun Window.show(@InsetsType vararg types: Int) {
     types.forEach { WindowCompat.getInsetsController(this, decorView)?.show(it) }
+}
+
+fun Window.showStatusBar() {
+    show(WindowInsetsCompat.Type.statusBars())
+}
+
+fun Window.showNavigationBar() {
+    show(WindowInsetsCompat.Type.navigationBars())
+}
+
+fun Window.showBars() {
+    show(WindowInsetsCompat.Type.systemBars())
 }
 
 /**
@@ -158,11 +183,35 @@ fun FragmentActivity.hide(@InsetsType vararg types: Int) {
     window.hide(*types)
 }
 
+fun FragmentActivity.hideStatusBar() {
+    hide(WindowInsetsCompat.Type.statusBars())
+}
+
+fun FragmentActivity.hideNavigationBar() {
+    hide(WindowInsetsCompat.Type.navigationBars())
+}
+
+fun FragmentActivity.hideBars() {
+    hide(WindowInsetsCompat.Type.systemBars())
+}
+
 /**
  * @see Window.show
  */
 fun FragmentActivity.show(@InsetsType vararg types: Int) {
     window.show(*types)
+}
+
+fun FragmentActivity.showStatusBar() {
+    show(WindowInsetsCompat.Type.statusBars())
+}
+
+fun FragmentActivity.showNavigationBar() {
+    show(WindowInsetsCompat.Type.navigationBars())
+}
+
+fun FragmentActivity.showBars() {
+    show(WindowInsetsCompat.Type.systemBars())
 }
 
 /**
@@ -206,11 +255,35 @@ fun Fragment.hide(@InsetsType vararg types: Int) {
     activity?.hide(*types)
 }
 
+fun Fragment.hideStatusBar() {
+    hide(WindowInsetsCompat.Type.statusBars())
+}
+
+fun Fragment.hideNavigationBar() {
+    hide(WindowInsetsCompat.Type.navigationBars())
+}
+
+fun Fragment.hideBars() {
+    hide(WindowInsetsCompat.Type.systemBars())
+}
+
 /**
  * @see FragmentActivity.show
  */
 fun Fragment.show(@InsetsType vararg types: Int) {
     activity?.show(*types)
+}
+
+fun Fragment.showStatusBar() {
+    show(WindowInsetsCompat.Type.statusBars())
+}
+
+fun Fragment.showNavigationBar() {
+    show(WindowInsetsCompat.Type.navigationBars())
+}
+
+fun Fragment.showBars() {
+    show(WindowInsetsCompat.Type.systemBars())
 }
 
 /**
@@ -259,9 +332,33 @@ fun AppCompatDialogFragment.hide(@InsetsType vararg types: Int) {
     dialog?.window?.hide(*types)
 }
 
+fun AppCompatDialogFragment.hideStatusBar() {
+    hide(WindowInsetsCompat.Type.statusBars())
+}
+
+fun AppCompatDialogFragment.hideNavigationBar() {
+    hide(WindowInsetsCompat.Type.navigationBars())
+}
+
+fun AppCompatDialogFragment.hideBars() {
+    hide(WindowInsetsCompat.Type.systemBars())
+}
+
 /**
  * @see Window.show
  */
 fun AppCompatDialogFragment.show(@InsetsType vararg types: Int) {
     dialog?.window?.show(*types)
+}
+
+fun AppCompatDialogFragment.showStatusBar() {
+    show(WindowInsetsCompat.Type.statusBars())
+}
+
+fun AppCompatDialogFragment.showNavigationBar() {
+    show(WindowInsetsCompat.Type.navigationBars())
+}
+
+fun AppCompatDialogFragment.showBars() {
+    show(WindowInsetsCompat.Type.systemBars())
 }
