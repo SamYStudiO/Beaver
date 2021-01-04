@@ -34,9 +34,9 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         /*
         We don't use navigation component here because when starting we'll navigate home screen and
         if a dialog is opened meanwhile it will be dismissed and we don't want this LaunchDialog to
-        be dismiss while it has not finish initializing things up + we use
-        LoaderDialog::class.simpleName to make sure no any other LoaderDialog is open on top of
-        launch screen dialog(since no LoaderDialog may be open while another one is already opened
+        be dismissed while it has not finished initializing things up + we use
+        LoaderDialog::class.simpleName to make sure no any other LoaderDialog is opened on top of
+        launch screen dialog(since no LoaderDialog may be opened while another one is already opened
         when using LoaderDialog extensions Fragment.showLoaderDialog/Fragment.hideLoaderDialog).
         */
         LaunchDialog().also {
