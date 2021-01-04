@@ -3,41 +3,41 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_main"
-    app:startDestination="@id/home">
+    app:startDestination="@id/homeFragment">
     <fragment
-        android:id="@+id/home"
+        android:id="@+id/homeFragment"
         android:name="net.samystudio.beaver.ui.main.home.HomeFragment"
         android:label="HomeFragment"
         tools:layout="@layout/fragment_home">
         <deepLink app:uri="https://samystudio.github.io" />
         <action
             android:id="@+id/action_home_to_userProfile"
-            app:destination="@id/userProfile"
+            app:destination="@id/userProfileFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
-            app:popUpTo="@+id/home" />
+            app:popUpTo="@+id/homeFragment" />
     </fragment>
     <fragment
-        android:id="@+id/userProfile"
+        android:id="@+id/userProfileFragment"
         android:name="net.samystudio.beaver.ui.main.userProfile.UserProfileFragment"
         android:label="UserProfileFragment"
         tools:layout="@layout/fragment_user_profile" />
     <fragment
-        android:id="@+id/authenticator"
+        android:id="@+id/authenticatorFragment"
         android:name="net.samystudio.beaver.ui.main.authenticator.AuthenticatorFragment"
         android:label="AuthenticatorFragment"
         tools:layout="@layout/fragment_authenticator" />
     <action
-        android:id="@+id/action_global_authenticator"
-        app:destination="@id/authenticator"
+        android:id="@+id/action_global_authenticatorFragment"
+        app:destination="@id/authenticatorFragment"
         app:enterAnim="@anim/nav_default_enter_anim"
         app:exitAnim="@anim/nav_default_exit_anim"
         app:launchSingleTop="true"
         app:popEnterAnim="@anim/nav_default_enter_anim"
         app:popExitAnim="@anim/nav_default_pop_exit_anim"
-        app:popUpTo="@id/home"
+        app:popUpTo="@id/homeFragment"
         app:popUpToInclusive="false" />
     <dialog
         android:id="@+id/alertDialog"

@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
 
         viewModel.userStatusLiveData.observe(this, {
             if (!it) findNavController(R.id.nav_host).navigate(
-                NavigationMainDirections.actionGlobalAuthenticator()
+                NavigationMainDirections.actionGlobalAuthenticatorFragment()
             )
         })
     }
