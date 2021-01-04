@@ -3,6 +3,7 @@ package net.samystudio.beaver
 import android.app.Application
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import dagger.hilt.android.HiltAndroidApp
 import net.samystudio.beaver.data.TrimMemory
@@ -11,6 +12,9 @@ import javax.inject.Inject
 
 @HiltAndroidApp
 class BeaverApplication : Application(), Configuration.Provider {
+    @Inject
+    lateinit var firebaseAnalytics: FirebaseAnalytics
+
     @Inject
     lateinit var crashlytics: FirebaseCrashlytics
 
@@ -25,6 +29,7 @@ class BeaverApplication : Application(), Configuration.Provider {
 
     override fun onCreate() {
         super.onCreate()
+        firebaseAnalytics.setAnalyticsCollectionEnabled(!BuildConfig.DEBUG)
         crashlytics.setCrashlyticsCollectionEnabled(!BuildConfig.DEBUG)
         Timber.plant(timberTree)
     }
