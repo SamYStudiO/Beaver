@@ -1,7 +1,6 @@
 package net.samystudio.beaver
 
 import android.app.Application
-import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.crashlytics.FirebaseCrashlytics
@@ -25,7 +24,7 @@ class BeaverApplication : Application(), Configuration.Provider {
     lateinit var trimMemoryList: ArrayList<TrimMemory>
 
     @Inject
-    lateinit var workerFactory: HiltWorkerFactory
+    lateinit var workConfiguration: Configuration
 
     override fun onCreate() {
         super.onCreate()
@@ -39,9 +38,5 @@ class BeaverApplication : Application(), Configuration.Provider {
         trimMemoryList.forEach { it.onTrimMemory(level) }
     }
 
-    override fun getWorkManagerConfiguration(): Configuration {
-        return Configuration.Builder()
-            .setWorkerFactory(workerFactory)
-            .build()
-    }
+    override fun getWorkManagerConfiguration() = workConfiguration
 }
