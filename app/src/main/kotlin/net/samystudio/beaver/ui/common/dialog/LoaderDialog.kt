@@ -31,16 +31,20 @@ class LoaderDialog : AppCompatDialogFragment() {
     ): View = inflater.inflate(R.layout.dialog_loader, container, false)
 
     override fun dismiss() {
+        dismissAllowingStateLoss()
+    }
+
+    override fun dismissAllowingStateLoss() {
+        // Don't dismiss while we're animating, just wait to make loader animation smoother.
         if (view == null || (requireView().alpha > 0f && requireView().alpha < 1f))
             dismissRequested = true
         else hide()
-
     }
 
     override fun onStart() {
         super.onStart()
 
-        if (dismissRequested) dismiss()
+        if (dismissRequested) super.dismissAllowingStateLoss()
         else {
             binding.logo.alpha = 0f
             binding.progressBar.alpha = 0f
@@ -55,7 +59,7 @@ class LoaderDialog : AppCompatDialogFragment() {
                 .setDuration(TRANSITION_DURATION)
                 .setListener(object : AnimatorListenerAdapter() {
                     override fun onAnimationEnd(animation: Animator?) {
-                        if (dismissRequested) dismiss()
+                        if (dismissRequested) hide()
                     }
                 })
         }
@@ -69,7 +73,7 @@ class LoaderDialog : AppCompatDialogFragment() {
             .setDuration(TRANSITION_DURATION).setInterpolator(AccelerateInterpolator(2f))
             .setListener(object : AnimatorListenerAdapter() {
                 override fun onAnimationEnd(animation: Animator?) {
-                    super@LoaderDialog.dismiss()
+                    super@LoaderDialog.dismissAllowingStateLoss()
                 }
             })
     }
