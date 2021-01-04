@@ -11,7 +11,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import net.samystudio.beaver.NavigationMainDirections
 import net.samystudio.beaver.R
 import net.samystudio.beaver.databinding.ActivityMainBinding
-import net.samystudio.beaver.ext.toggleLightBars
+import net.samystudio.beaver.ext.toggleLightSystemBars
 import net.samystudio.beaver.ext.viewBinding
 import net.samystudio.beaver.ui.common.dialog.LaunchDialog
 import net.samystudio.beaver.ui.common.dialog.LoaderDialog
@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
 
         setContentView(binding.root)
         WindowCompat.setDecorFitsSystemWindows(window, false)
-        toggleLightBars(true)
+        toggleLightSystemBars(true)
 
         /*
         We don't use navigation component here because when starting we'll navigate home screen and

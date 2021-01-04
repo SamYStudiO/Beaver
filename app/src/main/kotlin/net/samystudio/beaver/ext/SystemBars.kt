@@ -15,7 +15,11 @@ import androidx.fragment.app.FragmentActivity
  * Helpers to handle status/navigation bars color and visibility.
  */
 
-private val translucentBarColor = Color.parseColor("#80000000")
+/**
+ * A translucent color for older SDKs where light appearance were not available.
+ * Should be a dark transparent color since system bar are white for these older SDKs.
+ */
+private val translucentSystemBarsColor = Color.parseColor("#80000000")
 
 /**
  * @see WindowInsetsControllerCompat.isAppearanceLightStatusBars
@@ -79,7 +83,7 @@ fun Window.toggleLightStatusBars(light: Boolean? = null) {
         val l = light ?: !it.isAppearanceLightStatusBars
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
             it.isAppearanceLightStatusBars = false
-            statusBarColor = if (l) translucentBarColor else Color.TRANSPARENT
+            statusBarColor = if (l) translucentSystemBarsColor else Color.TRANSPARENT
         } else
             it.isAppearanceLightStatusBars = l
     }
@@ -93,7 +97,7 @@ fun Window.toggleLightNavigationBars(light: Boolean? = null) {
         val l = light ?: !it.isAppearanceLightNavigationBars
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
             it.isAppearanceLightNavigationBars = false
-            navigationBarColor = if (l) translucentBarColor else Color.TRANSPARENT
+            navigationBarColor = if (l) translucentSystemBarsColor else Color.TRANSPARENT
         } else
             it.isAppearanceLightNavigationBars = l
     }
@@ -106,15 +110,15 @@ fun Window.hide(@InsetsType vararg types: Int) {
     types.forEach { WindowCompat.getInsetsController(this, decorView)?.hide(it) }
 }
 
-fun Window.hideStatusBar() {
+fun Window.hideStatusBars() {
     hide(WindowInsetsCompat.Type.statusBars())
 }
 
-fun Window.hideNavigationBar() {
+fun Window.hideNavigationBars() {
     hide(WindowInsetsCompat.Type.navigationBars())
 }
 
-fun Window.hideBars() {
+fun Window.hideSystemBars() {
     hide(WindowInsetsCompat.Type.systemBars())
 }
 
@@ -125,15 +129,15 @@ fun Window.show(@InsetsType vararg types: Int) {
     types.forEach { WindowCompat.getInsetsController(this, decorView)?.show(it) }
 }
 
-fun Window.showStatusBar() {
+fun Window.showStatusBars() {
     show(WindowInsetsCompat.Type.statusBars())
 }
 
-fun Window.showNavigationBar() {
+fun Window.showNavigationBars() {
     show(WindowInsetsCompat.Type.navigationBars())
 }
 
-fun Window.showBars() {
+fun Window.showSystemBars() {
     show(WindowInsetsCompat.Type.systemBars())
 }
 
@@ -157,7 +161,7 @@ fun FragmentActivity.toggleLightNavigationBars(light: Boolean? = null) {
  * @see Window.toggleLightStatusBars
  * @see Window.toggleLightNavigationBars
  */
-fun FragmentActivity.toggleLightBars(
+fun FragmentActivity.toggleLightSystemBars(
     lightStatus: Boolean? = null,
     lightNavigation: Boolean? = null,
 ) {
@@ -171,7 +175,7 @@ fun FragmentActivity.toggleLightBars(
  * @see Window.toggleLightStatusBars
  * @see Window.toggleLightNavigationBars
  */
-fun FragmentActivity.toggleLightBars(light: Boolean? = null) {
+fun FragmentActivity.toggleLightSystemBars(light: Boolean? = null) {
     window.toggleLightStatusBars(light)
     window.toggleLightNavigationBars(light)
 }
@@ -183,15 +187,15 @@ fun FragmentActivity.hide(@InsetsType vararg types: Int) {
     window.hide(*types)
 }
 
-fun FragmentActivity.hideStatusBar() {
+fun FragmentActivity.hideStatusBars() {
     hide(WindowInsetsCompat.Type.statusBars())
 }
 
-fun FragmentActivity.hideNavigationBar() {
+fun FragmentActivity.hideNavigationBars() {
     hide(WindowInsetsCompat.Type.navigationBars())
 }
 
-fun FragmentActivity.hideBars() {
+fun FragmentActivity.hideSystemBars() {
     hide(WindowInsetsCompat.Type.systemBars())
 }
 
@@ -202,15 +206,15 @@ fun FragmentActivity.show(@InsetsType vararg types: Int) {
     window.show(*types)
 }
 
-fun FragmentActivity.showStatusBar() {
+fun FragmentActivity.showStatusBars() {
     show(WindowInsetsCompat.Type.statusBars())
 }
 
-fun FragmentActivity.showNavigationBar() {
+fun FragmentActivity.showNavigationBars() {
     show(WindowInsetsCompat.Type.navigationBars())
 }
 
-fun FragmentActivity.showBars() {
+fun FragmentActivity.showSystemBars() {
     show(WindowInsetsCompat.Type.systemBars())
 }
 
@@ -234,8 +238,8 @@ fun Fragment.toggleLightNavigationBars(light: Boolean? = null) {
  * @see FragmentActivity.toggleLightStatusBars
  * @see FragmentActivity.toggleLightNavigationBars
  */
-fun Fragment.toggleLightBars(lightStatus: Boolean? = null, lightNavigation: Boolean? = null) {
-    activity?.toggleLightBars(lightStatus, lightNavigation)
+fun Fragment.toggleLightSystemBars(lightStatus: Boolean? = null, lightNavigation: Boolean? = null) {
+    activity?.toggleLightSystemBars(lightStatus, lightNavigation)
 }
 
 /**
@@ -244,8 +248,8 @@ fun Fragment.toggleLightBars(lightStatus: Boolean? = null, lightNavigation: Bool
  * @see FragmentActivity.toggleLightStatusBars
  * @see FragmentActivity.toggleLightNavigationBars
  */
-fun Fragment.toggleLightBars(light: Boolean? = null) {
-    activity?.toggleLightBars(light)
+fun Fragment.toggleLightSystemBars(light: Boolean? = null) {
+    activity?.toggleLightSystemBars(light)
 }
 
 /**
@@ -255,15 +259,15 @@ fun Fragment.hide(@InsetsType vararg types: Int) {
     activity?.hide(*types)
 }
 
-fun Fragment.hideStatusBar() {
+fun Fragment.hideStatusBars() {
     hide(WindowInsetsCompat.Type.statusBars())
 }
 
-fun Fragment.hideNavigationBar() {
+fun Fragment.hideNavigationBars() {
     hide(WindowInsetsCompat.Type.navigationBars())
 }
 
-fun Fragment.hideBars() {
+fun Fragment.hideSystemBars() {
     hide(WindowInsetsCompat.Type.systemBars())
 }
 
@@ -274,15 +278,15 @@ fun Fragment.show(@InsetsType vararg types: Int) {
     activity?.show(*types)
 }
 
-fun Fragment.showStatusBar() {
+fun Fragment.showStatusBars() {
     show(WindowInsetsCompat.Type.statusBars())
 }
 
-fun Fragment.showNavigationBar() {
+fun Fragment.showNavigationBars() {
     show(WindowInsetsCompat.Type.navigationBars())
 }
 
-fun Fragment.showBars() {
+fun Fragment.showSystemBars() {
     show(WindowInsetsCompat.Type.systemBars())
 }
 
@@ -306,7 +310,7 @@ fun AppCompatDialogFragment.toggleLightNavigationBars(light: Boolean? = null) {
  * @see Window.toggleLightStatusBars
  * @see Window.toggleLightNavigationBars
  */
-fun AppCompatDialogFragment.toggleLightBars(
+fun AppCompatDialogFragment.toggleLightSystemBars(
     lightStatus: Boolean? = null,
     lightNavigation: Boolean? = null,
 ) {
@@ -320,7 +324,7 @@ fun AppCompatDialogFragment.toggleLightBars(
  * @see Window.toggleLightStatusBars
  * @see Window.toggleLightNavigationBars
  */
-fun AppCompatDialogFragment.toggleLightBars(light: Boolean? = null) {
+fun AppCompatDialogFragment.toggleLightSystemBars(light: Boolean? = null) {
     dialog?.window?.toggleLightStatusBars(light)
     dialog?.window?.toggleLightNavigationBars(light)
 }
@@ -332,15 +336,15 @@ fun AppCompatDialogFragment.hide(@InsetsType vararg types: Int) {
     dialog?.window?.hide(*types)
 }
 
-fun AppCompatDialogFragment.hideStatusBar() {
+fun AppCompatDialogFragment.hideStatusBars() {
     hide(WindowInsetsCompat.Type.statusBars())
 }
 
-fun AppCompatDialogFragment.hideNavigationBar() {
+fun AppCompatDialogFragment.hideNavigationBars() {
     hide(WindowInsetsCompat.Type.navigationBars())
 }
 
-fun AppCompatDialogFragment.hideBars() {
+fun AppCompatDialogFragment.hideSystemBars() {
     hide(WindowInsetsCompat.Type.systemBars())
 }
 
@@ -351,14 +355,14 @@ fun AppCompatDialogFragment.show(@InsetsType vararg types: Int) {
     dialog?.window?.show(*types)
 }
 
-fun AppCompatDialogFragment.showStatusBar() {
+fun AppCompatDialogFragment.showStatusBars() {
     show(WindowInsetsCompat.Type.statusBars())
 }
 
-fun AppCompatDialogFragment.showNavigationBar() {
+fun AppCompatDialogFragment.showNavigationBars() {
     show(WindowInsetsCompat.Type.navigationBars())
 }
 
-fun AppCompatDialogFragment.showBars() {
+fun AppCompatDialogFragment.showSystemBars() {
     show(WindowInsetsCompat.Type.systemBars())
 }

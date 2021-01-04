@@ -26,7 +26,7 @@ class UserProfileFragment : Fragment(R.layout.fragment_user_profile), OnApplyWin
             duration = TRANSITION_DURATION
         }
         ViewCompat.setOnApplyWindowInsetsListener(view, this)
-        toggleLightBars(true)
+        toggleLightSystemBars(true)
         hideLoaderDialog()
         postponeEnterTransition()
 

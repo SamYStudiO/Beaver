@@ -44,7 +44,7 @@ class AuthenticatorFragment : Fragment(R.layout.fragment_authenticator),
         enterTransition =
             MaterialSharedAxis(MaterialSharedAxis.Y, true).apply { duration = TRANSITION_DURATION }
         ViewCompat.setOnApplyWindowInsetsListener(view, this)
-        toggleLightBars(true)
+        toggleLightSystemBars(true)
         hideLoaderDialog()
 
         requireActivity().onBackPressedDispatcher.addCallback(
