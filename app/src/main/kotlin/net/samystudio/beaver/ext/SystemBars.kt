@@ -1,5 +1,6 @@
 package net.samystudio.beaver.ext
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Build
 import android.view.Window
@@ -106,6 +107,7 @@ fun Window.toggleLightNavigationBars(light: Boolean? = null) {
 /**
  * @see WindowInsetsControllerCompat.hide
  */
+@SuppressLint("WrongConstant")
 fun Window.hide(@InsetsType vararg types: Int) {
     types.forEach { WindowCompat.getInsetsController(this, decorView)?.hide(it) }
 }
@@ -125,6 +127,7 @@ fun Window.hideSystemBars() {
 /**
  * @see WindowInsetsControllerCompat.show
  */
+@SuppressLint("WrongConstant")
 fun Window.show(@InsetsType vararg types: Int) {
     types.forEach { WindowCompat.getInsetsController(this, decorView)?.show(it) }
 }
@@ -183,6 +186,7 @@ fun FragmentActivity.toggleLightSystemBars(light: Boolean? = null) {
 /**
  * @see Window.hide
  */
+@SuppressLint("WrongConstant")
 fun FragmentActivity.hide(@InsetsType vararg types: Int) {
     window.hide(*types)
 }
@@ -202,6 +206,7 @@ fun FragmentActivity.hideSystemBars() {
 /**
  * @see Window.show
  */
+@SuppressLint("WrongConstant")
 fun FragmentActivity.show(@InsetsType vararg types: Int) {
     window.show(*types)
 }
@@ -255,6 +260,7 @@ fun Fragment.toggleLightSystemBars(light: Boolean? = null) {
 /**
  * @see FragmentActivity.hide
  */
+@SuppressLint("WrongConstant")
 fun Fragment.hide(@InsetsType vararg types: Int) {
     activity?.hide(*types)
 }
@@ -274,6 +280,7 @@ fun Fragment.hideSystemBars() {
 /**
  * @see FragmentActivity.show
  */
+@SuppressLint("WrongConstant")
 fun Fragment.show(@InsetsType vararg types: Int) {
     activity?.show(*types)
 }
@@ -332,6 +339,7 @@ fun AppCompatDialogFragment.toggleLightSystemBars(light: Boolean? = null) {
 /**
  * @see Window.hide
  */
+@SuppressLint("WrongConstant")
 fun AppCompatDialogFragment.hide(@InsetsType vararg types: Int) {
     dialog?.window?.hide(*types)
 }
@@ -351,6 +359,7 @@ fun AppCompatDialogFragment.hideSystemBars() {
 /**
  * @see Window.show
  */
+@SuppressLint("WrongConstant")
 fun AppCompatDialogFragment.show(@InsetsType vararg types: Int) {
     dialog?.window?.show(*types)
 }
