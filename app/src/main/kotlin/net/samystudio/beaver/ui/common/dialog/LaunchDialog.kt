@@ -99,6 +99,7 @@ class LaunchDialog : AppCompatDialogFragment(), OnApplyWindowInsetsListener {
                                             messageRes = R.string.global_error_message,
                                             positiveButton = "retry",
                                             negativeButton = "quit",
+                                            cancelable = false,
                                         ).show(parentFragmentManager, AlertDialog::class.simpleName)
                                     }
                                 }
