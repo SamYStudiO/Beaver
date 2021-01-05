@@ -105,21 +105,23 @@ open class AlertDialog : AppCompatDialogFragment(),
                         }
                 }
                 getInt(KEY_MULTI_CHOICE_ITEMS_RES).let {
-                    selectedIndices = mutableSetOf()
+                    val indices = mutableSetOf<Int>()
                     getBooleanArray(KEY_MULTI_CHOICE_CHECKED_ITEMS).apply {
                         this?.mapIndexed { index, b -> index to b }
                             ?.filter { pair -> pair.second }
                             ?.map { pair -> pair.first }
-                            ?.forEach { index -> selectedIndices?.add(index) }
+                            ?.forEach { index -> indices.add(index) }
                     }
-                    if (it != 0)
+                    if (it != 0) {
+                        selectedIndices = indices
                         setMultiChoiceItems(
                             it,
                             getBooleanArray(KEY_MULTI_CHOICE_CHECKED_ITEMS),
                             this@AlertDialog
                         )
-                    else
+                    } else
                         getCharSequenceArray(KEY_MULTI_CHOICE_ITEMS)?.let { items ->
+                            selectedIndices = indices
                             setMultiChoiceItems(
                                 items,
                                 getBooleanArray(KEY_MULTI_CHOICE_CHECKED_ITEMS),
@@ -127,25 +129,26 @@ open class AlertDialog : AppCompatDialogFragment(),
                             )
                         }
                 }
-
                 getInt(KEY_SINGLE_CHOICE_ITEMS_RES).let {
-                    selectedIndex = getInt(KEY_SINGLE_CHOICE_CHECKED_ITEM)
-                    if (it != 0)
+                    if (it != 0) {
+                        val index = getInt(KEY_SINGLE_CHOICE_CHECKED_ITEM, -1)
+                        selectedIndex = index
                         setSingleChoiceItems(
                             it,
-                            getInt(KEY_SINGLE_CHOICE_CHECKED_ITEM),
+                            index,
                             this@AlertDialog
                         )
-                    else
+                    } else
                         getCharSequenceArray(KEY_SINGLE_CHOICE_ITEMS)?.let { items ->
+                            val index = getInt(KEY_SINGLE_CHOICE_CHECKED_ITEM, -1)
+                            selectedIndex = index
                             setSingleChoiceItems(
                                 items,
-                                getInt(KEY_SINGLE_CHOICE_CHECKED_ITEM),
+                                index,
                                 this@AlertDialog
                             )
                         }
                 }
-
                 getInt(KEY_CUSTOM_VIEW_RES).let { if (it != 0) setView(it) }
             }
             onPrepareDialogBuilder(this)
@@ -168,7 +171,8 @@ open class AlertDialog : AppCompatDialogFragment(),
             DialogInterface.BUTTON_NEUTRAL,
             -> handleButtonClick(which)
             else -> {
-                selectedIndex = which
+                if (selectedIndex != null)
+                    selectedIndex = which
                 setFragmentResult(
                     KEY_CLICK_ITEM,
                     bundleOf(requestCodePair, KEY_CLICK_ITEM_INDEX to which)
