@@ -586,6 +586,34 @@ fun Fragment.setDialogCancelListener(listener: (requestCode: Int) -> Unit) {
 }
 
 /**
+ * Set a listener invoked when dialog is cancelled or when dialog negative button is clicked. A
+ * request code that matches the requestCode used to build this dialog is passed as listener
+ * argument.
+ */
+fun Fragment.setDialogCancelOrNegativeClickListener(listener: (requestCode: Int) -> Unit) {
+    setFragmentResultListener(AlertDialog.KEY_CANCEL) { _, bundle ->
+        listener.invoke(bundle.getInt(AlertDialog.KEY_REQUEST_CODE))
+    }
+    setFragmentResultListener(AlertDialog.KEY_CLICK_NEGATIVE) { _, bundle ->
+        listener.invoke(bundle.getInt(AlertDialog.KEY_REQUEST_CODE))
+    }
+}
+
+/**
+ * Set a listener invoked when dialog is cancelled or when dialog negative button is clicked. A
+ * request code that matches the requestCode used to build this dialog is passed as listener
+ * argument as well as a [Bundle] containing extra data.
+ */
+fun Fragment.setDialogCancelOrNegativeClickListener(listener: (requestCode: Int, bundle: Bundle) -> Unit) {
+    setFragmentResultListener(AlertDialog.KEY_CANCEL) { _, bundle ->
+        listener.invoke(bundle.getInt(AlertDialog.KEY_REQUEST_CODE), bundle)
+    }
+    setFragmentResultListener(AlertDialog.KEY_CLICK_NEGATIVE) { _, bundle ->
+        listener.invoke(bundle.getInt(AlertDialog.KEY_REQUEST_CODE), bundle)
+    }
+}
+
+/**
  * Set a listener invoked when dialog positive button is clicked. A request code that matches the
  * requestCode used to build this dialog is passed as listener argument.
  */
