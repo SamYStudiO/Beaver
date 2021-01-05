@@ -6,6 +6,7 @@ import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.core.SingleTransformer
 import io.reactivex.rxjava3.functions.Function
 import net.samystudio.beaver.data.manager.UserManager
+import net.samystudio.beaver.data.remote.retrofit.RetrofitException
 import org.reactivestreams.Publisher
 import retrofit2.HttpException
 import java.net.HttpURLConnection
@@ -28,11 +29,15 @@ abstract class BaseUserTokenApiInterface(protected val userManager: Lazy<UserMan
     private fun onTokenInvalidTransformer() =
         Function<Flowable<Throwable>, Publisher<*>> {
             it.flatMap { throwable ->
-                (if (throwable is HttpException && throwable.code() == HttpURLConnection.HTTP_UNAUTHORIZED && userManager.get().isConnected)
+                (if (isThrowableUnauthorized(throwable) && userManager.get().isConnected)
                     userManager.get().refreshToken().toFlowable()
                 else {
                     Flowable.error<Throwable>(throwable)
                 }).doOnError { userManager.get().disconnect() }
             }
         }
+
+    private fun isThrowableUnauthorized(throwable: Throwable) =
+        (throwable is HttpException && throwable.code() == HttpURLConnection.HTTP_UNAUTHORIZED) ||
+                (throwable is RetrofitException && throwable.code == HttpURLConnection.HTTP_UNAUTHORIZED)
 }
