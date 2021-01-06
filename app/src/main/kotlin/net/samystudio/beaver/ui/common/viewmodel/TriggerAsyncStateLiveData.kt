@@ -1,24 +1,24 @@
 package net.samystudio.beaver.ui.common.viewmodel
 
 import androidx.lifecycle.LiveData
-import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.disposables.Disposable
-import io.reactivex.rxjava3.subjects.PublishSubject
+import io.reactivex.rxjava3.processors.PublishProcessor
 import net.samystudio.beaver.data.AsyncState
 
 /**
  * LiveData that may trigger a [AsyncState] observable request.
- * @param observable triggered observable
- * @param isTriggeredWhenActivated indicates if observable is triggered when liveData state becomes
+ * @param flowable triggered flowable
+ * @param isTriggeredWhenActivated indicates if flowable is triggered when liveData state becomes
  * active, default is true.
  */
 class TriggerAsyncStateLiveData(
-    val observable: Observable<AsyncState>,
+    val flowable: Flowable<AsyncState>,
     val isTriggeredWhenActivated: Boolean = true
 ) : LiveData<AsyncState>(), Disposable {
-    private val trigger: PublishSubject<Unit> = PublishSubject.create()
+    private val trigger: PublishProcessor<Unit> = PublishProcessor.create()
     private val disposable: Disposable =
-        trigger.switchMap { _ -> observable.doOnNext { postValue(it) } }.subscribe()
+        trigger.switchMap { _ -> flowable.doOnNext { postValue(it) } }.subscribe()
 
     override fun onActive() {
         super.onActive()
@@ -26,7 +26,7 @@ class TriggerAsyncStateLiveData(
     }
 
     /**
-     * Trigger a new observable request (subscription).
+     * Trigger a new flowable request (subscription).
      */
     fun trigger() {
         if (value !is AsyncState.Started)
