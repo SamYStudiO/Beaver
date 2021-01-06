@@ -91,9 +91,9 @@ class LaunchDialog : AppCompatDialogFragment(), OnApplyWindowInsetsListener {
                                             0
                                         ))
                                     ) {
-                                        // Don't use navigation as this launch dialog is not launch
-                                        // from navigation component and we won't get dialog result
-                                        // if we are from different fragmentManagers.
+                                        // Don't use navigation as this launch dialog is not
+                                        // launched from navigation component and we won't get
+                                        // dialog result if we are from different fragmentManagers.
                                         AlertDialog.newInstance(
                                             titleRes = R.string.global_error_title,
                                             messageRes = R.string.global_error_message,
