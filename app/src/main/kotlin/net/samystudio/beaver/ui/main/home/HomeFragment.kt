@@ -11,7 +11,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.transition.MaterialFadeThrough
 import dagger.hilt.android.AndroidEntryPoint
 import net.samystudio.beaver.R
-import net.samystudio.beaver.data.ResultAsyncState
+import net.samystudio.beaver.data.handleStatesFromFragmentWithLoaderDialog
 import net.samystudio.beaver.databinding.FragmentHomeBinding
 import net.samystudio.beaver.ext.*
 
@@ -34,20 +34,12 @@ class HomeFragment : Fragment(R.layout.fragment_home), OnApplyWindowInsetsListen
         binding.toolbar.title = "Home"
         binding.profileButton.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_home_to_userProfile))
 
-        viewModel.homeLiveData.observe(viewLifecycleOwner, {
-            when (it) {
-                is ResultAsyncState.Started -> {
-                    showLoaderDialog()
-                }
-                is ResultAsyncState.Completed -> {
-                    binding.textView.text = it.data.content
-                    hideLoaderDialog()
-                }
-                is ResultAsyncState.Failed -> {
-                    hideLoaderDialog()
-                    findNavController().navigate(HomeFragmentDirections.actionGlobalGenericErrorDialog())
-                }
-            }
+        viewModel.homeLiveData.observe(viewLifecycleOwner, { state ->
+            state.handleStatesFromFragmentWithLoaderDialog(
+                this,
+                failed = { findNavController().navigate(HomeFragmentDirections.actionGlobalGenericErrorDialog()) },
+                complete = { binding.textView.text = it.content },
+            )
         })
     }
 

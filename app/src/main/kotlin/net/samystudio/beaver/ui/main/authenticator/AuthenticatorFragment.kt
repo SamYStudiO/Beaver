@@ -20,7 +20,7 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import net.samystudio.beaver.R
-import net.samystudio.beaver.data.AsyncState
+import net.samystudio.beaver.data.handleStatesFromFragmentWithLoaderDialog
 import net.samystudio.beaver.data.local.SharedPreferencesHelper
 import net.samystudio.beaver.databinding.FragmentAuthenticatorBinding
 import net.samystudio.beaver.ext.*
@@ -133,17 +133,11 @@ class AuthenticatorFragment : Fragment(R.layout.fragment_authenticator),
                 .subscribe { binding.signUp.isEnabled = it })
 
         viewModel.signLiveData.observe(viewLifecycleOwner, {
-            when (it) {
-                is AsyncState.Started -> showLoaderDialog()
-                is AsyncState.Completed -> {
-                    hideLoaderDialog()
-                    findNavController().popBackStack()
-                }
-                is AsyncState.Failed -> {
-                    hideLoaderDialog()
-                    findNavController().navigate(AuthenticatorFragmentDirections.actionGlobalGenericErrorDialog())
-                }
-            }
+            it.handleStatesFromFragmentWithLoaderDialog(
+                this,
+                failed = { findNavController().navigate(AuthenticatorFragmentDirections.actionGlobalGenericErrorDialog()) },
+                complete = { findNavController().popBackStack() },
+            )
         })
     }
 

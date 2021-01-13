@@ -1,8 +1,11 @@
 package net.samystudio.beaver.data
 
+import androidx.fragment.app.Fragment
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.ObservableTransformer
 import io.reactivex.rxjava3.core.Single
+import net.samystudio.beaver.ext.hideLoaderDialog
+import net.samystudio.beaver.ext.showLoaderDialog
 
 /**
  * Async request states, response contains data of type [T].
@@ -30,3 +33,37 @@ private fun <T> resultAsyncStateTransformer(): ObservableTransformer<T, ResultAs
             .startWithItem(ResultAsyncState.Started<T>())
             .onErrorReturn { ResultAsyncState.Failed<T>(it) }
     }
+
+fun <T> ResultAsyncState<T>.handleStates(
+    started: () -> Unit = { },
+    failed: (throwable: Throwable) -> Unit = {},
+    complete: (result: T) -> Unit = { },
+) {
+    when (this) {
+        is ResultAsyncState.Started -> started()
+        is ResultAsyncState.Completed -> complete(this.data)
+        is ResultAsyncState.Failed -> failed(this.error)
+    }
+}
+
+fun <T> ResultAsyncState<T>.handleStatesFromFragmentWithLoaderDialog(
+    fragment: Fragment,
+    started: () -> Unit = { },
+    failed: (throwable: Throwable) -> Unit = { },
+    complete: (result: T) -> Unit = { },
+) {
+    when (this) {
+        is ResultAsyncState.Started -> {
+            fragment.showLoaderDialog()
+            started()
+        }
+        is ResultAsyncState.Completed -> {
+            fragment.hideLoaderDialog()
+            complete(this.data)
+        }
+        is ResultAsyncState.Failed -> {
+            fragment.hideLoaderDialog()
+            failed(this.error)
+        }
+    }
+}

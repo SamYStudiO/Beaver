@@ -10,9 +10,12 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.transition.MaterialFadeThrough
 import dagger.hilt.android.AndroidEntryPoint
 import net.samystudio.beaver.R
-import net.samystudio.beaver.data.ResultAsyncState
+import net.samystudio.beaver.data.handleStatesFromFragmentWithLoaderDialog
 import net.samystudio.beaver.databinding.FragmentUserProfileBinding
-import net.samystudio.beaver.ext.*
+import net.samystudio.beaver.ext.TRANSITION_DURATION
+import net.samystudio.beaver.ext.hideLoaderDialog
+import net.samystudio.beaver.ext.toggleLightSystemBars
+import net.samystudio.beaver.ext.viewBinding
 
 @AndroidEntryPoint
 class UserProfileFragment : Fragment(R.layout.fragment_user_profile), OnApplyWindowInsetsListener {
@@ -34,22 +37,18 @@ class UserProfileFragment : Fragment(R.layout.fragment_user_profile), OnApplyWin
             viewModel.disconnect()
         }
 
-        viewModel.userLiveData.observe(viewLifecycleOwner, {
-            when (it) {
-                is ResultAsyncState.Started -> {
-                    showLoaderDialog()
-                }
-                is ResultAsyncState.Completed -> {
-                    binding.textView.text = it.data.toString()
-                    hideLoaderDialog()
-                    startPostponedEnterTransition()
-                }
-                is ResultAsyncState.Failed -> {
-                    hideLoaderDialog()
+        viewModel.userLiveData.observe(viewLifecycleOwner, { state ->
+            state.handleStatesFromFragmentWithLoaderDialog(
+                this,
+                failed = {
                     findNavController().popBackStack()
                     findNavController().navigate(UserProfileFragmentDirections.actionGlobalGenericErrorDialog())
-                }
-            }
+                },
+                complete = {
+                    binding.textView.text = it.toString()
+                    startPostponedEnterTransition()
+                },
+            )
         })
     }
 
