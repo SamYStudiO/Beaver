@@ -66,4 +66,3 @@ inline fun <OUT> Observable<OUT>.toTriggerLivEvent(
 inline fun <OUT> Single<OUT>.toTriggerLivEvent(
     isTriggeredWhenActivated: Boolean = false,
 ) = toFlowable().toTriggerLivEvent(isTriggeredWhenActivated)
-

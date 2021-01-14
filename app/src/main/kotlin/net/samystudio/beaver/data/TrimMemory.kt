@@ -1,7 +1,7 @@
 package net.samystudio.beaver.data
 
 import android.content.ComponentCallbacks2
-import net.samystudio.beaver.di.module.ApplicationModule
+import net.samystudio.beaver.di.ApplicationModule
 
 /**
  * @see ApplicationModule.provideTrimMemoryList

@@ -1,4 +1,4 @@
-package net.samystudio.beaver.di.module
+package net.samystudio.beaver.di
 
 import android.content.Context
 import androidx.room.Room

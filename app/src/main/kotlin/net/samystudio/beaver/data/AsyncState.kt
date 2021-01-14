@@ -71,4 +71,3 @@ fun AsyncState.handleStatesFromFragmentWithLoaderDialog(
         }
     }
 }
-

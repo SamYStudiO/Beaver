@@ -1,6 +1,6 @@
 @file:Suppress("unused")
 
-package net.samystudio.beaver.di.module
+package net.samystudio.beaver.di
 
 import android.content.Context
 import android.util.Log
