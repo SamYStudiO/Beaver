@@ -29,10 +29,10 @@ abstract class BaseUserTokenApiInterface(protected val userManager: Lazy<UserMan
     private fun onTokenInvalidTransformer() =
         Function<Flowable<Throwable>, Publisher<*>> {
             it.flatMap { throwable ->
-                if (isThrowableUnauthorized(throwable) && userManager.get().isConnected)
+                if (isThrowableUnauthorized(throwable))
                     userManager.get()
                         .refreshToken()
-                        .doOnError { userManager.get().disconnect() }
+                        .onErrorComplete() // If an error occurred swallow it as disconnecting is already handled from userManager.
                         .toFlowable()
                 else {
                     Flowable.error<Throwable>(throwable)

@@ -15,6 +15,7 @@ import net.samystudio.beaver.data.model.Token
 import net.samystudio.beaver.data.model.User
 import net.samystudio.beaver.data.remote.AuthenticatorApiInterfaceImpl
 import net.samystudio.beaver.data.remote.UserApiInterfaceImpl
+import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -56,13 +57,15 @@ class UserManager @Inject constructor(
             .ignoreElement()
 
     fun refreshToken(): Completable =
-        token?.let { token ->
+        (token?.let { token ->
             authenticationApiInterfaceImpl.refreshToken(token.refreshToken)
                 .doOnSuccess { writeToken(it) }
-                .doOnError { disconnect() }
                 .ignoreElement()
-        } ?: Completable.error(TokenException())
-
+        } ?: Completable.error(TokenException()))
+            .doOnError {
+                Timber.w(it, "An error occurred refreshing token")
+                disconnect()
+            }
 
     fun getUserRemote(): Single<User> =
         userApiInterfaceImpl.getUser().doOnSuccess { writeUser(it) }
