@@ -11,37 +11,37 @@ object Versions {
     const val firebase_crashlytics_plugin = "2.4.1"
     const val firebase_perf_plugin = "1.3.4"
     const val navigation_safe_args_plugin = "2.3.2"
-    const val hilt_android_plugin = "2.30.1-alpha"
+    const val hilt_android_plugin = "2.31-alpha"
     const val gradle_versions_plugin = "0.36.0"
 
     // kotlin
-    const val kotlin = "1.4.20"
+    const val kotlin = "1.4.21-2"
 
     // android
-    const val core = "1.5.0-alpha05"
+    const val core = "1.5.0-beta01"
     const val appcompat = "1.2.0"
     const val preference = "1.1.1"
     const val constraintlayout = "2.0.4"
     const val arch_version = "2.1.0"
     const val lifecycle = "2.2.0"
     const val navigation = "2.3.2"
-    const val room = "2.3.0-alpha03"
-    const val material = "1.3.0-alpha04"
+    const val room = "2.3.0-alpha04"
+    const val material = "1.3.0-rc01"
 
     // firebase
     const val firebase_appindexing = "19.1.0"
     const val firebase_crashlytics = "17.3.0"
-    const val firebase_analytics = "18.0.0"
-    const val firebase_perf = "19.0.10"
+    const val firebase_analytics = "18.0.1"
+    const val firebase_perf = "19.1.0"
 
     // dagger
-    const val dagger = "2.30.1"
+    const val dagger = "2.31"
     const val assisted_inject = "0.6.0"
-    const val hilt = "2.30.1-alpha"
+    const val hilt = "2.31-alpha"
     const val hilt_androidx = "1.0.0-alpha02"
 
     // reactive
-    const val rxjava3 = "3.0.7"
+    const val rxjava3 = "3.0.9"
     const val rxandroid = "3.0.0"
     const val rxkotlin = "3.0.1"
     const val rxbinding4 = "4.0.0"
@@ -58,7 +58,7 @@ object Versions {
 
     // debug
     const val timber = "4.7.1"
-    const val leakcanary = "2.5"
+    const val leakcanary = "2.6"
 
     // test
     const val junit = "4.13.1"
@@ -66,5 +66,5 @@ object Versions {
     const val test_junit = "1.1.2"
     const val espresso = "3.3.0"
     const val robolectric = "4.4"
-    const val mockito = "3.6.28"
+    const val mockito = "3.7.7"
 }
