@@ -1,4 +1,4 @@
-package net.samystudio.beaver.data.model
+package net.samystudio.beaver.data.remote.retrofit
 
 data class ApiError(
     val error: String? = null,

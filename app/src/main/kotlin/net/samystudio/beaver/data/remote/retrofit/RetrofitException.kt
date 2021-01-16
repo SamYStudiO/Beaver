@@ -1,6 +1,5 @@
 package net.samystudio.beaver.data.remote.retrofit
 
-import net.samystudio.beaver.data.model.ApiError
 import okhttp3.ResponseBody
 import retrofit2.Converter
 import retrofit2.HttpException
@@ -8,7 +7,7 @@ import retrofit2.Retrofit
 import java.io.IOException
 
 /**
- * Wrapper for [HttpException] that convert an error body json to a [ApiError] object, this is
+ * Wrapper for [HttpException] that convert an error body json to an [ApiError] object, this is
  * useful when server provides a custom object when an error occurred, Adjust [ApiError] to match
  * server data.
  */
