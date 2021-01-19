@@ -6,7 +6,7 @@ import io.reactivex.rxjava3.core.Observable
 import net.samystudio.beaver.data.AsyncState
 import net.samystudio.beaver.data.manager.GoogleApiAvailabilityManager
 import net.samystudio.beaver.data.toAsyncState
-import net.samystudio.beaver.ui.common.viewmodel.toTriggerLivEvent
+import net.samystudio.beaver.ui.common.viewmodel.toTriggerLiveEvent
 import java.util.concurrent.TimeUnit
 
 class LaunchDialogViewModel @ViewModelInject constructor(
@@ -16,7 +16,8 @@ class LaunchDialogViewModel @ViewModelInject constructor(
         // zip all initialization observables required here
         Observable.timer(1000, TimeUnit.MILLISECONDS).toAsyncState()
             .zipWith(googleApiAvailabilityManager.availabilityObservable.toAsyncState(),
-                { t1, t2 -> if (t2 is AsyncState.Failed) t2 else t1 }).toTriggerLivEvent(true)
+                { t1, t2 -> if (t2 is AsyncState.Failed) t2 else t1 })
+            .toTriggerLiveEvent(true)
 
 
     fun retry() {

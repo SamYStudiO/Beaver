@@ -54,15 +54,15 @@ class TriggerLiveEvent<OUT>(
     }
 }
 
-inline fun <OUT> Flowable<OUT>.toTriggerLivEvent(
+inline fun <OUT> Flowable<OUT>.toTriggerLiveEvent(
     isTriggeredWhenActivated: Boolean = false
 ) = TriggerLiveEvent(this, isTriggeredWhenActivated)
 
-inline fun <OUT> Observable<OUT>.toTriggerLivEvent(
+inline fun <OUT> Observable<OUT>.toTriggerLiveEvent(
     isTriggeredWhenActivated: Boolean = false,
     strategy: BackpressureStrategy = BackpressureStrategy.LATEST,
-) = toFlowable(strategy).toTriggerLivEvent(isTriggeredWhenActivated)
+) = toFlowable(strategy).toTriggerLiveEvent(isTriggeredWhenActivated)
 
-inline fun <OUT> Single<OUT>.toTriggerLivEvent(
+inline fun <OUT> Single<OUT>.toTriggerLiveEvent(
     isTriggeredWhenActivated: Boolean = false,
-) = toFlowable().toTriggerLivEvent(isTriggeredWhenActivated)
+) = toFlowable().toTriggerLiveEvent(isTriggeredWhenActivated)
