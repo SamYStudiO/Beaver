@@ -50,8 +50,6 @@ object Dependencies {
     const val hilt_compiler =
         "com.google.dagger:hilt-compiler:${Versions.hilt}"
     const val hilt_android_testing = "com.google.dagger:hilt-android-testing:${Versions.hilt}"
-    const val hilt_lifecycle_viewmodel =
-        "androidx.hilt:hilt-lifecycle-viewmodel:${Versions.hilt_androidx}"
     const val hilt_work =
         "androidx.hilt:hilt-work:${Versions.hilt_androidx}"
     const val hilt_androidx_compiler =
@@ -173,7 +171,6 @@ fun DependencyHandler.dagger() {
     kapt(Dependencies.hilt_compiler)
     testImplementation(Dependencies.hilt_android_testing)
     androidTestImplementation(Dependencies.hilt_android_testing)
-    implementation(Dependencies.hilt_lifecycle_viewmodel)
     implementation(Dependencies.hilt_work)
     kapt(Dependencies.hilt_androidx_compiler)
 }

@@ -1,15 +1,17 @@
 package net.samystudio.beaver.ui.common.dialog
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.core.Observable
 import net.samystudio.beaver.data.AsyncState
 import net.samystudio.beaver.data.manager.GoogleApiAvailabilityManager
 import net.samystudio.beaver.data.toAsyncState
 import net.samystudio.beaver.ui.common.viewmodel.toTriggerLiveEvent
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
-class LaunchDialogViewModel @ViewModelInject constructor(
+@HiltViewModel
+class LaunchDialogViewModel @Inject constructor(
     googleApiAvailabilityManager: GoogleApiAvailabilityManager,
 ) : ViewModel() {
     val initializationObservable =

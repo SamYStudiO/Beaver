@@ -1,12 +1,14 @@
 package net.samystudio.beaver.ui.main
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.toLiveData
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.core.BackpressureStrategy
 import net.samystudio.beaver.data.manager.UserManager
 import net.samystudio.beaver.ui.base.viewmodel.BaseDisposablesViewModel
+import javax.inject.Inject
 
-class MainActivityViewModel @ViewModelInject constructor(userManager: UserManager) :
+@HiltViewModel
+class MainActivityViewModel @Inject constructor(userManager: UserManager) :
     BaseDisposablesViewModel() {
     val userStatusLiveData =
         userManager.statusObservable

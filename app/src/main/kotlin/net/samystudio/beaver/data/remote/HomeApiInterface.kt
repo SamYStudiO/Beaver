@@ -11,7 +11,7 @@ interface HomeApiInterface {
     fun home(): Single<Home>
 }
 
-@ActivityRetainedScoped
+@ViewModelScoped
 class HomeApiInterfaceImpl @Inject constructor(private val homeApiInterface: HomeApiInterface) {
     fun home(): Single<Home> =
         homeApiInterface.home()

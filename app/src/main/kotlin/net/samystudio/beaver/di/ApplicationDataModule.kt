@@ -19,7 +19,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object DataModule {
+object ApplicationDataModule {
     private const val DATABASE_NAME: String = "database-beaver"
 
     @Provides

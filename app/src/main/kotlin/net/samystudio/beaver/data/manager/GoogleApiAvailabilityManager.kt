@@ -4,14 +4,14 @@ import android.content.Context
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.android.scopes.ActivityScoped
+import dagger.hilt.android.scopes.ViewModelScoped
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import net.samystudio.beaver.data.AsyncState
 import net.samystudio.beaver.data.toAsyncState
 import javax.inject.Inject
 
-@ActivityScoped
+@ViewModelScoped
 class GoogleApiAvailabilityManager @Inject constructor(
     @ApplicationContext
     private val context: Context,

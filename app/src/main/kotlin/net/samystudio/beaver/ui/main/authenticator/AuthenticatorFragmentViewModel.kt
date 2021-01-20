@@ -1,12 +1,14 @@
 package net.samystudio.beaver.ui.main.authenticator
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import net.samystudio.beaver.data.AsyncState
 import net.samystudio.beaver.data.manager.UserManager
 import net.samystudio.beaver.ui.common.viewmodel.TriggerDataLiveEvent
+import javax.inject.Inject
 
-class AuthenticatorFragmentViewModel @ViewModelInject constructor(
+@HiltViewModel
+class AuthenticatorFragmentViewModel @Inject constructor(
     private val userManager: UserManager
 ) : ViewModel() {
     val signLiveData = TriggerDataLiveEvent<Pair<String, String>, AsyncState> {
