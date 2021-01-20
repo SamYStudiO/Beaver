@@ -45,10 +45,6 @@ object Dependencies {
     const val dagger_compiler = "com.google.dagger:dagger-compiler:${Versions.dagger}"
     const val dagger_android_processor =
         "com.google.dagger:dagger-android-processor:${Versions.dagger}"
-    const val assisted_inject_annotations =
-        "com.squareup.inject:assisted-inject-annotations-dagger2:${Versions.assisted_inject}"
-    const val assisted_inject_processor =
-        "com.squareup.inject:assisted-inject-processor-dagger2:${Versions.assisted_inject}"
     const val hilt_android =
         "com.google.dagger:hilt-android:${Versions.hilt}"
     const val hilt_compiler =
@@ -173,8 +169,6 @@ fun DependencyHandler.dagger() {
     implementation(Dependencies.dagger_android_support)
     kapt(Dependencies.dagger_compiler)
     kapt(Dependencies.dagger_android_processor)
-    compileOnly(Dependencies.assisted_inject_annotations)
-    kapt(Dependencies.assisted_inject_processor)
     implementation(Dependencies.hilt_android)
     kapt(Dependencies.hilt_compiler)
     testImplementation(Dependencies.hilt_android_testing)

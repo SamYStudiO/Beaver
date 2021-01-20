@@ -36,7 +36,6 @@ object Versions {
 
     // dagger
     const val dagger = "2.31.1"
-    const val assisted_inject = "0.6.0"
     const val hilt = "2.31.1-alpha"
     const val hilt_androidx = "1.0.0-alpha02"
 

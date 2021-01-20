@@ -95,12 +95,6 @@ android {
         jvmTarget = "1.8"
     }
 
-    // For assisted-inject library.
-    // https://kotlinlang.org/docs/reference/kapt.html#non-existent-type-correction
-    kapt {
-        correctErrorTypes = true
-    }
-
     hilt {
         enableTransformForLocalTests = true
     }
