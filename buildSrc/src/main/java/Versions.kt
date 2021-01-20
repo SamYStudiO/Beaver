@@ -11,7 +11,7 @@ object Versions {
     const val firebase_crashlytics_plugin = "2.4.1"
     const val firebase_perf_plugin = "1.3.4"
     const val navigation_safe_args_plugin = "2.3.2"
-    const val hilt_android_plugin = "2.31-alpha"
+    const val hilt_android_plugin = "2.31.1-alpha"
     const val gradle_versions_plugin = "0.36.0"
 
     // kotlin
@@ -35,9 +35,9 @@ object Versions {
     const val firebase_perf = "19.1.0"
 
     // dagger
-    const val dagger = "2.31"
+    const val dagger = "2.31.1"
     const val assisted_inject = "0.6.0"
-    const val hilt = "2.31-alpha"
+    const val hilt = "2.31.1-alpha"
     const val hilt_androidx = "1.0.0-alpha02"
 
     // reactive
