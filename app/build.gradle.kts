@@ -95,11 +95,6 @@ android {
         jvmTarget = "1.8"
     }
 
-    // Required for Dagger assisted injection
-    kapt {
-        correctErrorTypes = true
-    }
-
     hilt {
         enableTransformForLocalTests = true
     }

@@ -1,6 +1,6 @@
 package net.samystudio.beaver.data.remote
 
-import dagger.hilt.android.scopes.ActivityRetainedScoped
+import dagger.hilt.android.scopes.ViewModelScoped
 import io.reactivex.rxjava3.core.Single
 import net.samystudio.beaver.data.model.Home
 import retrofit2.http.GET
