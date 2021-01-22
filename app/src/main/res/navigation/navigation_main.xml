@@ -67,6 +67,20 @@
             android:defaultValue="0"
             app:argType="reference" />
         <argument
+            android:name="iconColorAsTextColor"
+            android:defaultValue="true"
+            app:argType="boolean" />
+        <!-- integer can't be null :(
+        <argument
+           android:name="iconColor"
+           android:defaultValue="@null"
+           app:argType="integer"
+           app:nullable="true"/> -->
+        <argument
+            android:name="iconColorRes"
+            android:defaultValue="0"
+            app:argType="reference" />
+        <argument
             android:name="positiveButtonRes"
             android:defaultValue="0"
             app:argType="reference" />

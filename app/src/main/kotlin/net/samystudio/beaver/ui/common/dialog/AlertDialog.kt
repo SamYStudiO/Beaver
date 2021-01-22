@@ -3,6 +3,7 @@ package net.samystudio.beaver.ui.common.dialog
 import android.app.Dialog
 import android.content.DialogInterface
 import android.content.res.ColorStateList
+import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.graphics.drawable.Drawable
@@ -17,7 +18,6 @@ import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
 import com.google.android.material.color.MaterialColors
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import net.samystudio.beaver.R
 import androidx.appcompat.app.AlertDialog as AndroidAlertDialog
 
 /**
@@ -229,15 +229,35 @@ open class AlertDialog : AppCompatDialogFragment(),
     protected open fun buildButtonResult(which: Int): Bundle = bundleOf()
 
     protected open fun handleIcon(drawable: Drawable?) =
-        drawable?.let {
+        drawable?.let { it ->
             it.mutate().apply {
-                colorFilter =
-                    PorterDuffColorFilter(
-                        MaterialColors.getColor(
-                            requireContext(),
-                            R.attr.colorPrimary, 0
-                        ), PorterDuff.Mode.SRC_IN
-                    )
+                arguments?.getInt(KEY_ICON_COLOR_RES)?.let { colorRes ->
+                    when {
+                        colorRes != 0 ->
+                            colorFilter =
+                                PorterDuffColorFilter(
+                                    ContextCompat.getColor(
+                                        requireContext(),
+                                        colorRes
+                                    ), PorterDuff.Mode.SRC_IN
+                                )
+                        arguments?.containsKey(KEY_ICON_COLOR) == true ->
+                            arguments?.getInt(KEY_ICON_COLOR)?.let { color ->
+                                colorFilter =
+                                    PorterDuffColorFilter(color, PorterDuff.Mode.SRC_IN)
+                            }
+                        arguments?.getBoolean(KEY_ICON_COLOR_AS_TEXT_COLOR) == true ->
+                            colorFilter =
+                                PorterDuffColorFilter(
+                                    MaterialColors.getColor(
+                                        requireContext(),
+                                        android.R.attr.textColorPrimary,
+                                        Color.BLACK
+                                    ),
+                                    PorterDuff.Mode.SRC_IN
+                                )
+                    }
+                }
             }
         }
 
@@ -335,6 +355,9 @@ open class AlertDialog : AppCompatDialogFragment(),
         const val KEY_MESSAGE_RES = "messageRes"
         const val KEY_MESSAGE = "message"
         const val KEY_ICON_RES = "iconRes"
+        const val KEY_ICON_COLOR_AS_TEXT_COLOR = "iconColorAsTextColor"
+        const val KEY_ICON_COLOR = "iconColor"
+        const val KEY_ICON_COLOR_RES = "iconColorRes"
         const val KEY_ICON_ATTRIBUTE = "iconAttribute"
         const val KEY_POSITIVE_BUTTON_RES = "positiveButtonRes"
         const val KEY_POSITIVE_BUTTON = "positiveButton"
@@ -389,6 +412,9 @@ open class AlertDialog : AppCompatDialogFragment(),
             @StringRes messageRes: Int = 0,
             message: CharSequence? = null,
             @DrawableRes iconRes: Int = 0,
+            iconColorAsTextColor: Boolean = true,
+            @ColorInt iconColor: Int? = null,
+            @ColorRes iconColorRes: Int = 0,
             @AttrRes iconAttribute: Int = 0,
             @StringRes positiveButtonRes: Int = 0,
             positiveButton: CharSequence? = null,
@@ -429,6 +455,9 @@ open class AlertDialog : AppCompatDialogFragment(),
                 messageRes,
                 message,
                 iconRes,
+                iconColorAsTextColor,
+                iconColor,
+                iconColorRes,
                 iconAttribute,
                 positiveButtonRes,
                 positiveButton,
@@ -472,6 +501,9 @@ open class AlertDialog : AppCompatDialogFragment(),
             @StringRes messageRes: Int = 0,
             message: CharSequence? = null,
             @DrawableRes iconRes: Int = 0,
+            iconColorAsTextColor: Boolean = true,
+            @ColorInt iconColor: Int? = null,
+            @ColorRes iconColorRes: Int = 0,
             @AttrRes iconAttribute: Int = 0,
             @StringRes positiveButtonRes: Int = 0,
             positiveButton: CharSequence? = null,
@@ -511,6 +543,9 @@ open class AlertDialog : AppCompatDialogFragment(),
             if (messageRes != 0) putInt(KEY_MESSAGE_RES, messageRes)
             putCharSequence(KEY_MESSAGE, message)
             putInt(KEY_ICON_RES, iconRes)
+            putBoolean(KEY_ICON_COLOR_AS_TEXT_COLOR, iconColorAsTextColor)
+            iconColor?.let { putInt(KEY_ICON_COLOR, it) }
+            if (iconColorRes != 0) putInt(KEY_ICON_COLOR_RES, iconColorRes)
             putInt(KEY_ICON_ATTRIBUTE, iconAttribute)
             if (positiveButtonRes != 0) putInt(KEY_POSITIVE_BUTTON_RES, positiveButtonRes)
             putCharSequence(KEY_POSITIVE_BUTTON, positiveButton)
