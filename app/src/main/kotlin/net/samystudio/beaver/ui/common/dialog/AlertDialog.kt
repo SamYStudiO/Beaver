@@ -27,6 +27,13 @@ open class AlertDialog : AppCompatDialogFragment(),
     DialogInterface.OnClickListener,
     DialogInterface.OnMultiChoiceClickListener,
     DialogInterface.OnShowListener {
+    private val extras
+        get() = arguments?.getBundle(KEY_EXTRAS) ?: bundleOf()
+    private val requestCode
+        get() = arguments?.getInt(KEY_REQUEST_CODE) ?: 0
+    private val requestCodePair
+        get() = KEY_REQUEST_CODE to requestCode
+
     /**
      * Store current selected index for single choice dialogs.
      */
@@ -164,7 +171,6 @@ open class AlertDialog : AppCompatDialogFragment(),
     }
 
     override fun onClick(dialog: DialogInterface, which: Int) {
-        val requestCodePair = KEY_REQUEST_CODE to (arguments?.getInt(KEY_REQUEST_CODE) ?: 0)
         when (which) {
             DialogInterface.BUTTON_POSITIVE,
             DialogInterface.BUTTON_NEGATIVE,
@@ -174,7 +180,7 @@ open class AlertDialog : AppCompatDialogFragment(),
                 if (selectedIndex != null)
                     selectedIndex = which
                 setFragmentResult(
-                    KEY_CLICK_ITEM,
+                    REQUEST_KEY_CLICK_ITEM,
                     bundleOf(requestCodePair, KEY_CLICK_ITEM_INDEX to which)
                 )
 
@@ -192,7 +198,6 @@ open class AlertDialog : AppCompatDialogFragment(),
     }
 
     override fun onClick(dialog: DialogInterface, which: Int, isChecked: Boolean) {
-        val requestCodePair = KEY_REQUEST_CODE to (arguments?.getInt(KEY_REQUEST_CODE) ?: 0)
         when (which) {
             DialogInterface.BUTTON_POSITIVE,
             DialogInterface.BUTTON_NEGATIVE,
@@ -202,7 +207,7 @@ open class AlertDialog : AppCompatDialogFragment(),
                 if (isChecked) selectedIndices?.add(which)
                 else selectedIndices?.remove(which)
                 setFragmentResult(
-                    KEY_CLICK_ITEM, bundleOf(
+                    REQUEST_KEY_CLICK_ITEM, bundleOf(
                         requestCodePair,
                         KEY_CLICK_ITEM_INDEX to which,
                         KEY_CLICK_ITEM_INDEX_CHECKED to isChecked,
@@ -214,19 +219,22 @@ open class AlertDialog : AppCompatDialogFragment(),
 
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
-        val requestCodePair = KEY_REQUEST_CODE to (arguments?.getInt(KEY_REQUEST_CODE) ?: 0)
-        setFragmentResult(KEY_DISMISS, bundleOf(requestCodePair))
+        setFragmentResult(
+            REQUEST_KEY_DISMISS,
+            buildResult(extras).apply { putAll(bundleOf(requestCodePair)) })
     }
 
     override fun onCancel(dialog: DialogInterface) {
         super.onCancel(dialog)
-        val requestCodePair = KEY_REQUEST_CODE to (arguments?.getInt(KEY_REQUEST_CODE) ?: 0)
-        setFragmentResult(KEY_CANCEL, bundleOf(requestCodePair))
+        setFragmentResult(
+            REQUEST_KEY_CANCEL,
+            buildResult(extras).apply { putAll(bundleOf(requestCodePair)) })
     }
 
     protected open fun onPrepareDialogBuilder(builder: MaterialAlertDialogBuilder) {}
 
-    protected open fun buildButtonResult(which: Int): Bundle = bundleOf()
+    protected open fun handleIcon(@DrawableRes icon: Int) =
+        handleIcon(ContextCompat.getDrawable(requireContext(), icon))
 
     protected open fun handleIcon(drawable: Drawable?) =
         drawable?.let { it ->
@@ -261,42 +269,49 @@ open class AlertDialog : AppCompatDialogFragment(),
             }
         }
 
+    protected open fun buildResult(bundle: Bundle): Bundle = bundle
+
     private fun handleButtonClick(which: Int) {
-        val requestCodePair = KEY_REQUEST_CODE to (arguments?.getInt(KEY_REQUEST_CODE) ?: 0)
+        val requestCodePair = KEY_REQUEST_CODE to requestCode
         when (which) {
             DialogInterface.BUTTON_POSITIVE -> {
                 setFragmentResult(
-                    KEY_CLICK_POSITIVE,
-                    bundleOf(requestCodePair).apply { putAll(buildButtonResult(which)) }
+                    REQUEST_KEY_CLICK_POSITIVE,
+                    buildResult(extras).apply { putAll(bundleOf(requestCodePair)) }
                 )
                 if (selectedIndex != null)
                     setFragmentResult(
-                        KEY_RESULT_ITEM, bundleOf(
-                            requestCodePair,
-                            KEY_RESULT_ITEM_INDEX to selectedIndex
-                        )
+                        REQUEST_KEY_RESULT_ITEM, buildResult(extras).apply {
+                            putAll(
+                                bundleOf(
+                                    requestCodePair,
+                                    KEY_RESULT_ITEM_INDEX to selectedIndex
+                                )
+                            )
+                        }
                     )
                 if (selectedIndices != null)
                     setFragmentResult(
-                        KEY_RESULT_ITEM, bundleOf(
-                            requestCodePair,
-                            KEY_RESULT_ITEM_INDICES to selectedIndices
-                        )
+                        REQUEST_KEY_RESULT_ITEM, buildResult(extras).apply {
+                            putAll(
+                                bundleOf(
+                                    requestCodePair,
+                                    KEY_RESULT_ITEM_INDICES to selectedIndices
+                                )
+                            )
+                        }
                     )
             }
             DialogInterface.BUTTON_NEGATIVE -> setFragmentResult(
-                KEY_CLICK_NEGATIVE,
-                bundleOf(requestCodePair).apply { putAll(buildButtonResult(which)) }
+                REQUEST_KEY_CLICK_NEGATIVE,
+                buildResult(extras).apply { putAll(bundleOf(requestCodePair)) }
             )
             DialogInterface.BUTTON_NEUTRAL -> setFragmentResult(
-                KEY_CLICK_NEUTRAL,
-                bundleOf(requestCodePair).apply { putAll(buildButtonResult(which)) }
+                REQUEST_KEY_CLICK_NEUTRAL,
+                buildResult(extras).apply { putAll(bundleOf(requestCodePair)) }
             )
         }
     }
-
-    private fun handleIcon(@DrawableRes icon: Int) =
-        handleIcon(ContextCompat.getDrawable(requireContext(), icon))
 
     private fun setButtonColor(whichButton: Int) {
         val keyButtonColorStateListRes = when (whichButton) {
@@ -390,14 +405,15 @@ open class AlertDialog : AppCompatDialogFragment(),
         const val KEY_SINGLE_CHOICE_ITEMS = "singleChoiceItems"
         const val KEY_SINGLE_CHOICE_CHECKED_ITEM = "singleChoiceCheckedItem"
         const val KEY_CUSTOM_VIEW_RES = "customViewRes"
+        const val KEY_EXTRAS = "extras"
         const val KEY_REQUEST_CODE = "requestCode"
-        const val KEY_DISMISS = "dismiss"
-        const val KEY_CANCEL = "cancel"
-        const val KEY_CLICK_POSITIVE = "clickPositive"
-        const val KEY_CLICK_NEGATIVE = "clickNegative"
-        const val KEY_CLICK_NEUTRAL = "clickNeutral"
-        const val KEY_CLICK_ITEM = "clickItem"
-        const val KEY_RESULT_ITEM = "resultItem"
+        const val REQUEST_KEY_DISMISS = "dismiss"
+        const val REQUEST_KEY_CANCEL = "cancel"
+        const val REQUEST_KEY_CLICK_POSITIVE = "clickPositive"
+        const val REQUEST_KEY_CLICK_NEGATIVE = "clickNegative"
+        const val REQUEST_KEY_CLICK_NEUTRAL = "clickNeutral"
+        const val REQUEST_KEY_CLICK_ITEM = "clickItem"
+        const val REQUEST_KEY_RESULT_ITEM = "resultItem"
         const val KEY_CLICK_ITEM_INDEX = "clickItemIndex"
         const val KEY_RESULT_ITEM_INDEX = "resultItemIndex"
         const val KEY_CLICK_ITEM_INDEX_CHECKED = "clickItemIndexChecked"
@@ -447,6 +463,7 @@ open class AlertDialog : AppCompatDialogFragment(),
             singleChoiceItems: Array<CharSequence>? = null,
             singleChoiceCheckedItem: Int = -1,
             @LayoutRes customViewRes: Int = 0,
+            extras: Bundle? = null,
             requestCode: Int = 0,
         ) = AlertDialog().apply {
             arguments = buildArguments(
@@ -490,6 +507,7 @@ open class AlertDialog : AppCompatDialogFragment(),
                 singleChoiceItems,
                 singleChoiceCheckedItem,
                 customViewRes,
+                extras,
                 requestCode,
             )
         }
@@ -536,6 +554,7 @@ open class AlertDialog : AppCompatDialogFragment(),
             singleChoiceItems: Array<CharSequence>? = null,
             singleChoiceCheckedItem: Int = -1,
             @LayoutRes customViewRes: Int = 0,
+            extras: Bundle? = null,
             requestCode: Int = 0,
         ) = Bundle().apply {
             if (titleRes != 0) putInt(KEY_TITLE_RES, titleRes)
@@ -599,6 +618,7 @@ open class AlertDialog : AppCompatDialogFragment(),
             putCharSequenceArray(KEY_SINGLE_CHOICE_ITEMS, singleChoiceItems)
             putInt(KEY_SINGLE_CHOICE_CHECKED_ITEM, singleChoiceCheckedItem)
             putInt(KEY_CUSTOM_VIEW_RES, customViewRes)
+            extras?.let { putBundle(KEY_EXTRAS, it) }
             putInt(KEY_REQUEST_CODE, requestCode)
         }
     }
@@ -609,8 +629,14 @@ open class AlertDialog : AppCompatDialogFragment(),
  * to build this dialog is passed as listener argument.
  */
 fun Fragment.setDialogDismissListener(listener: (requestCode: Int) -> Unit) {
-    setFragmentResultListener(AlertDialog.KEY_DISMISS) { _, bundle ->
+    setFragmentResultListener(AlertDialog.REQUEST_KEY_DISMISS) { _, bundle ->
         listener.invoke(bundle.getInt(AlertDialog.KEY_REQUEST_CODE))
+    }
+}
+
+fun Fragment.setDialogDismissListener(listener: (requestCode: Int, bundle: Bundle) -> Unit) {
+    setFragmentResultListener(AlertDialog.REQUEST_KEY_DISMISS) { _, bundle ->
+        listener.invoke(bundle.getInt(AlertDialog.KEY_REQUEST_CODE), bundle)
     }
 }
 
@@ -619,8 +645,18 @@ fun Fragment.setDialogDismissListener(listener: (requestCode: Int) -> Unit) {
  * to build this dialog is passed as listener argument.
  */
 fun Fragment.setDialogCancelListener(listener: (requestCode: Int) -> Unit) {
-    setFragmentResultListener(AlertDialog.KEY_CANCEL) { _, bundle ->
+    setFragmentResultListener(AlertDialog.REQUEST_KEY_CANCEL) { _, bundle ->
         listener.invoke(bundle.getInt(AlertDialog.KEY_REQUEST_CODE))
+    }
+}
+
+/**
+ * Set a listener invoked when dialog is cancelled. A request code that matches the requestCode used
+ * to build this dialog is passed as listener argument as well as a [Bundle] containing extra data.
+ */
+fun Fragment.setDialogCancelListener(listener: (requestCode: Int, bundle: Bundle) -> Unit) {
+    setFragmentResultListener(AlertDialog.REQUEST_KEY_CANCEL) { _, bundle ->
+        listener.invoke(bundle.getInt(AlertDialog.KEY_REQUEST_CODE), bundle)
     }
 }
 
@@ -630,10 +666,10 @@ fun Fragment.setDialogCancelListener(listener: (requestCode: Int) -> Unit) {
  * argument.
  */
 fun Fragment.setDialogCancelOrNegativeClickListener(listener: (requestCode: Int) -> Unit) {
-    setFragmentResultListener(AlertDialog.KEY_CANCEL) { _, bundle ->
+    setFragmentResultListener(AlertDialog.REQUEST_KEY_CANCEL) { _, bundle ->
         listener.invoke(bundle.getInt(AlertDialog.KEY_REQUEST_CODE))
     }
-    setFragmentResultListener(AlertDialog.KEY_CLICK_NEGATIVE) { _, bundle ->
+    setFragmentResultListener(AlertDialog.REQUEST_KEY_CLICK_NEGATIVE) { _, bundle ->
         listener.invoke(bundle.getInt(AlertDialog.KEY_REQUEST_CODE))
     }
 }
@@ -644,10 +680,10 @@ fun Fragment.setDialogCancelOrNegativeClickListener(listener: (requestCode: Int)
  * argument as well as a [Bundle] containing extra data.
  */
 fun Fragment.setDialogCancelOrNegativeClickListener(listener: (requestCode: Int, bundle: Bundle) -> Unit) {
-    setFragmentResultListener(AlertDialog.KEY_CANCEL) { _, bundle ->
+    setFragmentResultListener(AlertDialog.REQUEST_KEY_CANCEL) { _, bundle ->
         listener.invoke(bundle.getInt(AlertDialog.KEY_REQUEST_CODE), bundle)
     }
-    setFragmentResultListener(AlertDialog.KEY_CLICK_NEGATIVE) { _, bundle ->
+    setFragmentResultListener(AlertDialog.REQUEST_KEY_CLICK_NEGATIVE) { _, bundle ->
         listener.invoke(bundle.getInt(AlertDialog.KEY_REQUEST_CODE), bundle)
     }
 }
@@ -657,7 +693,7 @@ fun Fragment.setDialogCancelOrNegativeClickListener(listener: (requestCode: Int,
  * requestCode used to build this dialog is passed as listener argument.
  */
 fun Fragment.setDialogPositiveClickListener(listener: (requestCode: Int) -> Unit) {
-    setFragmentResultListener(AlertDialog.KEY_CLICK_POSITIVE) { _, bundle ->
+    setFragmentResultListener(AlertDialog.REQUEST_KEY_CLICK_POSITIVE) { _, bundle ->
         listener.invoke(bundle.getInt(AlertDialog.KEY_REQUEST_CODE))
     }
 }
@@ -668,7 +704,7 @@ fun Fragment.setDialogPositiveClickListener(listener: (requestCode: Int) -> Unit
  * containing extra data.
  */
 fun Fragment.setDialogPositiveClickListener(listener: (requestCode: Int, bundle: Bundle) -> Unit) {
-    setFragmentResultListener(AlertDialog.KEY_CLICK_POSITIVE) { _, bundle ->
+    setFragmentResultListener(AlertDialog.REQUEST_KEY_CLICK_POSITIVE) { _, bundle ->
         listener.invoke(bundle.getInt(AlertDialog.KEY_REQUEST_CODE), bundle)
     }
 }
@@ -678,7 +714,7 @@ fun Fragment.setDialogPositiveClickListener(listener: (requestCode: Int, bundle:
  * requestCode used to build this dialog is passed as listener argument.
  */
 fun Fragment.setDialogNegativeClickListener(listener: (requestCode: Int) -> Unit) {
-    setFragmentResultListener(AlertDialog.KEY_CLICK_NEGATIVE) { _, bundle ->
+    setFragmentResultListener(AlertDialog.REQUEST_KEY_CLICK_NEGATIVE) { _, bundle ->
         listener.invoke(bundle.getInt(AlertDialog.KEY_REQUEST_CODE))
     }
 }
@@ -689,7 +725,7 @@ fun Fragment.setDialogNegativeClickListener(listener: (requestCode: Int) -> Unit
  * containing extra data.
  */
 fun Fragment.setDialogNegativeClickListener(listener: (requestCode: Int, bundle: Bundle) -> Unit) {
-    setFragmentResultListener(AlertDialog.KEY_CLICK_NEGATIVE) { _, bundle ->
+    setFragmentResultListener(AlertDialog.REQUEST_KEY_CLICK_NEGATIVE) { _, bundle ->
         listener.invoke(bundle.getInt(AlertDialog.KEY_REQUEST_CODE), bundle)
     }
 }
@@ -699,7 +735,7 @@ fun Fragment.setDialogNegativeClickListener(listener: (requestCode: Int, bundle:
  * requestCode used to build this dialog is passed as listener argument.
  */
 fun Fragment.setDialogNeutralClickListener(listener: (requestCode: Int) -> Unit) {
-    setFragmentResultListener(AlertDialog.KEY_CLICK_NEUTRAL) { _, bundle ->
+    setFragmentResultListener(AlertDialog.REQUEST_KEY_CLICK_NEUTRAL) { _, bundle ->
         listener.invoke(bundle.getInt(AlertDialog.KEY_REQUEST_CODE))
     }
 }
@@ -710,7 +746,7 @@ fun Fragment.setDialogNeutralClickListener(listener: (requestCode: Int) -> Unit)
  * containing extra data.
  */
 fun Fragment.setDialogNeutralClickListener(listener: (requestCode: Int, bundle: Bundle) -> Unit) {
-    setFragmentResultListener(AlertDialog.KEY_CLICK_NEUTRAL) { _, bundle ->
+    setFragmentResultListener(AlertDialog.REQUEST_KEY_CLICK_NEUTRAL) { _, bundle ->
         listener.invoke(bundle.getInt(AlertDialog.KEY_REQUEST_CODE), bundle)
     }
 }
@@ -721,11 +757,27 @@ fun Fragment.setDialogNeutralClickListener(listener: (requestCode: Int, bundle: 
  * indicating which index was clicked.
  * This is called each time an item is clicked while dialog is opened.
  */
-fun Fragment.setDialogItemClickListener(listener: (requestCode: Int, clickIndex: Int) -> Unit) {
-    setFragmentResultListener(AlertDialog.KEY_CLICK_ITEM) { _, bundle ->
+fun Fragment.setDialogSingleChoiceItemClickListener(listener: (requestCode: Int, clickIndex: Int) -> Unit) {
+    setFragmentResultListener(AlertDialog.REQUEST_KEY_CLICK_ITEM) { _, bundle ->
         listener.invoke(
             bundle.getInt(AlertDialog.KEY_REQUEST_CODE),
             bundle.getInt(AlertDialog.KEY_CLICK_ITEM_INDEX)
+        )
+    }
+}
+
+/**
+ * Set a listener invoked when dialog single choice item is clicked. A request code that matches the
+ * requestCode used to build this dialog is passed as listener argument as well as a clickIndex
+ * indicating which index was clicked and a [Bundle] containing extra data.
+ * This is called each time an item is clicked while dialog is opened.
+ */
+fun Fragment.setDialogSingleChoiceItemClickListener(listener: (requestCode: Int, clickIndex: Int, bundle: Bundle) -> Unit) {
+    setFragmentResultListener(AlertDialog.REQUEST_KEY_CLICK_ITEM) { _, bundle ->
+        listener.invoke(
+            bundle.getInt(AlertDialog.KEY_REQUEST_CODE),
+            bundle.getInt(AlertDialog.KEY_CLICK_ITEM_INDEX),
+            bundle
         )
     }
 }
@@ -736,11 +788,27 @@ fun Fragment.setDialogItemClickListener(listener: (requestCode: Int, clickIndex:
  * indicating which index is selected.
  * This is called only once during dialog lifetime and after dialog positive button was clicked.
  */
-fun Fragment.setDialogItemResultListener(listener: (requestCode: Int, resultIndex: Int) -> Unit) {
-    setFragmentResultListener(AlertDialog.KEY_RESULT_ITEM) { _, bundle ->
+fun Fragment.setDialogSingleChoiceItemResultListener(listener: (requestCode: Int, resultIndex: Int) -> Unit) {
+    setFragmentResultListener(AlertDialog.REQUEST_KEY_RESULT_ITEM) { _, bundle ->
         listener.invoke(
             bundle.getInt(AlertDialog.KEY_REQUEST_CODE),
             bundle.getInt(AlertDialog.KEY_RESULT_ITEM_INDEX)
+        )
+    }
+}
+
+/**
+ * Set a listener invoked when dialog single choice item is chosen. A request code that matches the
+ * requestCode used to build this dialog is passed as listener argument as well as a clickIndex
+ * indicating which index is selected and a [Bundle] containing extra data.
+ * This is called only once during dialog lifetime and after dialog positive button was clicked.
+ */
+fun Fragment.setDialogSingleChoiceItemResultListener(listener: (requestCode: Int, resultIndex: Int, bundle: Bundle) -> Unit) {
+    setFragmentResultListener(AlertDialog.REQUEST_KEY_RESULT_ITEM) { _, bundle ->
+        listener.invoke(
+            bundle.getInt(AlertDialog.KEY_REQUEST_CODE),
+            bundle.getInt(AlertDialog.KEY_RESULT_ITEM_INDEX),
+            bundle
         )
     }
 }
@@ -751,12 +819,30 @@ fun Fragment.setDialogItemResultListener(listener: (requestCode: Int, resultInde
  * and checked status indicating which index was clicked and if it is checked.
  * This is called each time an item is clicked while dialog is opened.
  */
-fun Fragment.setDialogItemClickListener(listener: (requestCode: Int, clickIndex: Int, checked: Boolean) -> Unit) {
-    setFragmentResultListener(AlertDialog.KEY_CLICK_ITEM) { _, bundle ->
+fun Fragment.setDialogMultiChoiceItemClickListener(listener: (requestCode: Int, clickIndex: Int, checked: Boolean) -> Unit) {
+    setFragmentResultListener(AlertDialog.REQUEST_KEY_CLICK_ITEM) { _, bundle ->
         listener.invoke(
             bundle.getInt(AlertDialog.KEY_REQUEST_CODE),
             bundle.getInt(AlertDialog.KEY_CLICK_ITEM_INDEX),
             bundle.getBoolean(AlertDialog.KEY_CLICK_ITEM_INDEX_CHECKED)
+        )
+    }
+}
+
+/**
+ * Set a listener invoked when dialog multiple choice item is clicked. A request code that matches
+ * the requestCode used to build this dialog is passed as listener argument as well as a clickIndex
+ * and checked status indicating which index was clicked and if it is checked and a [Bundle]
+ * containing extra data.
+ * This is called each time an item is clicked while dialog is opened.
+ */
+fun Fragment.setDialogMultiChoiceItemClickListener(listener: (requestCode: Int, clickIndex: Int, checked: Boolean, bundle: Bundle) -> Unit) {
+    setFragmentResultListener(AlertDialog.REQUEST_KEY_CLICK_ITEM) { _, bundle ->
+        listener.invoke(
+            bundle.getInt(AlertDialog.KEY_REQUEST_CODE),
+            bundle.getInt(AlertDialog.KEY_CLICK_ITEM_INDEX),
+            bundle.getBoolean(AlertDialog.KEY_CLICK_ITEM_INDEX_CHECKED),
+            bundle
         )
     }
 }
@@ -768,10 +854,26 @@ fun Fragment.setDialogItemClickListener(listener: (requestCode: Int, clickIndex:
  * This is called only once during dialog lifetime and after dialog positive button was clicked.
  */
 fun Fragment.setDialogItemsResultListener(listener: (requestCode: Int, resultIndices: IntArray) -> Unit) {
-    setFragmentResultListener(AlertDialog.KEY_RESULT_ITEM) { _, bundle ->
+    setFragmentResultListener(AlertDialog.REQUEST_KEY_RESULT_ITEM) { _, bundle ->
         listener.invoke(
             bundle.getInt(AlertDialog.KEY_REQUEST_CODE),
             bundle.getIntArray(AlertDialog.KEY_RESULT_ITEM_INDICES) ?: intArrayOf(),
+        )
+    }
+}
+
+/**
+ * Set a listener invoked when dialog multiple choice items are chosen. A request code that matches
+ * the requestCode used to build this dialog is passed as listener argument as well as a
+ * resultIndices indicating which index are checked and a [Bundle] containing extra data.
+ * This is called only once during dialog lifetime and after dialog positive button was clicked.
+ */
+fun Fragment.setDialogItemsResultListener(listener: (requestCode: Int, resultIndices: IntArray, bundle: Bundle) -> Unit) {
+    setFragmentResultListener(AlertDialog.REQUEST_KEY_RESULT_ITEM) { _, bundle ->
+        listener.invoke(
+            bundle.getInt(AlertDialog.KEY_REQUEST_CODE),
+            bundle.getIntArray(AlertDialog.KEY_RESULT_ITEM_INDICES) ?: intArrayOf(),
+            bundle
         )
     }
 }

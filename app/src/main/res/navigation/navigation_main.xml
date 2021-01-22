@@ -222,6 +222,11 @@
             android:defaultValue="0"
             app:argType="reference" />
         <argument
+            android:name="extras"
+            android:defaultValue="@null"
+            app:argType="android.os.Bundle"
+            app:nullable="true" />
+        <argument
             android:name="requestCode"
             android:defaultValue="0"
             app:argType="integer" />
