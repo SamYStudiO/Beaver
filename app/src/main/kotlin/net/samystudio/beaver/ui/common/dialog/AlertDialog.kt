@@ -853,7 +853,7 @@ fun Fragment.setDialogMultiChoiceItemClickListener(listener: (requestCode: Int, 
  * resultIndices indicating which index are checked.
  * This is called only once during dialog lifetime and after dialog positive button was clicked.
  */
-fun Fragment.setDialogItemsResultListener(listener: (requestCode: Int, resultIndices: IntArray) -> Unit) {
+fun Fragment.setDialogMultiChoiceItemsResultListener(listener: (requestCode: Int, resultIndices: IntArray) -> Unit) {
     setFragmentResultListener(AlertDialog.REQUEST_KEY_RESULT_ITEM) { _, bundle ->
         listener.invoke(
             bundle.getInt(AlertDialog.KEY_REQUEST_CODE),
@@ -868,7 +868,7 @@ fun Fragment.setDialogItemsResultListener(listener: (requestCode: Int, resultInd
  * resultIndices indicating which index are checked and a [Bundle] containing extra data.
  * This is called only once during dialog lifetime and after dialog positive button was clicked.
  */
-fun Fragment.setDialogItemsResultListener(listener: (requestCode: Int, resultIndices: IntArray, bundle: Bundle) -> Unit) {
+fun Fragment.setDialogMultiChoiceItemsResultListener(listener: (requestCode: Int, resultIndices: IntArray, bundle: Bundle) -> Unit) {
     setFragmentResultListener(AlertDialog.REQUEST_KEY_RESULT_ITEM) { _, bundle ->
         listener.invoke(
             bundle.getInt(AlertDialog.KEY_REQUEST_CODE),
