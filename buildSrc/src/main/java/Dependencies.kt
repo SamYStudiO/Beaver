@@ -39,29 +39,20 @@ object Dependencies {
     const val firebase_perf_ktx = "com.google.firebase:firebase-perf-ktx:${Versions.firebase_perf}"
 
     // dagger
-    const val dagger = "com.google.dagger:dagger:${Versions.dagger}"
-    const val dagger_android = "com.google.dagger:dagger-android:${Versions.dagger}"
-    const val dagger_android_support = "com.google.dagger:dagger-android-support:${Versions.dagger}"
-    const val dagger_compiler = "com.google.dagger:dagger-compiler:${Versions.dagger}"
-    const val dagger_android_processor =
-        "com.google.dagger:dagger-android-processor:${Versions.dagger}"
-    const val hilt_android =
-        "com.google.dagger:hilt-android:${Versions.hilt}"
-    const val hilt_compiler =
-        "com.google.dagger:hilt-compiler:${Versions.hilt}"
+    const val hilt_android = "com.google.dagger:hilt-android:${Versions.hilt}"
+    const val hilt_compiler = "com.google.dagger:hilt-compiler:${Versions.hilt}"
     const val hilt_android_testing = "com.google.dagger:hilt-android-testing:${Versions.hilt}"
-    const val hilt_work =
-        "androidx.hilt:hilt-work:${Versions.hilt_androidx}"
-    const val hilt_androidx_compiler =
-        "androidx.hilt:hilt-compiler:${Versions.hilt_androidx}"
+    const val hilt_navigation_fragment =
+        "androidx.hilt:hilt-navigation-fragment:${Versions.hilt_androidx}"
+    const val hilt_work = "androidx.hilt:hilt-work:${Versions.hilt_androidx}"
+    const val hilt_androidx_compiler = "androidx.hilt:hilt-compiler:${Versions.hilt_androidx}"
 
     // reactive
     const val rxjava = "io.reactivex.rxjava3:rxjava:${Versions.rxjava3}"
     const val rxandroid = "io.reactivex.rxjava3:rxandroid:${Versions.rxandroid}"
     const val rxkotlin = "io.reactivex.rxjava3:rxkotlin:${Versions.rxkotlin}"
     const val rxbinding = "com.jakewharton.rxbinding4:rxbinding:${Versions.rxbinding4}"
-    const val rxbinding_core =
-        "com.jakewharton.rxbinding4:rxbinding-core:${Versions.rxbinding4}"
+    const val rxbinding_core = "com.jakewharton.rxbinding4:rxbinding-core:${Versions.rxbinding4}"
     const val rxbinding_appcompat =
         "com.jakewharton.rxbinding4:rxbinding-appcompat:${Versions.rxbinding4}"
     const val rxbinding_drawerlayout =
@@ -162,15 +153,11 @@ fun DependencyHandler.firebase() {
 }
 
 fun DependencyHandler.dagger() {
-    implementation(Dependencies.dagger)
-    implementation(Dependencies.dagger_android)
-    implementation(Dependencies.dagger_android_support)
-    kapt(Dependencies.dagger_compiler)
-    kapt(Dependencies.dagger_android_processor)
     implementation(Dependencies.hilt_android)
     kapt(Dependencies.hilt_compiler)
     testImplementation(Dependencies.hilt_android_testing)
     androidTestImplementation(Dependencies.hilt_android_testing)
+    implementation(Dependencies.hilt_navigation_fragment)
     implementation(Dependencies.hilt_work)
     kapt(Dependencies.hilt_androidx_compiler)
 }
