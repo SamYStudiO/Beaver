@@ -29,7 +29,6 @@ class BaseAdapterTest {
             ): BaseViewHolder<Int> {
                 return object : BaseViewHolder<Int>(view) {
                     override fun onDataChanged() {
-
                     }
                 }
             }

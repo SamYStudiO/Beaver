@@ -37,19 +37,22 @@ class UserProfileFragment : Fragment(R.layout.fragment_user_profile), OnApplyWin
             viewModel.disconnect()
         }
 
-        viewModel.userLiveData.observe(viewLifecycleOwner, { state ->
-            state.handleStatesFromFragmentWithLoaderDialog(
-                this,
-                failed = {
-                    findNavController().popBackStack()
-                    findNavController().navigate(UserProfileFragmentDirections.actionGlobalGenericErrorDialog())
-                },
-                complete = {
-                    binding.textView.text = it.toString()
-                    startPostponedEnterTransition()
-                },
-            )
-        })
+        viewModel.userLiveData.observe(
+            viewLifecycleOwner,
+            { state ->
+                state.handleStatesFromFragmentWithLoaderDialog(
+                    this,
+                    failed = {
+                        findNavController().popBackStack()
+                        findNavController().navigate(UserProfileFragmentDirections.actionGlobalGenericErrorDialog())
+                    },
+                    complete = {
+                        binding.textView.text = it.toString()
+                        startPostponedEnterTransition()
+                    },
+                )
+            }
+        )
     }
 
     override fun onApplyWindowInsets(v: View, insets: WindowInsetsCompat): WindowInsetsCompat {

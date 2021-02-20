@@ -12,6 +12,8 @@ object Versions {
     const val firebase_perf_plugin = "1.3.4"
     const val navigation_safe_args_plugin = "2.3.3"
     const val gradle_versions_plugin = "0.36.0"
+    const val spotless = "5.10.2"
+    const val ktlint = "0.40.0"
 
     // kotlin
     const val kotlin = "1.4.21-2"

@@ -34,7 +34,6 @@ class GoogleApiAvailabilityManager @Inject constructor(
                     googleApiAvailability
                 )
             )
-
     }.toAsyncState()
         .replay()
         .refCount()

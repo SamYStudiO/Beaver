@@ -32,7 +32,6 @@ fun Activity.hideKeyboard(view: View? = null, flags: Int = 0): Boolean {
 fun Activity.hideKeyboard(windowToken: IBinder, flags: Int = 0) =
     getInputMethodManager()?.hideSoftInputFromWindow(windowToken, flags) ?: false
 
-
 fun Fragment.showKeyboard(view: View, flags: Int = InputMethodManager.SHOW_IMPLICIT): Boolean {
     view.requestFocus()
     return context?.getInputMethodManager()?.showSoftInput(view, flags) ?: false
@@ -48,7 +47,6 @@ fun Fragment.hideKeyboard(view: View? = null, flags: Int = 0): Boolean {
 
 fun Fragment.hideKeyboard(windowToken: IBinder, flags: Int = 0) =
     context?.getInputMethodManager()?.hideSoftInputFromWindow(windowToken, flags) ?: false
-
 
 fun View.showKeyboard(flags: Int = InputMethodManager.SHOW_IMPLICIT): Boolean {
     requestFocus()

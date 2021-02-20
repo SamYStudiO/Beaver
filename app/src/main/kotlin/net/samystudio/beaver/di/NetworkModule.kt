@@ -32,7 +32,7 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideCache(application: Application): Cache =
-        Cache(application.cacheDir, 20L * 1024 * 1024) //20 mo
+        Cache(application.cacheDir, 20L * 1024 * 1024) // 20 mo
 
     @Provides
     @Singleton

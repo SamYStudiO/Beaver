@@ -44,11 +44,14 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
                 it.show(supportFragmentManager, LoaderDialog::class.simpleName)
         }
 
-        viewModel.userStatusLiveData.observe(this, {
-            if (!it) findNavController(R.id.nav_host).navigate(
-                NavigationMainDirections.actionGlobalAuthenticatorFragment()
-            )
-        })
+        viewModel.userStatusLiveData.observe(
+            this,
+            {
+                if (!it) findNavController(R.id.nav_host).navigate(
+                    NavigationMainDirections.actionGlobalAuthenticatorFragment()
+                )
+            }
+        )
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
@@ -63,6 +66,5 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         destination: NavDestination,
         arguments: Bundle?,
     ) {
-
     }
 }

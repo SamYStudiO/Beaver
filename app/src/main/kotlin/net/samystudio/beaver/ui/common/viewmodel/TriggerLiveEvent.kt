@@ -32,9 +32,9 @@ class TriggerLiveEvent<OUT>(
     override fun onActive() {
         super.onActive()
         // Only trigger if we asked to and also check OUT is not an AsyncState with Started state.
-        if (isTriggeredWhenActivated
-            && value !is AsyncState.Started
-            && value !is ResultAsyncState.Started<*>
+        if (isTriggeredWhenActivated &&
+            value !is AsyncState.Started &&
+            value !is ResultAsyncState.Started<*>
         ) trigger()
     }
 

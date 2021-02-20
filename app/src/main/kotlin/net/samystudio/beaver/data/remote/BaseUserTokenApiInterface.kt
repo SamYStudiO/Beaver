@@ -42,5 +42,5 @@ abstract class BaseUserTokenApiInterface(protected val userManager: Lazy<UserMan
 
     private fun isThrowableUnauthorized(throwable: Throwable) =
         (throwable is HttpException && throwable.code() == HttpURLConnection.HTTP_UNAUTHORIZED) ||
-                (throwable is RetrofitException && throwable.code == HttpURLConnection.HTTP_UNAUTHORIZED)
+            (throwable is RetrofitException && throwable.code == HttpURLConnection.HTTP_UNAUTHORIZED)
 }

@@ -28,7 +28,8 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class AuthenticatorFragment : Fragment(R.layout.fragment_authenticator),
+class AuthenticatorFragment :
+    Fragment(R.layout.fragment_authenticator),
     OnApplyWindowInsetsListener {
     private val binding by viewBinding { FragmentAuthenticatorBinding.bind(it) }
     private val viewModel by viewModels<AuthenticatorFragmentViewModel>()
@@ -53,7 +54,8 @@ class AuthenticatorFragment : Fragment(R.layout.fragment_authenticator),
                 override fun handleOnBackPressed() {
                     activity?.finish()
                 }
-            })
+            }
+        )
 
         binding.signInEmail.setText(sharedPreferencesHelper.accountName.get())
 
@@ -94,7 +96,8 @@ class AuthenticatorFragment : Fragment(R.layout.fragment_authenticator),
                 ) { t1, t2 -> t1 && t2 }
                 .observeOn(AndroidSchedulers.mainThread())
                 .startWithItem(false)
-                .subscribe { binding.signIn.isEnabled = it })
+                .subscribe { binding.signIn.isEnabled = it }
+        )
 
         compositeDisposable?.add(
             Observable
@@ -130,15 +133,19 @@ class AuthenticatorFragment : Fragment(R.layout.fragment_authenticator),
                 ) { t1, t2, t3 -> t1 && t2 && t3 }
                 .observeOn(AndroidSchedulers.mainThread())
                 .startWithItem(false)
-                .subscribe { binding.signUp.isEnabled = it })
+                .subscribe { binding.signUp.isEnabled = it }
+        )
 
-        viewModel.signLiveData.observe(viewLifecycleOwner, {
-            it.handleStatesFromFragmentWithLoaderDialog(
-                this,
-                failed = { findNavController().navigate(AuthenticatorFragmentDirections.actionGlobalGenericErrorDialog()) },
-                complete = { findNavController().popBackStack() },
-            )
-        })
+        viewModel.signLiveData.observe(
+            viewLifecycleOwner,
+            {
+                it.handleStatesFromFragmentWithLoaderDialog(
+                    this,
+                    failed = { findNavController().navigate(AuthenticatorFragmentDirections.actionGlobalGenericErrorDialog()) },
+                    complete = { findNavController().popBackStack() },
+                )
+            }
+        )
     }
 
     override fun onApplyWindowInsets(v: View, insets: WindowInsetsCompat): WindowInsetsCompat {

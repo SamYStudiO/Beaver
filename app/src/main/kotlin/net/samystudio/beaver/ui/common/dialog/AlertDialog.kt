@@ -23,7 +23,8 @@ import androidx.appcompat.app.AlertDialog as AndroidAlertDialog
 /**
  * AlertDialog using [DialogFragment].
  */
-open class AlertDialog : AppCompatDialogFragment(),
+open class AlertDialog :
+    AppCompatDialogFragment(),
     DialogInterface.OnClickListener,
     DialogInterface.OnMultiChoiceClickListener,
     DialogInterface.OnShowListener {
@@ -186,8 +187,8 @@ open class AlertDialog : AppCompatDialogFragment(),
 
                 // This is a single choice callback, if we have not set a positive button let's
                 // assume we want to dismiss dialog when an item is selected.
-                if (arguments?.getInt(KEY_POSITIVE_BUTTON_RES) == 0
-                    && arguments?.getCharSequence(KEY_POSITIVE_BUTTON).isNullOrBlank()
+                if (arguments?.getInt(KEY_POSITIVE_BUTTON_RES) == 0 &&
+                    arguments?.getCharSequence(KEY_POSITIVE_BUTTON).isNullOrBlank()
                 ) {
                     // Simulate a positive click to populate result.
                     handleButtonClick(DialogInterface.BUTTON_POSITIVE)
@@ -207,7 +208,8 @@ open class AlertDialog : AppCompatDialogFragment(),
                 if (isChecked) selectedIndices?.add(which)
                 else selectedIndices?.remove(which)
                 setFragmentResult(
-                    REQUEST_KEY_CLICK_ITEM, bundleOf(
+                    REQUEST_KEY_CLICK_ITEM,
+                    bundleOf(
                         requestCodePair,
                         KEY_CLICK_ITEM_INDEX to which,
                         KEY_CLICK_ITEM_INDEX_CHECKED to isChecked,
@@ -221,14 +223,16 @@ open class AlertDialog : AppCompatDialogFragment(),
         super.onDismiss(dialog)
         setFragmentResult(
             REQUEST_KEY_DISMISS,
-            buildResult(extras).apply { putAll(bundleOf(requestCodePair)) })
+            buildResult(extras).apply { putAll(bundleOf(requestCodePair)) }
+        )
     }
 
     override fun onCancel(dialog: DialogInterface) {
         super.onCancel(dialog)
         setFragmentResult(
             REQUEST_KEY_CANCEL,
-            buildResult(extras).apply { putAll(bundleOf(requestCodePair)) })
+            buildResult(extras).apply { putAll(bundleOf(requestCodePair)) }
+        )
     }
 
     protected open fun onPrepareDialogBuilder(builder: MaterialAlertDialogBuilder) {}
@@ -247,7 +251,8 @@ open class AlertDialog : AppCompatDialogFragment(),
                                     ContextCompat.getColor(
                                         requireContext(),
                                         colorRes
-                                    ), PorterDuff.Mode.SRC_IN
+                                    ),
+                                    PorterDuff.Mode.SRC_IN
                                 )
                         arguments?.containsKey(KEY_ICON_COLOR) == true ->
                             arguments?.getInt(KEY_ICON_COLOR)?.let { color ->
@@ -281,7 +286,8 @@ open class AlertDialog : AppCompatDialogFragment(),
                 )
                 if (selectedIndex != null)
                     setFragmentResult(
-                        REQUEST_KEY_RESULT_ITEM, buildResult(extras).apply {
+                        REQUEST_KEY_RESULT_ITEM,
+                        buildResult(extras).apply {
                             putAll(
                                 bundleOf(
                                     requestCodePair,
@@ -292,7 +298,8 @@ open class AlertDialog : AppCompatDialogFragment(),
                     )
                 if (selectedIndices != null)
                     setFragmentResult(
-                        REQUEST_KEY_RESULT_ITEM, buildResult(extras).apply {
+                        REQUEST_KEY_RESULT_ITEM,
+                        buildResult(extras).apply {
                             putAll(
                                 bundleOf(
                                     requestCodePair,

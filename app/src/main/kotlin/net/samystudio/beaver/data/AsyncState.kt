@@ -8,7 +8,6 @@ import io.reactivex.rxjava3.core.Single
 import net.samystudio.beaver.ext.hideLoaderDialog
 import net.samystudio.beaver.ext.showLoaderDialog
 
-
 /**
  * Async request states, response contains no data.
  */

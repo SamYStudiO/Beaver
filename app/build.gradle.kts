@@ -108,13 +108,13 @@ android {
             val build = versionCode
             var flavors = ""
             productFlavors.forEach { flavor ->
-                flavors += "${flavor.name}${sep}"
+                flavors += "${flavor.name}$sep"
             }
-            outputImpl.outputFileName = "${rootProject.name}${sep}" +
+            outputImpl.outputFileName = "${rootProject.name}$sep" +
                     flavors +
-                    "${buildType.name}${sep}" +
-                    "${version}${sep}" +
-                    "build${sep}${build}.apk"
+                    "${buildType.name}$sep" +
+                    "${version}$sep" +
+                    "build${sep}$build.apk"
 
             // Since we're using date for versionCode, manifest will change each time we compile and
             // so we won't be able to use "Apply codee changes" features as it doesn't work when

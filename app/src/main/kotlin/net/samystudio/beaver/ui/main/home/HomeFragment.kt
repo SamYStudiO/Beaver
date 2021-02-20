@@ -34,13 +34,16 @@ class HomeFragment : Fragment(R.layout.fragment_home), OnApplyWindowInsetsListen
         binding.toolbar.title = "Home"
         binding.profileButton.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_home_to_userProfile))
 
-        viewModel.homeLiveData.observe(viewLifecycleOwner, { state ->
-            state.handleStatesFromFragmentWithLoaderDialog(
-                this,
-                failed = { findNavController().navigate(HomeFragmentDirections.actionGlobalGenericErrorDialog()) },
-                complete = { binding.textView.text = it.content },
-            )
-        })
+        viewModel.homeLiveData.observe(
+            viewLifecycleOwner,
+            { state ->
+                state.handleStatesFromFragmentWithLoaderDialog(
+                    this,
+                    failed = { findNavController().navigate(HomeFragmentDirections.actionGlobalGenericErrorDialog()) },
+                    complete = { binding.textView.text = it.content },
+                )
+            }
+        )
     }
 
     override fun onApplyWindowInsets(v: View, insets: WindowInsetsCompat): WindowInsetsCompat {

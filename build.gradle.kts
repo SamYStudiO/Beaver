@@ -16,6 +16,11 @@ buildscript {
     }
 }
 
+plugins {
+    id("com.github.ben-manes.versions") version Versions.gradle_versions_plugin
+    id("com.diffplug.spotless") version Versions.spotless apply false
+}
+
 allprojects {
     repositories {
         google()
@@ -26,7 +31,19 @@ allprojects {
     }
 }
 
-apply(plugin = "com.github.ben-manes.versions")
+subprojects {
+    apply(plugin = "com.diffplug.spotless")
+    configure<com.diffplug.gradle.spotless.SpotlessExtension> {
+        kotlin {
+            target("**/*.kt")
+            ktlint(Versions.ktlint).userData(mapOf("disabled_rules" to "no-wildcard-imports"))
+        }
+        kotlinGradle {
+            target("**/*.gradle.kts")
+            ktlint(Versions.ktlint)
+        }
+    }
+}
 
 fun isNonStable(version: String): Boolean {
     val stableKeyword = listOf("RELEASE", "FINAL", "GA").any { version.toUpperCase().contains(it) }

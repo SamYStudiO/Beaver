@@ -76,35 +76,43 @@ class LaunchDialog : AppCompatDialogFragment(), OnApplyWindowInsetsListener {
                     ) {
                         super.onTransitionCompleted(motionLayout, currentId)
                         binding.root.removeTransitionListener(this)
-                        viewModel.initializationObservable.observe(viewLifecycleOwner, {
-                            Timber.i("initializationObservable: %s", it)
-                            when (it) {
-                                is AsyncState.Started -> {
-                                }
-                                is AsyncState.Completed -> hide()
-                                is AsyncState.Failed -> {
-                                    if (!(it.error is GoogleApiAvailabilityManager.GoogleApiAvailabilityException
-                                                && it.error.isResolvable
-                                                && it.error.googleApiAvailability.showErrorDialogFragment(
-                                            requireActivity(),
-                                            it.error.status,
-                                            0
-                                        ))
-                                    ) {
-                                        // Don't use navigation as this launch dialog is not
-                                        // launched from navigation component and we won't get
-                                        // dialog result if we are from different fragmentManagers.
-                                        AlertDialog.newInstance(
-                                            titleRes = R.string.global_error_title,
-                                            messageRes = R.string.global_error_message,
-                                            positiveButton = "retry",
-                                            negativeButton = "quit",
-                                            cancelable = false,
-                                        ).show(parentFragmentManager, AlertDialog::class.simpleName)
+                        viewModel.initializationObservable.observe(
+                            viewLifecycleOwner,
+                            {
+                                Timber.i("initializationObservable: %s", it)
+                                when (it) {
+                                    is AsyncState.Started -> {
+                                    }
+                                    is AsyncState.Completed -> hide()
+                                    is AsyncState.Failed -> {
+                                        if (!(
+                                                    it.error is GoogleApiAvailabilityManager.GoogleApiAvailabilityException &&
+                                                            it.error.isResolvable &&
+                                                            it.error.googleApiAvailability.showErrorDialogFragment(
+                                                                requireActivity(),
+                                                                it.error.status,
+                                                                0
+                                                            )
+                                                    )
+                                        ) {
+                                            // Don't use navigation as this launch dialog is not
+                                            // launched from navigation component and we won't get
+                                            // dialog result if we are from different fragmentManagers.
+                                            AlertDialog.newInstance(
+                                                titleRes = R.string.global_error_title,
+                                                messageRes = R.string.global_error_message,
+                                                positiveButton = "retry",
+                                                negativeButton = "quit",
+                                                cancelable = false,
+                                            ).show(
+                                                parentFragmentManager,
+                                                AlertDialog::class.simpleName
+                                            )
+                                        }
                                     }
                                 }
                             }
-                        })
+                        )
                     }
                 })
             }
