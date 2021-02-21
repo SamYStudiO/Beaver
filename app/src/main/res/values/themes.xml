@@ -30,10 +30,10 @@
         <item name="android:textColorSecondary">@color/md_grey_700</item>
         <item name="android:textColorTertiary">@color/md_grey_700</item>
         <item name="android:textColorLink">@color/md_grey_700</item>
-        <item name="android:textColorPrimaryInverse">@android:color/white</item>
-        <item name="android:textColorSecondaryInverse">@android:color/white</item>
-        <item name="android:textColorTertiaryInverse">@android:color/white</item>
-        <item name="android:textColorLinkInverse">@android:color/white</item>
+        <item name="android:textColorPrimaryInverse">@color/md_white_1000</item>
+        <item name="android:textColorSecondaryInverse">@color/md_white_1000</item>
+        <item name="android:textColorTertiaryInverse">@color/md_white_1000</item>
+        <item name="android:textColorLinkInverse">@color/md_white_1000</item>
 
         <item name="textAppearanceHeadline1">@style/TextAppearance.MyApp.Headline1</item>
         <item name="textAppearanceHeadline2">@style/TextAppearance.MyApp.Headline2</item>
