@@ -9,27 +9,27 @@
         <item name="android:enforceStatusBarContrast" tools:targetApi="29">false</item>
         <item name="android:enforceNavigationBarContrast" tools:targetApi="29">false</item>
 
-        <item name="android:windowBackground">@android:color/white</item>
-        <item name="android:colorBackground">@android:color/white</item>
+        <item name="android:windowBackground">@color/md_white_1000</item>
+        <item name="android:colorBackground">@color/md_white_1000</item>
 
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_700</item>
-        <item name="colorSurface">@android:color/white</item>
-        <item name="colorSuccess">@color/green</item>
-        <item name="colorError">@color/red</item>
-        <item name="colorOnPrimary">@android:color/white</item>
-        <item name="colorOnSecondary">@android:color/white</item>
-        <item name="colorOnSuccess">@android:color/white</item>
-        <item name="colorOnError">@android:color/white</item>
-        <item name="colorOnBackground">@color/grey</item>
-        <item name="colorOnSurface">@color/grey</item>
+        <item name="colorPrimary">@color/md_purple_500</item>
+        <item name="colorPrimaryVariant">@color/md_purple_700</item>
+        <item name="colorSecondary">@color/md_teal_200</item>
+        <item name="colorSecondaryVariant">@color/md_teal_700</item>
+        <item name="colorSurface">@color/md_white_1000</item>
+        <item name="colorSuccess">@color/md_green_800</item>
+        <item name="colorError">@color/md_red_500</item>
+        <item name="colorOnPrimary">@color/md_white_1000</item>
+        <item name="colorOnSecondary">@color/md_white_1000</item>
+        <item name="colorOnSuccess">@color/md_white_1000</item>
+        <item name="colorOnError">@color/md_white_1000</item>
+        <item name="colorOnBackground">@color/md_grey_700</item>
+        <item name="colorOnSurface">@color/md_grey_700</item>
 
-        <item name="android:textColorPrimary">@color/grey</item>
-        <item name="android:textColorSecondary">@color/grey</item>
-        <item name="android:textColorTertiary">@color/grey</item>
-        <item name="android:textColorLink">@color/grey</item>
+        <item name="android:textColorPrimary">@color/md_grey_700</item>
+        <item name="android:textColorSecondary">@color/md_grey_700</item>
+        <item name="android:textColorTertiary">@color/md_grey_700</item>
+        <item name="android:textColorLink">@color/md_grey_700</item>
         <item name="android:textColorPrimaryInverse">@android:color/white</item>
         <item name="android:textColorSecondaryInverse">@android:color/white</item>
         <item name="android:textColorTertiaryInverse">@android:color/white</item>
