@@ -12,10 +12,10 @@ import dagger.hilt.android.AndroidEntryPoint
 import net.samystudio.beaver.R
 import net.samystudio.beaver.data.handleStatesFromFragmentWithLoaderDialog
 import net.samystudio.beaver.databinding.FragmentUserProfileBinding
-import net.samystudio.beaver.ext.TRANSITION_DURATION
-import net.samystudio.beaver.ext.hideLoaderDialog
-import net.samystudio.beaver.ext.toggleLightSystemBars
-import net.samystudio.beaver.ext.viewBinding
+import net.samystudio.beaver.util.TRANSITION_DURATION
+import net.samystudio.beaver.util.hideLoaderDialog
+import net.samystudio.beaver.util.toggleLightSystemBars
+import net.samystudio.beaver.util.viewBinding
 
 @AndroidEntryPoint
 class UserProfileFragment : Fragment(R.layout.fragment_user_profile), OnApplyWindowInsetsListener {

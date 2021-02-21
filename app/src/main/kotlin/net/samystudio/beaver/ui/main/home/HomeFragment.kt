@@ -13,7 +13,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import net.samystudio.beaver.R
 import net.samystudio.beaver.data.handleStatesFromFragmentWithLoaderDialog
 import net.samystudio.beaver.databinding.FragmentHomeBinding
-import net.samystudio.beaver.ext.*
+import net.samystudio.beaver.util.*
 
 @AndroidEntryPoint
 class HomeFragment : Fragment(R.layout.fragment_home), OnApplyWindowInsetsListener {

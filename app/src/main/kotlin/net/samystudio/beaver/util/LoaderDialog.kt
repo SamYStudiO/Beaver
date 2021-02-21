@@ -1,4 +1,4 @@
-package net.samystudio.beaver.ext
+package net.samystudio.beaver.util
 
 import androidx.fragment.app.Fragment
 import net.samystudio.beaver.ui.common.dialog.LoaderDialog

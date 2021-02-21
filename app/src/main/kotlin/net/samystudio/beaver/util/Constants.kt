@@ -1,4 +1,4 @@
-package net.samystudio.beaver.ext
+package net.samystudio.beaver.util
 
 import net.samystudio.beaver.ContextProvider
 import net.samystudio.beaver.R

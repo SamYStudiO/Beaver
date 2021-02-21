@@ -1,4 +1,4 @@
-package net.samystudio.beaver.ext
+package net.samystudio.beaver.util
 
 import android.app.Activity
 import android.content.Context

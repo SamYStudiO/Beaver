@@ -1,4 +1,4 @@
-package net.samystudio.beaver.ext
+package net.samystudio.beaver.util
 
 import android.text.format.DateFormat
 import net.samystudio.beaver.ContextProvider

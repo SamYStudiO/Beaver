@@ -22,8 +22,8 @@ import net.samystudio.beaver.R
 import net.samystudio.beaver.data.AsyncState
 import net.samystudio.beaver.data.manager.GoogleApiAvailabilityManager
 import net.samystudio.beaver.databinding.DialogLaunchBinding
-import net.samystudio.beaver.ext.toggleLightSystemBars
-import net.samystudio.beaver.ext.viewBinding
+import net.samystudio.beaver.util.toggleLightSystemBars
+import net.samystudio.beaver.util.viewBinding
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 

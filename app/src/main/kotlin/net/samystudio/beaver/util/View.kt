@@ -1,4 +1,4 @@
-package net.samystudio.beaver.ext
+package net.samystudio.beaver.util
 
 import android.view.View
 import com.jakewharton.rxbinding4.view.clicks

@@ -11,8 +11,8 @@ import android.view.animation.OvershootInterpolator
 import androidx.appcompat.app.AppCompatDialogFragment
 import net.samystudio.beaver.R
 import net.samystudio.beaver.databinding.DialogLoaderBinding
-import net.samystudio.beaver.ext.TRANSITION_DURATION
-import net.samystudio.beaver.ext.viewBinding
+import net.samystudio.beaver.util.TRANSITION_DURATION
+import net.samystudio.beaver.util.viewBinding
 
 class LoaderDialog : AppCompatDialogFragment() {
     private val binding by viewBinding { DialogLoaderBinding.bind(it) }

@@ -1,6 +1,6 @@
 @file:SuppressLint("HardwareIds")
 
-package net.samystudio.beaver.ext
+package net.samystudio.beaver.util
 
 import android.annotation.SuppressLint
 import android.os.Build

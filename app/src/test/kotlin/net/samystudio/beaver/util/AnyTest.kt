@@ -1,4 +1,4 @@
-package net.samystudio.beaver.ext
+package net.samystudio.beaver.util
 
 import org.junit.Assert.assertEquals
 import org.junit.Test

@@ -4,8 +4,8 @@ import androidx.fragment.app.Fragment
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.ObservableTransformer
 import io.reactivex.rxjava3.core.Single
-import net.samystudio.beaver.ext.hideLoaderDialog
-import net.samystudio.beaver.ext.showLoaderDialog
+import net.samystudio.beaver.util.hideLoaderDialog
+import net.samystudio.beaver.util.showLoaderDialog
 
 /**
  * Async request states, response contains data of type [T].

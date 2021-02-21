@@ -23,7 +23,7 @@ import net.samystudio.beaver.R
 import net.samystudio.beaver.data.handleStatesFromFragmentWithLoaderDialog
 import net.samystudio.beaver.data.local.SharedPreferencesHelper
 import net.samystudio.beaver.databinding.FragmentAuthenticatorBinding
-import net.samystudio.beaver.ext.*
+import net.samystudio.beaver.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
