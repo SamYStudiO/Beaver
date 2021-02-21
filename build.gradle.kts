@@ -43,6 +43,12 @@ subprojects {
             ktlint(Versions.ktlint)
         }
     }
+    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+        kotlinOptions {
+            // Treat all Kotlin warnings as errors
+            allWarningsAsErrors = true
+        }
+    }
 }
 
 fun isNonStable(version: String): Boolean {

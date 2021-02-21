@@ -86,14 +86,14 @@ class LaunchDialog : AppCompatDialogFragment(), OnApplyWindowInsetsListener {
                                     is AsyncState.Completed -> hide()
                                     is AsyncState.Failed -> {
                                         if (!(
-                                                    it.error is GoogleApiAvailabilityManager.GoogleApiAvailabilityException &&
-                                                            it.error.isResolvable &&
-                                                            it.error.googleApiAvailability.showErrorDialogFragment(
-                                                                requireActivity(),
-                                                                it.error.status,
-                                                                0
-                                                            )
+                                            it.error is GoogleApiAvailabilityManager.GoogleApiAvailabilityException &&
+                                                it.error.isResolvable &&
+                                                it.error.googleApiAvailability.showErrorDialogFragment(
+                                                        requireActivity(),
+                                                        it.error.status,
+                                                        0
                                                     )
+                                            )
                                         ) {
                                             // Don't use navigation as this launch dialog is not
                                             // launched from navigation component and we won't get
