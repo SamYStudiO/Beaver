@@ -30,7 +30,7 @@ android {
     buildToolsVersion(Versions.buildToolsVersion)
 
     defaultConfig {
-        applicationId = "net.samystudio.beaver".also { resValue("string", "application_id", it) }
+        applicationId = "net.samystudio.beaver"
         minSdkVersion(Versions.minSdk)
         targetSdkVersion(Versions.targetSdk)
         versionCode = versionBuild

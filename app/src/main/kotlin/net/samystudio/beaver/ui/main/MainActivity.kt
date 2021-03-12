@@ -11,10 +11,10 @@ import dagger.hilt.android.AndroidEntryPoint
 import net.samystudio.beaver.NavigationMainDirections
 import net.samystudio.beaver.R
 import net.samystudio.beaver.databinding.ActivityMainBinding
-import net.samystudio.beaver.util.toggleLightSystemBars
-import net.samystudio.beaver.util.viewBinding
 import net.samystudio.beaver.ui.common.dialog.LaunchDialog
 import net.samystudio.beaver.ui.common.dialog.LoaderDialog
+import net.samystudio.beaver.util.toggleLightSystemBars
+import net.samystudio.beaver.util.viewBinding
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedListener {
