@@ -325,7 +325,7 @@ fun Fragment.showSystemBars() {
  * @see WindowInsetsControllerCompat.setSystemBarsBehavior
  */
 var Fragment.systemBarsBehavior: Int
-    get() = activity?.systemBarsBehavior  ?: WindowInsetsControllerCompat.BEHAVIOR_SHOW_BARS_BY_TOUCH
+    get() = activity?.systemBarsBehavior ?: WindowInsetsControllerCompat.BEHAVIOR_SHOW_BARS_BY_TOUCH
 
     set(value) {
         activity?.systemBarsBehavior = value
@@ -415,7 +415,7 @@ fun AppCompatDialogFragment.showSystemBars() {
  * @see WindowInsetsControllerCompat.setSystemBarsBehavior
  */
 var AppCompatDialogFragment.systemBarsBehavior: Int
-    get() = dialog?.window?.systemBarsBehavior  ?: WindowInsetsControllerCompat.BEHAVIOR_SHOW_BARS_BY_TOUCH
+    get() = dialog?.window?.systemBarsBehavior ?: WindowInsetsControllerCompat.BEHAVIOR_SHOW_BARS_BY_TOUCH
     set(value) {
         dialog?.window?.systemBarsBehavior = value
     }

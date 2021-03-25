@@ -2,6 +2,7 @@
 
 package net.samystudio.beaver.ui.common.viewmodel
 
+import androidx.lifecycle.LiveData
 import io.reactivex.rxjava3.core.BackpressureStrategy
 import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.core.Observable
@@ -12,19 +13,19 @@ import net.samystudio.beaver.data.AsyncState
 import net.samystudio.beaver.data.ResultAsyncState
 
 /**
- * A [SingleLiveEvent] that may trigger call to a [Flowable] to get some result ([OUT]) at any time
- * using [trigger]. Calling trigger multiple times will cancel previous calls.
+ * A [LiveData] that may trigger call to a [Flowable] to get some result ([OUT]) at any time using
+ * [trigger]. Calling trigger multiple times will cancel previous calls.
  *
  * Note this is a [Disposable] and calling [dispose] is required when you're done with this.
  *
  * @param flowable A [Flowable].
  * @param isTriggeredWhenActivated A [Boolean] that indicates if we want to automatically trigger
- * a new [Flowable] request when this [SingleLiveEvent] becomes active.
+ * a new [Flowable] request when this [LiveData] becomes active.
  */
-class TriggerLiveEvent<OUT>(
+class TriggerLiveData<OUT>(
     val flowable: Flowable<OUT>,
     val isTriggeredWhenActivated: Boolean = false,
-) : SingleLiveEvent<OUT>(), Disposable {
+) : LiveData<OUT>(), Disposable {
     private val trigger: PublishProcessor<Unit> = PublishProcessor.create()
     private val disposable: Disposable =
         trigger.switchMap { _ -> flowable.doOnNext { postValue(it) } }.subscribe()
@@ -54,15 +55,15 @@ class TriggerLiveEvent<OUT>(
     }
 }
 
-inline fun <OUT> Flowable<OUT>.toTriggerLiveEvent(
+inline fun <OUT> Flowable<OUT>.toTriggerLiveData(
     isTriggeredWhenActivated: Boolean = false
-) = TriggerLiveEvent(this, isTriggeredWhenActivated)
+) = TriggerLiveData(this, isTriggeredWhenActivated)
 
-inline fun <OUT> Observable<OUT>.toTriggerLiveEvent(
+inline fun <OUT> Observable<OUT>.toTriggerLiveData(
     isTriggeredWhenActivated: Boolean = false,
     strategy: BackpressureStrategy = BackpressureStrategy.LATEST,
-) = toFlowable(strategy).toTriggerLiveEvent(isTriggeredWhenActivated)
+) = toFlowable(strategy).toTriggerLiveData(isTriggeredWhenActivated)
 
-inline fun <OUT> Single<OUT>.toTriggerLiveEvent(
+inline fun <OUT> Single<OUT>.toTriggerLiveData(
     isTriggeredWhenActivated: Boolean = false,
-) = toFlowable().toTriggerLiveEvent(isTriggeredWhenActivated)
+) = toFlowable().toTriggerLiveData(isTriggeredWhenActivated)
