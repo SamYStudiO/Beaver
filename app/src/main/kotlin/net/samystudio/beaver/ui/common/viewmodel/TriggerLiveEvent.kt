@@ -1,4 +1,4 @@
-@file:Suppress("NOTHING_TO_INLINE")
+@file:Suppress("MemberVisibilityCanBePrivate", "unused", "NOTHING_TO_INLINE")
 
 package net.samystudio.beaver.ui.common.viewmodel
 

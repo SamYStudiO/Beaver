@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package net.samystudio.beaver.util
 
 import net.samystudio.beaver.ContextProvider

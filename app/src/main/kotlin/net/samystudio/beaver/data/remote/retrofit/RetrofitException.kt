@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package net.samystudio.beaver.data.remote.retrofit
 
 import okhttp3.ResponseBody

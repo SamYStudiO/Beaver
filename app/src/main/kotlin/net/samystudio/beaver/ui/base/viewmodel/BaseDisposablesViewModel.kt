@@ -1,3 +1,5 @@
+@file:Suppress("MemberVisibilityCanBePrivate")
+
 package net.samystudio.beaver.ui.base.viewmodel
 
 import androidx.lifecycle.ViewModel

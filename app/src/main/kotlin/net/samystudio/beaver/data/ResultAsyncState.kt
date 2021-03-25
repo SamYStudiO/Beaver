@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package net.samystudio.beaver.data
 
 import androidx.fragment.app.Fragment

@@ -1,3 +1,5 @@
+@file:Suppress("MemberVisibilityCanBePrivate", "unused")
+
 package net.samystudio.beaver.data.local
 
 import android.util.Base64

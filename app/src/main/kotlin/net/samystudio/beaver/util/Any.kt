@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package net.samystudio.beaver.util
 
 fun Any.getClassTag(): String = this.javaClass.name

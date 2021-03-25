@@ -1,3 +1,5 @@
+@file:Suppress("MemberVisibilityCanBePrivate")
+
 package net.samystudio.beaver.ui.common.viewmodel
 
 import io.reactivex.rxjava3.core.Flowable
