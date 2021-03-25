@@ -111,10 +111,10 @@ android {
                 flavors += "${flavor.name}$sep"
             }
             outputImpl.outputFileName = "${rootProject.name}$sep" +
-                flavors +
-                "${buildType.name}$sep" +
-                "${version}$sep" +
-                "build${sep}$build.apk"
+                    flavors +
+                    "${buildType.name}$sep" +
+                    "${version}$sep" +
+                    "build${sep}$build.apk"
 
             // Since we're using date for versionCode, manifest will change each time we compile and
             // so we won't be able to use "Apply codee changes" features as it doesn't work when
@@ -138,8 +138,4 @@ dependencies {
     androidTest()
 
     implementation(Dependencies.permissionsdispatcher_ktx)
-
-    // TODO when officially released remove these, it fixed issues when popping backstack and with transitions.
-    implementation("androidx.activity:activity-ktx:1.2.0-rc01")
-    implementation("androidx.fragment:fragment-ktx:1.3.0-rc02")
 }
