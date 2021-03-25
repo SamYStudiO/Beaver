@@ -145,6 +145,17 @@ fun Window.showSystemBars() {
 }
 
 /**
+ * @see WindowInsetsControllerCompat.getSystemBarsBehavior
+ * @see WindowInsetsControllerCompat.setSystemBarsBehavior
+ */
+var Window.systemBarsBehavior: Int
+    get() = WindowCompat.getInsetsController(this, decorView)?.systemBarsBehavior
+        ?: WindowInsetsControllerCompat.BEHAVIOR_SHOW_BARS_BY_TOUCH
+    set(value) {
+        WindowCompat.getInsetsController(this, decorView)?.systemBarsBehavior = value
+    }
+
+/**
  * @see Window.toggleLightStatusBars
  */
 fun FragmentActivity.toggleLightStatusBars(light: Boolean? = null) {
@@ -224,6 +235,16 @@ fun FragmentActivity.showSystemBars() {
 }
 
 /**
+ * @see WindowInsetsControllerCompat.getSystemBarsBehavior
+ * @see WindowInsetsControllerCompat.setSystemBarsBehavior
+ */
+var FragmentActivity.systemBarsBehavior: Int
+    get() = window.systemBarsBehavior
+    set(value) {
+        window.systemBarsBehavior = value
+    }
+
+/**
  * @see FragmentActivity.toggleLightStatusBars
  */
 fun Fragment.toggleLightStatusBars(light: Boolean? = null) {
@@ -296,6 +317,17 @@ fun Fragment.showNavigationBars() {
 fun Fragment.showSystemBars() {
     show(WindowInsetsCompat.Type.systemBars())
 }
+
+/**
+ * @see WindowInsetsControllerCompat.getSystemBarsBehavior
+ * @see WindowInsetsControllerCompat.setSystemBarsBehavior
+ */
+var Fragment.systemBarsBehavior: Int
+    get() = activity?.systemBarsBehavior  ?: WindowInsetsControllerCompat.BEHAVIOR_SHOW_BARS_BY_TOUCH
+
+    set(value) {
+        activity?.systemBarsBehavior = value
+    }
 
 /**
  * @see Window.toggleLightStatusBars
@@ -375,3 +407,13 @@ fun AppCompatDialogFragment.showNavigationBars() {
 fun AppCompatDialogFragment.showSystemBars() {
     show(WindowInsetsCompat.Type.systemBars())
 }
+
+/**
+ * @see WindowInsetsControllerCompat.getSystemBarsBehavior
+ * @see WindowInsetsControllerCompat.setSystemBarsBehavior
+ */
+var AppCompatDialogFragment.systemBarsBehavior: Int
+    get() = dialog?.window?.systemBarsBehavior  ?: WindowInsetsControllerCompat.BEHAVIOR_SHOW_BARS_BY_TOUCH
+    set(value) {
+        dialog?.window?.systemBarsBehavior = value
+    }
