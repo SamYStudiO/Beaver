@@ -20,6 +20,8 @@ object Versions {
 
     // android
     const val core = "1.5.0-rc01"
+    const val activity = "1.2.2"
+    const val fragment = "1.3.2"
     const val appcompat = "1.2.0"
     const val preference = "1.1.1"
     const val constraintlayout = "2.0.4"

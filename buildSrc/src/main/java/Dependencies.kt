@@ -6,6 +6,8 @@ object Dependencies {
 
     // android
     const val core_ktx = "androidx.core:core-ktx:${Versions.core}"
+    const val activity = "androidx.activity:activity-ktx:${Versions.activity}"
+    const val fragment = "androidx.fragment:fragment-ktx:${Versions.fragment}"
     const val appcompat = "androidx.appcompat:appcompat:${Versions.appcompat}"
     const val preference_ktx = "androidx.preference:preference-ktx:${Versions.preference}"
     const val constraintlayout =
@@ -117,6 +119,8 @@ object Dependencies {
 fun DependencyHandler.base() {
     implementation(Dependencies.kotlin)
     implementation(Dependencies.core_ktx)
+    implementation(Dependencies.activity)
+    implementation(Dependencies.fragment)
     implementation(Dependencies.appcompat)
     implementation(Dependencies.preference_ktx)
     implementation(Dependencies.constraintlayout)
