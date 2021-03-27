@@ -1,6 +1,9 @@
 # Beaver
 
-Android Project template using View Model [MVVM](https://developer.android.com/topic/libraries/architecture/index.html) and Repository Data pattern, with [Dagger 2 / Hilt](https://github.com/google/dagger) and [Jetpack (Androidx)](https://developer.android.com/jetpack/) libraries (navigation component, room, worker, etc...).
+#### THIS IS IS DEVELOPEMENT AND HASN'T BEEN TESTED IN PRODUCTION YET.
+
+Android Project template using View Model [MVVM](https://developer.android.com/topic/libraries/architecture/index.html) and Repository Data pattern  
+It is build on top of [Dagger 2 / Hilt](https://github.com/google/dagger), [Jetpack (Androidx)](https://developer.android.com/jetpack/) libraries (compose, navigation component, room, worker, etc...) and coroutines.
 
 Template includes basic implementation for a launch screen, a home screen, an authentication screen and a profile screen.
 Authentication is implemented using OAuth2 and automatically refresh token when a 401 HTTP exception is thrown.
@@ -18,8 +21,6 @@ Common used libraries :
 - [Firebase crashlytics](https://firebase.google.com/docs/crashlytics/)
 - [Retrofit](https://github.com/square/retrofit)
 - [Coil](https://github.com/coil-kt/coil)
-- [RxJava3](https://github.com/ReactiveX/RxJava)
-- [RxPreferences](https://github.com/f2prateek/rx-preferences)
 - [Timber](https://github.com/JakeWharton/timber)
 
 Package structure is inspired from [this](https://overflow.buffer.com/2016/09/26/android-rethinking-package-structure/) reading.
