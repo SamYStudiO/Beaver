@@ -1,6 +1,6 @@
 # Beaver
 
-#### THIS IS IS DEVELOPEMENT AND HASN'T BEEN TESTED IN PRODUCTION YET.
+#### THIS IS IS DEVELOPMENT AND HASN'T BEEN TESTED IN PRODUCTION YET.
 
 Android Project template using View Model [MVVM](https://developer.android.com/topic/libraries/architecture/index.html) and Repository Data pattern  
 It is build on top of [Dagger 2 / Hilt](https://github.com/google/dagger), [Jetpack (Androidx)](https://developer.android.com/jetpack/) libraries (compose, navigation component, room, worker, etc...) and coroutines.
