@@ -32,8 +32,7 @@ open class SingleLiveEvent<T> : MediatorLiveData<T>() {
 
     @MainThread
     override fun removeObserver(observer: Observer<in T>) {
-        @Suppress("TYPE_INFERENCE_ONLY_INPUT_TYPES_WARNING")
-        if (observers.remove(observer)) {
+        if (observer is ObserverWrapper && observers.remove(observer)) {
             super.removeObserver(observer)
             return
         }
