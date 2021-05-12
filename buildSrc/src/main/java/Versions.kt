@@ -5,7 +5,7 @@ object Versions {
     const val buildToolsVersion = "30.0.3"
 
     // tools
-    const val android_build_tools = "4.1.3"
+    const val android_build_tools = "4.2.0"
     const val google_services = "4.3.5"
     const val strict_version_matcher_plugin = "1.2.2"
     const val firebase_crashlytics_plugin = "2.5.2"
