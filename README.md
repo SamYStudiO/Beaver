@@ -17,7 +17,7 @@ Common used libraries :
 - [Firebase app indexing](https://firebase.google.com/docs/app-indexing/)
 - [Firebase crashlytics](https://firebase.google.com/docs/crashlytics/)
 - [Retrofit](https://github.com/square/retrofit)
-- [Picasso](https://github.com/square/picasso)
+- [Coil](https://github.com/coil-kt/coil)
 - [RxJava3](https://github.com/ReactiveX/RxJava)
 - [RxPreferences](https://github.com/f2prateek/rx-preferences)
 - [Timber](https://github.com/JakeWharton/timber)

@@ -44,6 +44,7 @@ object NetworkModule {
 
     @Provides
     @Singleton
+    @OkHttpRetrofitQualifier
     fun provideOkHttpClient(
         cache: Cache,
         httpLoggingInterceptor: HttpLoggingInterceptor,
@@ -123,7 +124,7 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideRetrofit(
-        okHttpClient: OkHttpClient,
+        @OkHttpRetrofitQualifier okHttpClient: OkHttpClient,
         rxErrorHandlingCallAdapterFactory: RxErrorHandlingCallAdapterFactory,
         nullOrEmptyConverterFactory: Converter.Factory,
         gsonConverterFactory: GsonConverterFactory

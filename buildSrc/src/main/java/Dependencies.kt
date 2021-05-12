@@ -71,7 +71,6 @@ object Dependencies {
         "com.jakewharton.rxbinding4:rxbinding-viewpager2:${Versions.rxbinding4}"
     const val rx_preferences =
         "com.f2prateek.rx.preferences2:rx-preferences:${Versions.rx_preferences}"
-    const val rxpicasso_kotlin = "net.samystudio.rxpicasso:rxpicasso-kotlin:${Versions.rxpicasso}"
 
     // network
     const val okhttp = "com.squareup.okhttp3:okhttp:${Versions.okhttp3}"
@@ -83,7 +82,7 @@ object Dependencies {
         "com.squareup.retrofit2:converter-gson:${Versions.retrofit2}"
     const val retrofit_adapter_rxjava3 =
         "com.squareup.retrofit2:adapter-rxjava3:${Versions.retrofit2}"
-    const val picasso = "com.squareup.picasso:picasso:${Versions.picasso}"
+    const val coil = "io.coil-kt:coil:${Versions.coil}"
 
     // misc
     const val permissionsdispatcher_ktx =
@@ -179,7 +178,6 @@ fun DependencyHandler.reactive() {
     //implementation(Dependencies.rxbinding_swiperefreshlayout)
     //implementation(Dependencies.rxbinding_viewpager2)
     implementation(Dependencies.rx_preferences)
-    implementation(Dependencies.rxpicasso_kotlin)
 }
 
 fun DependencyHandler.network() {
@@ -188,7 +186,7 @@ fun DependencyHandler.network() {
     implementation(Dependencies.retrofit)
     implementation(Dependencies.retrofit_converter_gson)
     implementation(Dependencies.retrofit_adapter_rxjava3)
-    implementation(Dependencies.picasso)
+    implementation(Dependencies.coil)
     testImplementation(Dependencies.okhttp_mockwebserver)
 }
 
