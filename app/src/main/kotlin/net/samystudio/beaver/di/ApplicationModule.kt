@@ -34,8 +34,8 @@ object ApplicationModule {
      */
     @Provides
     @Singleton
-    fun provideTrimMemoryList(picassoTrimMemory: PicassoModule.PicassoTrimMemory): ArrayList<TrimMemory> =
-        mutableListOf<TrimMemory>(picassoTrimMemory) as ArrayList<TrimMemory>
+    fun provideTrimMemoryList(): ArrayList<TrimMemory> =
+        mutableListOf<TrimMemory>() as ArrayList<TrimMemory>
 
     @Provides
     @Singleton

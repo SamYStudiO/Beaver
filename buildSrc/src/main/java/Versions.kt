@@ -47,12 +47,11 @@ object Versions {
     const val rxkotlin = "3.0.1"
     const val rxbinding4 = "4.0.0"
     const val rx_preferences = "2.0.1"
-    const val rxpicasso = "0.3.0"
 
     // network
     const val okhttp3 = "4.9.1"
     const val retrofit2 = "2.9.0"
-    const val picasso = "3.0.0-SNAPSHOT"
+    const val coil = "1.1.1"
 
     // misc
     const val permissionsdispatcher = "1.0.1"

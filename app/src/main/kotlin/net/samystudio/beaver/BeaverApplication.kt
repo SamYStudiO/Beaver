@@ -2,6 +2,8 @@ package net.samystudio.beaver
 
 import android.app.Application
 import androidx.work.Configuration
+import coil.ImageLoader
+import coil.ImageLoaderFactory
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import dagger.hilt.android.HiltAndroidApp
@@ -10,7 +12,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @HiltAndroidApp
-class BeaverApplication : Application(), Configuration.Provider {
+class BeaverApplication : Application(), Configuration.Provider, ImageLoaderFactory {
     @Inject
     lateinit var firebaseAnalytics: FirebaseAnalytics
 
@@ -26,6 +28,9 @@ class BeaverApplication : Application(), Configuration.Provider {
     @Inject
     lateinit var workConfiguration: Configuration
 
+    @Inject
+    lateinit var imageLoader: ImageLoader
+
     override fun onCreate() {
         super.onCreate()
         firebaseAnalytics.setAnalyticsCollectionEnabled(!BuildConfig.DEBUG)
@@ -39,4 +44,6 @@ class BeaverApplication : Application(), Configuration.Provider {
     }
 
     override fun getWorkManagerConfiguration() = workConfiguration
+
+    override fun newImageLoader(): ImageLoader = imageLoader
 }
