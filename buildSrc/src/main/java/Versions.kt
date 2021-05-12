@@ -54,7 +54,7 @@ object Versions {
     const val coil = "1.1.1"
 
     // misc
-    const val permissionsdispatcher = "1.0.1"
+    const val permissionsdispatcher = "1.0.5"
 
     // debug
     const val timber = "4.7.1"
