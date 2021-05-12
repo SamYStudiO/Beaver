@@ -46,8 +46,7 @@ object CoilModule {
                     imageLoader.bitmapPool.clear()
                     imageLoader.memoryCache.clear()
                 }
-                else -> {
-                }
+                else -> Unit
             }
         }
     }
