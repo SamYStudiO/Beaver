@@ -42,7 +42,10 @@ object CoilModule {
             when (level) {
                 ComponentCallbacks2.TRIM_MEMORY_UI_HIDDEN,
                 ComponentCallbacks2.TRIM_MEMORY_COMPLETE,
-                ComponentCallbacks2.TRIM_MEMORY_RUNNING_CRITICAL -> imageLoader.memoryCache.clear()
+                ComponentCallbacks2.TRIM_MEMORY_RUNNING_CRITICAL -> {
+                    imageLoader.bitmapPool.clear()
+                    imageLoader.memoryCache.clear()
+                }
                 else -> {
                 }
             }
