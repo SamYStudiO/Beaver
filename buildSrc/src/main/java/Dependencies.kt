@@ -86,7 +86,7 @@ object Dependencies {
 
     // misc
     const val permissionsdispatcher_ktx =
-        "org.permissionsdispatcher:permissionsdispatcher-ktx:${Versions.permissionsdispatcher}"
+        "com.github.permissions-dispatcher:ktx:${Versions.permissionsdispatcher}"
 
     // debug
     const val timber = "com.jakewharton.timber:timber:${Versions.timber}"
