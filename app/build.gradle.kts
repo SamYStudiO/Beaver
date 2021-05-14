@@ -99,6 +99,16 @@ android {
     hilt {
         enableTransformForLocalTests = true
     }
+
+    applicationVariants.all {
+        outputs.all {
+            // Since we're using date for versionCode, manifest will change each time we compile and
+            // so we won't be able to use "Apply codee changes" features as it doesn't work when
+            // manifest is modified. To avoid that we force a versionCode to 1 for debug build.
+            val outputImpl = this as com.android.build.gradle.internal.api.ApkVariantOutputImpl
+            if (name.contains("debug")) outputImpl.versionCodeOverride = 1
+        }
+    }
 }
 
 dependencies {
