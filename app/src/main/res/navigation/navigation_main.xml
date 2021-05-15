@@ -67,6 +67,15 @@
             android:defaultValue="0"
             app:argType="reference" />
         <argument
+            android:name="iconBitmap"
+            android:defaultValue="@null"
+            app:argType="android.graphics.Bitmap"
+            app:nullable="true" />
+        <argument
+            android:name="iconAttribute"
+            android:defaultValue="0"
+            app:argType="reference" />
+        <argument
             android:name="iconColorAsTextColor"
             android:defaultValue="true"
             app:argType="boolean" />
