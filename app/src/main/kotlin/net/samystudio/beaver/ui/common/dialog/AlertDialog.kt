@@ -3,6 +3,7 @@ package net.samystudio.beaver.ui.common.dialog
 import android.app.Dialog
 import android.content.DialogInterface
 import android.content.res.ColorStateList
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
@@ -11,6 +12,7 @@ import android.os.Bundle
 import androidx.annotation.*
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toDrawable
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
@@ -62,6 +64,7 @@ open class AlertDialog :
                 }
                 getInt(KEY_ICON_RES).let {
                     if (it != 0) setIcon(handleIcon(it))
+                    else setIcon(getParcelable<Bitmap>(KEY_ICON_BITMAP)?.toDrawable(resources))
                 }
                 getInt(KEY_ICON_ATTRIBUTE).let { if (it != 0) setIconAttribute(it) }
                 getInt(KEY_POSITIVE_BUTTON_RES).let {
@@ -377,10 +380,11 @@ open class AlertDialog :
         const val KEY_MESSAGE_RES = "messageRes"
         const val KEY_MESSAGE = "message"
         const val KEY_ICON_RES = "iconRes"
+        const val KEY_ICON_BITMAP = "iconBitmap"
+        const val KEY_ICON_ATTRIBUTE = "iconAttribute"
         const val KEY_ICON_COLOR_AS_TEXT_COLOR = "iconColorAsTextColor"
         const val KEY_ICON_COLOR = "iconColor"
         const val KEY_ICON_COLOR_RES = "iconColorRes"
-        const val KEY_ICON_ATTRIBUTE = "iconAttribute"
         const val KEY_POSITIVE_BUTTON_RES = "positiveButtonRes"
         const val KEY_POSITIVE_BUTTON = "positiveButton"
         const val KEY_POSITIVE_BUTTON_ICON_RES = "positiveButtonIconRes"
@@ -435,10 +439,11 @@ open class AlertDialog :
             @StringRes messageRes: Int = 0,
             message: CharSequence? = null,
             @DrawableRes iconRes: Int = 0,
+            iconBitmap: Bitmap? = null,
+            @AttrRes iconAttribute: Int = 0,
             iconColorAsTextColor: Boolean = true,
             @ColorInt iconColor: Int? = null,
             @ColorRes iconColorRes: Int = 0,
-            @AttrRes iconAttribute: Int = 0,
             @StringRes positiveButtonRes: Int = 0,
             positiveButton: CharSequence? = null,
             @DrawableRes positiveButtonIconRes: Int = 0,
@@ -479,10 +484,11 @@ open class AlertDialog :
                 messageRes,
                 message,
                 iconRes,
+                iconBitmap,
+                iconAttribute,
                 iconColorAsTextColor,
                 iconColor,
                 iconColorRes,
-                iconAttribute,
                 positiveButtonRes,
                 positiveButton,
                 positiveButtonIconRes,
@@ -526,10 +532,11 @@ open class AlertDialog :
             @StringRes messageRes: Int = 0,
             message: CharSequence? = null,
             @DrawableRes iconRes: Int = 0,
+            iconBitmap: Bitmap? = null,
+            @AttrRes iconAttribute: Int = 0,
             iconColorAsTextColor: Boolean = true,
             @ColorInt iconColor: Int? = null,
             @ColorRes iconColorRes: Int = 0,
-            @AttrRes iconAttribute: Int = 0,
             @StringRes positiveButtonRes: Int = 0,
             positiveButton: CharSequence? = null,
             @DrawableRes positiveButtonIconRes: Int = 0,
@@ -569,10 +576,11 @@ open class AlertDialog :
             if (messageRes != 0) putInt(KEY_MESSAGE_RES, messageRes)
             putCharSequence(KEY_MESSAGE, message)
             putInt(KEY_ICON_RES, iconRes)
+            putParcelable(KEY_ICON_BITMAP, iconBitmap)
+            putInt(KEY_ICON_ATTRIBUTE, iconAttribute)
             putBoolean(KEY_ICON_COLOR_AS_TEXT_COLOR, iconColorAsTextColor)
             iconColor?.let { putInt(KEY_ICON_COLOR, it) }
             if (iconColorRes != 0) putInt(KEY_ICON_COLOR_RES, iconColorRes)
-            putInt(KEY_ICON_ATTRIBUTE, iconAttribute)
             if (positiveButtonRes != 0) putInt(KEY_POSITIVE_BUTTON_RES, positiveButtonRes)
             putCharSequence(KEY_POSITIVE_BUTTON, positiveButton)
             putInt(KEY_POSITIVE_BUTTON_ICON_RES, positiveButtonIconRes)
