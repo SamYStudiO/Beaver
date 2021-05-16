@@ -3,7 +3,10 @@
 https://gist.github.com/daniellevass/b0b8cfa773488e138037 -->
 <resources>
 
-    <!--reds-->
+    <color name="md_black">#000000</color>
+    <color name="md_white">#ffffff</color>
+
+    <!-- reds -->
     <color name="md_red_50">#FFEBEE</color>
     <color name="md_red_100">#FFCDD2</color>
     <color name="md_red_200">#EF9A9A</color>
@@ -83,7 +86,7 @@ https://gist.github.com/daniellevass/b0b8cfa773488e138037 -->
     <color name="md_indigo_A400">#3D5AFE</color>
     <color name="md_indigo_A700">#304FFE</color>
 
-    <!--blue-->
+    <!-- blue -->
     <color name="md_blue_50">#E3F2FD</color>
     <color name="md_blue_100">#BBDEFB</color>
     <color name="md_blue_200">#90CAF9</color>
@@ -99,7 +102,7 @@ https://gist.github.com/daniellevass/b0b8cfa773488e138037 -->
     <color name="md_blue_A400">#2979FF</color>
     <color name="md_blue_A700">#2962FF</color>
 
-    <!-- light blue-->
+    <!-- light blue -->
     <color name="md_light_blue_50">#E1F5FE</color>
     <color name="md_light_blue_100">#B3E5FC</color>
     <color name="md_light_blue_200">#81D4fA</color>
@@ -163,7 +166,7 @@ https://gist.github.com/daniellevass/b0b8cfa773488e138037 -->
     <color name="md_green_A400">#00E676</color>
     <color name="md_green_A700">#00C853</color>
 
-    <!--light green-->
+    <!-- light green -->
     <color name="md_light_green_50">#F1F8E9</color>
     <color name="md_light_green_100">#DCEDC8</color>
     <color name="md_light_green_200">#C5E1A5</color>
@@ -179,7 +182,7 @@ https://gist.github.com/daniellevass/b0b8cfa773488e138037 -->
     <color name="md_light_green_A400">#76FF03</color>
     <color name="md_light_green_A700">#64DD17</color>
 
-    <!-- lime-->
+    <!-- lime -->
     <color name="md_lime_50">#F9FBE7</color>
     <color name="md_lime_100">#F0F4C3</color>
     <color name="md_lime_200">#E6EE9C</color>
@@ -195,7 +198,7 @@ https://gist.github.com/daniellevass/b0b8cfa773488e138037 -->
     <color name="md_lime_A400">#C6FF00</color>
     <color name="md_lime_A700">#AEEA00</color>
 
-    <!--yellow -->
+    <!-- yellow -->
     <color name="md_yellow_50">#FFFDE7</color>
     <color name="md_yellow_100">#FFF9C4</color>
     <color name="md_yellow_200">#FFF590</color>
@@ -211,7 +214,7 @@ https://gist.github.com/daniellevass/b0b8cfa773488e138037 -->
     <color name="md_yellow_A400">#FFEA00</color>
     <color name="md_yellow_A700">#FFD600</color>
 
-    <!--amber-->
+    <!-- amber -->
     <color name="md_amber_50">#FFF8E1</color>
     <color name="md_amber_100">#FFECB3</color>
     <color name="md_amber_200">#FFE082</color>
@@ -227,7 +230,7 @@ https://gist.github.com/daniellevass/b0b8cfa773488e138037 -->
     <color name="md_amber_A400">#FFC400</color>
     <color name="md_amber_A700">#FFAB00</color>
 
-    <!--orange-->
+    <!-- orange -->
     <color name="md_orange_50">#FFF3E0</color>
     <color name="md_orange_100">#FFE0B2</color>
     <color name="md_orange_200">#FFCC80</color>
@@ -243,7 +246,7 @@ https://gist.github.com/daniellevass/b0b8cfa773488e138037 -->
     <color name="md_orange_A400">#FF9100</color>
     <color name="md_orange_A700">#FF6D00</color>
 
-    <!--deep orange-->
+    <!-- deep orange -->
     <color name="md_deep_orange_50">#FBE9A7</color>
     <color name="md_deep_orange_100">#FFCCBC</color>
     <color name="md_deep_orange_200">#FFAB91</color>
@@ -259,7 +262,7 @@ https://gist.github.com/daniellevass/b0b8cfa773488e138037 -->
     <color name="md_deep_orange_A400">#FF3D00</color>
     <color name="md_deep_orange_A700">#DD2600</color>
 
-    <!--brown -->
+    <!-- brown -->
     <color name="md_brown_50">#EFEBE9</color>
     <color name="md_brown_100">#D7CCC8</color>
     <color name="md_brown_200">#BCAAA4</color>
@@ -271,7 +274,7 @@ https://gist.github.com/daniellevass/b0b8cfa773488e138037 -->
     <color name="md_brown_800">#4E342E</color>
     <color name="md_brown_900">#3E2723</color>
 
-    <!--grey-->
+    <!-- grey -->
     <color name="md_grey_50">#FAFAFA</color>
     <color name="md_grey_100">#F5F5F5</color>
     <color name="md_grey_200">#EEEEEE</color>
@@ -282,10 +285,8 @@ https://gist.github.com/daniellevass/b0b8cfa773488e138037 -->
     <color name="md_grey_700">#616161</color>
     <color name="md_grey_800">#424242</color>
     <color name="md_grey_900">#212121</color>
-    <color name="md_black_1000">#000000</color>
-    <color name="md_white_1000">#ffffff</color>
 
-    <!--blue grey-->
+    <!-- blue grey -->
     <color name="md_blue_grey_50">#ECEFF1</color>
     <color name="md_blue_grey_100">#CFD8DC</color>
     <color name="md_blue_grey_200">#B0BBC5</color>
