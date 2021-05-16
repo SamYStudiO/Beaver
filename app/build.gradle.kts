@@ -44,8 +44,7 @@ android {
                 arguments.putAll(
                     mapOf(
                         "room.schemaLocation" to "$projectDir/schemas",
-                        "room.incremental" to "true",
-                        "dagger.hilt.disableModulesHaveInstallInCheck" to "true"
+                        "room.incremental" to "true"
                     )
                 )
             }
