@@ -4,7 +4,7 @@ https://gist.github.com/daniellevass/b0b8cfa773488e138037 -->
 <resources>
 
     <color name="md_black">#000000</color>
-    <color name="md_white">#ffffff</color>
+    <color name="md_white">#FFFFFF</color>
 
     <!-- reds -->
     <color name="md_red_50">#FFEBEE</color>
