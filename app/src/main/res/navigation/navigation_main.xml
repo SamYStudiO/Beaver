@@ -63,6 +63,10 @@
             app:argType="string"
             app:nullable="true" />
         <argument
+            android:name="iconAttribute"
+            android:defaultValue="0"
+            app:argType="reference" />
+        <argument
             android:name="iconRes"
             android:defaultValue="0"
             app:argType="reference" />
@@ -72,23 +76,19 @@
             app:argType="android.graphics.Bitmap"
             app:nullable="true" />
         <argument
-            android:name="iconAttribute"
+            android:name="iconColorAttribute"
             android:defaultValue="0"
             app:argType="reference" />
         <argument
-            android:name="iconColorAsTextColor"
-            android:defaultValue="true"
-            app:argType="boolean" />
+            android:name="iconColorRes"
+            android:defaultValue="0"
+            app:argType="reference" />
         <!-- integer can't be null :(
         <argument
            android:name="iconColor"
            android:defaultValue="@null"
            app:argType="integer"
            app:nullable="true"/> -->
-        <argument
-            android:name="iconColorRes"
-            android:defaultValue="0"
-            app:argType="reference" />
         <argument
             android:name="positiveButtonRes"
             android:defaultValue="0"
