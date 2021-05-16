@@ -84,11 +84,11 @@
             android:defaultValue="0"
             app:argType="reference" />
         <!-- integer can't be null :(
+        -2147483648 is Int.MIN_VALUE and will be consider as null -->
         <argument
            android:name="iconColor"
-           android:defaultValue="@null"
-           app:argType="integer"
-           app:nullable="true"/> -->
+           android:defaultValue="-2147483648"
+           app:argType="integer" />
         <argument
             android:name="positiveButtonRes"
             android:defaultValue="0"
@@ -103,11 +103,11 @@
             android:defaultValue="0"
             app:argType="reference" />
         <!-- integer can't be null :(
+        -2147483648 is Int.MIN_VALUE and will be consider as null -->
         <argument
             android:name="positiveButtonColor"
-            android:defaultValue="@null"
-            app:argType="integer"
-            app:nullable="true"/> -->
+            android:defaultValue="-2147483648"
+            app:argType="integer" />
         <argument
             android:name="positiveButtonColorRes"
             android:defaultValue="0"
@@ -135,11 +135,11 @@
             android:defaultValue="0"
             app:argType="reference" />
         <!-- integer can't be null :(
+        -2147483648 is Int.MIN_VALUE and will be consider as null -->
         <argument
            android:name="negativeButtonColor"
-           android:defaultValue="@null"
-           app:argType="integer"
-           app:nullable="true"/> -->
+           android:defaultValue="-2147483648"
+           app:argType="integer"/>
         <argument
             android:name="negativeButtonColorRes"
             android:defaultValue="0"
@@ -163,11 +163,11 @@
             app:argType="string"
             app:nullable="true" />
         <!-- integer can't be null :(
+        -2147483648 is Int.MIN_VALUE and will be consider as null -->
         <argument
            android:name="neutralButtonColor"
-           android:defaultValue="@null"
-           app:argType="integer"
-           app:nullable="true"/> -->
+           android:defaultValue="-2147483648"
+           app:argType="integer"/>
         <argument
             android:name="neutralButtonIconRes"
             android:defaultValue="0"

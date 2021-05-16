@@ -72,9 +72,7 @@ open class AlertDialog :
                                 true
                             )
                         }.resourceId))
-                    }
-                    else
-                    {
+                    } else {
                         getInt(KEY_ICON_RES).let { iconRes ->
                             if (iconRes != 0) setIcon(handleIcon(iconRes))
                             else setIcon(
@@ -288,7 +286,7 @@ open class AlertDialog :
                                         ),
                                         PorterDuff.Mode.SRC_IN
                                     )
-                            else if (args.containsKey(KEY_ICON_COLOR))
+                            else if (args.containsKey(KEY_ICON_COLOR) && args.getInt(KEY_ICON_COLOR) != Int.MIN_VALUE)
                                 colorFilter = PorterDuffColorFilter(
                                     args.getInt(KEY_ICON_COLOR),
                                     PorterDuff.Mode.SRC_IN
@@ -384,7 +382,10 @@ open class AlertDialog :
                         arguments?.getInt(keyButtonColorRes)?.let { color ->
                             if (color != 0)
                                 button.setTextColor(ContextCompat.getColor(requireContext(), color))
-                            else if (arguments?.containsKey(keyButtonColor) == true)
+                            else if (arguments?.containsKey(keyButtonColor) == true && arguments?.getInt(
+                                    keyButtonColor
+                                ) != Int.MIN_VALUE
+                            )
                                 button.setTextColor(
                                     arguments?.getInt(keyButtonColor) ?: 0
                                 )
