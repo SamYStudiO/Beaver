@@ -65,13 +65,17 @@ open class AlertDialog :
                 }
                 getInt(KEY_ICON_ATTRIBUTE).let { iconAttribute ->
                     if (iconAttribute != 0) {
-                        setIcon(handleIcon(TypedValue().apply {
-                            requireContext().theme.resolveAttribute(
-                                iconAttribute,
-                                this,
-                                true
+                        setIcon(
+                            handleIcon(
+                                TypedValue().apply {
+                                    requireContext().theme.resolveAttribute(
+                                        iconAttribute,
+                                        this,
+                                        true
+                                    )
+                                }.resourceId
                             )
-                        }.resourceId))
+                        )
                     } else {
                         getInt(KEY_ICON_RES).let { iconRes ->
                             if (iconRes != 0) setIcon(handleIcon(iconRes))
