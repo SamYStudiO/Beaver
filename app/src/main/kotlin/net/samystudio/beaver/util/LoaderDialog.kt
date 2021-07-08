@@ -1,6 +1,8 @@
 package net.samystudio.beaver.util
 
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 import net.samystudio.beaver.ui.common.dialog.LoaderDialog
 
 fun Fragment.showLoaderDialog() {
@@ -14,6 +16,13 @@ fun Fragment.showLoaderDialog() {
             LoaderDialog().apply {
                 show(it, LoaderDialog::class.simpleName)
             }
+    }
+    viewLifecycleOwnerLiveData.observe(this) {
+        it.lifecycle.addObserver(object : DefaultLifecycleObserver {
+            override fun onDestroy(owner: LifecycleOwner) {
+                hideLoaderDialog()
+            }
+        })
     }
 }
 
