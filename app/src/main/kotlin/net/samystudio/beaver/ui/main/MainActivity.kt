@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         */
         LaunchDialog().also {
             if (supportFragmentManager.findFragmentByTag(LoaderDialog::class.simpleName) == null)
-                it.show(supportFragmentManager, LoaderDialog::class.simpleName)
+                it.showNow(supportFragmentManager, LoaderDialog::class.simpleName)
         }
 
         viewModel.userStatusLiveData.observe(
