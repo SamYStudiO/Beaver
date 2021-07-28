@@ -376,9 +376,9 @@ open class AlertDialog :
         }
 
         (dialog as? AndroidAlertDialog)?.getButton(whichButton)?.let { button ->
-            arguments?.getInt(keyButtonColorStateListRes)?.let {
-                if (it != 0) {
-                    ContextCompat.getColorStateList(requireContext(), it)
+            arguments?.getInt(keyButtonColorStateListRes)?.let { colorStateListRes ->
+                if (colorStateListRes != 0) {
+                    ContextCompat.getColorStateList(requireContext(), colorStateListRes)
                         .let { colorStateList -> button.setTextColor(colorStateList) }
                 } else {
                     arguments?.getParcelable<ColorStateList>(keyButtonColorStateList)
@@ -386,13 +386,12 @@ open class AlertDialog :
                         arguments?.getInt(keyButtonColorRes)?.let { color ->
                             if (color != 0)
                                 button.setTextColor(ContextCompat.getColor(requireContext(), color))
-                            else if (arguments?.containsKey(keyButtonColor) == true && arguments?.getInt(
-                                    keyButtonColor
-                                ) != Int.MIN_VALUE
-                            )
-                                button.setTextColor(
-                                    arguments?.getInt(keyButtonColor) ?: 0
-                                )
+                            else if (arguments?.containsKey(keyButtonColor) == true) {
+                                arguments?.getInt(keyButtonColor)?.let {
+                                    if (it != Int.MIN_VALUE)
+                                        button.setTextColor(it)
+                                }
+                            }
                         }
                     }
                 }
