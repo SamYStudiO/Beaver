@@ -136,19 +136,21 @@ open class AlertDialog :
                             setItems(items, this@AlertDialog)
                         }
                 }
-                getInt(KEY_MULTI_CHOICE_ITEMS_RES).let {
+                getInt(KEY_MULTI_CHOICE_ITEMS_RES).let { multiChoiceItemRes ->
                     val indices = mutableSetOf<Int>()
-                    getBooleanArray(KEY_MULTI_CHOICE_CHECKED_ITEMS).apply {
-                        this?.mapIndexed { index, b -> index to b }
-                            ?.filter { pair -> pair.second }
-                            ?.map { pair -> pair.first }
-                            ?.forEach { index -> indices.add(index) }
+                    val multiChoiceCheckedItems = getStringArray(KEY_MULTI_CHOICE_CHECKED_ITEMS)?.map { it.toBoolean() }
+                        ?.toBooleanArray()
+                    multiChoiceCheckedItems?.apply {
+                        mapIndexed { index, b -> index to b }
+                            .filter { pair -> pair.second }
+                            .map { pair -> pair.first }
+                            .forEach { index -> indices.add(index) }
                     }
-                    if (it != 0) {
+                    if (multiChoiceItemRes != 0) {
                         selectedIndices = indices
                         setMultiChoiceItems(
-                            it,
-                            getBooleanArray(KEY_MULTI_CHOICE_CHECKED_ITEMS),
+                            multiChoiceItemRes,
+                            multiChoiceCheckedItems,
                             this@AlertDialog
                         )
                     } else
@@ -156,7 +158,7 @@ open class AlertDialog :
                             selectedIndices = indices
                             setMultiChoiceItems(
                                 items,
-                                getBooleanArray(KEY_MULTI_CHOICE_CHECKED_ITEMS),
+                                multiChoiceCheckedItems,
                                 this@AlertDialog
                             )
                         }
@@ -650,7 +652,12 @@ open class AlertDialog :
                 multiChoiceItemsRes
             )
             putCharSequenceArray(KEY_MULTI_CHOICE_ITEMS, multiChoiceItems)
-            putBooleanArray(KEY_MULTI_CHOICE_CHECKED_ITEMS, multiChoiceCheckedItems)
+            // Navigation component can't use null boolean[] so we convert to string[] instead.
+            // https://issuetracker.google.com/issues/174787525
+            putStringArray(
+                KEY_MULTI_CHOICE_CHECKED_ITEMS,
+                multiChoiceCheckedItems?.map { it.toString() }?.toTypedArray()
+            )
             if (singleChoiceItemsRes != 0) putInt(
                 KEY_SINGLE_CHOICE_ITEMS_RES,
                 singleChoiceItemsRes

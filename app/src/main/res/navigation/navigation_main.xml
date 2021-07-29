@@ -207,12 +207,12 @@
             android:defaultValue="@null"
             app:argType="string[]"
             app:nullable="true" />
-        <!-- boolean[] can't be null :(
+        <!-- boolean[] can't be null :(, so we use string of booleans -->
         <argument
             android:name="multiChoiceCheckedItems"
             android:defaultValue="@null"
-            app:argType="boolean[]"
-            app:nullable="true" /> -->
+            app:argType="string[]"
+            app:nullable="true" />
         <argument
             android:name="singleChoiceItemsRes"
             android:defaultValue="0"
