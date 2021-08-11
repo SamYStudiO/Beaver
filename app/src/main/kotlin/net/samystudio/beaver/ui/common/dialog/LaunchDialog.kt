@@ -54,10 +54,10 @@ class LaunchDialog : AppCompatDialogFragment(), OnApplyWindowInsetsListener {
         ViewCompat.setOnApplyWindowInsetsListener(view, this)
         binding.launchVersion.text = BuildConfig.FULL_VERSION_NAME
 
-        setDialogPositiveClickListener { _ ->
+        setDialogPositiveClickListener {
             viewModel.retry()
         }
-        setDialogNegativeClickListener { _ ->
+        setDialogNegativeClickListener {
             activity?.finish()
         }
     }
