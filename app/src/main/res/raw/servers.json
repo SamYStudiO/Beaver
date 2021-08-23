@@ -1,12 +1,12 @@
 [
   {
     "title": "Production",
-    "url": "https://samystudio.github.io/Beaver/api/",
+    "url": "https://github.com/SamYStudiO/Beaver/blob/master/api/",
     "defaultForBuildType": "release"
   },
   {
     "title": "Test",
-    "url": "https://samystudio.github.io/Beaver/api/",
+    "url": "https://github.com/SamYStudiO/Beaver/blob/master/api/",
     "defaultForBuildType": "debug"
   }
 ]
