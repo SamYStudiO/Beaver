@@ -5,7 +5,7 @@ object Versions {
     const val buildToolsVersion = "30.0.3"
 
     // tools
-    const val android_build_tools = "7.0.1"
+    const val android_build_tools = "7.0.2"
     const val google_services = "4.3.10"
     const val strict_version_matcher_plugin = "1.2.2"
     const val firebase_crashlytics_plugin = "2.7.1"
@@ -16,7 +16,7 @@ object Versions {
     const val ktlint = "0.40.0"
 
     // kotlin
-    const val kotlin = "1.5.21"
+    const val kotlin = "1.5.30"
 
     // android
     const val core = "1.6.0"
@@ -42,7 +42,7 @@ object Versions {
     const val hilt_androidx = "1.0.0"
 
     // reactive
-    const val rxjava3 = "3.1.0"
+    const val rxjava3 = "3.1.1"
     const val rxandroid = "3.0.0"
     const val rxkotlin = "3.0.1"
     const val rxbinding4 = "4.0.0"
@@ -66,5 +66,5 @@ object Versions {
     const val test_junit = "1.1.3"
     const val espresso = "3.4.0"
     const val robolectric = "4.6.1"
-    const val mockito = "3.12.1"
+    const val mockito = "3.12.4"
 }
