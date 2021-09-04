@@ -5,6 +5,7 @@ import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ViewModelScoped
+import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import net.samystudio.beaver.data.AsyncState
@@ -21,7 +22,7 @@ class GoogleApiAvailabilityManager @Inject constructor(
      * Async observable to make sure everything is fine with Google apis otherwise we should notify
      * user app is incompatible.
      */
-    val availabilityObservable: Observable<AsyncState> = Single.create<Boolean> { emitter ->
+    val availabilityObservable: Flowable<AsyncState> = Single.create<Boolean> { emitter ->
         val status: Int =
             googleApiAvailability.isGooglePlayServicesAvailable(context)
         if (status == ConnectionResult.SUCCESS)
