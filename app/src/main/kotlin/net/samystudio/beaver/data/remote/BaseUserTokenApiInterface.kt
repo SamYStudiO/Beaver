@@ -18,7 +18,7 @@ import java.net.HttpURLConnection
  * when user token is expired.
  */
 abstract class BaseUserTokenApiInterface(protected val userManager: Lazy<UserManager>) {
-    fun <T> onTokenInvalidSingleTransformer(): SingleTransformer<T, T> =
+    fun <T : Any> onTokenInvalidSingleTransformer(): SingleTransformer<T, T> =
         SingleTransformer { upstream ->
             upstream.retryWhen(onTokenInvalidTransformer())
         }

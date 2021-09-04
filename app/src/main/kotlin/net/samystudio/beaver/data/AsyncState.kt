@@ -3,10 +3,7 @@
 package net.samystudio.beaver.data
 
 import androidx.fragment.app.Fragment
-import io.reactivex.rxjava3.core.Completable
-import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.core.ObservableTransformer
-import io.reactivex.rxjava3.core.Single
+import io.reactivex.rxjava3.core.*
 import net.samystudio.beaver.util.hideLoaderDialog
 import net.samystudio.beaver.util.showLoaderDialog
 
@@ -19,17 +16,20 @@ sealed class AsyncState {
     class Failed(val error: Throwable) : AsyncState()
 }
 
-fun Completable.toAsyncState(): Observable<AsyncState> =
-    toSingleDefault(AsyncState.Completed as AsyncState).toObservable().toAsyncState()
+fun Completable.toAsyncState(): Flowable<AsyncState> =
+    toSingleDefault(AsyncState.Completed as AsyncState).toFlowable().toAsyncState()
 
-fun Single<*>.toAsyncState(): Observable<AsyncState> =
-    toObservable().toAsyncState()
+fun Single<*>.toAsyncState(): Flowable<AsyncState> =
+    toFlowable().toAsyncState()
 
-fun Observable<*>.toAsyncState(): Observable<AsyncState> =
+fun Observable<*>.toAsyncState(): Flowable<AsyncState> =
+    toFlowable(BackpressureStrategy.LATEST).toAsyncState()
+
+fun Flowable<*>.toAsyncState(): Flowable<AsyncState> =
     compose(asyncStateTransformer())
 
-private fun asyncStateTransformer(): ObservableTransformer<Any, AsyncState> =
-    ObservableTransformer { upstream ->
+private fun asyncStateTransformer(): FlowableTransformer<Any, AsyncState> =
+    FlowableTransformer { upstream ->
         upstream
             .map {
                 @Suppress("USELESS_CAST")

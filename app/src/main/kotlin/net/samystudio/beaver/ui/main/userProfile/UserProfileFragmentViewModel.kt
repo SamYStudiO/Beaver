@@ -2,7 +2,6 @@ package net.samystudio.beaver.ui.main.userProfile
 
 import androidx.lifecycle.toLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.reactivex.rxjava3.core.BackpressureStrategy
 import net.samystudio.beaver.data.manager.UserManager
 import net.samystudio.beaver.data.toResultAsyncState
 import net.samystudio.beaver.ui.base.viewmodel.BaseDisposablesViewModel
@@ -15,7 +14,6 @@ class UserProfileFragmentViewModel @Inject constructor(
     val userLiveData =
         userManager.getUser()
             .toResultAsyncState()
-            .toFlowable(BackpressureStrategy.LATEST)
             .toLiveData()
 
     fun disconnect() {

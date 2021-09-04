@@ -15,6 +15,5 @@ class HomeFragmentViewModel @Inject constructor(
     val homeLiveData =
         homeApiInterfaceImpl.home()
             .toResultAsyncState()
-            .toFlowable(BackpressureStrategy.LATEST)
             .toLiveData()
 }
