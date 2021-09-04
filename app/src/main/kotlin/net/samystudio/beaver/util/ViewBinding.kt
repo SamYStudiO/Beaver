@@ -1,5 +1,7 @@
 package net.samystudio.beaver.util
 
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -26,8 +28,8 @@ fun <T : ViewBinding> Fragment.viewBinding(viewBindingFactory: (View) -> T) =
     FragmentViewBindingDelegate(this, viewBindingFactory)
 
 class FragmentViewBindingDelegate<T : ViewBinding>(
-    private val fragment: Fragment,
-    private val viewBindingFactory: (View) -> T
+    val fragment: Fragment,
+    val viewBindingFactory: (View) -> T
 ) : ReadOnlyProperty<Fragment, T> {
     private var binding: T? = null
 
@@ -37,7 +39,9 @@ class FragmentViewBindingDelegate<T : ViewBinding>(
                 fragment.viewLifecycleOwnerLiveData.observe(fragment) {
                     it.lifecycle.addObserver(object : DefaultLifecycleObserver {
                         override fun onDestroy(owner: LifecycleOwner) {
-                            binding = null
+                            Handler(Looper.getMainLooper()).post {
+                                binding = null
+                            }
                         }
                     })
                 }
@@ -49,16 +53,8 @@ class FragmentViewBindingDelegate<T : ViewBinding>(
         binding ?: run {
             val lifecycle = fragment.viewLifecycleOwner.lifecycle
             if (!lifecycle.currentState.isAtLeast(Lifecycle.State.INITIALIZED)) {
-                throw IllegalStateException("Fragment should be initialized before getting binding")
+                throw IllegalStateException("should never call Fragment binding when view is destroyed")
             }
-
-            if (thisRef is DialogFragment && thisRef.view == null)
-                thisRef.dialog?.window?.decorView?.let { view ->
-                    viewBindingFactory(view).also {
-                        this.binding = it
-                    }
-                } ?: throw IllegalStateException("Dialog should have a valid decorView for binding")
-            else
-                viewBindingFactory(thisRef.requireView()).also { this.binding = it }
+            viewBindingFactory(thisRef.requireView()).also { this.binding = it }
         }
 }
