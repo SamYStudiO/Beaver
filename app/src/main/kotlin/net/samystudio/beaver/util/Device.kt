@@ -8,6 +8,8 @@ import android.os.Build
 import net.samystudio.beaver.ContextProvider
 import java.util.*
 
+const val device = "android"
+val deviceModel = Build.BRAND + "|" + Build.MODEL + "|" + Build.VERSION.RELEASE
 val deviceLocale: Locale
     get() = Locale.getDefault()
 val deviceLocaleLanguage: String

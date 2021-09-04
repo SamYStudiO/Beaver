@@ -14,7 +14,7 @@ fun Fragment.showLoaderDialog() {
     activity?.supportFragmentManager?.let {
         if (it.findFragmentByTag(LoaderDialog::class.simpleName) == null)
             LoaderDialog().apply {
-                show(it, LoaderDialog::class.simpleName)
+                showNow(it, LoaderDialog::class.simpleName)
             }
     }
     viewLifecycleOwnerLiveData.observe(this) {
