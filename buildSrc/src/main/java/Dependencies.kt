@@ -6,6 +6,7 @@ object Dependencies {
 
     // android
     const val core_ktx = "androidx.core:core-ktx:${Versions.core}"
+    const val core_splashscreen = "androidx.core:core-splashscreen:${Versions.core_splashscreen}"
     const val activity = "androidx.activity:activity-ktx:${Versions.activity}"
     const val fragment = "androidx.fragment:fragment-ktx:${Versions.fragment}"
     const val appcompat = "androidx.appcompat:appcompat:${Versions.appcompat}"
@@ -120,6 +121,7 @@ object Dependencies {
 fun DependencyHandler.base() {
     implementation(Dependencies.kotlin)
     implementation(Dependencies.core_ktx)
+    implementation(Dependencies.core_splashscreen)
     implementation(Dependencies.activity)
     implementation(Dependencies.fragment)
     implementation(Dependencies.appcompat)

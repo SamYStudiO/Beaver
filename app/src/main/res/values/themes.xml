@@ -2,12 +2,12 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="Base.Theme.MyApp" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name="android:forceDarkAllowed" tools:targetApi="29">true</item>
+        <item name="android:forceDarkAllowed" tools:targetApi="Q">true</item>
 
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
-        <item name="android:enforceStatusBarContrast" tools:targetApi="29">false</item>
-        <item name="android:enforceNavigationBarContrast" tools:targetApi="29">false</item>
+        <item name="android:enforceStatusBarContrast" tools:targetApi="Q">false</item>
+        <item name="android:enforceNavigationBarContrast" tools:targetApi="Q">false</item>
 
         <item name="android:windowBackground">@color/md_white</item>
         <item name="android:colorBackground">@color/md_white</item>
@@ -56,28 +56,12 @@
         <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.MyApp.LargeComponent
         </item>
 
-        <!-- Splashscreen for 26+ -->
-        <item name="android:windowSplashscreenContent" tools:targetApi="o">@drawable/bg_launch
-        </item>
-
         <item name="materialAlertDialogTheme">@style/ThemeOverlay.MyApp.MaterialAlertDialog</item>
     </style>
 
     <style name="Theme.MyApp" parent="Base.Theme.MyApp" />
 
-    <!-- Splashscreen for pre 26 -->
-    <style name="Theme.MyApp.Launcher">
-        <item name="android:windowBackground">@drawable/bg_launch</item>
-    </style>
-
     <style name="Theme.MyApp.Dialog" />
-
-    <!-- Theme for temporary fullscreen dialog showing when MainActivity cold starts up to make some
-  extra initializations -->
-    <style name="Theme.MyApp.Dialog.Launcher">
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:colorBackground">?attr/colorPrimary</item>
-    </style>
 
     <style name="Theme.MyApp.Dialog.Loader">
         <item name="android:windowBackground">@android:color/transparent</item>

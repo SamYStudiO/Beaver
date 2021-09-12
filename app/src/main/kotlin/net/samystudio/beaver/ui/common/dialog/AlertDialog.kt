@@ -38,7 +38,7 @@ open class AlertDialog :
     protected val extras
         get() = arguments?.getBundle(KEY_EXTRAS) ?: bundleOf()
     protected val requestCode
-        get() = arguments?.getInt(KEY_REQUEST_CODE) ?: 0
+        get() = arguments?.getInt(KEY_REQUEST_CODE)?.let { if (it == 0) "" else it.toString() } ?: ""
 
     /**
      * Store current selected index for single choice dialogs.

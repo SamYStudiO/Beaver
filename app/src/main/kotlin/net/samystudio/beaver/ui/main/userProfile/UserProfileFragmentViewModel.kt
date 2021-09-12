@@ -1,6 +1,5 @@
 package net.samystudio.beaver.ui.main.userProfile
 
-import androidx.lifecycle.toLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import net.samystudio.beaver.data.manager.UserManager
 import net.samystudio.beaver.data.toResultAsyncState
