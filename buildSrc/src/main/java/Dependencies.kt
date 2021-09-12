@@ -65,7 +65,8 @@ object Dependencies {
     // misc
     const val permissionsdispatcher_ktx =
         "com.github.permissions-dispatcher:ktx:${Versions.permissionsdispatcher}"
-    const val flow_binding=
+    const val insetter = "dev.chrisbanes.insetter:insetter:${Versions.insetter}"
+    const val flow_binding =
         "io.github.reactivecircus.flowbinding:flowbinding-android:${Versions.flow_binding}"
 
     // debug

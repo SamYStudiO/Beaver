@@ -6,7 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import net.samystudio.beaver.data.manager.PreferencesManager
 import net.samystudio.beaver.data.manager.UserManager
-import net.samystudio.beaver.ui.viewmodel.TriggerInStateFlow
+import net.samystudio.beaver.ui.common.viewmodel.TriggerInStateFlow
 import javax.inject.Inject
 
 @HiltViewModel

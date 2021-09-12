@@ -51,6 +51,7 @@ object Versions {
 
     // misc
     const val permissionsdispatcher = "1.1.2"
+    const val insetter = "0.6.0"
     const val flow_binding = "1.2.0"
 
     // debug

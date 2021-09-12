@@ -4,18 +4,14 @@ package net.samystudio.beaver.ui.main.authenticator
 
 import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
-import androidx.core.view.OnApplyWindowInsetsListener
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.transition.MaterialSharedAxis
 import dagger.hilt.android.AndroidEntryPoint
+import dev.chrisbanes.insetter.applyInsetter
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
 import net.samystudio.beaver.R
@@ -26,9 +22,7 @@ import reactivecircus.flowbinding.android.widget.textChanges
 
 @FlowPreview
 @AndroidEntryPoint
-class AuthenticatorFragment :
-    Fragment(R.layout.fragment_authenticator),
-    OnApplyWindowInsetsListener {
+class AuthenticatorFragment : Fragment(R.layout.fragment_authenticator) {
     private val binding by viewBinding { FragmentAuthenticatorBinding.bind(it) }
     private val viewModel by viewModels<AuthenticatorFragmentViewModel>()
 
@@ -37,9 +31,6 @@ class AuthenticatorFragment :
 
         enterTransition =
             MaterialSharedAxis(MaterialSharedAxis.Y, true).apply { duration = TRANSITION_DURATION }
-        ViewCompat.setOnApplyWindowInsetsListener(view, this)
-        toggleLightSystemBars(true)
-        hideLoaderDialog()
 
         requireActivity().onBackPressedDispatcher.addCallback(
             viewLifecycleOwner,
@@ -49,6 +40,12 @@ class AuthenticatorFragment :
                 }
             }
         )
+
+        binding.signInEmailLayout.applyInsetter {
+            type(statusBars = true) {
+                margin(top = true)
+            }
+        }
 
         binding.signIn.setOnClickListener {
             viewModel.signIn(
@@ -137,14 +134,8 @@ class AuthenticatorFragment :
         }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
-    override fun onApplyWindowInsets(v: View, insets: WindowInsetsCompat): WindowInsetsCompat {
-        val stableSystemBarsInsets =
-            insets.getInsetsIgnoringVisibility(WindowInsetsCompat.Type.systemBars())
-
-        binding.signInEmailLayout.updateLayoutParams<ViewGroup.MarginLayoutParams> {
-            topMargin = stableSystemBarsInsets.top
-        }
-
-        return insets
+    override fun onResume() {
+        super.onResume()
+        toggleLightSystemBars(true)
     }
 }

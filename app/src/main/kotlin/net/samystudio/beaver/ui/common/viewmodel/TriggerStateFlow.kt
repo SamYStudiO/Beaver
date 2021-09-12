@@ -1,4 +1,4 @@
-package net.samystudio.beaver.ui.viewmodel
+package net.samystudio.beaver.ui.common.viewmodel
 
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect

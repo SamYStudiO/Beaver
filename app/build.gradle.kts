@@ -119,6 +119,7 @@ dependencies {
     androidTest()
 
     implementation(Dependencies.permissionsdispatcher_ktx)
+    implementation(Dependencies.insetter)
     implementation(Dependencies.flow_binding)
 }
 

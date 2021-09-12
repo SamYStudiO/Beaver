@@ -2,8 +2,6 @@ package net.samystudio.beaver.ui.main.home
 
 import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup
-import androidx.core.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -11,13 +9,14 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.transition.MaterialFadeThrough
 import dagger.hilt.android.AndroidEntryPoint
+import dev.chrisbanes.insetter.applyInsetter
 import net.samystudio.beaver.R
 import net.samystudio.beaver.data.handleStatesFromFragmentWithLoaderDialog
 import net.samystudio.beaver.databinding.FragmentHomeBinding
 import net.samystudio.beaver.util.*
 
 @AndroidEntryPoint
-class HomeFragment : Fragment(R.layout.fragment_home), OnApplyWindowInsetsListener {
+class HomeFragment : Fragment(R.layout.fragment_home) {
     private val binding by viewBinding { FragmentHomeBinding.bind(it) }
     private val viewModel by viewModels<HomeFragmentViewModel>()
 
@@ -27,10 +26,17 @@ class HomeFragment : Fragment(R.layout.fragment_home), OnApplyWindowInsetsListen
         exitTransition = MaterialFadeThrough().apply {
             duration = TRANSITION_DURATION
         }
-        ViewCompat.setOnApplyWindowInsetsListener(view, this)
-        toggleLightStatusBars(false)
-        toggleLightNavigationBars(true)
-        hideLoaderDialog()
+
+        binding.toolbar.applyInsetter {
+            type(statusBars = true) {
+                padding(top = true)
+            }
+        }
+        binding.profileButton.applyInsetter {
+            type(navigationBars = true) {
+                margin(bottom = true)
+            }
+        }
 
         binding.toolbar.title = "Home"
         binding.profileButton.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_home_to_userProfile))
@@ -46,15 +52,8 @@ class HomeFragment : Fragment(R.layout.fragment_home), OnApplyWindowInsetsListen
         }
     }
 
-    override fun onApplyWindowInsets(v: View, insets: WindowInsetsCompat): WindowInsetsCompat {
-        val stableSystemBarsInsets =
-            insets.getInsetsIgnoringVisibility(WindowInsetsCompat.Type.systemBars())
-
-        binding.toolbar.updatePadding(top = stableSystemBarsInsets.top)
-        binding.profileButton.updateLayoutParams<ViewGroup.MarginLayoutParams> {
-            bottomMargin =
-                stableSystemBarsInsets.bottom + resources.getDimensionPixelSize(R.dimen.screen_padding)
-        }
-        return insets
+    override fun onResume() {
+        super.onResume()
+        toggleLightSystemBars(lightStatus = false, lightNavigation = true)
     }
 }
