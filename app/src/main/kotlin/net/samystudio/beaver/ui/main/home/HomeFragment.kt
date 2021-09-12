@@ -45,7 +45,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             { state ->
                 state.handleStatesFromFragmentWithLoaderDialog(
                     this,
-                    failed = { findNavController().navigate(HomeFragmentDirections.actionGlobalGenericErrorDialog()) },
                     complete = { binding.textView.text = it.content },
                 )
             }

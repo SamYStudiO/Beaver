@@ -5,6 +5,7 @@ package net.samystudio.beaver.data
 import androidx.fragment.app.Fragment
 import io.reactivex.rxjava3.core.*
 import net.samystudio.beaver.util.hideLoaderDialog
+import net.samystudio.beaver.util.showErrorDialog
 import net.samystudio.beaver.util.showLoaderDialog
 
 /**
@@ -54,7 +55,7 @@ fun AsyncState.handleStates(
 fun AsyncState.handleStatesFromFragmentWithLoaderDialog(
     fragment: Fragment,
     started: () -> Unit = { },
-    failed: (throwable: Throwable) -> Unit = { },
+    failed: (throwable: Throwable) -> Unit = { fragment.showErrorDialog(throwable = it) },
     complete: () -> Unit = { },
 ) {
     when (this) {

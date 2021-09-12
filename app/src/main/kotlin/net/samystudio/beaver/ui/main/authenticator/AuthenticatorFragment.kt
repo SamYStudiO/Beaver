@@ -138,7 +138,6 @@ class AuthenticatorFragment : Fragment(R.layout.fragment_authenticator) {
             {
                 it.handleStatesFromFragmentWithLoaderDialog(
                     this,
-                    failed = { findNavController().navigate(AuthenticatorFragmentDirections.actionGlobalGenericErrorDialog()) },
                     complete = { findNavController().popBackStack() },
                 )
             }

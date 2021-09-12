@@ -50,7 +50,6 @@ class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
                     this,
                     failed = {
                         findNavController().popBackStack()
-                        findNavController().navigate(UserProfileFragmentDirections.actionGlobalGenericErrorDialog())
                     },
                     complete = {
                         binding.textView.text = it.toString()

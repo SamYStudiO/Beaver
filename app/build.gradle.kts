@@ -59,7 +59,7 @@ android {
             gradleLocalProperties(rootDir).let {
                 keyAlias = it.getProperty("keyAlias")
                 keyPassword = it.getProperty("keyPassword")
-                storeFile = file(it.getProperty("storeFile"))
+                storeFile = file(it.getProperty("storeFile") ?: "/")
                 storePassword = it.getProperty("storePassword")
             }
         }
