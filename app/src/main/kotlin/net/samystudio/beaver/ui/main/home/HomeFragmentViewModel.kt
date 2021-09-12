@@ -1,19 +1,22 @@
 package net.samystudio.beaver.ui.main.home
 
-import androidx.lifecycle.toLiveData
+import androidx.lifecycle.LiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.reactivex.rxjava3.core.BackpressureStrategy
+import net.samystudio.beaver.data.ResultAsyncState
+import net.samystudio.beaver.data.model.Home
 import net.samystudio.beaver.data.remote.HomeApiInterfaceImpl
 import net.samystudio.beaver.data.toResultAsyncState
 import net.samystudio.beaver.ui.base.viewmodel.BaseDisposablesViewModel
+import net.samystudio.beaver.ui.common.viewmodel.toTriggerLiveData
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeFragmentViewModel @Inject constructor(
     homeApiInterfaceImpl: HomeApiInterfaceImpl
 ) : BaseDisposablesViewModel() {
-    val homeLiveData =
+    private val _homeLiveData =
         homeApiInterfaceImpl.home()
             .toResultAsyncState()
-            .toLiveData()
+            .toTriggerLiveData()
+    val homeLiveData: LiveData<ResultAsyncState<Home>> = _homeLiveData
 }

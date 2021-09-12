@@ -1,29 +1,29 @@
 package net.samystudio.beaver.ui.main.authenticator
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.toLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.reactivex.processors.PublishProcessor
 import net.samystudio.beaver.data.AsyncState
 import net.samystudio.beaver.data.manager.UserManager
 import net.samystudio.beaver.data.toAsyncState
 import net.samystudio.beaver.ui.base.viewmodel.BaseDisposablesViewModel
+import net.samystudio.beaver.ui.common.viewmodel.TriggerDataLiveData
+import net.samystudio.beaver.ui.common.viewmodel.toSingleLiveEvent
 import javax.inject.Inject
 
 @HiltViewModel
 class AuthenticatorFragmentViewModel @Inject constructor(
     private val userManager: UserManager
 ) : BaseDisposablesViewModel() {
-    private val _signProcessor = PublishProcessor.create<Pair<String, String>>()
-    val signLiveData: LiveData<AsyncState> = _signProcessor.flatMap {
+    private val _signLiveData = TriggerDataLiveData<Pair<String, String>, AsyncState>() {
         userManager.signIn(it.first, it.second).toAsyncState()
-    }.toLiveData()
+    }
+    val signLiveData: LiveData<AsyncState> = _signLiveData.toSingleLiveEvent()
 
     fun signIn(email: String, password: String) {
-        _signProcessor.onNext(email to password)
+        _signLiveData.trigger(email to password)
     }
 
     fun signUp(email: String, password: String) {
-        _signProcessor.onNext(email to password)
+        _signLiveData.trigger(email to password)
     }
 }
