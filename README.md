@@ -1,5 +1,7 @@
 # Beaver
 
+#### THIS IS THE REACTIVE (RXJAVA) VERSION, FOR COROUTINES VERSION GO TO [COROUTINES BRANCH](https://github.com/SamYStudiO/Beaver/tree/coroutines)
+
 Android Project template using View Model [MVVM](https://developer.android.com/topic/libraries/architecture/index.html) and Repository Data pattern, with [Dagger 2 / Hilt](https://github.com/google/dagger) and [Jetpack (Androidx)](https://developer.android.com/jetpack/) libraries (navigation component, room, worker, etc...).
 
 Template includes basic implementation for a launch screen, a home screen, an authentication screen and a profile screen.
