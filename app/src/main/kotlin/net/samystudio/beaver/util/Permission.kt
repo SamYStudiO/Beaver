@@ -21,4 +21,3 @@ fun Fragment.hasPermission(permission: String) = ContextCompat.checkSelfPermissi
     requireContext(),
     permission
 ) == PackageManager.PERMISSION_GRANTED
-

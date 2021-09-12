@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.core.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.transition.MaterialFadeThrough
@@ -35,16 +35,15 @@ class HomeFragment : Fragment(R.layout.fragment_home), OnApplyWindowInsetsListen
         binding.toolbar.title = "Home"
         binding.profileButton.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_home_to_userProfile))
 
-        viewModel.homeLiveData.observe(
-            viewLifecycleOwner,
-            { state ->
+        viewLifecycleOwner.lifecycleScope.launchWhenResumed {
+            viewModel.homeState.collect { state ->
                 state.handleStatesFromFragmentWithLoaderDialog(
-                    this,
+                    this@HomeFragment,
                     failed = { findNavController().navigate(HomeFragmentDirections.actionGlobalGenericErrorDialog()) },
                     complete = { binding.textView.text = it.content },
                 )
             }
-        )
+        }
     }
 
     override fun onApplyWindowInsets(v: View, insets: WindowInsetsCompat): WindowInsetsCompat {

@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+option java_package = "net.samystudio.beaver.data.model";
+option java_multiple_files = true;
+
+message Preferences {
+  Account account = 1;
+  Server server = 2;
+}
+
+message Account {
+  string account_name = 1;
+  Token account_token = 2;
+}
+
+message Token{
+  string tokenType = 1;
+  int64 expireIn = 2;
+  string accessToken = 3;
+  string refreshToken = 4;
+}
+
+message Server {
+  string title = 1;
+  string url = 2;
+  string defaultForBuildType = 3;
+}

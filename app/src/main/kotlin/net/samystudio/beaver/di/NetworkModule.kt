@@ -8,8 +8,11 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import io.reactivex.rxjava3.schedulers.Schedulers
+import kotlinx.coroutines.flow.last
+import kotlinx.coroutines.flow.lastOrNull
+import kotlinx.coroutines.runBlocking
 import net.samystudio.beaver.BuildConfig
-import net.samystudio.beaver.data.local.SharedPreferencesHelper
+import net.samystudio.beaver.data.manager.PreferencesManager
 import net.samystudio.beaver.data.remote.retrofit.RxErrorHandlingCallAdapterFactory
 import okhttp3.Cache
 import okhttp3.HttpUrl.Companion.toHttpUrl
@@ -59,7 +62,7 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideRequestInterceptor(
-        sharedPreferencesHelper: SharedPreferencesHelper,
+        preferencesManager: PreferencesManager
     ): Interceptor =
         Interceptor { chain ->
             // Request interceptor to update root url and add user token if exist.
@@ -68,18 +71,20 @@ object NetworkModule {
 
             // Rewriting url is not necessary when using a unique production server url, but in most
             // case we'll use multiple server urls  (test/prod/...) and this is the way to go if we
-            // want to update Retrofit base url at runtime.
+            // want to update Retrofit  baseurl at runtime.
             val newBuilder = request.newBuilder()
-
+            val server = runBlocking { preferencesManager.server().last() }.url
             // Let's set selected server url.
-            newBuilder.url(url.replace(BASE_URL, sharedPreferencesHelper.server.url).toHttpUrl())
+            newBuilder.url(url.replace(BASE_URL, server).toHttpUrl())
 
             // Let's add token if we got one.
-            sharedPreferencesHelper.accountToken?.let {
-                newBuilder.header(
-                    "Authorization",
-                    "${it.tokenType} ${it.accessToken}"
-                )
+            runBlocking {
+                preferencesManager.accountToken(true).lastOrNull()?.let {
+                    newBuilder.header(
+                        "Authorization",
+                        "${it.tokenType} ${it.accessToken}"
+                    )
+                }
             }
 
             chain.proceed(newBuilder.build())

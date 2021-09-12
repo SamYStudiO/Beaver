@@ -12,6 +12,7 @@ object Versions {
     const val firebase_perf_plugin = "1.4.0"
     const val navigation_safe_args_plugin = "2.3.5"
     const val gradle_versions_plugin = "0.39.0"
+    const val protobuf_plugin = "0.8.17"
     const val spotless = "5.14.3"
     const val ktlint = "0.40.0"
 
@@ -29,6 +30,8 @@ object Versions {
     const val lifecycle = "2.3.1"
     const val navigation = "2.3.5"
     const val room = "2.3.0"
+    const val datastore = "1.0.0"
+    const val protobuf = "3.17.3"
     const val material = "1.4.0"
 
     // firebase
@@ -41,13 +44,6 @@ object Versions {
     const val hilt = "2.38.1"
     const val hilt_androidx = "1.0.0"
 
-    // reactive
-    const val rxjava3 = "3.1.1"
-    const val rxandroid = "3.0.0"
-    const val rxkotlin = "3.0.1"
-    const val rxbinding4 = "4.0.0"
-    const val rx_preferences = "2.0.1"
-
     // network
     const val okhttp3 = "4.9.1"
     const val retrofit2 = "2.9.0"
@@ -55,6 +51,7 @@ object Versions {
 
     // misc
     const val permissionsdispatcher = "1.1.2"
+    const val flow_binding = "1.2.0"
 
     // debug
     const val timber = "5.0.1"

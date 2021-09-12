@@ -2,106 +2,72 @@
 
 package net.samystudio.beaver.data.manager
 
-import android.content.ComponentCallbacks2
-import io.reactivex.rxjava3.core.Completable
-import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.core.Single
-import io.reactivex.rxjava3.schedulers.Schedulers
-import io.reactivex.rxjava3.subjects.BehaviorSubject
-import net.samystudio.beaver.data.TrimMemory
-import net.samystudio.beaver.data.local.SharedPreferencesHelper
-import net.samystudio.beaver.data.local.UserDao
+import android.content.Context
+import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.map
+import net.samystudio.beaver.BuildConfig
+import net.samystudio.beaver.data.model.TOKEN_DEBUG
 import net.samystudio.beaver.data.model.Token
-import net.samystudio.beaver.data.model.User
-import net.samystudio.beaver.data.remote.AuthenticatorApiInterfaceImpl
-import net.samystudio.beaver.data.remote.UserApiInterfaceImpl
+import net.samystudio.beaver.data.remote.AuthenticatorApiInterface
+import net.samystudio.beaver.data.repository.UserRepository
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class UserManager @Inject constructor(
-    private val sharedPreferencesHelper: SharedPreferencesHelper,
-    private val authenticationApiInterfaceImpl: AuthenticatorApiInterfaceImpl,
-    private val userApiInterfaceImpl: UserApiInterfaceImpl,
-    private val userDao: UserDao,
-) : TrimMemory {
-    private val _statusObservable: BehaviorSubject<Boolean> =
-        BehaviorSubject.createDefault(isConnected)
-    val statusObservable: Observable<Boolean> = _statusObservable.distinctUntilChanged()
-    private val _userObservable = BehaviorSubject.create<User>()
-    val userObservable: Observable<User> = _userObservable.distinctUntilChanged()
-    val token
-        get() = sharedPreferencesHelper.accountToken
-    val isConnected
-        get() = token != null
-    private var userCache: User? = null
-
-    override fun onTrimMemory(level: Int) {
-        when (level) {
-            ComponentCallbacks2.TRIM_MEMORY_UI_HIDDEN,
-            ComponentCallbacks2.TRIM_MEMORY_COMPLETE,
-            ComponentCallbacks2.TRIM_MEMORY_RUNNING_CRITICAL,
-            -> clearCache()
-            else -> {
-            }
+    @ApplicationContext
+    private val context: Context,
+    private val authenticationApiInterface: AuthenticatorApiInterface,
+    private val userRepository: UserRepository,
+    private val preferencesManager: PreferencesManager,
+) {
+    @ExperimentalCoroutinesApi
+    @DelicateCoroutinesApi
+    val userFlow = userRepository.userFlow
+    val userConnectedFlow
+        get() = preferencesManager.account().map {
+            it.hasAccountToken()
         }
+
+    suspend fun signIn(email: String, password: String) {
+        if (BuildConfig.DEBUG)
+            writeToken(TOKEN_DEBUG)
+        else
+            writeToken(authenticationApiInterface.signIn(email, password))
     }
 
-    fun signIn(email: String, password: String): Completable =
-        authenticationApiInterfaceImpl.signIn(email, password).doOnSuccess { writeToken(it) }
-            .ignoreElement()
+    suspend fun signUp(email: String, password: String) {
+        if (BuildConfig.DEBUG)
+            writeToken(TOKEN_DEBUG)
+        else
+            writeToken(authenticationApiInterface.signUp(email, password))
+    }
 
-    fun signUp(email: String, password: String): Completable =
-        authenticationApiInterfaceImpl.signUp(email, password).doOnSuccess { writeToken(it) }
-            .ignoreElement()
-
-    fun refreshToken(): Completable =
-        (
-            token?.let { token ->
-                authenticationApiInterfaceImpl.refreshToken(token.refreshToken)
-                    .doOnSuccess { writeToken(it) }
-                    .ignoreElement()
-            } ?: Completable.error(TokenException())
-            )
-            .doOnError {
-                Timber.w(it, "An error occurred refreshing token")
+    suspend fun refreshToken() {
+        if (BuildConfig.DEBUG)
+            writeToken(TOKEN_DEBUG)
+        else
+            try {
+                preferencesManager.accountToken().map {
+                    writeToken(authenticationApiInterface.refreshToken(it.refreshToken))
+                }
+            } catch (e: Throwable) {
+                Timber.w(e, "An error occurred refreshing token")
                 disconnect()
             }
-
-    fun getUserRemote(): Single<User> =
-        userApiInterfaceImpl.getUser().doOnSuccess { writeUser(it) }
-
-    fun getUser(): Single<User> =
-        userCache?.let { user -> Single.just(user) }
-            ?: userDao.getUserByEmail(sharedPreferencesHelper.accountName.get())
-                .subscribeOn(Schedulers.io()).flatMap { users ->
-                    if (users.isNotEmpty()) {
-                        users.first().let {
-                            writeUser(it)
-                            Single.just(it)
-                        }
-                    } else getUserRemote()
-                }
-
-    fun disconnect() {
-        sharedPreferencesHelper.accountToken = null
-        _statusObservable.onNext(false)
     }
 
-    fun clearCache() {
-        userCache = null
+    suspend fun getUser() = userRepository.getUser()
+
+    suspend fun disconnect() {
+        preferencesManager.clearAccountToken()
     }
 
-    private fun writeUser(user: User) {
-        userDao.insertUser(user)
-        sharedPreferencesHelper.accountName.set(user.email)
-        userCache = user
-        _userObservable.onNext(user)
-    }
-
-    private fun writeToken(token: Token) {
-        sharedPreferencesHelper.accountToken = token
+    private suspend fun writeToken(token: Token) {
+        preferencesManager.updateAccountToken(token)
     }
 
     class TokenException : RuntimeException("No valid token available")

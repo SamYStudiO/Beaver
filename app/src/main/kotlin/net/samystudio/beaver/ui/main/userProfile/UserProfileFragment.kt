@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.core.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.transition.MaterialFadeThrough
 import dagger.hilt.android.AndroidEntryPoint
@@ -37,11 +38,10 @@ class UserProfileFragment : Fragment(R.layout.fragment_user_profile), OnApplyWin
             viewModel.disconnect()
         }
 
-        viewModel.userLiveData.observe(
-            viewLifecycleOwner,
-            { state ->
+        viewLifecycleOwner.lifecycleScope.launchWhenResumed {
+            viewModel.userState.collect { state ->
                 state.handleStatesFromFragmentWithLoaderDialog(
-                    this,
+                    this@UserProfileFragment,
                     failed = {
                         findNavController().popBackStack()
                         findNavController().navigate(UserProfileFragmentDirections.actionGlobalGenericErrorDialog())
@@ -52,7 +52,7 @@ class UserProfileFragment : Fragment(R.layout.fragment_user_profile), OnApplyWin
                     },
                 )
             }
-        )
+        }
     }
 
     override fun onApplyWindowInsets(v: View, insets: WindowInsetsCompat): WindowInsetsCompat {

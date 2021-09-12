@@ -4,17 +4,17 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import io.reactivex.rxjava3.core.Single
+import kotlinx.coroutines.flow.Flow
 import net.samystudio.beaver.data.model.User
 
 @Dao
 interface UserDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertUser(user: User)
-
-    @Query("SELECT * FROM User WHERE id = :id")
-    fun getUser(id: Long): Single<List<User>>
+    suspend fun insertUser(user: User)
 
     @Query("SELECT * FROM User WHERE email = :email")
-    fun getUserByEmail(email: String): Single<List<User>>
+    suspend fun getUserByEmail(email: String): User?
+
+    @Query("SELECT * FROM User WHERE email = :email")
+    fun getUserFlowByEmail(email: String): Flow<User>
 }

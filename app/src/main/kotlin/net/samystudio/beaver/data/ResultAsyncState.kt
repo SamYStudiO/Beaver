@@ -3,7 +3,7 @@
 package net.samystudio.beaver.data
 
 import androidx.fragment.app.Fragment
-import io.reactivex.rxjava3.core.*
+import kotlinx.coroutines.flow.MutableStateFlow
 import net.samystudio.beaver.util.hideLoaderDialog
 import net.samystudio.beaver.util.showLoaderDialog
 
@@ -11,38 +11,34 @@ import net.samystudio.beaver.util.showLoaderDialog
  * Async request states, response contains data of type [T].
  */
 sealed class ResultAsyncState<T> {
-    class Started<T> : ResultAsyncState<T>()
-    class Completed<T>(var data: T) : ResultAsyncState<T>()
-    class Failed<T>(val error: Throwable) : ResultAsyncState<T>()
+    open class Idle<T> : ResultAsyncState<T>()
+    open class Started<T> : ResultAsyncState<T>()
+    open class Completed<T>(var data: T) : ResultAsyncState<T>()
+    open class Failed<T>(val error: Throwable) : ResultAsyncState<T>()
 }
 
-fun <T : Any> Single<T>.toResultAsyncState(): Flowable<ResultAsyncState<T>> =
-    toFlowable().toResultAsyncState()
-
-fun <T : Any> Observable<T>.toResultAsyncState(): Flowable<ResultAsyncState<T>> =
-    toFlowable(BackpressureStrategy.LATEST).toResultAsyncState()
-
-fun <T : Any> Flowable<T>.toResultAsyncState(): Flowable<ResultAsyncState<T>> =
-    compose(resultAsyncStateTransformer())
-
-@Suppress("RemoveExplicitTypeArguments")
-private fun <T : Any> resultAsyncStateTransformer(): FlowableTransformer<T, ResultAsyncState<T>> =
-    FlowableTransformer { upstream ->
-        upstream
-            .map {
-                @Suppress("USELESS_CAST")
-                ResultAsyncState.Completed<T>(it) as ResultAsyncState<T>
-            }
-            .startWithItem(ResultAsyncState.Started<T>())
-            .onErrorReturn { ResultAsyncState.Failed<T>(it) }
+suspend inline fun <T, D> MutableStateFlow<ResultAsyncState<D>>.toAsyncState(
+    triggerData: T,
+    callee: (T) -> D
+) {
+    emit(ResultAsyncState.Started())
+    try {
+        emit(ResultAsyncState.Completed(callee.invoke(triggerData)))
+    } catch (e: Throwable) {
+        emit(ResultAsyncState.Failed(e))
+    } finally {
+        emit(ResultAsyncState.Idle())
     }
+}
 
 fun <T> ResultAsyncState<T>.handleStates(
+    idle: () -> Unit = { },
     started: () -> Unit = { },
     failed: (throwable: Throwable) -> Unit = {},
     complete: (result: T) -> Unit = { },
 ) {
     when (this) {
+        is ResultAsyncState.Idle -> idle()
         is ResultAsyncState.Started -> started()
         is ResultAsyncState.Completed -> complete(this.data)
         is ResultAsyncState.Failed -> failed(this.error)
@@ -51,11 +47,13 @@ fun <T> ResultAsyncState<T>.handleStates(
 
 fun <T> ResultAsyncState<T>.handleStatesFromFragmentWithLoaderDialog(
     fragment: Fragment,
+    idle: () -> Unit = { },
     started: () -> Unit = { },
     failed: (throwable: Throwable) -> Unit = { },
     complete: (result: T) -> Unit = { },
 ) {
     when (this) {
+        is ResultAsyncState.Idle -> idle()
         is ResultAsyncState.Started -> {
             fragment.showLoaderDialog()
             started()

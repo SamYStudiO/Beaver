@@ -1,4 +1,8 @@
 import com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension
+import com.google.protobuf.gradle.builtins
+import com.google.protobuf.gradle.generateProtoTasks
+import com.google.protobuf.gradle.protobuf
+import com.google.protobuf.gradle.protoc
 
 plugins {
     id("com.android.application")
@@ -8,6 +12,7 @@ plugins {
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
     id("com.google.firebase.firebase-perf")
+    id("com.google.protobuf") version Versions.protobuf_plugin
     id("androidx.navigation.safeargs.kotlin")
     id("dagger.hilt.android.plugin")
     id("kotlin-parcelize")
@@ -28,13 +33,13 @@ val projectStartTimeMillis = 1517443200000
 val versionBuild = ((System.currentTimeMillis() - projectStartTimeMillis) / 60000).toInt()
 
 android {
-    compileSdkVersion(Versions.compileSdk)
-    buildToolsVersion(Versions.buildToolsVersion)
+    compileSdk = Versions.compileSdk
+    buildToolsVersion = Versions.buildToolsVersion
 
     defaultConfig {
         applicationId = "net.samystudio.beaver"
-        minSdkVersion(Versions.minSdk)
-        targetSdkVersion(Versions.targetSdk)
+        minSdk = Versions.minSdk
+        targetSdk = Versions.targetSdk
         versionCode = versionBuild
         versionName = "$versionMajor.$versionMinor.$versionPatch"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -108,11 +113,27 @@ dependencies {
     room()
     firebase()
     dagger()
-    reactive()
     network()
     debug()
     test()
     androidTest()
 
     implementation(Dependencies.permissionsdispatcher_ktx)
+    implementation(Dependencies.flow_binding)
+}
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:${Versions.protobuf}"
+    }
+
+    generateProtoTasks {
+        all().forEach { task ->
+            task.builtins {
+                create("java") {
+                    option("lite")
+                }
+            }
+        }
+    }
 }

@@ -1,22 +1,28 @@
 package net.samystudio.beaver.ui.main.userProfile
 
-import androidx.lifecycle.toLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import net.samystudio.beaver.data.manager.UserManager
-import net.samystudio.beaver.data.toResultAsyncState
-import net.samystudio.beaver.ui.base.viewmodel.BaseDisposablesViewModel
+import net.samystudio.beaver.ui.viewmodel.TriggerOutStateFlow
+import net.samystudio.beaver.ui.viewmodel.TriggerStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
 class UserProfileFragmentViewModel @Inject constructor(
     private val userManager: UserManager
-) : BaseDisposablesViewModel() {
-    val userLiveData =
+) : ViewModel() {
+    val disconnectState = TriggerStateFlow {
+        userManager.disconnect()
+    }
+    val userState = TriggerOutStateFlow(true) {
         userManager.getUser()
-            .toResultAsyncState()
-            .toLiveData()
+    }
 
     fun disconnect() {
-        userManager.disconnect()
+        viewModelScope.launch {
+            disconnectState.trigger()
+        }
     }
 }

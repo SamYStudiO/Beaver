@@ -14,8 +14,8 @@ object Dependencies {
         "androidx.constraintlayout:constraintlayout:${Versions.constraintlayout}"
     const val lifecycle_viewmodel_ktx =
         "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycle}"
-    const val lifecycle_livedata_ktx =
-        "androidx.lifecycle:lifecycle-livedata-ktx:${Versions.lifecycle}"
+    const val lifecycle_runtime_ktx =
+        "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.lifecycle}"
     const val lifecycle_common = "androidx.lifecycle:lifecycle-common-java8:${Versions.lifecycle}"
     const val lifecycle_reactivestreams_ktx =
         "androidx.lifecycle:lifecycle-reactivestreams-ktx:${Versions.lifecycle}"
@@ -25,10 +25,11 @@ object Dependencies {
     const val navigation_fragment_ktx =
         "androidx.navigation:navigation-fragment-ktx:${Versions.navigation}"
     const val navigation_ui_ktx = "androidx.navigation:navigation-ui-ktx:${Versions.navigation}"
-    const val room_runtime = "androidx.room:room-runtime:${Versions.room}"
-    const val room_rxjava3 = "androidx.room:room-rxjava3:${Versions.room}"
+    const val room = "androidx.room:room-ktx:${Versions.room}"
     const val room_compiler = "androidx.room:room-compiler:${Versions.room}"
     const val room_testing = "androidx.room:room-testing:${Versions.room}"
+    const val datastore = "androidx.datastore:datastore:${Versions.datastore}"
+    const val protobuf = "com.google.protobuf:protobuf-javalite:${Versions.protobuf}"
     const val material = "com.google.android.material:material:${Versions.material}"
 
     // firebase
@@ -49,29 +50,6 @@ object Dependencies {
     const val hilt_work = "androidx.hilt:hilt-work:${Versions.hilt_androidx}"
     const val hilt_androidx_compiler = "androidx.hilt:hilt-compiler:${Versions.hilt_androidx}"
 
-    // reactive
-    const val rxjava = "io.reactivex.rxjava3:rxjava:${Versions.rxjava3}"
-    const val rxandroid = "io.reactivex.rxjava3:rxandroid:${Versions.rxandroid}"
-    const val rxkotlin = "io.reactivex.rxjava3:rxkotlin:${Versions.rxkotlin}"
-    const val rxbinding = "com.jakewharton.rxbinding4:rxbinding:${Versions.rxbinding4}"
-    const val rxbinding_core = "com.jakewharton.rxbinding4:rxbinding-core:${Versions.rxbinding4}"
-    const val rxbinding_appcompat =
-        "com.jakewharton.rxbinding4:rxbinding-appcompat:${Versions.rxbinding4}"
-    const val rxbinding_drawerlayout =
-        "com.jakewharton.rxbinding4:rxbinding-drawerlayout:${Versions.rxbinding4}"
-    const val rxbinding_leanback =
-        "com.jakewharton.rxbinding4:rxbinding-leanback:${Versions.rxbinding4}"
-    const val rxbinding_recyclerview =
-        "com.jakewharton.rxbinding4:rxbinding-recyclerview:${Versions.rxbinding4}"
-    const val rxbinding_slidingpanelayout =
-        "com.jakewharton.rxbinding4:rxbinding-slidingpanelayout:${Versions.rxbinding4}"
-    const val rxbinding_swiperefreshlayout =
-        "com.jakewharton.rxbinding4:rxbinding-swiperefreshlayout:${Versions.rxbinding4}"
-    const val rxbinding_viewpager2 =
-        "com.jakewharton.rxbinding4:rxbinding-viewpager2:${Versions.rxbinding4}"
-    const val rx_preferences =
-        "com.f2prateek.rx.preferences2:rx-preferences:${Versions.rx_preferences}"
-
     // network
     const val okhttp = "com.squareup.okhttp3:okhttp:${Versions.okhttp3}"
     const val okhttp_logging_interceptor =
@@ -87,6 +65,8 @@ object Dependencies {
     // misc
     const val permissionsdispatcher_ktx =
         "com.github.permissions-dispatcher:ktx:${Versions.permissionsdispatcher}"
+    const val flow_binding=
+        "io.github.reactivecircus.flowbinding:flowbinding-android:${Versions.flow_binding}"
 
     // debug
     const val timber = "com.jakewharton.timber:timber:${Versions.timber}"
@@ -123,16 +103,18 @@ fun DependencyHandler.base() {
     implementation(Dependencies.appcompat)
     implementation(Dependencies.preference_ktx)
     implementation(Dependencies.constraintlayout)
+    implementation(Dependencies.datastore)
+    implementation(Dependencies.protobuf)
     implementation(Dependencies.material)
 }
 
 fun DependencyHandler.lifecycle() {
     implementation(Dependencies.lifecycle_viewmodel_ktx)
-    implementation(Dependencies.lifecycle_livedata_ktx)
+    implementation(Dependencies.lifecycle_runtime_ktx)
     implementation(Dependencies.lifecycle_common)
     implementation(Dependencies.lifecycle_reactivestreams_ktx)
+    implementation(Dependencies.lifecycle_process)
     //implementation(Dependencies.lifecycle_service)
-    //implementation(Dependencies.lifecycle_process)
     testImplementation(Dependencies.arch_core_testing)
 }
 
@@ -142,8 +124,7 @@ fun DependencyHandler.navigation() {
 }
 
 fun DependencyHandler.room() {
-    implementation(Dependencies.room_runtime)
-    implementation(Dependencies.room_rxjava3)
+    implementation(Dependencies.room)
     kapt(Dependencies.room_compiler)
     testImplementation(Dependencies.room_testing)
 }
@@ -163,21 +144,6 @@ fun DependencyHandler.dagger() {
     implementation(Dependencies.hilt_navigation_fragment)
     implementation(Dependencies.hilt_work)
     kapt(Dependencies.hilt_androidx_compiler)
-}
-
-fun DependencyHandler.reactive() {
-    implementation(Dependencies.rxjava)
-    implementation(Dependencies.rxandroid)
-    implementation(Dependencies.rxkotlin)
-    implementation(Dependencies.rxbinding)
-    //implementation(Dependencies.rxbinding_appcompat)
-    //implementation(Dependencies.rxbinding_drawerlayout)
-    //implementation(Dependencies.rxbinding_leanback)
-    //implementation(Dependencies.rxbinding_recyclerview)
-    //implementation(Dependencies.rxbinding_slidingpanelayout)
-    //implementation(Dependencies.rxbinding_swiperefreshlayout)
-    //implementation(Dependencies.rxbinding_viewpager2)
-    implementation(Dependencies.rx_preferences)
 }
 
 fun DependencyHandler.network() {
