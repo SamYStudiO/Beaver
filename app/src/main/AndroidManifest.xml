@@ -27,8 +27,8 @@
 
         <activity
             android:name=".ui.main.MainActivity"
-            android:launchMode="singleInstance"
-            android:theme="@style/Theme.MyApp.Launcher">
+            android:exported="false"
+            android:launchMode="singleInstance">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
