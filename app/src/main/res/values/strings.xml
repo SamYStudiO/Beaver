@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">beaver</string>
-    <string name="global_ok">"OK"</string>
-    <string name="global_cancel">"Cancel"</string>
-    <string name="global_error_title">"Whoops !"</string>
-    <string name="global_error_message">"An error occurred !"</string>
-    <string name="global_error_connexion_required">"An active connexion is required !"</string>
+    <string name="ok">"OK"</string>
+    <string name="cancel">"Cancel"</string>
+    <string name="retry">"Retry"</string>
+    <string name="quit">"Quit"</string>
+    <string name="error_title">"Whoops !"</string>
+    <string name="error_message">"An error occurred !"</string>
+    <string name="error_connexion_required">"An active connexion is required !"</string>
+    <string name="error_email">"Invalid email"</string>
+    <string name="error_password">"Invalid password (minimum 8 chars)"</string>
+    <string name="error_password_match">"Passwords don't match"</string>
 </resources>
