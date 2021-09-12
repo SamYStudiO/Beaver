@@ -21,5 +21,6 @@ Common used libraries :
 - [RxJava3](https://github.com/ReactiveX/RxJava)
 - [RxPreferences](https://github.com/f2prateek/rx-preferences)
 - [Timber](https://github.com/JakeWharton/timber)
+- [Insetter](https://github.com/chrisbanes/insetter)
 
 Package structure is inspired from [this](https://overflow.buffer.com/2016/09/26/android-rethinking-package-structure/) reading.

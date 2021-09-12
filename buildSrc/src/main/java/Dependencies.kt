@@ -87,6 +87,7 @@ object Dependencies {
     // misc
     const val permissionsdispatcher_ktx =
         "com.github.permissions-dispatcher:ktx:${Versions.permissionsdispatcher}"
+    const val insetter = "dev.chrisbanes.insetter:insetter:${Versions.insetter}"
 
     // debug
     const val timber = "com.jakewharton.timber:timber:${Versions.timber}"

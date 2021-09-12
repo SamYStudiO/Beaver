@@ -4,18 +4,15 @@ package net.samystudio.beaver.ui.main.authenticator
 
 import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
-import androidx.core.view.OnApplyWindowInsetsListener
 import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.transition.MaterialSharedAxis
 import com.jakewharton.rxbinding4.widget.textChanges
 import dagger.hilt.android.AndroidEntryPoint
+import dev.chrisbanes.insetter.applyInsetter
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.CompositeDisposable
@@ -28,9 +25,7 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class AuthenticatorFragment :
-    Fragment(R.layout.fragment_authenticator),
-    OnApplyWindowInsetsListener {
+class AuthenticatorFragment : Fragment(R.layout.fragment_authenticator) {
     private val binding by viewBinding { FragmentAuthenticatorBinding.bind(it) }
     private val viewModel by viewModels<AuthenticatorFragmentViewModel>()
     private var compositeDisposable: CompositeDisposable? = null
@@ -44,7 +39,6 @@ class AuthenticatorFragment :
         compositeDisposable = CompositeDisposable()
         enterTransition =
             MaterialSharedAxis(MaterialSharedAxis.Y, true).apply { duration = TRANSITION_DURATION }
-        ViewCompat.setOnApplyWindowInsetsListener(view, this)
         toggleLightSystemBars(true)
         hideLoaderDialog()
 
@@ -56,6 +50,12 @@ class AuthenticatorFragment :
                 }
             }
         )
+
+        binding.signInEmailLayout.applyInsetter {
+            type(statusBars = true) {
+                margin(top = true)
+            }
+        }
 
         binding.signInEmail.setText(sharedPreferencesHelper.accountName.get())
 
@@ -146,17 +146,6 @@ class AuthenticatorFragment :
                 )
             }
         )
-    }
-
-    override fun onApplyWindowInsets(v: View, insets: WindowInsetsCompat): WindowInsetsCompat {
-        val stableSystemBarsInsets =
-            insets.getInsetsIgnoringVisibility(WindowInsetsCompat.Type.systemBars())
-
-        binding.signInEmailLayout.updateLayoutParams<ViewGroup.MarginLayoutParams> {
-            topMargin = stableSystemBarsInsets.top
-        }
-
-        return insets
     }
 
     override fun onDestroyView() {
