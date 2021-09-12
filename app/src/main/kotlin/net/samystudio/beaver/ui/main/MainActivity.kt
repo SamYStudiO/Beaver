@@ -81,10 +81,10 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
                         ) {
                             findNavController(R.id.nav_host).navigate(
                                 NavigationMainDirections.actionGlobalAlertDialog(
-                                    titleRes = R.string.global_error_title,
-                                    messageRes = R.string.global_error_message,
-                                    positiveButton = "retry",
-                                    negativeButton = "quit",
+                                    titleRes = R.string.error_title,
+                                    messageRes = R.string.error_message,
+                                    positiveButtonRes = R.string.retry,
+                                    negativeButtonRes = R.string.quit,
                                     cancelable = false,
                                 )
                             )

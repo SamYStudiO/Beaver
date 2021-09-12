@@ -29,10 +29,10 @@ class ErrorDialog : AlertDialog() {
         builder.setIcon(R.mipmap.ic_launcher)
         builder.setMessage(
             when (source) {
-                ErrorSource.NETWORK -> getString(R.string.global_error_connexion_required)
+                ErrorSource.NETWORK -> getString(R.string.error_connexion_required)
                 ErrorSource.SERVER, ErrorSource.APP, ErrorSource.SYSTEM -> {
                     "%s%s".format(
-                        getString(R.string.global_error_title).replace(
+                        getString(R.string.error_title).replace(
                             "{code}",
                             "%s%s%s".format(
                                 "${source.code}",

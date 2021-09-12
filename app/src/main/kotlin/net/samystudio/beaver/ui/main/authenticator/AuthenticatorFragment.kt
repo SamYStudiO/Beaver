@@ -86,7 +86,7 @@ class AuthenticatorFragment : Fragment(R.layout.fragment_authenticator) {
                 .map {
                     val emailValid = it.validate(EMAIL_VALIDATOR)
                     binding.signInEmailLayout.error =
-                        if (it.isNotEmpty() && !emailValid) "Invalid email" else null
+                        if (it.isNotEmpty() && !emailValid) getString(R.string.error_email) else null
                     emailValid
                 },
             binding.signInPassword.textChanges()
@@ -94,7 +94,7 @@ class AuthenticatorFragment : Fragment(R.layout.fragment_authenticator) {
                 .map {
                     val passwordValid = it.validate(PASSWORD_VALIDATOR)
                     binding.signInPasswordLayout.error =
-                        if (it.isNotEmpty() && !passwordValid) "Invalid password (minimum 8 chars)" else null
+                        if (it.isNotEmpty() && !passwordValid) getString(R.string.error_password) else null
                     passwordValid
                 },
         ) { a, b ->
@@ -107,7 +107,7 @@ class AuthenticatorFragment : Fragment(R.layout.fragment_authenticator) {
                 .map {
                     val emailValid = it.validate(EMAIL_VALIDATOR)
                     binding.signUpEmailLayout.error =
-                        if (it.isNotEmpty() && !emailValid) "Invalid email" else null
+                        if (it.isNotEmpty() && !emailValid) getString(R.string.error_email) else null
                     emailValid
                 },
             binding.signUpPassword.textChanges()
@@ -115,7 +115,7 @@ class AuthenticatorFragment : Fragment(R.layout.fragment_authenticator) {
                 .map {
                     val passwordValid = it.validate(PASSWORD_VALIDATOR)
                     binding.signUpPasswordLayout.error =
-                        if (it.isNotEmpty() && !passwordValid) "Invalid password (minimum 8 chars)" else null
+                        if (it.isNotEmpty() && !passwordValid) getString(R.string.error_password) else null
                     passwordValid
                 },
             binding.signUpConfirmPassword.textChanges()
@@ -124,7 +124,7 @@ class AuthenticatorFragment : Fragment(R.layout.fragment_authenticator) {
                     val password = binding.signUpPassword.text.toString()
                     val passwordMatchValid = it.toString() == password
                     binding.signUpConfirmPasswordLayout.error =
-                        if (password.validate(PASSWORD_VALIDATOR) && !passwordMatchValid) "Passwords don't match" else null
+                        if (password.validate(PASSWORD_VALIDATOR) && !passwordMatchValid) getString(R.string.error_password_match) else null
                     passwordMatchValid
                 },
         ) { a, b, c ->
