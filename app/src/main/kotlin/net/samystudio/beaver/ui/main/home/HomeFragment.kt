@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.transition.MaterialFadeThrough
 import dagger.hilt.android.AndroidEntryPoint
 import dev.chrisbanes.insetter.applyInsetter
@@ -43,11 +42,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         viewLifecycleOwner.lifecycleScope.launchWhenResumed {
             viewModel.homeState.collect { state ->
-                state.handleStatesFromFragmentWithLoaderDialog(
-                    this@HomeFragment,
-                    failed = { findNavController().navigate(HomeFragmentDirections.actionGlobalGenericErrorDialog()) },
-                    complete = { binding.textView.text = it.content },
-                )
+                state.handleStatesFromFragmentWithLoaderDialog(this@HomeFragment) {
+                    binding.textView.text = it.content }
             }
         }
     }

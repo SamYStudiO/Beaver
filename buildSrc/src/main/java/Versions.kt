@@ -1,8 +1,8 @@
 object Versions {
-    const val compileSdk = 30
+    const val compileSdk = 31
     const val minSdk = 21
-    const val targetSdk = 30
-    const val buildToolsVersion = "30.0.3"
+    const val targetSdk = 31
+    const val buildToolsVersion = "31.0.0"
 
     // tools
     const val android_build_tools = "7.0.2"
@@ -21,6 +21,7 @@ object Versions {
 
     // android
     const val core = "1.6.0"
+    const val core_splashscreen = "1.0.0-alpha01"
     const val activity = "1.3.1"
     const val fragment = "1.3.6"
     const val appcompat = "1.3.1"
@@ -30,6 +31,7 @@ object Versions {
     const val lifecycle = "2.3.1"
     const val navigation = "2.3.5"
     const val room = "2.3.0"
+    const val work = "2.7.0-beta01"
     const val datastore = "1.0.0"
     const val protobuf = "3.17.3"
     const val material = "1.4.0"

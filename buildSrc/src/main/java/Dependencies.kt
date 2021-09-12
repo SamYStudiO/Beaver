@@ -6,6 +6,7 @@ object Dependencies {
 
     // android
     const val core_ktx = "androidx.core:core-ktx:${Versions.core}"
+    const val core_splashscreen = "androidx.core:core-splashscreen:${Versions.core_splashscreen}"
     const val activity = "androidx.activity:activity-ktx:${Versions.activity}"
     const val fragment = "androidx.fragment:fragment-ktx:${Versions.fragment}"
     const val appcompat = "androidx.appcompat:appcompat:${Versions.appcompat}"
@@ -28,6 +29,7 @@ object Dependencies {
     const val room = "androidx.room:room-ktx:${Versions.room}"
     const val room_compiler = "androidx.room:room-compiler:${Versions.room}"
     const val room_testing = "androidx.room:room-testing:${Versions.room}"
+    const val work = "androidx.work:work-runtime-ktx:${Versions.work}"
     const val datastore = "androidx.datastore:datastore:${Versions.datastore}"
     const val protobuf = "com.google.protobuf:protobuf-javalite:${Versions.protobuf}"
     const val material = "com.google.android.material:material:${Versions.material}"
@@ -99,6 +101,7 @@ object Dependencies {
 fun DependencyHandler.base() {
     implementation(Dependencies.kotlin)
     implementation(Dependencies.core_ktx)
+    implementation(Dependencies.core_splashscreen)
     implementation(Dependencies.activity)
     implementation(Dependencies.fragment)
     implementation(Dependencies.appcompat)
@@ -128,6 +131,10 @@ fun DependencyHandler.room() {
     implementation(Dependencies.room)
     kapt(Dependencies.room_compiler)
     testImplementation(Dependencies.room_testing)
+}
+
+fun DependencyHandler.work() {
+    implementation(Dependencies.work)
 }
 
 fun DependencyHandler.firebase() {

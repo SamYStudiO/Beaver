@@ -66,19 +66,17 @@ class AuthenticatorFragment : Fragment(R.layout.fragment_authenticator) {
             }
 
             viewModel.signInState.collect {
-                it.handleStatesFromFragmentWithLoaderDialog(
-                    this@AuthenticatorFragment,
-                    failed = { findNavController().navigate(AuthenticatorFragmentDirections.actionGlobalGenericErrorDialog()) },
-                    complete = { findNavController().popBackStack() },
-                )
+                it.handleStatesFromFragmentWithLoaderDialog(this@AuthenticatorFragment)
+                {
+                    findNavController().popBackStack()
+                }
             }
 
             viewModel.signUpState.collect {
-                it.handleStatesFromFragmentWithLoaderDialog(
-                    this@AuthenticatorFragment,
-                    failed = { findNavController().navigate(AuthenticatorFragmentDirections.actionGlobalGenericErrorDialog()) },
-                    complete = { findNavController().popBackStack() },
-                )
+                it.handleStatesFromFragmentWithLoaderDialog(this@AuthenticatorFragment)
+                {
+                    findNavController().popBackStack()
+                }
             }
         }
 

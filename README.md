@@ -1,6 +1,6 @@
 # Beaver
 
-#### THIS IS THE COROUTINES VERSION (NOT PRODUCTION READY YET) FOR REACTIVE (RXJAVA) VERSION GO TO [MASTER BRANCH](https://github.com/SamYStudiO/Beaver/tree/master).
+#### THIS IS THE COROUTINES VERSION (NOT PRODUCTION READY YET), FOR REACTIVE (RXJAVA) VERSION GO TO [MASTER BRANCH](https://github.com/SamYStudiO/Beaver/tree/master).
 
 Android Project template using View Model [MVVM](https://developer.android.com/topic/libraries/architecture/index.html) and Repository Data pattern  
 It is build on top of [Dagger 2 / Hilt](https://github.com/google/dagger), [Jetpack (Androidx)](https://developer.android.com/jetpack/) libraries (compose, navigation component, room, worker, etc...) and coroutines.

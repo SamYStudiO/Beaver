@@ -11,6 +11,8 @@ class TriggerStateFlow(
     private val callee: suspend () -> Unit
 ) {
     private val flow = MutableStateFlow<AsyncState>(AsyncState.Idle)
+    val value
+        get() = flow.value
 
     init {
         flow.onStart {

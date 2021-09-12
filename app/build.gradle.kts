@@ -1,3 +1,4 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 import com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension
 import com.google.protobuf.gradle.builtins
 import com.google.protobuf.gradle.generateProtoTasks
@@ -60,10 +61,12 @@ android {
 
     signingConfigs {
         create("release") {
-            keyAlias = "beaver"
-            keyPassword = "beaver"
-            storeFile = file("keystore.jks")
-            storePassword = "beaver"
+            gradleLocalProperties(rootDir).let {
+                keyAlias = it.getProperty("keyAlias")
+                keyPassword = it.getProperty("keyPassword")
+                storeFile = file(it.getProperty("storeFile") ?: "/")
+                storePassword = it.getProperty("storePassword")
+            }
         }
     }
 
@@ -111,6 +114,7 @@ dependencies {
     lifecycle()
     navigation()
     room()
+    work()
     firebase()
     dagger()
     network()

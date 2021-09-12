@@ -86,9 +86,9 @@
         <!-- integer can't be null :(
         -2147483648 is Int.MIN_VALUE and will be consider as null -->
         <argument
-           android:name="iconColor"
-           android:defaultValue="-2147483648"
-           app:argType="integer" />
+            android:name="iconColor"
+            android:defaultValue="-2147483648"
+            app:argType="integer" />
         <argument
             android:name="positiveButtonRes"
             android:defaultValue="0"
@@ -137,9 +137,9 @@
         <!-- integer can't be null :(
         -2147483648 is Int.MIN_VALUE and will be consider as null -->
         <argument
-           android:name="negativeButtonColor"
-           android:defaultValue="-2147483648"
-           app:argType="integer"/>
+            android:name="negativeButtonColor"
+            android:defaultValue="-2147483648"
+            app:argType="integer" />
         <argument
             android:name="negativeButtonColorRes"
             android:defaultValue="0"
@@ -165,9 +165,9 @@
         <!-- integer can't be null :(
         -2147483648 is Int.MIN_VALUE and will be consider as null -->
         <argument
-           android:name="neutralButtonColor"
-           android:defaultValue="-2147483648"
-           app:argType="integer"/>
+            android:name="neutralButtonColor"
+            android:defaultValue="-2147483648"
+            app:argType="integer" />
         <argument
             android:name="neutralButtonIconRes"
             android:defaultValue="0"
@@ -244,17 +244,35 @@
         android:id="@+id/action_global_alertDialog"
         app:destination="@id/alertDialog" />
     <dialog
-        android:id="@+id/genericErrorDialog"
-        android:name="net.samystudio.beaver.ui.common.dialog.AlertDialog"
-        android:label="GenericErrorDialog"
-        tools:layout="@layout/mtrl_alert_dialog">
+        android:id="@+id/errorDialog"
+        android:name="net.samystudio.beaver.ui.common.dialog.ErrorDialog"
+        android:label="ErrorDialog">
+        <argument
+            android:name="source"
+            app:argType="net.samystudio.beaver.ui.common.dialog.ErrorSource" />
+        <argument
+            android:name="appCode"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="httpOrAppCode"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="serverCode"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="message"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
         <argument
             android:name="titleRes"
             android:defaultValue="@string/global_error_title"
-            app:argType="reference" />
-        <argument
-            android:name="messageRes"
-            android:defaultValue="@string/global_error_message"
             app:argType="reference" />
         <argument
             android:name="positiveButtonRes"
@@ -262,17 +280,8 @@
             app:argType="reference" />
     </dialog>
     <action
-        android:id="@+id/action_global_genericErrorDialog"
-        app:destination="@id/genericErrorDialog" />
-    <dialog
-        android:id="@+id/launchDialog"
-        android:name="net.samystudio.beaver.ui.common.dialog.LaunchDialog"
-        android:label="LaunchDialog"
-        tools:layout="@layout/dialog_launch" />
-    <action
-        android:id="@+id/action_global_launchDialog"
-        app:destination="@id/launchDialog"
-        app:launchSingleTop="true" />
+        android:id="@+id/action_global_errorDialog"
+        app:destination="@id/errorDialog" />
     <dialog
         android:id="@+id/loaderDialog"
         android:name="net.samystudio.beaver.ui.common.dialog.LoaderDialog"

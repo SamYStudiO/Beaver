@@ -5,4 +5,5 @@
     <string name="global_cancel">"Cancel"</string>
     <string name="global_error_title">"Whoops !"</string>
     <string name="global_error_message">"An error occurred !"</string>
+    <string name="global_error_connexion_required">"An active connexion is required !"</string>
 </resources>

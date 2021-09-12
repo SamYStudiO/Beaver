@@ -1,6 +1,7 @@
 package net.samystudio.beaver.ui.main
 
 import android.os.Bundle
+import android.view.ViewTreeObserver
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
@@ -14,6 +15,7 @@ import net.samystudio.beaver.NavigationMainDirections
 import net.samystudio.beaver.R
 import net.samystudio.beaver.data.handleStates
 import net.samystudio.beaver.databinding.ActivityMainBinding
+import net.samystudio.beaver.ui.common.dialog.AlertDialog
 import net.samystudio.beaver.util.toggleLightSystemBars
 import net.samystudio.beaver.util.viewBinding
 
@@ -23,14 +25,41 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
     private val viewModel by viewModels<MainActivityViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        // We set launch screen theme from manifest, we need to get back to our Theme to remove
-        // launch screen.
-        setTheme(R.style.Theme_MyApp)
         super.onCreate(savedInstanceState)
 
         setContentView(binding.root)
         WindowCompat.setDecorFitsSystemWindows(window, false)
         toggleLightSystemBars(true)
+
+        binding.root.viewTreeObserver.addOnPreDrawListener(
+            object : ViewTreeObserver.OnPreDrawListener {
+                override fun onPreDraw(): Boolean {
+                    // Check if the initial data is ready.
+                    return if (viewModel.isReady) {
+                        binding.root.viewTreeObserver.removeOnPreDrawListener(this)
+                        true
+                    } else {
+                        false
+                    }
+                }
+            }
+        )
+
+        supportFragmentManager.findFragmentById(R.id.nav_host)?.childFragmentManager?.setFragmentResultListener(
+            AlertDialog.REQUEST_KEY_CLICK_POSITIVE,
+            this,
+            { _, _ ->
+                viewModel.retry()
+            }
+        )
+
+        supportFragmentManager.findFragmentById(R.id.nav_host)?.childFragmentManager?.setFragmentResultListener(
+            AlertDialog.REQUEST_KEY_CLICK_NEGATIVE,
+            this,
+            { _, _ ->
+                finish()
+            }
+        )
 
         lifecycleScope.launchWhenResumed {
             viewModel.userConnectedState.collect {
