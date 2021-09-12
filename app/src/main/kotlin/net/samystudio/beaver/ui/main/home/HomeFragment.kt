@@ -12,10 +12,7 @@ import dev.chrisbanes.insetter.applyInsetter
 import net.samystudio.beaver.R
 import net.samystudio.beaver.data.handleStatesFromFragmentWithLoaderDialog
 import net.samystudio.beaver.databinding.FragmentHomeBinding
-import net.samystudio.beaver.util.TRANSITION_DURATION
-import net.samystudio.beaver.util.toggleLightNavigationBars
-import net.samystudio.beaver.util.toggleLightStatusBars
-import net.samystudio.beaver.util.viewBinding
+import net.samystudio.beaver.util.*
 
 @AndroidEntryPoint
 class HomeFragment : Fragment(R.layout.fragment_home) {
@@ -28,8 +25,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         exitTransition = MaterialFadeThrough().apply {
             duration = TRANSITION_DURATION
         }
-        toggleLightStatusBars(false)
-        toggleLightNavigationBars(true)
 
         binding.toolbar.applyInsetter {
             type(statusBars = true) {
@@ -55,5 +50,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 )
             }
         )
+    }
+
+    override fun onResume() {
+        super.onResume()
+        toggleLightSystemBars(lightStatus = false, lightNavigation = true)
     }
 }

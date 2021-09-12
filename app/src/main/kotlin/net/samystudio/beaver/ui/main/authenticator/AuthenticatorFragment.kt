@@ -39,8 +39,6 @@ class AuthenticatorFragment : Fragment(R.layout.fragment_authenticator) {
         compositeDisposable = CompositeDisposable()
         enterTransition =
             MaterialSharedAxis(MaterialSharedAxis.Y, true).apply { duration = TRANSITION_DURATION }
-        toggleLightSystemBars(true)
-        hideLoaderDialog()
 
         requireActivity().onBackPressedDispatcher.addCallback(
             viewLifecycleOwner,
@@ -146,6 +144,11 @@ class AuthenticatorFragment : Fragment(R.layout.fragment_authenticator) {
                 )
             }
         )
+    }
+
+    override fun onResume() {
+        super.onResume()
+        toggleLightSystemBars(true)
     }
 
     override fun onDestroyView() {

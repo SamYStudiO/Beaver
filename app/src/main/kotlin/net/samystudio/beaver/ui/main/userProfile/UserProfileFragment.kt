@@ -26,7 +26,6 @@ class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
         enterTransition = MaterialFadeThrough().apply {
             duration = TRANSITION_DURATION
         }
-        toggleLightSystemBars(true)
         postponeEnterTransition()
 
         binding.textView.applyInsetter {
@@ -60,5 +59,10 @@ class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
                 )
             }
         )
+    }
+
+    override fun onResume() {
+        super.onResume()
+        toggleLightSystemBars(true)
     }
 }
