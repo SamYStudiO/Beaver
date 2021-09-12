@@ -29,6 +29,7 @@ object Versions {
     const val lifecycle = "2.3.1"
     const val navigation = "2.3.5"
     const val room = "2.3.0"
+    const val work = "2.7.0-beta01"
     const val material = "1.4.0"
 
     // firebase

@@ -106,6 +106,7 @@ dependencies {
     lifecycle()
     navigation()
     room()
+    work()
     firebase()
     dagger()
     reactive()

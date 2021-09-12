@@ -29,6 +29,7 @@ object Dependencies {
     const val room_rxjava3 = "androidx.room:room-rxjava3:${Versions.room}"
     const val room_compiler = "androidx.room:room-compiler:${Versions.room}"
     const val room_testing = "androidx.room:room-testing:${Versions.room}"
+    const val work = "androidx.work:work-runtime-ktx:${Versions.work}"
     const val material = "com.google.android.material:material:${Versions.material}"
 
     // firebase
@@ -147,6 +148,10 @@ fun DependencyHandler.room() {
     implementation(Dependencies.room_rxjava3)
     kapt(Dependencies.room_compiler)
     testImplementation(Dependencies.room_testing)
+}
+
+fun DependencyHandler.work() {
+    implementation(Dependencies.work)
 }
 
 fun DependencyHandler.firebase() {
