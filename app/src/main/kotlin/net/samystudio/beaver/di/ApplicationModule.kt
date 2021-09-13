@@ -22,11 +22,11 @@ import javax.inject.Singleton
 object ApplicationModule {
     @Provides
     @Singleton
-    fun provideTimberTree(): Timber.Tree =
+    fun provideApplicationTree(): Timber.Tree =
         object : Timber.DebugTree() {
             override fun isLoggable(tag: String?, priority: Int) =
                 BuildConfig.DEBUG || priority >= Log.INFO
-        }
+        }.apply { Timber.plant(this) }
 
     /**
      * Add to this list any application level data implementing [TrimMemory] that should clear
@@ -39,7 +39,7 @@ object ApplicationModule {
 
     @Provides
     @Singleton
-    fun provideWorkManagerConfiguration(workerFactory: HiltWorkerFactory) =
+    fun provideWorkManagerConfiguration(workerFactory: HiltWorkerFactory): Configuration =
         Configuration.Builder()
             .setWorkerFactory(workerFactory)
             .build()
