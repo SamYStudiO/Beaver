@@ -9,5 +9,4 @@ import net.samystudio.beaver.R
 val TRANSITION_DURATION =
     applicationContext.resources.getInteger(R.integer.transition_duration).toLong()
 val TRANSITION_DURATION_SHORT =
-    applicationContext.resources.getInteger(R.integer.transition_duration_short)
-        .toLong()
+    applicationContext.resources.getInteger(R.integer.transition_duration_short).toLong()
