@@ -66,14 +66,14 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
                 when (it) {
                     is AsyncState.Failed -> {
                         if (!(
-                                    it.error is GoogleApiAvailabilityManager.GoogleApiAvailabilityException &&
-                                            it.error.isResolvable &&
-                                            it.error.googleApiAvailability.showErrorDialogFragment(
-                                                this,
-                                                it.error.status,
-                                                0
-                                            )
+                            it.error is GoogleApiAvailabilityManager.GoogleApiAvailabilityException &&
+                                it.error.isResolvable &&
+                                it.error.googleApiAvailability.showErrorDialogFragment(
+                                        this,
+                                        it.error.status,
+                                        0
                                     )
+                            )
                         ) {
                             findNavController(R.id.nav_host).navigate(
                                 NavigationMainDirections.actionGlobalAlertDialog(
