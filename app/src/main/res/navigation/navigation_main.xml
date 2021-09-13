@@ -272,11 +272,11 @@
             app:nullable="true" />
         <argument
             android:name="titleRes"
-            android:defaultValue="@string/global_error_title"
+            android:defaultValue="@string/error_title"
             app:argType="reference" />
         <argument
             android:name="positiveButtonRes"
-            android:defaultValue="@string/global_ok"
+            android:defaultValue="@string/ok"
             app:argType="reference" />
     </dialog>
     <action

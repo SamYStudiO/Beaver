@@ -22,6 +22,7 @@ object Versions {
     // android
     const val core = "1.6.0"
     const val core_splashscreen = "1.0.0-alpha01"
+    const val startup = "1.1.0"
     const val activity = "1.3.1"
     const val fragment = "1.3.6"
     const val appcompat = "1.3.1"
