@@ -31,13 +31,6 @@ class BeaverApplication : Application(), Configuration.Provider, ImageLoaderFact
     @Inject
     lateinit var imageLoader: ImageLoader
 
-    override fun onCreate() {
-        super.onCreate()
-        firebaseAnalytics.setAnalyticsCollectionEnabled(!BuildConfig.DEBUG)
-        crashlytics.setCrashlyticsCollectionEnabled(!BuildConfig.DEBUG)
-        Timber.plant(timberTree)
-    }
-
     override fun onTrimMemory(level: Int) {
         super.onTrimMemory(level)
         trimMemoryList.forEach { it.onTrimMemory(level) }
