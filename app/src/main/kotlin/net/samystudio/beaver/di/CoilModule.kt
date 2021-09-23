@@ -11,6 +11,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import net.samystudio.beaver.data.TrimMemory
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -20,9 +21,13 @@ object CoilModule {
     @Provides
     @Singleton
     @OkHttpCoilQualifier
-    fun provideOkHttpClient(@ApplicationContext context: Context): OkHttpClient =
+    fun provideOkHttpClient(
+        @ApplicationContext context: Context,
+        httpLoggingInterceptor: HttpLoggingInterceptor,
+    ): OkHttpClient =
         OkHttpClient.Builder()
             .cache(CoilUtils.createDefaultCache(context))
+            .addInterceptor(httpLoggingInterceptor)
             .build()
 
     @Provides
