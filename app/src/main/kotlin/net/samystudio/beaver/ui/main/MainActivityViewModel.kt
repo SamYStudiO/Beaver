@@ -27,7 +27,7 @@ class MainActivityViewModel @Inject constructor(
             Observable.timer(1000, TimeUnit.MILLISECONDS).toAsyncState(),
             googleApiAvailabilityManager.availabilityObservable.toAsyncState(),
             { t1, t2 -> if (t2 is AsyncState.Failed) t2 else t1 }
-        ).toTriggerLiveData(true)
+        ).delaySubscription(500, TimeUnit.MILLISECONDS).toTriggerLiveData(true)
             .apply { addTo(disposables) }
 
     val initializationLiveData: LiveData<AsyncState> = _initializationLiveData

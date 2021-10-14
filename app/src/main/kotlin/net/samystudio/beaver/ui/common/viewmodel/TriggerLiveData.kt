@@ -34,11 +34,7 @@ class TriggerLiveData<OUT : Any>(
     debounceUnit: TimeUnit = TimeUnit.MILLISECONDS,
     debounceScheduler: Scheduler = Schedulers.computation(),
 ) : LiveData<OUT>(), Disposable {
-    private val trigger: FlowableProcessor<Unit> =
-        if (isTriggeredWhenActivated)
-            BehaviorProcessor.createDefault(Unit)
-        else
-            PublishProcessor.create()
+    private val trigger: FlowableProcessor<Unit> = PublishProcessor.create()
     private val disposable: Disposable =
         trigger.debounce(debounceTimeout, debounceUnit, debounceScheduler)
             .switchMap {

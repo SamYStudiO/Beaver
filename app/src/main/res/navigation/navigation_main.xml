@@ -278,6 +278,14 @@
             android:name="positiveButtonRes"
             android:defaultValue="@string/ok"
             app:argType="reference" />
+        <argument
+            android:name="negativeButtonRes"
+            android:defaultValue="0"
+            app:argType="reference" />
+        <argument
+            android:name="cancelable"
+            android:defaultValue="true"
+            app:argType="boolean" />
     </dialog>
     <action
         android:id="@+id/action_global_errorDialog"

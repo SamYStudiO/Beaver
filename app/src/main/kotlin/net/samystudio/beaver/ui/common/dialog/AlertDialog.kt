@@ -53,6 +53,8 @@ open class AlertDialog :
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return MaterialAlertDialogBuilder(requireContext(), theme).apply {
             arguments?.apply {
+                this@AlertDialog.isCancelable = getBoolean(KEY_CANCELABLE, true)
+
                 getInt(KEY_TITLE_RES).let {
                     if (it != 0)
                         setTitle(it)
@@ -135,7 +137,6 @@ open class AlertDialog :
                         ContextCompat.getDrawable(context, it)
                     )
                 }
-                setCancelable(getBoolean(KEY_CANCELABLE, true))
                 getInt(KEY_ITEMS_RES).let {
                     if (it != 0)
                         setItems(it, this@AlertDialog)

@@ -4,6 +4,9 @@ package net.samystudio.beaver.ui.common.viewmodel
 
 import androidx.lifecycle.LiveData
 
+/**
+ * A [SingleLiveEvent] with no data associated.
+ */
 class CommandLiveEvent : SingleLiveEvent<Unit>()
 
 inline fun LiveData<*>.toCommandLiveEvent() =

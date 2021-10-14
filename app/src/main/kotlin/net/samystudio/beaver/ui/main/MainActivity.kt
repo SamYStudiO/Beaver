@@ -1,9 +1,9 @@
 package net.samystudio.beaver.ui.main
 
 import android.os.Bundle
-import android.view.ViewTreeObserver
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
@@ -15,6 +15,7 @@ import net.samystudio.beaver.data.AsyncState
 import net.samystudio.beaver.data.manager.GoogleApiAvailabilityManager
 import net.samystudio.beaver.databinding.ActivityMainBinding
 import net.samystudio.beaver.ui.common.dialog.AlertDialog
+import net.samystudio.beaver.ui.common.dialog.ErrorSource
 import net.samystudio.beaver.util.toggleLightSystemBars
 import net.samystudio.beaver.util.viewBinding
 
@@ -26,26 +27,15 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val splashScreen = installSplashScreen()
+        splashScreen.setKeepVisibleCondition { !viewModel.isReady }
+
         setContentView(binding.root)
         WindowCompat.setDecorFitsSystemWindows(window, false)
         toggleLightSystemBars(true)
 
-        binding.root.viewTreeObserver.addOnPreDrawListener(
-            object : ViewTreeObserver.OnPreDrawListener {
-                override fun onPreDraw(): Boolean {
-                    // Check if the initial data is ready.
-                    return if (viewModel.isReady) {
-                        binding.root.viewTreeObserver.removeOnPreDrawListener(this)
-                        true
-                    } else {
-                        false
-                    }
-                }
-            }
-        )
-
         supportFragmentManager.findFragmentById(R.id.nav_host)?.childFragmentManager?.setFragmentResultListener(
-            AlertDialog.REQUEST_KEY_CLICK_POSITIVE,
+            "${AlertDialog.REQUEST_KEY_CLICK_POSITIVE}0",
             this,
             { _, _ ->
                 viewModel.retry()
@@ -53,7 +43,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         )
 
         supportFragmentManager.findFragmentById(R.id.nav_host)?.childFragmentManager?.setFragmentResultListener(
-            AlertDialog.REQUEST_KEY_CLICK_NEGATIVE,
+            "${AlertDialog.REQUEST_KEY_CLICK_NEGATIVE}0",
             this,
             { _, _ ->
                 finish()
@@ -65,20 +55,21 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
             {
                 when (it) {
                     is AsyncState.Failed -> {
-                        if (!(
+                        val resolvable =
                             it.error is GoogleApiAvailabilityManager.GoogleApiAvailabilityException &&
-                                it.error.isResolvable &&
-                                it.error.googleApiAvailability.showErrorDialogFragment(
+                                    it.error.isResolvable &&
+                                    it.error.googleApiAvailability.showErrorDialogFragment(
                                         this,
                                         it.error.status,
                                         0
                                     )
-                            )
-                        ) {
+                        if (!resolvable) {
                             findNavController(R.id.nav_host).navigate(
-                                NavigationMainDirections.actionGlobalAlertDialog(
+
+                                NavigationMainDirections.actionGlobalErrorDialog(
+                                    source = ErrorSource.APP,
                                     titleRes = R.string.error_title,
-                                    messageRes = R.string.error_message,
+                                    message = it.error.message,
                                     positiveButtonRes = R.string.retry,
                                     negativeButtonRes = R.string.quit,
                                     cancelable = false,
