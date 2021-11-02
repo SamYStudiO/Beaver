@@ -35,11 +35,11 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         WindowCompat.setDecorFitsSystemWindows(window, false)
         toggleLightSystemBars(true)
 
-        setDialogPositiveClickListener(R.id.nav_host, 0) {
+        setDialogPositiveClickListener(R.id.nav_host) {
             viewModel.retry()
         }
 
-        setDialogNegativeClickListener(R.id.nav_host, 0) {
+        setDialogNegativeClickListener(R.id.nav_host) {
             finishAndRemoveTask()
         }
 
