@@ -14,8 +14,9 @@ import net.samystudio.beaver.R
 import net.samystudio.beaver.data.AsyncState
 import net.samystudio.beaver.data.manager.GoogleApiAvailabilityManager
 import net.samystudio.beaver.databinding.ActivityMainBinding
-import net.samystudio.beaver.ui.common.dialog.AlertDialog
 import net.samystudio.beaver.ui.common.dialog.ErrorSource
+import net.samystudio.beaver.ui.common.dialog.setDialogNegativeClickListener
+import net.samystudio.beaver.ui.common.dialog.setDialogPositiveClickListener
 import net.samystudio.beaver.util.toggleLightSystemBars
 import net.samystudio.beaver.util.viewBinding
 
@@ -34,21 +35,13 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         WindowCompat.setDecorFitsSystemWindows(window, false)
         toggleLightSystemBars(true)
 
-        supportFragmentManager.findFragmentById(R.id.nav_host)?.childFragmentManager?.setFragmentResultListener(
-            "${AlertDialog.REQUEST_KEY_CLICK_POSITIVE}0",
-            this,
-            { _, _ ->
-                viewModel.retry()
-            }
-        )
+        setDialogPositiveClickListener(R.id.nav_host, 0) {
+            viewModel.retry()
+        }
 
-        supportFragmentManager.findFragmentById(R.id.nav_host)?.childFragmentManager?.setFragmentResultListener(
-            "${AlertDialog.REQUEST_KEY_CLICK_NEGATIVE}0",
-            this,
-            { _, _ ->
-                finish()
-            }
-        )
+        setDialogNegativeClickListener(R.id.nav_host, 0) {
+            finishAndRemoveTask()
+        }
 
         viewModel.initializationLiveData.observe(
             this,
