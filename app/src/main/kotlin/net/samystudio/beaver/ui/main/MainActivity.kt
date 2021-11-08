@@ -19,6 +19,7 @@ import net.samystudio.beaver.ui.common.dialog.setDialogNegativeClickListener
 import net.samystudio.beaver.ui.common.dialog.setDialogPositiveClickListener
 import net.samystudio.beaver.util.toggleLightSystemBars
 import net.samystudio.beaver.util.viewBinding
+import java.util.*
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedListener {
@@ -35,11 +36,11 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         WindowCompat.setDecorFitsSystemWindows(window, false)
         toggleLightSystemBars(true)
 
-        setDialogPositiveClickListener(R.id.nav_host) {
+        setDialogPositiveClickListener(R.id.nav_host, ERROR_REQUEST_CODE) {
             viewModel.retry()
         }
 
-        setDialogNegativeClickListener(R.id.nav_host) {
+        setDialogNegativeClickListener(R.id.nav_host, ERROR_REQUEST_CODE) {
             finishAndRemoveTask()
         }
 
@@ -50,15 +51,14 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
                     is AsyncState.Failed -> {
                         val resolvable =
                             it.error is GoogleApiAvailabilityManager.GoogleApiAvailabilityException &&
-                                    it.error.isResolvable &&
-                                    it.error.googleApiAvailability.showErrorDialogFragment(
-                                        this,
-                                        it.error.status,
-                                        0
-                                    )
+                                it.error.isResolvable &&
+                                it.error.googleApiAvailability.showErrorDialogFragment(
+                                    this,
+                                    it.error.status,
+                                    0
+                                )
                         if (!resolvable) {
                             findNavController(R.id.nav_host).navigate(
-
                                 NavigationMainDirections.actionGlobalErrorDialog(
                                     source = ErrorSource.APP,
                                     titleRes = R.string.error_title,
@@ -66,6 +66,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
                                     positiveButtonRes = R.string.retry,
                                     negativeButtonRes = R.string.quit,
                                     cancelable = false,
+                                    requestCode = ERROR_REQUEST_CODE
                                 )
                             )
                         }
@@ -96,5 +97,9 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         destination: NavDestination,
         arguments: Bundle?,
     ) {
+    }
+
+    companion object {
+        private val ERROR_REQUEST_CODE = Random().nextInt()
     }
 }

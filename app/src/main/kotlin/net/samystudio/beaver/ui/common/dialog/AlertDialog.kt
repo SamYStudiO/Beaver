@@ -471,7 +471,7 @@ open class AlertDialog :
 /**
  * Set a listener invoked when dialog is dismissed.
  */
-fun Fragment.setDialogDismissListener(requestCode: Int = 0, listener: (bundle: Bundle) -> Unit) {
+fun Fragment.setDialogDismissListener(requestCode: Int, listener: (bundle: Bundle) -> Unit) {
     setFragmentResultListener("${AlertDialog.REQUEST_KEY_DISMISS}$requestCode") { _, bundle ->
         listener.invoke(bundle)
     }
@@ -482,7 +482,7 @@ fun Fragment.setDialogDismissListener(requestCode: Int = 0, listener: (bundle: B
  */
 fun AppCompatActivity.setDialogDismissListener(
     @IdRes navHostId: Int,
-    requestCode: Int = 0,
+    requestCode: Int,
     listener: (bundle: Bundle) -> Unit
 ) {
     supportFragmentManager.findFragmentById(navHostId)
@@ -498,7 +498,7 @@ fun AppCompatActivity.setDialogDismissListener(
 /**
  * Set a listener invoked when dialog is cancelled.
  */
-fun Fragment.setDialogCancelListener(requestCode: Int = 0, listener: (bundle: Bundle) -> Unit) {
+fun Fragment.setDialogCancelListener(requestCode: Int, listener: (bundle: Bundle) -> Unit) {
     setFragmentResultListener("${AlertDialog.REQUEST_KEY_CANCEL}$requestCode") { _, bundle ->
         listener.invoke(bundle)
     }
@@ -509,7 +509,7 @@ fun Fragment.setDialogCancelListener(requestCode: Int = 0, listener: (bundle: Bu
  */
 fun AppCompatActivity.setDialogCancelListener(
     @IdRes navHostId: Int,
-    requestCode: Int = 0,
+    requestCode: Int,
     listener: (bundle: Bundle) -> Unit
 ) {
     supportFragmentManager.findFragmentById(navHostId)
@@ -526,7 +526,7 @@ fun AppCompatActivity.setDialogCancelListener(
  * Set a listener invoked when dialog is cancelled or when dialog negative button is clicked.
  */
 fun Fragment.setDialogCancelOrNegativeClickListener(
-    requestCode: Int = 0,
+    requestCode: Int,
     listener: (bundle: Bundle) -> Unit
 ) {
     setDialogCancelListener(requestCode) { bundle ->
@@ -542,7 +542,7 @@ fun Fragment.setDialogCancelOrNegativeClickListener(
  */
 fun AppCompatActivity.setDialogCancelOrNegativeClickListener(
     @IdRes navHostId: Int,
-    requestCode: Int = 0,
+    requestCode: Int,
     listener: (bundle: Bundle) -> Unit
 ) {
     setDialogCancelListener(navHostId, requestCode) { bundle ->
@@ -557,7 +557,7 @@ fun AppCompatActivity.setDialogCancelOrNegativeClickListener(
  * Set a listener invoked when dialog positive button is clicked.
  */
 fun Fragment.setDialogPositiveClickListener(
-    requestCode: Int = 0,
+    requestCode: Int,
     listener: (bundle: Bundle) -> Unit
 ) {
     setFragmentResultListener("${AlertDialog.REQUEST_KEY_CLICK_POSITIVE}$requestCode") { _, bundle ->
@@ -570,7 +570,7 @@ fun Fragment.setDialogPositiveClickListener(
  */
 fun AppCompatActivity.setDialogPositiveClickListener(
     @IdRes navHostId: Int,
-    requestCode: Int = 0,
+    requestCode: Int,
     listener: (bundle: Bundle) -> Unit
 ) {
     supportFragmentManager.findFragmentById(navHostId)
@@ -587,7 +587,7 @@ fun AppCompatActivity.setDialogPositiveClickListener(
  * Set a listener invoked when dialog negative button is clicked.
  */
 fun Fragment.setDialogNegativeClickListener(
-    requestCode: Int = 0,
+    requestCode: Int,
     listener: (bundle: Bundle) -> Unit
 ) {
     setFragmentResultListener("${AlertDialog.REQUEST_KEY_CLICK_NEGATIVE}$requestCode") { _, bundle ->
@@ -600,7 +600,7 @@ fun Fragment.setDialogNegativeClickListener(
  */
 fun AppCompatActivity.setDialogNegativeClickListener(
     @IdRes navHostId: Int,
-    requestCode: Int = 0,
+    requestCode: Int,
     listener: (bundle: Bundle) -> Unit
 ) {
     supportFragmentManager.findFragmentById(navHostId)
@@ -618,7 +618,7 @@ fun AppCompatActivity.setDialogNegativeClickListener(
  * requestCode used to build this dialog is passed as listener argument.
  */
 fun Fragment.setDialogNeutralClickListener(
-    requestCode: Int = 0,
+    requestCode: Int,
     listener: (bundle: Bundle) -> Unit
 ) {
     setFragmentResultListener("${AlertDialog.REQUEST_KEY_CLICK_NEUTRAL}$requestCode") { _, bundle ->
@@ -632,7 +632,7 @@ fun Fragment.setDialogNeutralClickListener(
  */
 fun AppCompatActivity.setDialogNeutralClickListener(
     @IdRes navHostId: Int,
-    requestCode: Int = 0,
+    requestCode: Int,
     listener: (bundle: Bundle) -> Unit
 ) {
     supportFragmentManager.findFragmentById(navHostId)
@@ -650,7 +650,7 @@ fun AppCompatActivity.setDialogNeutralClickListener(
  * This is called each time an item is clicked while dialog is opened.
  */
 fun Fragment.setDialogSingleChoiceItemClickListener(
-    requestCode: Int = 0,
+    requestCode: Int,
     listener: (clickIndex: Int, bundle: Bundle) -> Unit
 ) {
     setFragmentResultListener("${AlertDialog.REQUEST_KEY_CLICK_ITEM}$requestCode") { _, bundle ->
@@ -667,7 +667,7 @@ fun Fragment.setDialogSingleChoiceItemClickListener(
  */
 fun AppCompatActivity.setDialogSingleChoiceItemClickListener(
     @IdRes navHostId: Int,
-    requestCode: Int = 0,
+    requestCode: Int,
     listener: (clickIndex: Int, bundle: Bundle) -> Unit
 ) {
     supportFragmentManager.findFragmentById(navHostId)
@@ -688,7 +688,7 @@ fun AppCompatActivity.setDialogSingleChoiceItemClickListener(
  * This is called only once during dialog lifetime and after dialog positive button was clicked.
  */
 fun Fragment.setDialogSingleChoiceItemResultListener(
-    requestCode: Int = 0,
+    requestCode: Int,
     listener: (resultIndex: Int, bundle: Bundle) -> Unit
 ) {
     setFragmentResultListener("${AlertDialog.REQUEST_KEY_RESULT_ITEM}$requestCode") { _, bundle ->
@@ -705,7 +705,7 @@ fun Fragment.setDialogSingleChoiceItemResultListener(
  */
 fun AppCompatActivity.setDialogSingleChoiceItemResultListener(
     @IdRes navHostId: Int,
-    requestCode: Int = 0,
+    requestCode: Int,
     listener: (resultIndex: Int, bundle: Bundle) -> Unit
 ) {
     supportFragmentManager.findFragmentById(navHostId)
@@ -726,7 +726,7 @@ fun AppCompatActivity.setDialogSingleChoiceItemResultListener(
  * This is called each time an item is clicked while dialog is opened.
  */
 fun Fragment.setDialogMultiChoiceItemClickListener(
-    requestCode: Int = 0,
+    requestCode: Int,
     listener: (clickIndex: Int, checked: Boolean, bundle: Bundle) -> Unit
 ) {
     setFragmentResultListener("${AlertDialog.REQUEST_KEY_CLICK_ITEM}$requestCode") { _, bundle ->
@@ -766,7 +766,7 @@ fun AppCompatActivity.setDialogMultiChoiceItemClickListener(
  * This is called only once during dialog lifetime and after dialog positive button was clicked.
  */
 fun Fragment.setDialogMultiChoiceItemsResultListener(
-    requestCode: Int = 0,
+    requestCode: Int,
     listener: (resultIndices: IntArray, bundle: Bundle) -> Unit
 ) {
     setFragmentResultListener("${AlertDialog.REQUEST_KEY_RESULT_ITEM}$requestCode") { _, bundle ->
@@ -783,7 +783,7 @@ fun Fragment.setDialogMultiChoiceItemsResultListener(
  */
 fun AppCompatActivity.setDialogMultiChoiceItemsResultListener(
     @IdRes navHostId: Int,
-    requestCode: Int = 0,
+    requestCode: Int,
     listener: (resultIndices: IntArray, bundle: Bundle) -> Unit
 ) {
     supportFragmentManager.findFragmentById(navHostId)

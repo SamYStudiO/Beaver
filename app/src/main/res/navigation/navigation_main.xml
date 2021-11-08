@@ -237,7 +237,6 @@
             app:nullable="true" />
         <argument
             android:name="requestCode"
-            android:defaultValue="0"
             app:argType="integer" />
     </dialog>
     <action
@@ -286,6 +285,9 @@
             android:name="cancelable"
             android:defaultValue="true"
             app:argType="boolean" />
+        <argument
+            android:name="requestCode"
+            app:argType="integer" />
     </dialog>
     <action
         android:id="@+id/action_global_errorDialog"
