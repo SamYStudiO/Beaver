@@ -57,7 +57,6 @@ object Versions {
     const val coil = "1.3.2"
 
     // misc
-    const val permissionsdispatcher = "1.1.2"
     const val insetter = "0.6.0"
 
     // debug

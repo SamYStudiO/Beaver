@@ -118,6 +118,5 @@ dependencies {
     test()
     androidTest()
 
-    implementation(Dependencies.permissionsdispatcher_ktx)
     implementation(Dependencies.insetter)
 }

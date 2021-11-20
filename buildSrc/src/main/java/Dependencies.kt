@@ -88,8 +88,6 @@ object Dependencies {
     const val coil = "io.coil-kt:coil:${Versions.coil}"
 
     // misc
-    const val permissionsdispatcher_ktx =
-        "com.github.permissions-dispatcher:ktx:${Versions.permissionsdispatcher}"
     const val insetter = "dev.chrisbanes.insetter:insetter:${Versions.insetter}"
 
     // debug
