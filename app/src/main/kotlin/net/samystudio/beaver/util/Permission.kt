@@ -98,7 +98,7 @@ class RequestPermissionLauncher(
 
         when {
             fragment.hasPermission(permission) ||
-                    (maxSdkInt != null && Build.VERSION.SDK_INT > maxSdkInt) -> {
+                (maxSdkInt != null && Build.VERSION.SDK_INT > maxSdkInt) -> {
                 globalSuccess?.invoke()
                 localSuccess?.invoke()
             }
@@ -154,7 +154,6 @@ class RequestPermissionsLauncher(
             if (map.filter { !it.value }.isEmpty()) {
                 globalSuccess?.invoke()
                 localSuccess?.invoke()
-
             } else
                 map.filter { !it.value }.map { it.key }.toSet().let {
                     if (it.isNotEmpty()) {
