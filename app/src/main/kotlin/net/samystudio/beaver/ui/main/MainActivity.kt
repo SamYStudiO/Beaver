@@ -104,8 +104,9 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         destination: NavDestination,
         arguments: Bundle?,
     ) {
-        ((destination as? FragmentNavigator.Destination)?.className
-            ?: (destination as? DialogFragmentNavigator.Destination)?.className)?.let {
+        val className = (destination as? FragmentNavigator.Destination)?.className
+            ?: (destination as? DialogFragmentNavigator.Destination)?.className
+        className?.let {
             viewModel.logScreen(it)
         }
     }
