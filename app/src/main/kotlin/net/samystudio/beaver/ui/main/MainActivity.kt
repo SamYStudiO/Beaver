@@ -8,6 +8,8 @@ import androidx.core.view.WindowCompat
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.DialogFragmentNavigator
+import androidx.navigation.fragment.FragmentNavigator
 import dagger.hilt.android.AndroidEntryPoint
 import net.samystudio.beaver.NavigationMainDirections
 import net.samystudio.beaver.R
@@ -90,6 +92,11 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         findNavController(R.id.nav_host).addOnDestinationChangedListener(this)
     }
 
+    override fun onDestroy() {
+        findNavController(R.id.nav_host).removeOnDestinationChangedListener(this)
+        super.onDestroy()
+    }
+
     override fun onSupportNavigateUp(): Boolean = findNavController(R.id.nav_host).navigateUp()
 
     override fun onDestinationChanged(
@@ -97,6 +104,10 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         destination: NavDestination,
         arguments: Bundle?,
     ) {
+        ((destination as? FragmentNavigator.Destination)?.className
+            ?: (destination as? DialogFragmentNavigator.Destination)?.className)?.let {
+            viewModel.logScreen(it)
+        }
     }
 
     companion object {

@@ -2,6 +2,8 @@ package net.samystudio.beaver.ui.main
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.toLiveData
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.logEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.core.BackpressureStrategy
 import io.reactivex.rxjava3.core.Flowable
@@ -19,7 +21,8 @@ import javax.inject.Inject
 @HiltViewModel
 class MainActivityViewModel @Inject constructor(
     googleApiAvailabilityManager: GoogleApiAvailabilityManager,
-    userManager: UserManager
+    userManager: UserManager,
+    private val firebaseAnalytics: FirebaseAnalytics,
 ) : BaseDisposablesViewModel() {
     private val _initializationLiveData =
         // zip all initialization observables required here
@@ -40,5 +43,11 @@ class MainActivityViewModel @Inject constructor(
 
     fun retry() {
         _initializationLiveData.trigger()
+    }
+
+    fun logScreen(screenName: String) {
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW) {
+            param(FirebaseAnalytics.Param.SCREEN_NAME, screenName)
+        }
     }
 }

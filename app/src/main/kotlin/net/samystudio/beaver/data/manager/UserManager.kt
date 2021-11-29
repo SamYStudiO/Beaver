@@ -3,6 +3,7 @@
 package net.samystudio.beaver.data.manager
 
 import android.content.ComponentCallbacks2
+import com.google.firebase.analytics.FirebaseAnalytics
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
@@ -25,6 +26,7 @@ class UserManager @Inject constructor(
     private val authenticationApiInterfaceImpl: AuthenticatorApiInterfaceImpl,
     private val userApiInterfaceImpl: UserApiInterfaceImpl,
     private val userDao: UserDao,
+    private val firebaseAnalytics: FirebaseAnalytics,
 ) : TrimMemory {
     private val _statusObservable: BehaviorSubject<Boolean> =
         BehaviorSubject.createDefault(isConnected)
@@ -86,6 +88,7 @@ class UserManager @Inject constructor(
 
     fun disconnect() {
         sharedPreferencesHelper.accountToken = null
+        firebaseAnalytics.setUserId(null)
         _statusObservable.onNext(false)
     }
 
@@ -97,6 +100,7 @@ class UserManager @Inject constructor(
         userDao.insertUser(user)
         sharedPreferencesHelper.accountName.set(user.email)
         userCache = user
+        firebaseAnalytics.setUserId(user.id.toString())
         _userObservable.onNext(user)
     }
 
