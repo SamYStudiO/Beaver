@@ -25,26 +25,29 @@ import java.util.concurrent.TimeUnit
  * @param initialData Data ([IN]) pass to [Flowable] when this [LiveData] is getting active,
  * this is useless if {@code isTriggeredWhenActivated} is false as nothing we'll be trigger when this
  * getting active.
- * @param debounceTimeout A timeout period while trigger will be ignored after a trigger has be
+ * @param throttleTimeout A timeout period while trigger will be ignored after a trigger has be
  * done. Set to 0 to disable this option (0 is default).
- * @param debounceUnit The unit of time for the specified {@code debounceTimeout}
+ * @param throttleUnit The unit of time for the specified {@code debounceTimeout}
  * @param flowableBuilder A lambda to get triggered [Flowable] with data ([IN]).
  */
-class TriggerDataLiveData<IN : Any, OUT : Any>(
+open class TriggerDataLiveData<IN : Any, OUT : Any>(
     private val isTriggeredWhenActivated: Boolean = false,
     private val initialData: IN? = null,
-    debounceTimeout: Long = 0,
-    debounceUnit: TimeUnit = TimeUnit.MILLISECONDS,
-    debounceScheduler: Scheduler = Schedulers.computation(),
+    throttleTimeout: Long = 0,
+    throttleUnit: TimeUnit = TimeUnit.MILLISECONDS,
+    throttleScheduler: Scheduler = Schedulers.computation(),
     val flowableBuilder: (IN) -> Flowable<OUT>,
 ) : LiveData<OUT>(), Disposable {
     private val trigger = PublishProcessor.create<IN>()
     private val disposable: Disposable =
-        trigger.debounce(debounceTimeout, debounceUnit, debounceScheduler)
-            .switchMap { data ->
-                flowableBuilder(data).doOnNext { postValue(it) }
-            }
-            .subscribe()
+        trigger.let {
+            if (throttleTimeout > 0)
+                it.throttleLatest(throttleTimeout, throttleUnit, throttleScheduler, true)
+            else
+                it
+        }.switchMap { data ->
+            flowableBuilder(data).doOnNext { postValue(it) }
+        }.subscribe()
     private var lastData: IN? = null
 
     override fun onActive() {

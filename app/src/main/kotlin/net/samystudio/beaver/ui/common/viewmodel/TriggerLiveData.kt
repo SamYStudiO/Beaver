@@ -21,25 +21,28 @@ import java.util.concurrent.TimeUnit
  *
  * @param isTriggeredWhenActivated A [Boolean] that indicates if we want to automatically trigger
  * a new [Flowable] request when this [LiveData] becomes active.
- * @param debounceTimeout A timeout period while trigger will be ignored after a trigger has be
+ * @param throttleTimeout A timeout period while trigger will be ignored after a trigger has be
  * done. Set to 0 to disable this option (0 is default).
- * @param debounceUnit The unit of time for the specified {@code debounceTimeout}
+ * @param throttleUnit The unit of time for the specified {@code debounceTimeout}
  * @param flowable A [Flowable].
  */
 class TriggerLiveData<OUT : Any>(
     flowable: Flowable<OUT>,
     private val isTriggeredWhenActivated: Boolean = false,
-    debounceTimeout: Long = 0,
-    debounceUnit: TimeUnit = TimeUnit.MILLISECONDS,
-    debounceScheduler: Scheduler = Schedulers.computation(),
+    throttleTimeout: Long = 0,
+    throttleUnit: TimeUnit = TimeUnit.MILLISECONDS,
+    throttleScheduler: Scheduler = Schedulers.computation(),
 ) : LiveData<OUT>(), Disposable {
     private val trigger: FlowableProcessor<Unit> = PublishProcessor.create()
     private val disposable: Disposable =
-        trigger.debounce(debounceTimeout, debounceUnit, debounceScheduler)
-            .switchMap {
-                flowable.doOnNext { postValue(it) }
-            }
-            .subscribe()
+        trigger.let {
+            if (throttleTimeout > 0)
+                it.throttleLatest(throttleTimeout, throttleUnit, throttleScheduler, true)
+            else
+                it
+        }.switchMap {
+            flowable.doOnNext { postValue(it) }
+        }.subscribe()
 
     override fun onActive() {
         super.onActive()
