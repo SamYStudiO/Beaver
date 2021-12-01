@@ -22,3 +22,7 @@
 
 # Crashlytics --------------------------------------------------------------------------------------
 -keep public class * extends java.lang.Exception
+
+-keep class * extends androidx.fragment.app.Fragment{}
+-keep class net.samystudio.beaver.data.model.** { *; }
+-keep enum net.samystudio.beaver.** { *; }
