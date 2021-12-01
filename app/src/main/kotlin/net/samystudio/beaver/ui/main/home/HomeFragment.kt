@@ -11,7 +11,9 @@ import dev.chrisbanes.insetter.applyInsetter
 import net.samystudio.beaver.R
 import net.samystudio.beaver.data.handleStatesFromFragmentWithLoaderDialog
 import net.samystudio.beaver.databinding.FragmentHomeBinding
-import net.samystudio.beaver.util.*
+import net.samystudio.beaver.util.TRANSITION_DURATION
+import net.samystudio.beaver.util.toggleLightSystemBars
+import net.samystudio.beaver.util.viewBinding
 
 @AndroidEntryPoint
 class HomeFragment : Fragment(R.layout.fragment_home) {

@@ -36,10 +36,9 @@ android {
         applicationId = "net.samystudio.beaver"
         minSdk = Versions.minSdk
         targetSdk = Versions.targetSdk
-        versionCode = versionBuild
+        versionCode = 1
         versionName = "$versionMajor.$versionMinor.$versionPatch"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField("String", "FULL_VERSION_NAME", "\"$versionName build $versionCode\"")
         setProperty("archivesBaseName", "$applicationId-v$versionName($versionCode)")
 
         javaCompileOptions {
@@ -95,11 +94,11 @@ android {
 
     applicationVariants.all {
         outputs.all {
-            // Since we're using date for versionCode, manifest will change each time we compile and
-            // so we won't be able to use "Apply codee changes" features as it doesn't work when
-            // manifest is modified. To avoid that we force a versionCode to 1 for debug build.
+            buildType.isDebuggable
+            // We set versionCode only for release build to avoid breaking instant run
+            // (Apply code changes) for debug build.
             val outputImpl = this as com.android.build.gradle.internal.api.ApkVariantOutputImpl
-            if (name.contains("debug")) outputImpl.versionCodeOverride = 1
+            if (!buildType.isDebuggable) outputImpl.versionCodeOverride = versionBuild
         }
     }
 }
