@@ -36,6 +36,7 @@ android {
         applicationId = "net.samystudio.beaver"
         minSdk = Versions.minSdk
         targetSdk = Versions.targetSdk
+        // We set versionCode below only for non debuggable builds to avoid breaking instant run.
         versionCode = 1
         versionName = "$versionMajor.$versionMinor.$versionPatch"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
