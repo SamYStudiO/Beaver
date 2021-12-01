@@ -94,7 +94,6 @@ android {
 
     applicationVariants.all {
         outputs.all {
-            buildType.isDebuggable
             // We set versionCode only for release build to avoid breaking instant run
             // (Apply code changes) for debug build.
             val outputImpl = this as com.android.build.gradle.internal.api.ApkVariantOutputImpl
