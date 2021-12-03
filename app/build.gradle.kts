@@ -41,7 +41,7 @@ android {
         versionCode = 1
         versionName = "$versionMajor.$versionMinor.$versionPatch"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        setProperty("archivesBaseName", "$applicationId-v$versionName($versionCode)")
+        setProperty("archivesBaseName", "$applicationId-v$versionName($versionBuild)")
 
         javaCompileOptions {
             annotationProcessorOptions {
@@ -99,7 +99,8 @@ android {
             // We set versionCode only for release build to avoid breaking instant run
             // (Apply code changes) for debug build.
             val outputImpl = this as com.android.build.gradle.internal.api.ApkVariantOutputImpl
-            if (!buildType.isDebuggable) outputImpl.versionCodeOverride = versionBuild
+            if (!buildType.isDebuggable)
+                outputImpl.versionCodeOverride = versionBuild
         }
     }
 }
