@@ -89,6 +89,7 @@ object Dependencies {
 
     // misc
     const val insetter = "dev.chrisbanes.insetter:insetter:${Versions.insetter}"
+    const val permissionlauncher = "net.samystudio.permissionlauncher:permissionlauncher-ktx:${Versions.permissionlauncher}"
 
     // debug
     const val timber = "com.jakewharton.timber:timber:${Versions.timber}"

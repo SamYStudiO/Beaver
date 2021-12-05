@@ -120,4 +120,5 @@ dependencies {
     androidTest()
 
     implementation(Dependencies.insetter)
+    implementation(Dependencies.permissionlauncher)
 }

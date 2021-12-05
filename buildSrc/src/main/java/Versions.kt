@@ -58,6 +58,7 @@ object Versions {
 
     // misc
     const val insetter = "0.6.0"
+    const val permissionlauncher = "0.9.0"
 
     // debug
     const val timber = "5.0.1"
