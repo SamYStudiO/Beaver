@@ -35,13 +35,11 @@ object Dependencies {
     const val material = "com.google.android.material:material:${Versions.material}"
 
     // firebase
-    const val firebase_appindexing =
-        "com.google.firebase:firebase-appindexing:${Versions.firebase_appindexing}"
-    const val firebase_crashlytics_ktx =
-        "com.google.firebase:firebase-crashlytics-ktx:${Versions.firebase_crashlytics}"
-    const val firebase_analytics_ktx =
-        "com.google.firebase:firebase-analytics-ktx:${Versions.firebase_analytics}"
-    const val firebase_perf_ktx = "com.google.firebase:firebase-perf-ktx:${Versions.firebase_perf}"
+    const val firebase_bom = "com.google.firebase:firebase-bom:${Versions.firebase_bom}"
+    const val firebase_appindexing = "com.google.firebase:firebase-appindexing"
+    const val firebase_crashlytics_ktx = "com.google.firebase:firebase-crashlytics-ktx"
+    const val firebase_analytics_ktx = "com.google.firebase:firebase-analytics-ktx"
+    const val firebase_perf_ktx = "com.google.firebase:firebase-perf-ktx"
 
     // dagger
     const val hilt_android = "com.google.dagger:hilt-android:${Versions.hilt}"
@@ -158,6 +156,7 @@ fun DependencyHandler.work() {
 }
 
 fun DependencyHandler.firebase() {
+    implementation(platform(Dependencies.firebase_bom))
     implementation(Dependencies.firebase_appindexing)
     implementation(Dependencies.firebase_crashlytics_ktx)
     implementation(Dependencies.firebase_analytics_ktx)
@@ -226,34 +225,34 @@ fun DependencyHandler.androidTest() {
     androidTestImplementation(Dependencies.mockito_android)
 }
 
-private fun DependencyHandler.implementation(depName: String) {
-    add("implementation", depName)
+private fun DependencyHandler.implementation(dep: Any) {
+    add("implementation", dep)
 }
 
-private fun DependencyHandler.kapt(depName: String) {
-    add("kapt", depName)
+private fun DependencyHandler.kapt(dep: Any) {
+    add("kapt", dep)
 }
 
-private fun DependencyHandler.compileOnly(depName: String) {
-    add("compileOnly", depName)
+private fun DependencyHandler.compileOnly(dep: Any) {
+    add("compileOnly", dep)
 }
 
-private fun DependencyHandler.debugImplementation(depName: String) {
-    add("debugImplementation", depName)
+private fun DependencyHandler.debugImplementation(dep: Any) {
+    add("debugImplementation", dep)
 }
 
-private fun DependencyHandler.testImplementation(depName: String) {
-    add("testImplementation", depName)
+private fun DependencyHandler.testImplementation(dep: Any) {
+    add("testImplementation", dep)
 }
 
-private fun DependencyHandler.androidTestImplementation(depName: String) {
-    add("androidTestImplementation", depName)
+private fun DependencyHandler.androidTestImplementation(dep: Any) {
+    add("androidTestImplementation", dep)
 }
 
-private fun DependencyHandler.kaptAndroidTest(depName: String) {
-    add("kaptAndroidTest", depName)
+private fun DependencyHandler.kaptAndroidTest(dep: Any) {
+    add("kaptAndroidTest", dep)
 }
 
-private fun DependencyHandler.kaptTest(depName: String) {
-    add("kaptTest", depName)
+private fun DependencyHandler.kaptTest(dep: Any) {
+    add("kaptTest", dep)
 }
