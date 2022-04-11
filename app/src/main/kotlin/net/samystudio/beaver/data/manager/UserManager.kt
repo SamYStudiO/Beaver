@@ -60,12 +60,12 @@ class UserManager @Inject constructor(
 
     fun refreshToken(): Completable =
         (
-                token?.let { token ->
-                    authenticationApiInterfaceImpl.refreshToken(token.refreshToken)
-                        .doOnSuccess { writeToken(it) }
-                        .ignoreElement()
-                } ?: Completable.error(TokenException())
-                )
+            token?.let { token ->
+                authenticationApiInterfaceImpl.refreshToken(token.refreshToken)
+                    .doOnSuccess { writeToken(it) }
+                    .ignoreElement()
+            } ?: Completable.error(TokenException())
+            )
             .doOnError {
                 Timber.w(it, "An error occurred refreshing token")
                 disconnect()

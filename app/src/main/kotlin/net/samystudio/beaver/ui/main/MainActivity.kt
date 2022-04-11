@@ -11,7 +11,6 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.DialogFragmentNavigator
 import androidx.navigation.fragment.FragmentNavigator
 import dagger.hilt.android.AndroidEntryPoint
-import net.samystudio.beaver.util.navigate
 import net.samystudio.beaver.NavigationMainDirections
 import net.samystudio.beaver.R
 import net.samystudio.beaver.data.AsyncState
@@ -20,6 +19,7 @@ import net.samystudio.beaver.databinding.ActivityMainBinding
 import net.samystudio.beaver.ui.common.dialog.ErrorSource
 import net.samystudio.beaver.ui.common.dialog.setDialogNegativeClickListener
 import net.samystudio.beaver.ui.common.dialog.setDialogPositiveClickListener
+import net.samystudio.beaver.util.navigate
 import net.samystudio.beaver.util.toggleLightSystemBars
 import net.samystudio.beaver.util.viewBinding
 import java.util.*
@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         super.onCreate(savedInstanceState)
 
         val splashScreen = installSplashScreen()
-        splashScreen.setKeepVisibleCondition { !viewModel.isReady }
+        splashScreen.setKeepOnScreenCondition { !viewModel.isReady }
 
         setContentView(binding.root)
         WindowCompat.setDecorFitsSystemWindows(window, false)
@@ -52,12 +52,12 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
                 is AsyncState.Failed -> {
                     val resolvable =
                         it.error is GoogleApiAvailabilityManager.GoogleApiAvailabilityException &&
-                                it.error.isResolvable &&
-                                it.error.googleApiAvailability.showErrorDialogFragment(
-                                    this,
-                                    it.error.status,
-                                    0
-                                )
+                            it.error.isResolvable &&
+                            it.error.googleApiAvailability.showErrorDialogFragment(
+                                this,
+                                it.error.status,
+                                0
+                            )
                     if (!resolvable) {
                         navigate(
                             R.id.nav_host,

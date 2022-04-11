@@ -29,7 +29,7 @@ object Versions {
     const val constraintlayout = "2.1.3"
     const val arch_version = "2.1.0"
     const val lifecycle = "2.4.1"
-    const val navigation = "2.3.5"
+    const val navigation = "2.4.2"
     const val room = "2.4.2"
     const val work = "2.7.1"
     const val material = "1.5.0"
@@ -38,11 +38,11 @@ object Versions {
     const val firebase_bom = "29.3.0"
 
     // dagger
-    const val hilt = "2.40.5"
+    const val hilt = "2.41"
     const val hilt_androidx = "1.0.0"
 
     // reactive
-    const val rxjava3 = "3.1.3"
+    const val rxjava3 = "3.1.4"
     const val rxandroid = "3.0.0"
     const val rxkotlin = "3.0.1"
     const val rxbinding4 = "4.0.0"

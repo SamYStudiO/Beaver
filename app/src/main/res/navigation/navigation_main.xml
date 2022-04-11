@@ -287,7 +287,8 @@
             app:argType="boolean" />
         <argument
             android:name="requestCode"
-            app:argType="integer" />
+            app:argType="integer"
+            android:defaultValue="0" />
     </dialog>
     <action
         android:id="@+id/action_global_errorDialog"

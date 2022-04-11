@@ -27,8 +27,7 @@ fun Fragment.showErrorDialog(
             (throwable as? RetrofitException)?.code?.toString(),
             (throwable as? RetrofitException)?.errorBody?.code?.toString(),
             message ?: (throwable as? RetrofitException)?.errorBody?.message
-            ?: throwable?.message,
-            requestCode = 0
+                ?: throwable?.message,
         )
     )
 

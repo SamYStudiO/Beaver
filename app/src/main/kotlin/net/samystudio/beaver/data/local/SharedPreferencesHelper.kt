@@ -51,7 +51,7 @@ class SharedPreferencesHelper @Inject constructor(
         get() = serverList.find { server ->
             server.title == serverName.get()
         } ?: serverList.find { it.defaultForBuildType == BuildConfig.BUILD_TYPE }
-        ?: serverList.first()
+            ?: serverList.first()
 
     companion object {
         private const val ACCOUNT_NAME = "SharedPreferencesHelper:accountName"
