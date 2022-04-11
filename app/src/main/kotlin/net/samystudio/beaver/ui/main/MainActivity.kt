@@ -11,6 +11,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.DialogFragmentNavigator
 import androidx.navigation.fragment.FragmentNavigator
 import dagger.hilt.android.AndroidEntryPoint
+import net.samystudio.beaver.util.navigate
 import net.samystudio.beaver.NavigationMainDirections
 import net.samystudio.beaver.R
 import net.samystudio.beaver.data.AsyncState
@@ -53,14 +54,15 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
                     is AsyncState.Failed -> {
                         val resolvable =
                             it.error is GoogleApiAvailabilityManager.GoogleApiAvailabilityException &&
-                                it.error.isResolvable &&
-                                it.error.googleApiAvailability.showErrorDialogFragment(
-                                    this,
-                                    it.error.status,
-                                    0
-                                )
+                                    it.error.isResolvable &&
+                                    it.error.googleApiAvailability.showErrorDialogFragment(
+                                        this,
+                                        it.error.status,
+                                        0
+                                    )
                         if (!resolvable) {
-                            findNavController(R.id.nav_host).navigate(
+                            navigate(
+                                R.id.nav_host,
                                 NavigationMainDirections.actionGlobalErrorDialog(
                                     source = ErrorSource.APP,
                                     titleRes = R.string.error_title,
@@ -82,7 +84,10 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
             this,
             {
                 if (!it && findNavController(R.id.nav_host).currentDestination?.id != R.id.authenticatorFragment)
-                    findNavController(R.id.nav_host).navigate(NavigationMainDirections.actionGlobalAuthenticatorFragment())
+                    navigate(
+                        R.id.nav_host,
+                        NavigationMainDirections.actionGlobalAuthenticatorFragment()
+                    )
             }
         )
     }

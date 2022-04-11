@@ -1,7 +1,6 @@
 package net.samystudio.beaver.util
 
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import net.samystudio.beaver.NavigationMainDirections
 import net.samystudio.beaver.data.remote.retrofit.RetrofitException
@@ -16,7 +15,7 @@ fun Fragment.showErrorDialog(
     appCode: Int? = null,
     message: String? = null
 ) {
-    findNavController().navigate(
+    navigate(
         NavigationMainDirections.actionGlobalErrorDialog(
             when {
                 errorSource != null -> errorSource
@@ -28,7 +27,7 @@ fun Fragment.showErrorDialog(
             (throwable as? RetrofitException)?.code?.toString(),
             (throwable as? RetrofitException)?.errorBody?.code?.toString(),
             message ?: (throwable as? RetrofitException)?.errorBody?.message
-                ?: throwable?.message,
+            ?: throwable?.message,
             requestCode = 0
         )
     )

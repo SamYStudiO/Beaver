@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.transition.MaterialFadeThrough
 import dagger.hilt.android.AndroidEntryPoint
 import dev.chrisbanes.insetter.applyInsetter
@@ -14,6 +13,7 @@ import net.samystudio.beaver.databinding.FragmentUserProfileBinding
 import net.samystudio.beaver.util.TRANSITION_DURATION
 import net.samystudio.beaver.util.toggleLightSystemBars
 import net.samystudio.beaver.util.viewBinding
+import net.samystudio.beaver.util.popBackStack
 
 @AndroidEntryPoint
 class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
@@ -49,7 +49,7 @@ class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
                 state.handleStatesFromFragmentWithLoaderDialog(
                     this,
                     failed = {
-                        findNavController().popBackStack()
+                        popBackStack()
                     },
                     complete = {
                         binding.textView.text = it.toString()

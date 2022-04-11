@@ -12,7 +12,8 @@ import android.graphics.PorterDuffColorFilter
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.TypedValue
-import androidx.annotation.*
+import androidx.annotation.DrawableRes
+import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.core.content.ContextCompat
@@ -25,7 +26,6 @@ import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
 import com.google.android.material.color.MaterialColors
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import java.util.*
 import androidx.appcompat.app.AlertDialog as AndroidAlertDialog
 
 /**
@@ -39,7 +39,8 @@ open class AlertDialog :
     protected val extras
         get() = arguments?.getBundle(KEY_EXTRAS) ?: bundleOf()
     protected val requestCode
-        get() = arguments?.getInt(KEY_REQUEST_CODE)?.let { if (it == 0) "" else it.toString() } ?: ""
+        get() = arguments?.getInt(KEY_REQUEST_CODE)?.let { if (it == 0) "" else it.toString() }
+            ?: ""
 
     /**
      * Store current selected index for single choice dialogs.
@@ -148,8 +149,9 @@ open class AlertDialog :
                 }
                 getInt(KEY_MULTI_CHOICE_ITEMS_RES).let { multiChoiceItemRes ->
                     val indices = mutableSetOf<Int>()
-                    val multiChoiceCheckedItems = getStringArray(KEY_MULTI_CHOICE_CHECKED_ITEMS)?.map { it.toBoolean() }
-                        ?.toBooleanArray()
+                    val multiChoiceCheckedItems =
+                        getStringArray(KEY_MULTI_CHOICE_CHECKED_ITEMS)?.map { it.toBoolean() }
+                            ?.toBooleanArray()
                     multiChoiceCheckedItems?.apply {
                         mapIndexed { index, b -> index to b }
                             .filter { pair -> pair.second }

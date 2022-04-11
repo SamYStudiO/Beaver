@@ -58,10 +58,13 @@ class ErrorDialog : AlertDialog() {
 enum class ErrorSource(val code: Int) {
     // IO error
     NETWORK(0),
+
     // HTTP error 3xx, 4xx, 5xx
     SERVER(1),
+
     // Internal app error
     APP(2),
+
     // System error
     SYSTEM(3)
 }

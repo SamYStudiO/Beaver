@@ -7,7 +7,6 @@ import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.transition.MaterialSharedAxis
 import com.jakewharton.rxbinding4.widget.textChanges
 import dagger.hilt.android.AndroidEntryPoint
@@ -20,6 +19,7 @@ import net.samystudio.beaver.data.handleStatesFromFragmentWithLoaderDialog
 import net.samystudio.beaver.data.local.SharedPreferencesHelper
 import net.samystudio.beaver.databinding.FragmentAuthenticatorBinding
 import net.samystudio.beaver.util.*
+import net.samystudio.beaver.util.popBackStack
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -124,7 +124,9 @@ class AuthenticatorFragment : Fragment(R.layout.fragment_authenticator) {
                             val password = binding.signUpPassword.text.toString()
                             val passwordMatchValid = t.toString() == password
                             binding.signUpConfirmPasswordLayout.error =
-                                if (password.validate(PASSWORD_VALIDATOR) && !passwordMatchValid) getString(R.string.error_password_match) else null
+                                if (password.validate(PASSWORD_VALIDATOR) && !passwordMatchValid) getString(
+                                    R.string.error_password_match
+                                ) else null
                             passwordMatchValid
                         }
                 ) { t1, t2, t3 -> t1 && t2 && t3 }
@@ -138,7 +140,7 @@ class AuthenticatorFragment : Fragment(R.layout.fragment_authenticator) {
             {
                 it.handleStatesFromFragmentWithLoaderDialog(
                     this,
-                    complete = { findNavController().popBackStack() },
+                    complete = { popBackStack() },
                 )
             }
         )
