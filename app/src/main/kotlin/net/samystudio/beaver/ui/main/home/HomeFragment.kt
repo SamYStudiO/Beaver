@@ -41,15 +41,12 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         binding.toolbar.title = "Home"
         binding.profileButton.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_home_to_userProfile))
 
-        viewModel.homeLiveData.observe(
-            viewLifecycleOwner,
-            { state ->
-                state.handleStatesFromFragmentWithLoaderDialog(
-                    this,
-                    complete = { binding.textView.text = it.content },
-                )
-            }
-        )
+        viewModel.homeLiveData.observe(viewLifecycleOwner) { state ->
+            state.handleStatesFromFragmentWithLoaderDialog(
+                this,
+                complete = { binding.textView.text = it.content },
+            )
+        }
     }
 
     override fun onResume() {

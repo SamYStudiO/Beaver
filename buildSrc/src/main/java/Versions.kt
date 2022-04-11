@@ -5,37 +5,37 @@ object Versions {
     const val buildToolsVersion = "31.0.0"
 
     // tools
-    const val android_build_tools = "7.0.4"
+    const val android_build_tools = "7.1.3"
     const val google_services = "4.3.10"
     const val strict_version_matcher_plugin = "1.2.2"
     const val firebase_crashlytics_plugin = "2.7.1"
-    const val firebase_perf_plugin = "1.4.0"
-    const val navigation_safe_args_plugin = "2.3.5"
-    const val gradle_versions_plugin = "0.39.0"
-    const val spotless = "6.1.2"
+    const val firebase_perf_plugin = "1.4.1"
+    const val navigation_safe_args_plugin = "2.4.2"
+    const val gradle_versions_plugin = "0.42.0"
+    const val spotless = "6.4.2"
     const val ktlint = "0.40.0"
 
     // kotlin
-    const val kotlin = "1.6.10"
+    const val kotlin = "1.6.20"
 
     // android
     const val core = "1.6.0"
-    const val core_splashscreen = "1.0.0-alpha02"
-    const val startup = "1.1.0"
+    const val core_splashscreen = "1.0.0-beta02"
+    const val startup = "1.1.1"
     const val activity = "1.4.0"
-    const val fragment = "1.4.0"
-    const val appcompat = "1.4.0"
-    const val preference = "1.1.1"
-    const val constraintlayout = "2.1.2"
+    const val fragment = "1.4.1"
+    const val appcompat = "1.4.1"
+    const val preference = "1.2.0"
+    const val constraintlayout = "2.1.3"
     const val arch_version = "2.1.0"
-    const val lifecycle = "2.4.0"
+    const val lifecycle = "2.4.1"
     const val navigation = "2.3.5"
-    const val room = "2.4.0"
+    const val room = "2.4.2"
     const val work = "2.7.1"
-    const val material = "1.4.0"
+    const val material = "1.5.0"
 
     // firebase
-    const val firebase_bom = "29.0.3"
+    const val firebase_bom = "29.3.0"
 
     // dagger
     const val hilt = "2.40.5"
@@ -67,5 +67,5 @@ object Versions {
     const val test_junit = "1.1.3"
     const val espresso = "3.4.0"
     const val robolectric = "4.7.3"
-    const val mockito = "4.2.0"
+    const val mockito = "4.4.0"
 }

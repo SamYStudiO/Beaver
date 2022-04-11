@@ -136,14 +136,13 @@ class AuthenticatorFragment : Fragment(R.layout.fragment_authenticator) {
         )
 
         viewModel.signLiveData.observe(
-            viewLifecycleOwner,
-            {
-                it.handleStatesFromFragmentWithLoaderDialog(
-                    this,
-                    complete = { popBackStack() },
-                )
-            }
-        )
+            viewLifecycleOwner
+        ) {
+            it.handleStatesFromFragmentWithLoaderDialog(
+                this,
+                complete = { popBackStack() },
+            )
+        }
     }
 
     override fun onResume() {

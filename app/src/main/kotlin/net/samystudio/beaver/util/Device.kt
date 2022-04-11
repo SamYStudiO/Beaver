@@ -1,9 +1,7 @@
-@file:SuppressLint("HardwareIds")
 @file:Suppress("unused")
 
 package net.samystudio.beaver.util
 
-import android.annotation.SuppressLint
 import android.os.Build
 import net.samystudio.beaver.ContextProvider.Companion.applicationContext
 import java.util.*

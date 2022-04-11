@@ -47,49 +47,43 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
             finishAndRemoveTask()
         }
 
-        viewModel.initializationLiveData.observe(
-            this,
-            {
-                when (it) {
-                    is AsyncState.Failed -> {
-                        val resolvable =
-                            it.error is GoogleApiAvailabilityManager.GoogleApiAvailabilityException &&
-                                    it.error.isResolvable &&
-                                    it.error.googleApiAvailability.showErrorDialogFragment(
-                                        this,
-                                        it.error.status,
-                                        0
-                                    )
-                        if (!resolvable) {
-                            navigate(
-                                R.id.nav_host,
-                                NavigationMainDirections.actionGlobalErrorDialog(
-                                    source = ErrorSource.APP,
-                                    titleRes = R.string.error_title,
-                                    message = it.error.message,
-                                    positiveButtonRes = R.string.retry,
-                                    negativeButtonRes = R.string.quit,
-                                    cancelable = false,
-                                    requestCode = ERROR_REQUEST_CODE
+        viewModel.initializationLiveData.observe(this) {
+            when (it) {
+                is AsyncState.Failed -> {
+                    val resolvable =
+                        it.error is GoogleApiAvailabilityManager.GoogleApiAvailabilityException &&
+                                it.error.isResolvable &&
+                                it.error.googleApiAvailability.showErrorDialogFragment(
+                                    this,
+                                    it.error.status,
+                                    0
                                 )
+                    if (!resolvable) {
+                        navigate(
+                            R.id.nav_host,
+                            NavigationMainDirections.actionGlobalErrorDialog(
+                                source = ErrorSource.APP,
+                                titleRes = R.string.error_title,
+                                message = it.error.message,
+                                positiveButtonRes = R.string.retry,
+                                negativeButtonRes = R.string.quit,
+                                cancelable = false,
+                                requestCode = ERROR_REQUEST_CODE
                             )
-                        }
+                        )
                     }
-                    else -> Unit
                 }
+                else -> Unit
             }
-        )
+        }
 
-        viewModel.userStatusLiveData.observe(
-            this,
-            {
-                if (!it && findNavController(R.id.nav_host).currentDestination?.id != R.id.authenticatorFragment)
-                    navigate(
-                        R.id.nav_host,
-                        NavigationMainDirections.actionGlobalAuthenticatorFragment()
-                    )
-            }
-        )
+        viewModel.userStatusLiveData.observe(this) {
+            if (!it && findNavController(R.id.nav_host).currentDestination?.id != R.id.authenticatorFragment)
+                navigate(
+                    R.id.nav_host,
+                    NavigationMainDirections.actionGlobalAuthenticatorFragment()
+                )
+        }
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {

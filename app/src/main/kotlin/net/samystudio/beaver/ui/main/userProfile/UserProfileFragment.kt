@@ -43,21 +43,18 @@ class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
             viewModel.disconnect()
         }
 
-        viewModel.userLiveData.observe(
-            viewLifecycleOwner,
-            { state ->
-                state.handleStatesFromFragmentWithLoaderDialog(
-                    this,
-                    failed = {
-                        popBackStack()
-                    },
-                    complete = {
-                        binding.textView.text = it.toString()
-                        startPostponedEnterTransition()
-                    },
-                )
-            }
-        )
+        viewModel.userLiveData.observe(viewLifecycleOwner) { state ->
+            state.handleStatesFromFragmentWithLoaderDialog(
+                this,
+                failed = {
+                    popBackStack()
+                },
+                complete = {
+                    binding.textView.text = it.toString()
+                    startPostponedEnterTransition()
+                },
+            )
+        }
     }
 
     override fun onResume() {

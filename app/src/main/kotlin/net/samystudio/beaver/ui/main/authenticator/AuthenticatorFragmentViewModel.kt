@@ -14,7 +14,7 @@ import javax.inject.Inject
 class AuthenticatorFragmentViewModel @Inject constructor(
     private val userManager: UserManager
 ) : BaseDisposablesViewModel() {
-    private val _signLiveData = TriggerDataLiveData<Pair<String, String>, AsyncState>() {
+    private val _signLiveData = TriggerDataLiveData<Pair<String, String>, AsyncState> {
         userManager.signIn(it.first, it.second).toAsyncState()
     }
     val signLiveData: LiveData<AsyncState> = _signLiveData.toSingleLiveEvent()
