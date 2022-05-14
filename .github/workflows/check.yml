@@ -32,6 +32,14 @@ jobs:
         with:
           java-version: '11'
 
+      - name: Access local.properties
+        env:
+          KEYALIAS: ${{ secrets.KEYALIAS }}
+          KEYPASSWORD: ${{ secrets.KEYPASSWORD }}
+          STOREFILE: ${{ secrets.STOREFILE }}
+          STOREPASSWORD: ${{ secrets.STOREPASSWORD }}
+        run: echo keyAlias=\"$KEYALIAS\"\nkeyPassword=\"KEYPASSWORD\"\nstoreFile=\"STOREFILE\"\nstorePassword=\"STOREPASSWORD\" > ./local.properties
+
       - name: Gradlew permissions
         run: chmod +x ./gradlew
 
