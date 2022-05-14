@@ -39,8 +39,7 @@ open class AlertDialog :
     protected val extras
         get() = arguments?.getBundle(KEY_EXTRAS) ?: bundleOf()
     protected val requestCode
-        get() = arguments?.getInt(KEY_REQUEST_CODE)?.let { if (it == 0) "" else it.toString() }
-            ?: ""
+        get() = arguments?.getInt(KEY_REQUEST_CODE)?.takeUnless { it == 0 }?.toString() ?: ""
 
     /**
      * Store current selected index for single choice dialogs.
@@ -57,24 +56,31 @@ open class AlertDialog :
             arguments?.apply {
                 this@AlertDialog.isCancelable = getBoolean(KEY_CANCELABLE, true)
 
-                getInt(KEY_TITLE_RES).let {
-                    if (it != 0)
-                        setTitle(it)
+                getInt(KEY_TITLE_RES).let { res ->
+                    if (res != 0)
+                        setTitle(res)
                     else
-                        setTitle(getCharSequence(KEY_TITLE))
-                }
-                getInt(KEY_MESSAGE_RES).let {
-                    if (it != 0)
-                        setMessage(it)
-                    else
-                        getCharSequence(KEY_MESSAGE)?.toString()?.let { message ->
-                            setMessage(
+                        (get(KEY_TITLE) as? String)?.let {
+                            setTitle(
                                 HtmlCompat.fromHtml(
-                                    message,
+                                    it,
                                     HtmlCompat.FROM_HTML_MODE_COMPACT
                                 )
                             )
-                        }
+                        } ?: (get(KEY_TITLE) as? CharSequence)?.let { setTitle(it) }
+                }
+                getInt(KEY_MESSAGE_RES).let { res ->
+                    if (res != 0)
+                        setMessage(res)
+                    else
+                        (get(KEY_MESSAGE) as? String)?.let {
+                            setTitle(
+                                HtmlCompat.fromHtml(
+                                    it,
+                                    HtmlCompat.FROM_HTML_MODE_COMPACT
+                                )
+                            )
+                        } ?: (get(KEY_MESSAGE) as? CharSequence)?.let { setTitle(it) }
                 }
                 getInt(KEY_ICON_ATTRIBUTE).let { iconAttribute ->
                     if (iconAttribute != 0) {
@@ -149,9 +155,7 @@ open class AlertDialog :
                 }
                 getInt(KEY_MULTI_CHOICE_ITEMS_RES).let { multiChoiceItemRes ->
                     val indices = mutableSetOf<Int>()
-                    val multiChoiceCheckedItems =
-                        getStringArray(KEY_MULTI_CHOICE_CHECKED_ITEMS)?.map { it.toBoolean() }
-                            ?.toBooleanArray()
+                    val multiChoiceCheckedItems = getBooleanArray(KEY_MULTI_CHOICE_CHECKED_ITEMS)
                     multiChoiceCheckedItems?.apply {
                         mapIndexed { index, b -> index to b }
                             .filter { pair -> pair.second }
@@ -414,9 +418,9 @@ open class AlertDialog :
 
     companion object {
         const val KEY_TITLE_RES = "titleRes"
-        const val KEY_TITLE = "title"
+        const val KEY_TITLE = "title" // String or CharSequence
         const val KEY_MESSAGE_RES = "messageRes"
-        const val KEY_MESSAGE = "message"
+        const val KEY_MESSAGE = "message" // String or CharSequence
         const val KEY_ICON_ATTRIBUTE = "iconAttribute"
         const val KEY_ICON_RES = "iconRes"
         const val KEY_ICON_BITMAP = "iconBitmap"
@@ -426,24 +430,24 @@ open class AlertDialog :
         const val KEY_POSITIVE_BUTTON_RES = "positiveButtonRes"
         const val KEY_POSITIVE_BUTTON = "positiveButton"
         const val KEY_POSITIVE_BUTTON_ICON_RES = "positiveButtonIconRes"
-        const val KEY_POSITIVE_BUTTON_COLOR = "positiveButtonColor"
         const val KEY_POSITIVE_BUTTON_COLOR_RES = "positiveButtonColorRes"
-        const val KEY_POSITIVE_BUTTON_COLOR_STATE_LIST = "positiveButtonColorStateList"
+        const val KEY_POSITIVE_BUTTON_COLOR = "positiveButtonColor"
         const val KEY_POSITIVE_BUTTON_COLOR_STATE_LIST_RES = "positiveButtonColorStateListRes"
+        const val KEY_POSITIVE_BUTTON_COLOR_STATE_LIST = "positiveButtonColorStateList"
         const val KEY_NEGATIVE_BUTTON_RES = "negativeButtonRes"
         const val KEY_NEGATIVE_BUTTON = "negativeButton"
         const val KEY_NEGATIVE_BUTTON_ICON_RES = "negativeButtonIconRes"
-        const val KEY_NEGATIVE_BUTTON_COLOR = "negativeButtonColor"
         const val KEY_NEGATIVE_BUTTON_COLOR_RES = "negativeButtonColorRes"
-        const val KEY_NEGATIVE_BUTTON_COLOR_STATE_LIST = "negativeButtonColorStateList"
+        const val KEY_NEGATIVE_BUTTON_COLOR = "negativeButtonColor"
         const val KEY_NEGATIVE_BUTTON_COLOR_STATE_LIST_RES = "negativeButtonColorStateListRes"
+        const val KEY_NEGATIVE_BUTTON_COLOR_STATE_LIST = "negativeButtonColorStateList"
         const val KEY_NEUTRAL_BUTTON_RES = "neutralButtonRes"
         const val KEY_NEUTRAL_BUTTON = "neutralButton"
         const val KEY_NEUTRAL_BUTTON_ICON_RES = "neutralButtonIconRes"
-        const val KEY_NEUTRAL_BUTTON_COLOR = "neutralButtonColor"
         const val KEY_NEUTRAL_BUTTON_COLOR_RES = "neutralButtonColorRes"
-        const val KEY_NEUTRAL_BUTTON_COLOR_STATE_LIST = "neutralButtonColorStateList"
+        const val KEY_NEUTRAL_BUTTON_COLOR = "neutralButtonColor"
         const val KEY_NEUTRAL_BUTTON_COLOR_STATE_LIST_RES = "neutralButtonColorStateListRes"
+        const val KEY_NEUTRAL_BUTTON_COLOR_STATE_LIST = "neutralButtonColorStateList"
         const val KEY_CANCELABLE = "cancelable"
         const val KEY_ITEMS_RES = "itemsRes"
         const val KEY_ITEMS = "items"

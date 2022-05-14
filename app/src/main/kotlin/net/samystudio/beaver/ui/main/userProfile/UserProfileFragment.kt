@@ -48,12 +48,11 @@ class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
                 this,
                 failed = {
                     popBackStack()
-                },
-                complete = {
-                    binding.textView.text = it.toString()
-                    startPostponedEnterTransition()
-                },
-            )
+                }
+            ) {
+                binding.textView.text = it.toString()
+                startPostponedEnterTransition()
+            }
         }
     }
 

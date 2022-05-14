@@ -17,8 +17,6 @@ Also features :
 - Gradle kotlin DSL.
 
 Common used libraries :
-- [Firebase app indexing](https://firebase.google.com/docs/app-indexing/)
-- [Firebase crashlytics](https://firebase.google.com/docs/crashlytics/)
 - [Retrofit](https://github.com/square/retrofit)
 - [Coil](https://github.com/coil-kt/coil)
 - [RxJava3](https://github.com/ReactiveX/RxJava)

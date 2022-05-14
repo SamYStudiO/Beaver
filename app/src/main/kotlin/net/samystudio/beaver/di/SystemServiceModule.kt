@@ -30,6 +30,5 @@ object SystemServiceModule {
 
     @Provides
     @Singleton
-    fun provideGoogleApiAvailability(): GoogleApiAvailability =
-        GoogleApiAvailability.getInstance()
+    fun provideGoogleApiAvailability(): GoogleApiAvailability = GoogleApiAvailability.getInstance()
 }

@@ -10,3 +10,6 @@ data class Token(
         val DEBUG = Token("Bearer", 123456789, "accessToken", "refreshToken")
     }
 }
+
+val Token?.isValid: Boolean
+    get() = this != null && accessToken.isNotBlank() && refreshToken.isNotBlank()

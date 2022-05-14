@@ -1,12 +1,14 @@
 [
   {
-    "title": "Production",
+    "name": "Production",
     "url": "https://github.com/SamYStudiO/Beaver/blob/master/api/",
     "defaultForBuildType": "release"
   },
   {
-    "title": "Test",
+    "name": "Test",
     "url": "https://github.com/SamYStudiO/Beaver/blob/master/api/",
-    "defaultForBuildType": "debug"
+    "defaultForBuildType": "debug",
+    "default_email": "test@email.com",
+    "default_password": "test"
   }
 ]

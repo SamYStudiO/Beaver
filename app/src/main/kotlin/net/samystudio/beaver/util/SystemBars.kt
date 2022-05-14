@@ -84,7 +84,7 @@ val AppCompatDialogFragment.isLightNavigationBars
 fun Window.toggleLightStatusBars(light: Boolean? = null) {
     WindowCompat.getInsetsController(this, decorView)?.let {
         val l = light ?: !it.isAppearanceLightStatusBars
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
             it.isAppearanceLightStatusBars = false
             statusBarColor = if (l) translucentSystemBarsColor else Color.TRANSPARENT
         } else
@@ -98,7 +98,7 @@ fun Window.toggleLightStatusBars(light: Boolean? = null) {
 fun Window.toggleLightNavigationBars(light: Boolean? = null) {
     WindowCompat.getInsetsController(this, decorView)?.let {
         val l = light ?: !it.isAppearanceLightNavigationBars
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
             it.isAppearanceLightNavigationBars = false
             navigationBarColor = if (l) translucentSystemBarsColor else Color.TRANSPARENT
         } else

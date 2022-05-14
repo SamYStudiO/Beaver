@@ -54,25 +54,26 @@ class AuthenticatorFragment : Fragment(R.layout.fragment_authenticator) {
             }
         }
 
-        binding.signInEmail.setText(sharedPreferencesHelper.accountName.get())
+        binding.loginEmail.setText(viewModel.server.defaultEmail)
+        binding.loginPassword.setText(viewModel.server.defaultPassword)
 
-        binding.signIn.setOnClickListener {
-            viewModel.signIn(
-                binding.signInEmail.text.toString(),
-                binding.signInPassword.text.toString()
+        binding.login.setOnClickListener {
+            viewModel.login(
+                binding.loginEmail.text.toString(),
+                binding.loginPassword.text.toString()
             )
         }
-        binding.signUp.setOnClickListener {
-            viewModel.signUp(
-                binding.signUpEmail.text.toString(),
-                binding.signUpPassword.text.toString()
+        binding.register.setOnClickListener {
+            viewModel.register(
+                binding.registerEmail.text.toString(),
+                binding.registerPassword.text.toString()
             )
         }
 
         compositeDisposable?.add(
             Observable
                 .combineLatest(
-                    binding.signInEmail.textChanges()
+                    binding.loginEmail.textChanges()
                         .debounce(500, TimeUnit.MILLISECONDS)
                         .observeOn(AndroidSchedulers.mainThread())
                         .map { t ->
@@ -81,7 +82,7 @@ class AuthenticatorFragment : Fragment(R.layout.fragment_authenticator) {
                                 if (t.isNotEmpty() && !emailValid) getString(R.string.error_email) else null
                             emailValid
                         },
-                    binding.signInPassword.textChanges()
+                    binding.loginPassword.textChanges()
                         .debounce(500, TimeUnit.MILLISECONDS)
                         .observeOn(AndroidSchedulers.mainThread())
                         .map { t ->
@@ -93,13 +94,13 @@ class AuthenticatorFragment : Fragment(R.layout.fragment_authenticator) {
                 ) { t1, t2 -> t1 && t2 }
                 .observeOn(AndroidSchedulers.mainThread())
                 .startWithItem(false)
-                .subscribe { binding.signIn.isEnabled = it }
+                .subscribe { binding.login.isEnabled = it }
         )
 
         compositeDisposable?.add(
             Observable
                 .combineLatest(
-                    binding.signUpEmail.textChanges()
+                    binding.registerEmail.textChanges()
                         .debounce(500, TimeUnit.MILLISECONDS)
                         .observeOn(AndroidSchedulers.mainThread())
                         .map { t ->
@@ -108,7 +109,7 @@ class AuthenticatorFragment : Fragment(R.layout.fragment_authenticator) {
                                 if (t.isNotEmpty() && !emailValid) getString(R.string.error_email) else null
                             emailValid
                         },
-                    binding.signUpPassword.textChanges()
+                    binding.registerPassword.textChanges()
                         .debounce(500, TimeUnit.MILLISECONDS)
                         .observeOn(AndroidSchedulers.mainThread())
                         .map { t ->
@@ -121,7 +122,7 @@ class AuthenticatorFragment : Fragment(R.layout.fragment_authenticator) {
                         .debounce(500, TimeUnit.MILLISECONDS)
                         .observeOn(AndroidSchedulers.mainThread())
                         .map { t ->
-                            val password = binding.signUpPassword.text.toString()
+                            val password = binding.registerPassword.text.toString()
                             val passwordMatchValid = t.toString() == password
                             binding.signUpConfirmPasswordLayout.error =
                                 if (password.validate(PASSWORD_VALIDATOR) && !passwordMatchValid) getString(
@@ -132,10 +133,19 @@ class AuthenticatorFragment : Fragment(R.layout.fragment_authenticator) {
                 ) { t1, t2, t3 -> t1 && t2 && t3 }
                 .observeOn(AndroidSchedulers.mainThread())
                 .startWithItem(false)
-                .subscribe { binding.signUp.isEnabled = it }
+                .subscribe { binding.register.isEnabled = it }
         )
 
-        viewModel.signLiveData.observe(
+        viewModel.loginLiveData.observe(
+            viewLifecycleOwner
+        ) {
+            it.handleStatesFromFragmentWithLoaderDialog(
+                this,
+                complete = { popBackStack() },
+            )
+        }
+
+        viewModel.registerLiveData.observe(
             viewLifecycleOwner
         ) {
             it.handleStatesFromFragmentWithLoaderDialog(

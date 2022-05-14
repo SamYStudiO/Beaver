@@ -9,8 +9,10 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import net.samystudio.beaver.BuildConfig
 import net.samystudio.beaver.R
 import net.samystudio.beaver.data.local.BeaverDatabase
+import net.samystudio.beaver.data.local.UserDao
 import net.samystudio.beaver.data.model.Server
 import net.samystudio.beaver.data.remote.AuthenticatorApiInterface
 import net.samystudio.beaver.data.remote.UserApiInterface
@@ -24,20 +26,23 @@ object ApplicationDataModule {
 
     @Provides
     @Singleton
-    fun provideServerList(@ApplicationContext context: Context, gson: Gson): List<Server> =
-        gson.fromJson(
+    fun provideServerList(@ApplicationContext context: Context, gson: Gson): Array<Server> =
+        gson.fromJson<List<Server>>(
             context.resources.openRawResource(R.raw.servers).bufferedReader(),
             TypeToken.getParameterized(List::class.java, Server::class.java).type
-        )
+        ).toTypedArray()
 
     @Provides
     @Singleton
     fun provideDatabase(@ApplicationContext context: Context): BeaverDatabase =
-        Room.databaseBuilder(context, BeaverDatabase::class.java, DATABASE_NAME).build()
+        Room.databaseBuilder(context, BeaverDatabase::class.java, DATABASE_NAME).apply {
+            if (BuildConfig.DEBUG)
+                fallbackToDestructiveMigration()
+        }.build()
 
     @Provides
     @Singleton
-    fun provideUserDao(database: BeaverDatabase) = database.userDao()
+    fun provideUserDao(database: BeaverDatabase): UserDao = database.userDao()
 
     @Provides
     @Singleton

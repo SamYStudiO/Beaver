@@ -23,7 +23,7 @@ class BeaverApplication : Application(), Configuration.Provider, ImageLoaderFact
     lateinit var timberTree: Timber.Tree
 
     @Inject
-    lateinit var trimMemoryList: ArrayList<TrimMemory>
+    lateinit var trimMemoryList: Array<TrimMemory>
 
     @Inject
     lateinit var workConfiguration: Configuration

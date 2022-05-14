@@ -1,3 +1,5 @@
+@file:Suppress("unused", "MemberVisibilityCanBePrivate")
+
 package net.samystudio.beaver.ui.base.adapter
 
 import androidx.core.math.MathUtils

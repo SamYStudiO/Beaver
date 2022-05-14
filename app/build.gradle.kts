@@ -6,6 +6,7 @@ plugins {
     kotlin("android")
     kotlin("kapt")
     id("com.google.android.gms.strict-version-matcher-plugin")
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
     id("com.google.firebase.firebase-perf")
@@ -90,8 +91,10 @@ android {
         viewBinding = true
     }
 
-    hilt {
-        enableTransformForLocalTests = true
+    compileOptions {
+        isCoreLibraryDesugaringEnabled = true
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
 
     applicationVariants.all {
@@ -103,6 +106,10 @@ android {
                 outputImpl.versionCodeOverride = versionBuild
         }
     }
+}
+
+kapt {
+    correctErrorTypes = true
 }
 
 dependencies {
@@ -119,6 +126,7 @@ dependencies {
     test()
     androidTest()
 
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
     implementation(Dependencies.insetter)
     implementation(Dependencies.permissionlauncher)
 }

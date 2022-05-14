@@ -40,19 +40,19 @@ object CoilModule {
             .okHttpClient { okHttpClient }
             .crossfade(true)
             .build()
+}
 
-    @Singleton
-    class CoilTrimMemory @Inject constructor(private val imageLoader: ImageLoader) : TrimMemory {
-        override fun onTrimMemory(level: Int) {
-            when (level) {
-                ComponentCallbacks2.TRIM_MEMORY_UI_HIDDEN,
-                ComponentCallbacks2.TRIM_MEMORY_COMPLETE,
-                ComponentCallbacks2.TRIM_MEMORY_RUNNING_CRITICAL -> {
-                    imageLoader.bitmapPool.clear()
-                    imageLoader.memoryCache.clear()
-                }
-                else -> Unit
+@Singleton
+class CoilTrimMemory @Inject constructor(private val imageLoader: ImageLoader) : TrimMemory {
+    override fun onTrimMemory(level: Int) {
+        when (level) {
+            ComponentCallbacks2.TRIM_MEMORY_UI_HIDDEN,
+            ComponentCallbacks2.TRIM_MEMORY_COMPLETE,
+            ComponentCallbacks2.TRIM_MEMORY_RUNNING_CRITICAL -> {
+                imageLoader.bitmapPool.clear()
+                imageLoader.memoryCache.clear()
             }
+            else -> Unit
         }
     }
 }

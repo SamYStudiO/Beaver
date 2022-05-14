@@ -2,15 +2,15 @@ object Versions {
     const val compileSdk = 31
     const val minSdk = 21
     const val targetSdk = 31
-    const val buildToolsVersion = "31.0.0"
+    const val buildToolsVersion = "32.0.0"
 
     // tools
-    const val android_build_tools = "7.1.3"
-    const val google_services = "4.3.10"
+    const val android_build_tools = "7.2.0"
     const val strict_version_matcher_plugin = "1.2.2"
-    const val firebase_crashlytics_plugin = "2.7.1"
+    const val secret_gradle_plugin = "2.0.1"
+    const val google_services = "4.3.10"
+    const val firebase_crashlytics_plugin = "2.8.1"
     const val firebase_perf_plugin = "1.4.1"
-    const val navigation_safe_args_plugin = "2.4.2"
     const val gradle_versions_plugin = "0.42.0"
     const val spotless = "6.4.2"
     const val ktlint = "0.40.0"
@@ -19,7 +19,7 @@ object Versions {
     const val kotlin = "1.6.20"
 
     // android
-    const val core = "1.6.0"
+    const val core = "1.7.0"
     const val core_splashscreen = "1.0.0-beta02"
     const val startup = "1.1.1"
     const val activity = "1.4.0"

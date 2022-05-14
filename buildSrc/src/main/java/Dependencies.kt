@@ -3,9 +3,6 @@
 import org.gradle.api.artifacts.dsl.DependencyHandler
 
 object Dependencies {
-    // kotlin
-    const val kotlin = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.kotlin}"
-
     // android
     const val core_ktx = "androidx.core:core-ktx:${Versions.core}"
     const val core_splashscreen = "androidx.core:core-splashscreen:${Versions.core_splashscreen}"
@@ -119,7 +116,6 @@ object Dependencies {
 }
 
 fun DependencyHandler.base() {
-    implementation(Dependencies.kotlin)
     implementation(Dependencies.core_ktx)
     implementation(Dependencies.core_splashscreen)
     implementation(Dependencies.startup)

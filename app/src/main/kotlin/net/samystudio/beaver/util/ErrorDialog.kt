@@ -1,37 +1,74 @@
 package net.samystudio.beaver.util
 
+import androidx.annotation.IdRes
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import net.samystudio.beaver.NavigationMainDirections
-import net.samystudio.beaver.data.remote.retrofit.RetrofitException
-import net.samystudio.beaver.ui.common.dialog.ErrorSource
+import net.samystudio.beaver.R
 
-/**
- *
- */
-fun Fragment.showErrorDialog(
-    errorSource: ErrorSource? = null,
+fun AppCompatActivity.showErrorDialog(
+    @IdRes hostId: Int,
     throwable: Throwable? = null,
-    appCode: Int? = null,
-    message: String? = null
+    title: String? = null,
+    message: String? = null,
+    positiveButtonRes: Int = R.string.ok,
+    negativeButtonRes: Int = 0,
+    cancelable: Boolean = true,
+    requestCode: Int = 0
 ) {
     navigate(
-        NavigationMainDirections.actionGlobalErrorDialog(
-            when {
-                errorSource != null -> errorSource
-                (throwable as? RetrofitException)?.kind == RetrofitException.Kind.NETWORK -> ErrorSource.NETWORK
-                throwable is RetrofitException -> ErrorSource.SERVER
-                else -> ErrorSource.APP
-            },
-            appCode?.toString(),
-            (throwable as? RetrofitException)?.code?.toString(),
-            (throwable as? RetrofitException)?.errorBody?.code?.toString(),
-            message ?: (throwable as? RetrofitException)?.errorBody?.message
-                ?: throwable?.message,
+        hostId,
+        getNavDirection(
+            throwable,
+            title,
+            message,
+            positiveButtonRes,
+            negativeButtonRes,
+            cancelable,
+            requestCode
         )
     )
-
-    throwable?.let {
-        FirebaseCrashlytics.getInstance().recordException(it)
-    }
+    throwable?.let { FirebaseCrashlytics.getInstance().recordException(it) }
 }
+
+fun Fragment.showErrorDialog(
+    throwable: Throwable? = null,
+    title: String? = null,
+    message: String? = null,
+    positiveButtonRes: Int = R.string.ok,
+    negativeButtonRes: Int = 0,
+    cancelable: Boolean = true,
+    requestCode: Int = 0
+) {
+    navigate(
+        getNavDirection(
+            throwable,
+            title,
+            message,
+            positiveButtonRes,
+            negativeButtonRes,
+            cancelable,
+            requestCode
+        )
+    )
+    throwable?.let { FirebaseCrashlytics.getInstance().recordException(it) }
+}
+
+private fun getNavDirection(
+    throwable: Throwable? = null,
+    title: String? = null,
+    message: String? = null,
+    positiveButtonRes: Int = R.string.ok,
+    negativeButtonRes: Int = 0,
+    cancelable: Boolean = true,
+    requestCode: Int = 0
+) = NavigationMainDirections.actionGlobalErrorDialog(
+    throwable as? Exception,
+    title,
+    message ?: throwable?.message?.takeIf { throwable !is Exception },
+    positiveButtonRes,
+    negativeButtonRes,
+    cancelable,
+    requestCode,
+)

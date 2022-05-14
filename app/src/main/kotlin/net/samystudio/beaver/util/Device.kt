@@ -1,9 +1,12 @@
+@file:SuppressLint("HardwareIds")
 @file:Suppress("unused")
 
 package net.samystudio.beaver.util
 
+import android.annotation.SuppressLint
 import android.os.Build
-import net.samystudio.beaver.ContextProvider.Companion.applicationContext
+import android.provider.Settings
+import net.samystudio.beaver.ContextProvider
 import java.util.*
 
 const val device = "android"
@@ -24,28 +27,25 @@ val deviceLocaleName: String
 val deviceTimeZone: TimeZone
     get() = TimeZone.getDefault()
 val deviceTimeZoneId: String
-    get() = TimeZone.getDefault().id
+    get() = TimeZone.getDefault().id.let { if (it == "GMT") "Europe/Paris" else it }
 val deviceTimeZoneName: String
     get() = TimeZone.getDefault().displayName
 
-val deviceScreenDensity = applicationContext.resources.displayMetrics.density
-val deviceScreenWidthPixels =
-    applicationContext.resources.displayMetrics.widthPixels
-val deviceScreenHeightPixels =
-    applicationContext.resources.displayMetrics.heightPixels
+val deviceId: String? by lazy {
+    Settings.Secure.getString(
+        ContextProvider.applicationContext.contentResolver,
+        Settings.Secure.ANDROID_ID
+    )
+}
 
-val deviceIsEmulator = (
-    Build.FINGERPRINT.startsWith("google/sdk_gphone_") &&
-        Build.FINGERPRINT.endsWith(":user/release-keys") &&
-        Build.MANUFACTURER == "Google" && Build.PRODUCT.startsWith("sdk_gphone_") && Build.BRAND == "google" &&
-        Build.MODEL.startsWith("sdk_gphone_")
-    ) ||
-    Build.FINGERPRINT.startsWith("generic") ||
-    Build.FINGERPRINT.startsWith("unknown") ||
-    Build.MODEL.contains("google_sdk") ||
-    Build.MODEL.contains("Emulator") ||
-    Build.MODEL.contains("Android SDK built for x86") ||
-    Build.MANUFACTURER.contains("Genymotion") ||
-    Build.HOST.startsWith("Build") ||
-    Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic") ||
-    Build.PRODUCT == "google_sdk"
+val deviceScreenDensity = ContextProvider.applicationContext.resources.displayMetrics.density
+val deviceScreenWidthPixels =
+    ContextProvider.applicationContext.resources.displayMetrics.widthPixels
+val deviceScreenHeightPixels =
+    ContextProvider.applicationContext.resources.displayMetrics.heightPixels
+
+val deviceIsEmulator =
+    Build.PRODUCT.contains("sdk") ||
+        Build.HARDWARE.contains("goldfish") ||
+        Build.HARDWARE.contains("ranchu") ||
+        deviceId == null

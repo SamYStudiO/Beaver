@@ -12,31 +12,21 @@ import net.samystudio.beaver.util.showLoaderDialog
  * Async request states, response contains data of type [T].
  */
 sealed class ResultAsyncState<T> {
-    class Started<T> : ResultAsyncState<T>()
-    class Completed<T>(var data: T) : ResultAsyncState<T>()
-    class Failed<T>(val error: Throwable) : ResultAsyncState<T>()
+    open class Started<T> : ResultAsyncState<T>()
+    open class Completed<T>(var data: T) : ResultAsyncState<T>()
+    open class Failed<T>(val error: Throwable) : ResultAsyncState<T>()
 }
 
 fun <T : Any> Single<T>.toResultAsyncState(): Flowable<ResultAsyncState<T>> =
     toFlowable().toResultAsyncState()
 
-fun <T : Any> Observable<T>.toResultAsyncState(): Flowable<ResultAsyncState<T>> =
-    toFlowable(BackpressureStrategy.LATEST).toResultAsyncState()
+fun <T : Any> Observable<T>.toResultAsyncState(
+    strategy: BackpressureStrategy = BackpressureStrategy.LATEST
+): Flowable<ResultAsyncState<T>> =
+    toFlowable(strategy).toResultAsyncState()
 
 fun <T : Any> Flowable<T>.toResultAsyncState(): Flowable<ResultAsyncState<T>> =
-    compose(resultAsyncStateTransformer())
-
-@Suppress("RemoveExplicitTypeArguments")
-private fun <T : Any> resultAsyncStateTransformer(): FlowableTransformer<T, ResultAsyncState<T>> =
-    FlowableTransformer { upstream ->
-        upstream
-            .map {
-                @Suppress("USELESS_CAST")
-                ResultAsyncState.Completed<T>(it) as ResultAsyncState<T>
-            }
-            .startWithItem(ResultAsyncState.Started<T>())
-            .onErrorReturn { ResultAsyncState.Failed<T>(it) }
-    }
+    compose(flowableResultAsyncStateTransformer())
 
 fun <T> ResultAsyncState<T>.handleStates(
     started: () -> Unit = { },
@@ -71,3 +61,15 @@ fun <T> ResultAsyncState<T>.handleStatesFromFragmentWithLoaderDialog(
         }
     }
 }
+
+@Suppress("RemoveExplicitTypeArguments")
+private fun <T : Any> flowableResultAsyncStateTransformer(): FlowableTransformer<T, ResultAsyncState<T>> =
+    FlowableTransformer { upstream ->
+        upstream
+            .map {
+                @Suppress("USELESS_CAST")
+                ResultAsyncState.Completed<T>(it) as ResultAsyncState<T>
+            }
+            .startWithItem(ResultAsyncState.Started<T>())
+            .onErrorReturn { ResultAsyncState.Failed<T>(it) }
+    }
