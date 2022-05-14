@@ -12,7 +12,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    
+
     if: ${{ !contains(github.event.head_commit.message, 'Prepare for release') }}
     steps:
       - uses: actions/checkout@v2
@@ -38,7 +38,11 @@ jobs:
           KEYPASSWORD: ${{ secrets.KEYPASSWORD }}
           STOREFILE: ${{ secrets.STOREFILE }}
           STOREPASSWORD: ${{ secrets.STOREPASSWORD }}
-        run: echo keyAlias=\"$KEYALIAS\"\nkeyPassword=\"KEYPASSWORD\"\nstoreFile=\"STOREFILE\"\nstorePassword=\"STOREPASSWORD\" > ./local.properties
+        run: |
+          echo keyAlias=\"$KEYALIAS\" > ./local.properties
+          echo keyPassword=\"KEYPASSWORD\" >> ./local.properties
+          echo storeFile=\"STOREFILE\" >> ./local.properties
+          echo storePassword=\"STOREPASSWORD\" >> ./local.properties
 
       - name: Gradlew permissions
         run: chmod +x ./gradlew
