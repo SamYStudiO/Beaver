@@ -94,7 +94,7 @@ abstract class DataRepository<T : Any>(
         get() = isFresh && isVersionValid
 
     /**
-     * Refresh data from server using the following pattern :
+     * Refresh data using the following pattern :
      * - if data is not valid or [checkValidity] is false then get it remotely, it it fails get it
      * locally and if it fails return actual memory data if it's not null. If you want to skip
      * getting data locally when a remote error occurred make sur to call [clear] after a remote
@@ -120,6 +120,13 @@ abstract class DataRepository<T : Any>(
      */
     fun refresh(data: T): Single<T> = Single.defer {
         getRemoteData(Single.just(data))
+    }
+
+    /**
+     * Force refreshing data from remote server no matter current state.
+     */
+    fun refreshFromRemote(): Single<T> = Single.defer {
+        getRemoteData(getRemoteDataSingle())
     }
 
     /**
