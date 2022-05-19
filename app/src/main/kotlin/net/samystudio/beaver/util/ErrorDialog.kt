@@ -3,6 +3,8 @@ package net.samystudio.beaver.util
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import net.samystudio.beaver.NavigationMainDirections
 import net.samystudio.beaver.R
@@ -17,8 +19,7 @@ fun AppCompatActivity.showErrorDialog(
     cancelable: Boolean = true,
     requestCode: Int = 0
 ) {
-    navigate(
-        hostId,
+    findNavController(hostId).navigate(
         getNavDirection(
             throwable,
             title,
@@ -41,7 +42,7 @@ fun Fragment.showErrorDialog(
     cancelable: Boolean = true,
     requestCode: Int = 0
 ) {
-    navigate(
+    findNavController().navigate(
         getNavDirection(
             throwable,
             title,

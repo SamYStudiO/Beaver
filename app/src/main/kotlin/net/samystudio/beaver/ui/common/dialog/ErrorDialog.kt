@@ -25,11 +25,11 @@ class ErrorDialog : AlertDialog() {
             HtmlCompat.fromHtml(
                 "%s%s".format(
                     when {
-                        isNetworkError -> R.string.error_connexion_required
-                        else -> message?.takeIf { it.isNotBlank() }?.let { "$it<br/><br/>" }
-                            ?: "${getString(R.string.error_message)}<br/><br/>"
+                        isNetworkError -> getString(R.string.error_connexion_required)
+                        else -> message?.takeIf { it.isNotBlank() }
+                            ?: getString(R.string.error_message)
                     },
-                    "\"<small><i>%s</i></small>\"".format(
+                    "<br/><br/>\"<small><i>%s</i></small>\"".format(
                         when (exception) {
                             is HttpException -> "${exception.code()} - ${exception.message ?: ""}"
                             else -> exception?.message ?: ""
