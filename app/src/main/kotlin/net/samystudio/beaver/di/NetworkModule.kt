@@ -74,7 +74,7 @@ object NetworkModule {
                 if (actualToken == tokenRepository.get().data)
                     try {
                         // This will write a new token to sharedPreferences.
-                        tokenRepository.get().refresh(false).blockingGet()
+                        tokenRepository.get().refreshFromRemote().blockingGet()
                     } catch (e: Exception) {
                         // A error occurred while refreshing token.
                         Timber.w(e)
