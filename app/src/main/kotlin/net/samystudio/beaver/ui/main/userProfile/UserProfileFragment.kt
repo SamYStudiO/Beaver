@@ -54,6 +54,10 @@ class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
                 startPostponedEnterTransition()
             }
         }
+
+        viewModel.logoutLiveData.observe(viewLifecycleOwner) {
+            it.handleStatesFromFragmentWithLoaderDialog(this)
+        }
     }
 
     override fun onResume() {

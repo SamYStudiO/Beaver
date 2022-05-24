@@ -86,7 +86,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
                             )
                         }
                         throwable is TokenException ->
-                            viewModel.logout()
+                            Unit // Ignore since logout is handled from okhttp authenticator.
                         else ->
                             showErrorDialog(
                                 R.id.nav_host,

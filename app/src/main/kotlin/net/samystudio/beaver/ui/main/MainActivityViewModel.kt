@@ -98,10 +98,6 @@ class MainActivityViewModel @Inject constructor(
             param(FirebaseAnalytics.Param.SCREEN_NAME, screenName)
         }
     }
-
-    fun logout() {
-        userRepository.logout()
-    }
 }
 
 class GoogleApiAvailabilityException(

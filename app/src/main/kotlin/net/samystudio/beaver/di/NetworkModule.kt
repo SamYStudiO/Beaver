@@ -89,7 +89,10 @@ object NetworkModule {
                     .header("Authorization", "${it.tokenType} ${it.accessToken}")
                     .build()
             } ?: run {
-                userRepository.get().logout()
+                try {
+                    userRepository.get().logout().blockingAwait()
+                } catch (e: Exception) {
+                }
                 null
             }
         }

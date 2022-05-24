@@ -4,7 +4,6 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
-import io.reactivex.rxjava3.kotlin.subscribeBy
 import io.reactivex.rxjava3.schedulers.Schedulers
 import net.samystudio.beaver.data.local.SharedPreferencesHelper
 import net.samystudio.beaver.data.local.UserDao
@@ -57,15 +56,11 @@ class UserRepository @Inject constructor(
         crashlytics.setUserId(id ?: "")
     }
 
-    fun logout() {
-        userApiInterfaceImpl.logout().onErrorComplete()
-            // We clear token later because we need it to logout !
-            .andThen(tokenRepository.clear())
-            .subscribeBy { }
-
-        clear().subscribeBy { }
-
-        firebaseAnalytics.setUserId(null)
-        crashlytics.setUserId("")
-    }
+    fun logout(): Completable =
+        if (data != null)
+            clear()
+                .andThen(userApiInterfaceImpl.logout().onErrorComplete())
+                .andThen(tokenRepository.clear())
+        else
+            Completable.complete()
 }
