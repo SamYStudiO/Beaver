@@ -42,7 +42,6 @@ android {
         versionCode = 1
         versionName = "$versionMajor.$versionMinor.$versionPatch"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        setProperty("archivesBaseName", "$applicationId-v$versionName($versionBuild)")
 
         javaCompileOptions {
             annotationProcessorOptions {
