@@ -55,8 +55,10 @@ open class TriggerDataLiveData<IN : Any, OUT : Any>(
         super.onActive()
 
         if (isTriggeredWhenActivated)
-            (lastData?.takeIf { useLastLoadDataWhenActivated }
-                ?: initialDataWhenActivated)?.let { trigger(it) }
+            run {
+                lastData?.takeIf { useLastLoadDataWhenActivated }
+                    ?: initialDataWhenActivated
+            }?.let { trigger(it) }
     }
 
     /**
