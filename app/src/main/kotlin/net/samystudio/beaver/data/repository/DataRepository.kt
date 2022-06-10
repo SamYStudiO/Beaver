@@ -112,7 +112,7 @@ abstract class DataRepository<T : Any>(
             _data == null ->
                 localDataObservable.lastOrError()
             else ->
-                Single.just(_data!!)
+                Single.defer { Single.just(_data!!) }
         }
 
     /**
@@ -132,10 +132,11 @@ abstract class DataRepository<T : Any>(
     /**
      * Clear current memory and local data, this ensure next call to refresh will get data remotely.
      */
-    fun clear(): Completable =
+    fun clear(): Completable = Completable.defer {
         (setLocalDataSingle(null) ?: Completable.complete()).doOnTerminate {
             internalRefresh(null, false)
         }
+    }
 
     /**
      * Get actual local data age, if [maxAge] is [Duration.INFINITE] this has no effect.
@@ -195,7 +196,7 @@ abstract class DataRepository<T : Any>(
         getLocalDataSingle()
             ?.doOnSuccess { internalRefresh(it, false) }
             ?.doOnError {
-                Timber.d("error getting data locally from $this ${it.javaClass.name}")
+                Timber.d("error getting data locally from $this ${it.message}")
             }
             ?.onErrorResumeNext { Single.error(getMissingLocalDataException()) }
             ?: Single.error(getMissingLocalDataException())

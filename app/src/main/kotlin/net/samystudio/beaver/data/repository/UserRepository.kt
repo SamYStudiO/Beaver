@@ -2,6 +2,7 @@ package net.samystudio.beaver.data.repository
 
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.crashlytics.FirebaseCrashlytics
+import dagger.Lazy
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -18,7 +19,7 @@ import kotlin.time.toDuration
 
 @Singleton
 class UserRepository @Inject constructor(
-    private val tokenRepository: TokenRepository,
+    private val tokenRepository: Lazy<TokenRepository>,
     private val userDao: UserDao,
     private val sharedPreferencesHelper: SharedPreferencesHelper,
     private val userApiInterfaceImpl: UserApiInterfaceImpl,
@@ -40,14 +41,19 @@ class UserRepository @Inject constructor(
             .subscribeOn(Schedulers.io())
 
     override fun setLocalDataSingle(data: User?): Completable? =
-        if (data != null) {
-            sharedPreferencesHelper.accountId.set(data.id)
-            sharedPreferencesHelper.userDate.set(System.currentTimeMillis())
-            userDao.insertUserCompletable(data).subscribeOn(Schedulers.io())
-        } else {
-            sharedPreferencesHelper.accountId.delete()
-            sharedPreferencesHelper.userDate.delete()
-            Completable.complete()
+        when {
+            // Connected
+            data != null -> {
+                sharedPreferencesHelper.accountId.set(data.id)
+                sharedPreferencesHelper.userDate.set(System.currentTimeMillis())
+                userDao.insertUserCompletable(data).subscribeOn(Schedulers.io())
+            }
+            // Disconnected
+            else -> {
+                sharedPreferencesHelper.accountId.delete()
+                sharedPreferencesHelper.userDate.delete()
+                tokenRepository.get().clear()
+            }
         }
 
     override fun refreshed() {
@@ -56,11 +62,8 @@ class UserRepository @Inject constructor(
         crashlytics.setUserId(id ?: "")
     }
 
-    fun logout(): Completable =
-        if (data != null)
-            clear()
-                .andThen(userApiInterfaceImpl.logout().onErrorComplete())
-                .andThen(tokenRepository.clear())
-        else
-            Completable.complete()
+    /**
+     * Alias for [clear].
+     */
+    fun logout(): Completable = clear()
 }

@@ -6,8 +6,10 @@ import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
+import androidx.core.view.doOnPreDraw
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
@@ -19,6 +21,8 @@ import net.samystudio.beaver.R
 import net.samystudio.beaver.data.handleStates
 import net.samystudio.beaver.data.repository.TokenException
 import net.samystudio.beaver.databinding.ActivityMainBinding
+import net.samystudio.beaver.ui.common.dialog.AlertDialog
+import net.samystudio.beaver.ui.common.dialog.ErrorDialog
 import net.samystudio.beaver.ui.common.dialog.setDialogNegativeClickListener
 import net.samystudio.beaver.ui.common.dialog.setDialogPositiveClickListener
 import net.samystudio.beaver.util.navigate
@@ -55,7 +59,9 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
         setDialogPositiveClickListener(R.id.nav_host, ERROR_REQUEST_CODE) {
-            viewModel.refreshData()
+            binding.root.doOnPreDraw {
+                viewModel.refreshData()
+            }
         }
 
         setDialogNegativeClickListener(R.id.nav_host, ERROR_REQUEST_CODE) {
@@ -68,34 +74,19 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
                     isReady = true
 
                     when {
-                        throwable is GoogleApiAvailabilityException &&
-                            throwable.isResolvable -> {
+                        throwable is GoogleApiAvailabilityException && throwable.isResolvable -> {
                             throwable.googleApiAvailability.getErrorResolutionIntent(
                                 this,
                                 0,
                                 ""
                             )?.let {
                                 resolveApiAvailability.launch(it)
-                            } ?: showErrorDialog(
-                                R.id.nav_host,
-                                throwable,
-                                positiveButtonRes = R.string.retry,
-                                negativeButtonRes = R.string.quit,
-                                cancelable = false,
-                                requestCode = ERROR_REQUEST_CODE
-                            )
+                            } ?: showInitializationErrorDialog(throwable)
                         }
                         throwable is TokenException ->
-                            Unit // Ignore since logout is handled from okhttp authenticator.
+                            Unit // Ignore since logout is handled from token repository.
                         else ->
-                            showErrorDialog(
-                                R.id.nav_host,
-                                throwable,
-                                positiveButtonRes = R.string.retry,
-                                negativeButtonRes = R.string.quit,
-                                cancelable = false,
-                                requestCode = ERROR_REQUEST_CODE
-                            )
+                            showInitializationErrorDialog(throwable)
                     }
                 }
             ) {
@@ -142,16 +133,30 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         destination: NavDestination,
         arguments: Bundle?
     ) {
-        (
+        run {
             (destination as? FragmentNavigator.Destination)?.className
                 ?: (destination as? DialogFragmentNavigator.Destination)?.className
-            )?.let {
+        }?.let {
             viewModel.logScreen(it)
         }
     }
 
     override fun onSupportNavigateUp(): Boolean =
         findNavController(R.id.nav_host).navigateUp()
+
+    private fun showInitializationErrorDialog(throwable: Throwable) {
+        // Don't use navigation component to make sure this dialog is always on top and is not
+        // dismiss by navigating with navigation component.
+        ErrorDialog().apply {
+            arguments = bundleOf(
+                ErrorDialog.KEY_ERROR_EXCEPTION to throwable,
+                AlertDialog.KEY_POSITIVE_BUTTON_RES to R.string.retry,
+                AlertDialog.KEY_NEGATIVE_BUTTON_RES to R.string.quit,
+                AlertDialog.KEY_CANCELABLE to false,
+                AlertDialog.KEY_REQUEST_CODE to ERROR_REQUEST_CODE,
+            )
+        }.show(supportFragmentManager, "")
+    }
 
     private fun handleIntent(intent: Intent) {
         when (intent.action) {

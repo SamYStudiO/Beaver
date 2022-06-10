@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit
  * @param isTriggeredWhenActivated A [Boolean] that indicates if we want to automatically trigger
  * a new [Flowable] request when this [LiveData] becomes active. You may want to set
  * {@code initialData} as well to define data ([IN]) for this request for the first activation.
- * @param initialData Data ([IN]) pass to [Flowable] when this [LiveData] is getting active,
+ * @param initialDataWhenActivated Data ([IN]) pass to [Flowable] when this [LiveData] is getting active,
  * this is useless if {@code isTriggeredWhenActivated} is false as nothing we'll be trigger when this
  * getting active.
  * @param throttleTimeout A timeout period while trigger will be ignored after a trigger has be
@@ -32,7 +32,8 @@ import java.util.concurrent.TimeUnit
  */
 open class TriggerDataLiveData<IN : Any, OUT : Any>(
     private val isTriggeredWhenActivated: Boolean = false,
-    private val initialData: IN? = null,
+    private val initialDataWhenActivated: IN? = null,
+    private val useLastLoadDataWhenActivated: Boolean = true,
     throttleTimeout: Long = 0,
     throttleUnit: TimeUnit = TimeUnit.MILLISECONDS,
     throttleScheduler: Scheduler = Schedulers.computation(),
@@ -53,9 +54,9 @@ open class TriggerDataLiveData<IN : Any, OUT : Any>(
     override fun onActive() {
         super.onActive()
 
-        if (isTriggeredWhenActivated) {
-            (lastData ?: initialData)?.let { trigger(it) }
-        }
+        if (isTriggeredWhenActivated)
+            (lastData?.takeIf { useLastLoadDataWhenActivated }
+                ?: initialDataWhenActivated)?.let { trigger(it) }
     }
 
     /**

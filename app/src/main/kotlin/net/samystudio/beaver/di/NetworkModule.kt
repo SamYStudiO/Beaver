@@ -63,7 +63,10 @@ object NetworkModule {
             return@Authenticator null
 
         // Try to get actual token.
-        val actualToken = tokenRepository.get().data.takeIf { it.isValid } ?: return@Authenticator null
+        val actualToken = tokenRepository.get().data.takeIf { it.isValid } ?: run {
+            userRepository.get().clear().onErrorComplete().blockingAwait()
+            return@Authenticator null
+        }
 
         // Use synchronized in case we have multiple request ending up with 401 then we don't want
         // to refresh token multiple times.
@@ -88,12 +91,6 @@ object NetworkModule {
                 request.newBuilder()
                     .header("Authorization", "${it.tokenType} ${it.accessToken}")
                     .build()
-            } ?: run {
-                try {
-                    userRepository.get().logout().blockingAwait()
-                } catch (e: Exception) {
-                }
-                null
             }
         }
     }
@@ -126,7 +123,7 @@ object NetworkModule {
                             repeat(localeList.size()) {
                                 add(localeList.get(it))
                             }
-                        }.joinToString(", ") { it.toLanguageTag() }
+                        }.joinToString(", ") { it.toString() }
                     }
                 )
 

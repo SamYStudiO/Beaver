@@ -3,6 +3,7 @@ package net.samystudio.beaver.data.repository
 import com.google.gson.Gson
 import com.google.gson.JsonParseException
 import com.google.gson.JsonSyntaxException
+import dagger.Lazy
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.core.SingleTransformer
@@ -21,6 +22,7 @@ import kotlin.time.toDuration
 
 @Singleton
 class TokenRepository @Inject constructor(
+    private val userRepository: Lazy<UserRepository>,
     private val sharedPreferencesHelper: SharedPreferencesHelper,
     private val authenticationApiInterfaceImpl: AuthenticationApiInterfaceImpl,
     private val gson: Gson,
@@ -39,16 +41,17 @@ class TokenRepository @Inject constructor(
                 // If it's a 401 let's signal this is a TokenException so app can log out from
                 // MainActivity.
                 if (it is HttpException && it.code() == HttpURLConnection.HTTP_UNAUTHORIZED) {
-                    // Clear local data to make sure we won't use local data after refreshing
-                    // and ending up with a 401.
-                    clear().andThen(
-                        Single.error(
-                            TokenException(
-                                "Couldn't refresh token, it may be expired or revoked",
-                                it
+                    // Can't get a valid token clear user.
+                    userRepository.get().clear()
+                        .onErrorComplete()
+                        .andThen(
+                            Single.error(
+                                TokenException(
+                                    "Couldn't refresh token, it may be expired or revoked",
+                                    it
+                                )
                             )
                         )
-                    )
                 } else
                     Single.error(it)
             }
@@ -65,16 +68,16 @@ class TokenRepository @Inject constructor(
         if (token.isValid)
             token
         else
-            throw TokenException("Local json token is invalid")
+            throw TokenException("Local json is missing or invalid")
     }
 
     override fun setLocalDataSingle(data: Token?): Completable? = Completable.fromCallable {
         if (data == null) {
-            sharedPreferencesHelper.tokenDate.delete()
             sharedPreferencesHelper.token.delete()
+            sharedPreferencesHelper.tokenDate.delete()
         } else {
-            sharedPreferencesHelper.tokenDate.set(System.currentTimeMillis())
             sharedPreferencesHelper.token.set(gson.toJson(data))
+            sharedPreferencesHelper.tokenDate.set(System.currentTimeMillis())
         }
     }
 
