@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class UserProfileFragmentViewModel @Inject constructor(
-    private val userRepository: UserRepository
+    userRepository: UserRepository
 ) : BaseDisposablesViewModel() {
     val userLiveData =
         userRepository.dataObservable

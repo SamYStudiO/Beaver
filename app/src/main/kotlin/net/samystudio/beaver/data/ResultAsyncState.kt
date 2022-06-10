@@ -28,7 +28,7 @@ fun <T : Any> Observable<T>.toResultAsyncState(
 fun <T : Any> Flowable<T>.toResultAsyncState(): Flowable<ResultAsyncState<T>> =
     compose(flowableResultAsyncStateTransformer())
 
-fun <T> ResultAsyncState<T>.handleStates(
+fun <T : Any> ResultAsyncState<T>.handleStates(
     started: () -> Unit = { },
     failed: (throwable: Throwable) -> Unit = {},
     complete: (result: T) -> Unit = { },

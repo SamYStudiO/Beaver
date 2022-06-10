@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package net.samystudio.beaver.ui.base.adapter
 
 import android.view.View

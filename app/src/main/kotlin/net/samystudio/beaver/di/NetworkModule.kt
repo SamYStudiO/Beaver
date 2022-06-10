@@ -120,8 +120,8 @@ object NetworkModule {
                     "Accept-Language",
                     LocaleListCompat.getAdjustedDefault().let { localeList ->
                         mutableListOf<Locale>().apply {
-                            repeat(localeList.size()) {
-                                add(localeList.get(it))
+                            repeat(localeList.size()) { index ->
+                                localeList.get(index)?.let { add(it) }
                             }
                         }.joinToString(", ") { it.toString() }
                     }

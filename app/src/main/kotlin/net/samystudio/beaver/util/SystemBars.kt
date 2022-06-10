@@ -2,7 +2,6 @@
 
 package net.samystudio.beaver.util
 
-import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Build
 import android.view.Window
@@ -27,62 +26,62 @@ private val translucentSystemBarsColor = Color.parseColor("#80000000")
 /**
  * @see WindowInsetsControllerCompat.isAppearanceLightStatusBars
  */
-val Window.isLightStatusBars
+val Window.isLightStatusBars: Boolean
     get() = WindowCompat.getInsetsController(
         this,
         decorView
-    )?.isAppearanceLightStatusBars == true
+    ).isAppearanceLightStatusBars
 
 /**
  * @see WindowInsetsControllerCompat.isAppearanceLightNavigationBars
  */
-val Window.isLightNavigationBars
+val Window.isLightNavigationBars: Boolean
     get() = WindowCompat.getInsetsController(
         this,
         decorView
-    )?.isAppearanceLightNavigationBars == true
+    ).isAppearanceLightNavigationBars
 
 /**
  * @see Window.isLightStatusBars
  */
-val FragmentActivity.isLightStatusBars
+val FragmentActivity.isLightStatusBars: Boolean
     get() = window.isLightStatusBars
 
 /**
  * @see Window.isLightNavigationBars
  */
-val FragmentActivity.isLightNavigationBars
+val FragmentActivity.isLightNavigationBars: Boolean
     get() = window.isLightNavigationBars
 
 /**
  * @see FragmentActivity.isLightStatusBars
  */
-val Fragment.isLightStatusBars
+val Fragment.isLightStatusBars: Boolean
     get() = activity?.isLightStatusBars == true
 
 /**
  * @see FragmentActivity.isLightNavigationBars
  */
-val Fragment.isLightNavigationBars
+val Fragment.isLightNavigationBars: Boolean
     get() = activity?.isLightNavigationBars == true
 
 /**
  * @see Window.isLightStatusBars
  */
-val AppCompatDialogFragment.isLightStatusBars
-    get() = dialog?.window?.isLightStatusBars
+val AppCompatDialogFragment.isLightStatusBars: Boolean
+    get() = dialog?.window?.isLightStatusBars == true
 
 /**
  * @see Window.isLightNavigationBars
  */
-val AppCompatDialogFragment.isLightNavigationBars
-    get() = dialog?.window?.isLightNavigationBars
+val AppCompatDialogFragment.isLightNavigationBars: Boolean
+    get() = dialog?.window?.isLightNavigationBars == true
 
 /**
  * @see WindowInsetsControllerCompat.setAppearanceLightStatusBars
  */
 fun Window.toggleLightStatusBars(light: Boolean? = null) {
-    WindowCompat.getInsetsController(this, decorView)?.let {
+    WindowCompat.getInsetsController(this, decorView).let {
         val l = light ?: !it.isAppearanceLightStatusBars
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
             it.isAppearanceLightStatusBars = false
@@ -96,7 +95,7 @@ fun Window.toggleLightStatusBars(light: Boolean? = null) {
  * @see WindowInsetsControllerCompat.setAppearanceLightNavigationBars
  */
 fun Window.toggleLightNavigationBars(light: Boolean? = null) {
-    WindowCompat.getInsetsController(this, decorView)?.let {
+    WindowCompat.getInsetsController(this, decorView).let {
         val l = light ?: !it.isAppearanceLightNavigationBars
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
             it.isAppearanceLightNavigationBars = false
@@ -109,9 +108,8 @@ fun Window.toggleLightNavigationBars(light: Boolean? = null) {
 /**
  * @see WindowInsetsControllerCompat.hide
  */
-@SuppressLint("WrongConstant")
 fun Window.hide(@InsetsType vararg types: Int) {
-    types.forEach { WindowCompat.getInsetsController(this, decorView)?.hide(it) }
+    types.forEach { WindowCompat.getInsetsController(this, decorView).hide(it) }
 }
 
 fun Window.hideStatusBars() {
@@ -129,9 +127,8 @@ fun Window.hideSystemBars() {
 /**
  * @see WindowInsetsControllerCompat.show
  */
-@SuppressLint("WrongConstant")
 fun Window.show(@InsetsType vararg types: Int) {
-    types.forEach { WindowCompat.getInsetsController(this, decorView)?.show(it) }
+    types.forEach { WindowCompat.getInsetsController(this, decorView).show(it) }
 }
 
 fun Window.showStatusBars() {
@@ -151,10 +148,9 @@ fun Window.showSystemBars() {
  * @see WindowInsetsControllerCompat.setSystemBarsBehavior
  */
 var Window.systemBarsBehavior: Int
-    get() = WindowCompat.getInsetsController(this, decorView)?.systemBarsBehavior
-        ?: WindowInsetsControllerCompat.BEHAVIOR_SHOW_BARS_BY_TOUCH
+    get() = WindowCompat.getInsetsController(this, decorView).systemBarsBehavior
     set(value) {
-        WindowCompat.getInsetsController(this, decorView)?.systemBarsBehavior = value
+        WindowCompat.getInsetsController(this, decorView).systemBarsBehavior = value
     }
 
 /**
@@ -199,7 +195,6 @@ fun FragmentActivity.toggleLightSystemBars(light: Boolean? = null) {
 /**
  * @see Window.hide
  */
-@SuppressLint("WrongConstant")
 fun FragmentActivity.hide(@InsetsType vararg types: Int) {
     window.hide(*types)
 }
@@ -219,7 +214,6 @@ fun FragmentActivity.hideSystemBars() {
 /**
  * @see Window.show
  */
-@SuppressLint("WrongConstant")
 fun FragmentActivity.show(@InsetsType vararg types: Int) {
     window.show(*types)
 }
@@ -283,7 +277,6 @@ fun Fragment.toggleLightSystemBars(light: Boolean? = null) {
 /**
  * @see FragmentActivity.hide
  */
-@SuppressLint("WrongConstant")
 fun Fragment.hide(@InsetsType vararg types: Int) {
     activity?.hide(*types)
 }
@@ -303,7 +296,6 @@ fun Fragment.hideSystemBars() {
 /**
  * @see FragmentActivity.show
  */
-@SuppressLint("WrongConstant")
 fun Fragment.show(@InsetsType vararg types: Int) {
     activity?.show(*types)
 }
@@ -372,7 +364,6 @@ fun AppCompatDialogFragment.toggleLightSystemBars(light: Boolean? = null) {
 /**
  * @see Window.hide
  */
-@SuppressLint("WrongConstant")
 fun AppCompatDialogFragment.hide(@InsetsType vararg types: Int) {
     dialog?.window?.hide(*types)
 }
@@ -392,7 +383,6 @@ fun AppCompatDialogFragment.hideSystemBars() {
 /**
  * @see Window.show
  */
-@SuppressLint("WrongConstant")
 fun AppCompatDialogFragment.show(@InsetsType vararg types: Int) {
     dialog?.window?.show(*types)
 }

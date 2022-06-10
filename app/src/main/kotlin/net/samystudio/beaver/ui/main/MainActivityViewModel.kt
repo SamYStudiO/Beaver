@@ -26,10 +26,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainActivityViewModel @Inject constructor(
-    private val userRepository: UserRepository,
     private val firebaseAnalytics: FirebaseAnalytics,
     private val googleApiAvailability: GoogleApiAvailability,
     tokenRepository: TokenRepository,
+    userRepository: UserRepository,
     @ApplicationContext
     context: Context
 ) : BaseDisposablesViewModel() {

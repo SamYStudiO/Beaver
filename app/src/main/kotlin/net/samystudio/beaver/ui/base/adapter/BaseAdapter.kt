@@ -1,3 +1,5 @@
+@file:Suppress("MemberVisibilityCanBePrivate")
+
 package net.samystudio.beaver.ui.base.adapter
 
 import androidx.recyclerview.widget.RecyclerView
