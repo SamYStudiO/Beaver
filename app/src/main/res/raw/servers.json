@@ -1,12 +1,12 @@
 [
   {
     "name": "Production",
-    "url": "https://github.com/SamYStudiO/Beaver/blob/master/api/",
+    "url": "https://github.com/SamYStudiO/Beaver/blob/rxjava/api/",
     "defaultForBuildType": "release"
   },
   {
     "name": "Test",
-    "url": "https://github.com/SamYStudiO/Beaver/blob/master/api/",
+    "url": "https://github.com/SamYStudiO/Beaver/blob/rxjava/api/",
     "defaultForBuildType": "debug",
     "default_email": "test@email.com",
     "default_password": "test"
