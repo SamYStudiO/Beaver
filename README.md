@@ -1,5 +1,7 @@
 # Beaver
 
+# !!! WORK IN PROGRESS !!!
+
 #### THIS IS THE COROUTINES VERSION (NOT PRODUCTION READY YET), FOR REACTIVE (RXJAVA) VERSION GO TO [RXJAVA BRANCH](https://github.com/SamYStudiO/Beaver/tree/master).
 
 Android Project template using View Model [MVVM](https://developer.android.com/topic/libraries/architecture/index.html) and Repository Data pattern  
