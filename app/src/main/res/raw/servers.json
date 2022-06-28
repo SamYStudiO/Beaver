@@ -1,12 +1,12 @@
 [
   {
     "title_": "Production",
-    "url_": "https://github.com/SamYStudiO/Beaver/blob/master/api/",
+    "url_": "https://github.com/SamYStudiO/Beaver/tree/coroutines/api/",
     "defaultForBuildType_": "release"
   },
   {
     "title_": "Test",
-    "url_": "https://github.com/SamYStudiO/Beaver/blob/master/api/",
+    "url_": "https://github.com/SamYStudiO/Beaver/tree/coroutines/api/",
     "defaultForBuildType_": "debug",
     "defaultEmail_": "test@email.com",
     "defaultPassword_": "testtest"
