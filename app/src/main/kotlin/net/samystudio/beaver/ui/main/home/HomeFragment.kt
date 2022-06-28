@@ -4,15 +4,22 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.Navigation
+import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.transition.MaterialFadeThrough
 import dagger.hilt.android.AndroidEntryPoint
 import dev.chrisbanes.insetter.applyInsetter
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import net.samystudio.beaver.R
 import net.samystudio.beaver.data.handleStatesFromFragmentWithLoaderDialog
 import net.samystudio.beaver.databinding.FragmentHomeBinding
-import net.samystudio.beaver.util.*
+import net.samystudio.beaver.util.TRANSITION_DURATION
+import net.samystudio.beaver.util.navigate
+import net.samystudio.beaver.util.toggleLightSystemBars
+import net.samystudio.beaver.util.viewBinding
 
 @AndroidEntryPoint
 class HomeFragment : Fragment(R.layout.fragment_home) {
@@ -38,12 +45,17 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
 
         binding.toolbar.title = "Home"
-        binding.profileButton.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_home_to_userProfile))
+        binding.profileButton.setOnClickListener {
+            navigate(HomeFragmentDirections.actionHomeToUserProfile())
+        }
 
-        viewLifecycleOwner.lifecycleScope.launchWhenResumed {
-            viewModel.homeState.collect { state ->
-                state.handleStatesFromFragmentWithLoaderDialog(this@HomeFragment) {
-                    binding.textView.text = it.content }
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.homeState.onEach { state ->
+                    state.handleStatesFromFragmentWithLoaderDialog(this@HomeFragment) {
+                        binding.textView.text = it.content
+                    }
+                }.launchIn(this)
             }
         }
     }

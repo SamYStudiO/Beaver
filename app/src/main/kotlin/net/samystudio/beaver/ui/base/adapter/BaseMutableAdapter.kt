@@ -1,7 +1,8 @@
+@file:Suppress("unused", "MemberVisibilityCanBePrivate")
+
 package net.samystudio.beaver.ui.base.adapter
 
 import androidx.core.math.MathUtils
-import java.util.*
 
 abstract class BaseMutableAdapter<D, VH : BaseViewHolder<D>>(private val _items: MutableList<D> = ArrayList()) :
     BaseAdapter<D, VH>(_items) {

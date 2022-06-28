@@ -22,7 +22,7 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.MyApp"
+        android:theme="@style/Theme.MyApp.SplashScreen"
         tools:targetApi="N">
 
         <activity

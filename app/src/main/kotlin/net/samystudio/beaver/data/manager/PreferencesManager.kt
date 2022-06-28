@@ -2,7 +2,6 @@ package net.samystudio.beaver.data.manager
 
 import androidx.datastore.core.DataStore
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 import net.samystudio.beaver.BuildConfig
 import net.samystudio.beaver.data.model.Preferences
@@ -14,25 +13,31 @@ import javax.inject.Singleton
 @Singleton
 class PreferencesManager @Inject constructor(
     private val preferencesDataStore: DataStore<Preferences>,
-    private val servers: List<Server>,
+    private val servers: ArrayList<Server>,
 ) {
-    fun account() = preferencesDataStore.data.map {
-        it.account
-    }
+    val accountId: Flow<String> = preferencesDataStore.data
+        .map { it.account.accountId }
 
-    fun accountName(onlyIfHasIt: Boolean = false): Flow<String> = preferencesDataStore.data
-        .filter { it.account.accountName.isNotBlank() || !onlyIfHasIt }
-        .map { it.account.accountName }
-
-    fun accountToken(onlyIfHasIt: Boolean = false) = preferencesDataStore.data
-        .filter { it.account.hasAccountToken() || !onlyIfHasIt }
+    val accountToken: Flow<Token> = preferencesDataStore.data
         .map { it.account.accountToken }
 
-    suspend fun updateAccountName(name: String) {
+    /**
+     * Get current selected server or first that match [Server.getDefaultForBuildType] from
+     * [servers] list if no server has been selected yet.
+     */
+    val server: Flow<Server> = preferencesDataStore.data.map { preferences ->
+        if (preferences.hasServer())
+            preferences.server
+        else
+            servers.find { it.defaultForBuildType == BuildConfig.BUILD_TYPE }
+                ?: servers.first()
+    }
+
+    suspend fun updateAccountId(id: String) {
         preferencesDataStore.updateData {
             it.toBuilder().setAccount(
                 it.account.toBuilder()
-                    .setAccountName(name)
+                    .setAccountId(id)
                     .build()
             ).build()
         }
@@ -48,11 +53,11 @@ class PreferencesManager @Inject constructor(
         }
     }
 
-    suspend fun clearAccountName() {
+    suspend fun clearAccountId() {
         preferencesDataStore.updateData {
             it.toBuilder().setAccount(
                 it.account.toBuilder()
-                    .clearAccountName()
+                    .clearAccountId()
                     .build()
             ).build()
         }
@@ -66,17 +71,5 @@ class PreferencesManager @Inject constructor(
                     .build()
             ).build()
         }
-    }
-
-    /**
-     * Get current selected server or first that match [Server.getDefaultForBuildType] from
-     * [servers] list if no server has been selected yet.
-     */
-    fun server() = preferencesDataStore.data.map { preferences ->
-        if (preferences.hasServer())
-            preferences.server
-        else
-            servers.find { it.defaultForBuildType == BuildConfig.BUILD_TYPE }
-                ?: servers.first()
     }
 }

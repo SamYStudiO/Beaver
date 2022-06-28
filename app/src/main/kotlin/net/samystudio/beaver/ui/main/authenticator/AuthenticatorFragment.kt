@@ -7,13 +7,16 @@ import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.transition.MaterialSharedAxis
 import dagger.hilt.android.AndroidEntryPoint
 import dev.chrisbanes.insetter.applyInsetter
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import net.samystudio.beaver.R
 import net.samystudio.beaver.data.handleStatesFromFragmentWithLoaderDialog
 import net.samystudio.beaver.databinding.FragmentAuthenticatorBinding
@@ -47,62 +50,55 @@ class AuthenticatorFragment : Fragment(R.layout.fragment_authenticator) {
             }
         }
 
-        binding.signIn.setOnClickListener {
-            viewModel.signIn(
-                binding.signInEmail.text.toString(),
-                binding.signInPassword.text.toString()
+        binding.login.setOnClickListener {
+            viewModel.login(
+                binding.loginEmail.text.toString(),
+                binding.loginPassword.text.toString()
             )
         }
-        binding.signUp.setOnClickListener {
-            viewModel.signUp(
-                binding.signUpEmail.text.toString(),
-                binding.signUpPassword.text.toString()
+        binding.register.setOnClickListener {
+            viewModel.register(
+                binding.registerEmail.text.toString(),
+                binding.registerPassword.text.toString()
             )
         }
 
-        viewLifecycleOwner.lifecycleScope.launchWhenResumed {
-            viewModel.accountName.collect {
-                binding.signInEmail.setText(it)
-            }
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.defaultAccountName.onEach {
+                    binding.loginEmail.setText(it)
+                }.launchIn(this)
 
-            viewModel.signInState.collect {
-                it.handleStatesFromFragmentWithLoaderDialog(this@AuthenticatorFragment)
-                {
-                    findNavController().popBackStack()
-                }
-            }
+                viewModel.defaultAccountPassword.onEach {
+                    binding.loginPassword.setText(it)
+                }.launchIn(this)
 
-            viewModel.signUpState.collect {
-                it.handleStatesFromFragmentWithLoaderDialog(this@AuthenticatorFragment)
-                {
-                    findNavController().popBackStack()
-                }
+                viewModel.accountName.onEach {
+                    if (it.isNotBlank()) {
+                        binding.loginEmail.setText(it)
+                        binding.loginPassword.setText("")
+                    }
+                }.launchIn(this)
+
+                viewModel.loginState.onEach {
+                    it.handleStatesFromFragmentWithLoaderDialog(this@AuthenticatorFragment) {
+                        // TODO error handling
+                        findNavController().popBackStack()
+                    }
+                }.launchIn(this)
+
+                viewModel.registerState.onEach {
+                    it.handleStatesFromFragmentWithLoaderDialog(this@AuthenticatorFragment) {
+                        // TODO error handling
+                        findNavController().popBackStack()
+                    }
+                }.launchIn(this)
+
             }
         }
 
         combine(
-            binding.signInEmail.textChanges()
-                .debounce(500)
-                .map {
-                    val emailValid = it.validate(EMAIL_VALIDATOR)
-                    binding.signInEmailLayout.error =
-                        if (it.isNotEmpty() && !emailValid) getString(R.string.error_email) else null
-                    emailValid
-                },
-            binding.signInPassword.textChanges()
-                .debounce(500)
-                .map {
-                    val passwordValid = it.validate(PASSWORD_VALIDATOR)
-                    binding.signInPasswordLayout.error =
-                        if (it.isNotEmpty() && !passwordValid) getString(R.string.error_password) else null
-                    passwordValid
-                },
-        ) { a, b ->
-            a && b
-        }.launchIn(viewLifecycleOwner.lifecycleScope)
-
-        combine(
-            binding.signUpEmail.textChanges()
+            binding.registerEmail.textChanges()
                 .debounce(500)
                 .map {
                     val emailValid = it.validate(EMAIL_VALIDATOR)
@@ -110,7 +106,7 @@ class AuthenticatorFragment : Fragment(R.layout.fragment_authenticator) {
                         if (it.isNotEmpty() && !emailValid) getString(R.string.error_email) else null
                     emailValid
                 },
-            binding.signUpPassword.textChanges()
+            binding.registerPassword.textChanges()
                 .debounce(500)
                 .map {
                     val passwordValid = it.validate(PASSWORD_VALIDATOR)
@@ -121,10 +117,12 @@ class AuthenticatorFragment : Fragment(R.layout.fragment_authenticator) {
             binding.signUpConfirmPassword.textChanges()
                 .debounce(500)
                 .map {
-                    val password = binding.signUpPassword.text.toString()
+                    val password = binding.registerPassword.text.toString()
                     val passwordMatchValid = it.toString() == password
                     binding.signUpConfirmPasswordLayout.error =
-                        if (password.validate(PASSWORD_VALIDATOR) && !passwordMatchValid) getString(R.string.error_password_match) else null
+                        if (password.validate(PASSWORD_VALIDATOR) && !passwordMatchValid) getString(
+                            R.string.error_password_match
+                        ) else null
                     passwordMatchValid
                 },
         ) { a, b, c ->

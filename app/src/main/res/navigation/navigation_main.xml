@@ -207,11 +207,10 @@
             android:defaultValue="@null"
             app:argType="string[]"
             app:nullable="true" />
-        <!-- boolean[] can't be null :(, so we use string of booleans -->
         <argument
             android:name="multiChoiceCheckedItems"
             android:defaultValue="@null"
-            app:argType="string[]"
+            app:argType="boolean[]"
             app:nullable="true" />
         <argument
             android:name="singleChoiceItemsRes"
@@ -237,7 +236,6 @@
             app:nullable="true" />
         <argument
             android:name="requestCode"
-            android:defaultValue="0"
             app:argType="integer" />
     </dialog>
     <action
@@ -248,20 +246,11 @@
         android:name="net.samystudio.beaver.ui.common.dialog.ErrorDialog"
         android:label="ErrorDialog">
         <argument
-            android:name="source"
-            app:argType="net.samystudio.beaver.ui.common.dialog.ErrorSource" />
-        <argument
-            android:name="appCode"
-            android:defaultValue="@null"
-            app:argType="string"
+            android:name="exception"
+            app:argType="java.lang.Exception"
             app:nullable="true" />
         <argument
-            android:name="httpOrAppCode"
-            android:defaultValue="@null"
-            app:argType="string"
-            app:nullable="true" />
-        <argument
-            android:name="serverCode"
+            android:name="title"
             android:defaultValue="@null"
             app:argType="string"
             app:nullable="true" />
@@ -271,13 +260,21 @@
             app:argType="string"
             app:nullable="true" />
         <argument
-            android:name="titleRes"
-            android:defaultValue="@string/error_title"
-            app:argType="reference" />
-        <argument
             android:name="positiveButtonRes"
             android:defaultValue="@string/ok"
             app:argType="reference" />
+        <argument
+            android:name="negativeButtonRes"
+            android:defaultValue="0"
+            app:argType="reference" />
+        <argument
+            android:name="cancelable"
+            android:defaultValue="true"
+            app:argType="boolean" />
+        <argument
+            android:name="requestCode"
+            android:defaultValue="0"
+            app:argType="integer" />
     </dialog>
     <action
         android:id="@+id/action_global_errorDialog"

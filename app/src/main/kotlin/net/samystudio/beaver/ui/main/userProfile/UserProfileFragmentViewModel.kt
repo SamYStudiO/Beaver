@@ -3,26 +3,30 @@ package net.samystudio.beaver.ui.main.userProfile
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
-import net.samystudio.beaver.data.manager.UserManager
-import net.samystudio.beaver.ui.common.viewmodel.TriggerOutStateFlow
-import net.samystudio.beaver.ui.common.viewmodel.TriggerStateFlow
+import kotlinx.coroutines.flow.flow
+import net.samystudio.beaver.data.repository.UserRepository
+import net.samystudio.beaver.data.toAsyncState
+import net.samystudio.beaver.data.toResultAsyncState
+import net.samystudio.beaver.util.TriggerAsyncStateFlow
+import net.samystudio.beaver.util.TriggerResultAsyncStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
 class UserProfileFragmentViewModel @Inject constructor(
-    private val userManager: UserManager
+    private val userRepository: UserRepository
 ) : ViewModel() {
-    val disconnectState = TriggerStateFlow {
-        userManager.disconnect()
+    val logoutState = TriggerAsyncStateFlow{
+        flow {
+            emit(userRepository.logout())
+        }.toAsyncState()
     }
-    val userState = TriggerOutStateFlow(true) {
-        userManager.getUser()
+    val userState = TriggerResultAsyncStateFlow(true) {
+        flow {
+            emit(userRepository.getAsyncData())
+        }.toResultAsyncState()
     }
 
     fun disconnect() {
-        viewModelScope.launch {
-            disconnectState.trigger()
-        }
+        logoutState.trigger()
     }
 }

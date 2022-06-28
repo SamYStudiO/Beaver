@@ -34,8 +34,8 @@ object ApplicationModule {
      */
     @Provides
     @Singleton
-    fun provideTrimMemoryList(coilTrimMemory: CoilModule.CoilTrimMemory): ArrayList<TrimMemory> =
-        mutableListOf<TrimMemory>(coilTrimMemory) as ArrayList<TrimMemory>
+    fun provideTrimMemoryList(coilTrimMemory: CoilTrimMemory): Array<TrimMemory> =
+        arrayOf(coilTrimMemory)
 
     @Provides
     @Singleton

@@ -1,52 +1,190 @@
+@file:Suppress("unused")
+
 package net.samystudio.beaver.util
 
+import android.net.Uri
 import android.os.Bundle
+import androidx.annotation.IdRes
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.DefaultLifecycleObserver
-import androidx.lifecycle.LifecycleOwner
-import androidx.navigation.NavController
-import androidx.navigation.NavDestination
+import androidx.navigation.*
 import androidx.navigation.fragment.findNavController
-import net.samystudio.beaver.ui.common.dialog.AlertDialog
-import net.samystudio.beaver.ui.common.dialog.setDialogPositiveClickListener
+import net.samystudio.beaver.R
+import timber.log.Timber
 
-/**
- * Make sure we are in the right destination before navigating to other destination.
- * This is useful for example when receiving data from [AlertDialog] with
- * [setDialogPositiveClickListener] for example and dialog has not be dismissed yet and so current
- * destination id is still not fragment destination id where you may want to navigate elsewhere.
- */
-fun Fragment.navigateWhenCurrentDestinationIdIs(destinationId: Int, readyToNavigate: () -> Unit) {
-    val listener = object :
-        NavController.OnDestinationChangedListener {
-        override fun onDestinationChanged(
-            controller: NavController,
-            destination: NavDestination,
-            arguments: Bundle?
-        ) {
-            if (destination.id == destinationId) {
-                readyToNavigate.invoke()
-                findNavController().removeOnDestinationChangedListener(this)
-            }
-        }
-    }
-
-    findNavController().addOnDestinationChangedListener(listener)
-
-    viewLifecycleOwnerLiveData.observe(this@navigateWhenCurrentDestinationIdIs) {
-        it.lifecycle.addObserver(object : DefaultLifecycleObserver {
-            override fun onDestroy(owner: LifecycleOwner) {
-                findNavController().removeOnDestinationChangedListener(listener)
-            }
-        })
+fun AppCompatActivity.popBackStack(@IdRes hostId: Int) {
+    try {
+        findNavController(hostId).popBackStack()
+    } catch (e: Exception) {
+        Timber.d(e)
     }
 }
 
-/**
- * Make sure we are in the right destination to navigate to other destination.
- * This is useful for example when you open a dialog and try to navigate from fragment that opened
- * the dialog, you'll get a crash since current destination is not the right one.
- */
-fun Fragment.navigateIfCurrentDestinationIdIs(destinationId: Int, readyToNavigate: () -> Unit) {
-    if (findNavController().currentDestination?.id == destinationId) readyToNavigate.invoke()
+fun AppCompatActivity.popBackStack(
+    @IdRes hostId: Int,
+    @IdRes destinationId: Int,
+    inclusive: Boolean
+) {
+    try {
+        findNavController(hostId).popBackStack(destinationId, inclusive)
+    } catch (e: Exception) {
+        Timber.d(e)
+    }
+}
+
+fun AppCompatActivity.navigate(
+    @IdRes hostId: Int,
+    @IdRes idRes: Int,
+    args: Bundle? = null,
+    navOptions: NavOptions? = null,
+    navigatorExtras: Navigator.Extras? = null
+) {
+    try {
+        findNavController(hostId).navigate(idRes, args, navOptions, navigatorExtras)
+    } catch (e: Exception) {
+        Timber.d(e)
+    }
+}
+
+fun AppCompatActivity.navigate(
+    @IdRes hostId: Int,
+    uri: Uri,
+    navOptions: NavOptions? = null,
+    navigatorExtras: Navigator.Extras? = null
+) {
+    try {
+        findNavController(hostId).navigate(uri, navOptions, navigatorExtras)
+    } catch (e: Exception) {
+        Timber.d(e)
+    }
+}
+
+fun AppCompatActivity.navigate(
+    @IdRes hostId: Int,
+    request: NavDeepLinkRequest,
+    navOptions: NavOptions? = null,
+    navigatorExtras: Navigator.Extras? = null
+) {
+    try {
+        findNavController(hostId).navigate(request, navOptions, navigatorExtras)
+    } catch (e: Exception) {
+        Timber.d(e)
+    }
+}
+
+fun AppCompatActivity.navigate(
+    @IdRes hostId: Int,
+    directions: NavDirections,
+    navOptions: NavOptions? = null
+) {
+    try {
+        findNavController(hostId).navigate(directions, navOptions)
+    } catch (e: Exception) {
+        Timber.d(e)
+    }
+}
+
+fun AppCompatActivity.navigate(
+    @IdRes hostId: Int,
+    directions: NavDirections,
+    navigatorExtras: Navigator.Extras
+) {
+    try {
+        findNavController(hostId).navigate(directions, navigatorExtras)
+    } catch (e: Exception) {
+        Timber.d(e)
+    }
+}
+
+fun Fragment.mayNavigate(): Boolean {
+    val actualDestinationId = findNavController().currentDestination?.id
+    val thisFragmentDestinationId =
+        view?.getTag(R.id.tag_navigation_destination_id) ?: actualDestinationId
+
+    return if (actualDestinationId == thisFragmentDestinationId) {
+        view?.setTag(R.id.tag_navigation_destination_id, thisFragmentDestinationId)
+        true
+    } else {
+        false
+    }
+}
+
+fun Fragment.popBackStack() {
+    findNavController().popBackStack()
+}
+
+fun Fragment.popBackStack(
+    @IdRes destinationId: Int,
+    inclusive: Boolean
+) {
+    findNavController().popBackStack(destinationId, inclusive)
+}
+
+fun Fragment.navigate(
+    @IdRes idRes: Int,
+    args: Bundle? = null,
+    navOptions: NavOptions? = null,
+    navigatorExtras: Navigator.Extras? = null,
+    checkCurrentDestination: Boolean = true,
+) {
+    if (mayNavigate() || !checkCurrentDestination)
+        try {
+            findNavController().navigate(idRes, args, navOptions, navigatorExtras)
+        } catch (e: Exception) {
+            Timber.d(e)
+        }
+}
+
+fun Fragment.navigate(
+    uri: Uri,
+    navOptions: NavOptions? = null,
+    navigatorExtras: Navigator.Extras? = null,
+    checkCurrentDestination: Boolean = true,
+) {
+    if (mayNavigate() || !checkCurrentDestination)
+        try {
+            findNavController().navigate(uri, navOptions, navigatorExtras)
+        } catch (e: Exception) {
+            Timber.d(e)
+        }
+}
+
+fun Fragment.navigate(
+    request: NavDeepLinkRequest,
+    navOptions: NavOptions? = null,
+    navigatorExtras: Navigator.Extras? = null,
+    checkCurrentDestination: Boolean = true,
+) {
+    if (mayNavigate() || !checkCurrentDestination)
+        try {
+            findNavController().navigate(request, navOptions, navigatorExtras)
+        } catch (e: Exception) {
+            Timber.d(e)
+        }
+}
+
+fun Fragment.navigate(
+    directions: NavDirections,
+    navOptions: NavOptions? = null,
+    checkCurrentDestination: Boolean = true,
+) {
+    if (mayNavigate() || !checkCurrentDestination)
+        try {
+            findNavController().navigate(directions, navOptions)
+        } catch (e: Exception) {
+            Timber.d(e)
+        }
+}
+
+fun Fragment.navigate(
+    directions: NavDirections,
+    navigatorExtras: Navigator.Extras,
+    checkCurrentDestination: Boolean = true,
+) {
+    if (mayNavigate() || !checkCurrentDestination)
+        try {
+            findNavController().navigate(directions, navigatorExtras)
+        } catch (e: Exception) {
+            Timber.d(e)
+        }
 }

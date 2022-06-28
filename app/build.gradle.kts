@@ -10,6 +10,7 @@ plugins {
     kotlin("android")
     kotlin("kapt")
     id("com.google.android.gms.strict-version-matcher-plugin")
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
     id("com.google.firebase.firebase-perf")
@@ -41,11 +42,11 @@ android {
         applicationId = "net.samystudio.beaver"
         minSdk = Versions.minSdk
         targetSdk = Versions.targetSdk
-        versionCode = versionBuild
+        // We set versionCode to a fixed number to avoid breaking instant run. Right version code is
+        // set later (below) for non debuggable builds.
+        versionCode = 1
         versionName = "$versionMajor.$versionMinor.$versionPatch"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField("String", "FULL_VERSION_NAME", "\"$versionName build $versionCode\"")
-        setProperty("archivesBaseName", "$applicationId-v$versionName($versionCode)")
 
         javaCompileOptions {
             annotationProcessorOptions {
@@ -94,19 +95,30 @@ android {
         viewBinding = true
     }
 
-    hilt {
-        enableTransformForLocalTests = true
+    compileOptions {
+        isCoreLibraryDesugaringEnabled = true
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
 
     applicationVariants.all {
         outputs.all {
-            // Since we're using date for versionCode, manifest will change each time we compile and
-            // so we won't be able to use "Apply codee changes" features as it doesn't work when
-            // manifest is modified. To avoid that we force a versionCode to 1 for debug build.
+            // We set versionCode only for release build to avoid breaking instant run
+            // (Apply code changes) for debug build.
             val outputImpl = this as com.android.build.gradle.internal.api.ApkVariantOutputImpl
-            if (name.contains("debug")) outputImpl.versionCodeOverride = 1
+            if (!buildType.isDebuggable)
+                outputImpl.versionCodeOverride = versionBuild
         }
     }
+
+    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+        kotlinOptions.freeCompilerArgs += "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi"
+    }
+
+}
+
+kapt {
+    correctErrorTypes = true
 }
 
 dependencies {
@@ -122,8 +134,9 @@ dependencies {
     test()
     androidTest()
 
-    implementation(Dependencies.permissionsdispatcher_ktx)
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
     implementation(Dependencies.insetter)
+    implementation(Dependencies.permissionlauncher)
     implementation(Dependencies.flow_binding)
 }
 

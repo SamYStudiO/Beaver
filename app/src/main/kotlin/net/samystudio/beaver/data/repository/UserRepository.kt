@@ -1,64 +1,65 @@
 package net.samystudio.beaver.data.repository
 
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.flow.*
+import android.content.SharedPreferences
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.crashlytics.FirebaseCrashlytics
+import dagger.Lazy
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.withContext
 import net.samystudio.beaver.data.local.UserDao
 import net.samystudio.beaver.data.manager.PreferencesManager
 import net.samystudio.beaver.data.model.User
 import net.samystudio.beaver.data.remote.UserApiInterface
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.time.Duration.Companion.hours
 
 @Singleton
 class UserRepository @Inject constructor(
-    private val preferencesManager: PreferencesManager,
+    private val tokenRepository: Lazy<TokenRepository>,
     private val userDao: UserDao,
-    private val userApiInterface: UserApiInterface
-) : BaseRepository() {
-    /**
-     * Get a [Flow] to observe user changes.
-     */
-    @DelicateCoroutinesApi
-    @ExperimentalCoroutinesApi
-    val userFlow =
-        preferencesManager.accountName()
-            .filter { it.isNotBlank() }
-            .flatMapLatest { userDao.getUserFlowByEmail(it) }
-            .shareIn(
-                GlobalScope,
-                SharingStarted.WhileSubscribed(),
-                1
-            )
+    private val preferencesManager: PreferencesManager,
+    private val userApiInterface: UserApiInterface,
+    private val firebaseAnalytics: FirebaseAnalytics,
+    private val crashlytics: FirebaseCrashlytics,
+    sharedPreferences: SharedPreferences,
+) : DataRepository<User>(
+    1.hours,
+    SharedPreferencesDataRepositoryIntegrityHolder(sharedPreferences),
+    SharedPreferencesDataRepositoryIntegrityHolder(sharedPreferences),
+) {
 
-    /**
-     * Get user locally or remotely if there is no local user or user is invalidated locally.
-     */
-    suspend fun getUser() =
-        if (isLocalInvalidate) getUserRemote()
-        else preferencesManager.accountName().lastOrNull()?.let {
-            if (it.isBlank()) null else userDao.getUserByEmail(it)
-        } ?: getUserRemote()
+    override suspend fun getRemoteData(): User =
+        userApiInterface.getUser()
 
-    /**
-     * Get user remotely.
-     */
-    suspend fun getUserRemote() =
-        userApiInterface.getUser().apply {
-            updatePreferences(this)
-            userDao.insertUser(this)
-            isLocalInvalidate = false
+    override suspend fun getLocalData(): User? =
+        userDao.getUserByEmail(preferencesManager.accountId.first())
+
+    override suspend fun setLocalData(data: User?) = withContext(Dispatchers.IO) {
+        when {
+            // Connected
+            data != null -> {
+                preferencesManager.updateAccountId(data.email)
+                userDao.insertUser(data)
+            }
+            // Disconnected
+            else -> {
+                preferencesManager.clearAccountId()
+                tokenRepository.get().clear()
+            }
         }
-
-    suspend fun updateUser(user: User) {
-        userApiInterface.patchUser(user)
-        updatePreferences(user)
-        userDao.insertUser(user)
-        isLocalInvalidate = false
     }
 
-    private suspend fun updatePreferences(user: User) {
-        preferencesManager.updateAccountName(user.email)
+    override fun refreshed() {
+        val id = data?.id?.toString()
+        firebaseAnalytics.setUserId(id)
+        crashlytics.setUserId(id ?: "")
     }
+
+    /**
+     * Alias for [clear], this is the right place to call any remote server logout api if required
+     * before calling [clear].
+     */
+    suspend fun logout() = clear()
 }

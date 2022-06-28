@@ -1,32 +1,16 @@
-buildscript {
-    repositories {
-        google()
-    }
-    dependencies {
-        classpath("com.android.tools.build:gradle:${Versions.android_build_tools}")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}")
-        classpath("com.google.gms:google-services:${Versions.google_services}")
-        classpath("com.google.android.gms:strict-version-matcher-plugin:${Versions.strict_version_matcher_plugin}")
-        classpath("com.google.firebase:firebase-crashlytics-gradle:${Versions.firebase_crashlytics_plugin}")
-        classpath("com.google.firebase:perf-plugin:${Versions.firebase_perf_plugin}")
-        classpath("androidx.navigation:navigation-safe-args-gradle-plugin:${Versions.navigation_safe_args_plugin}")
-        classpath("com.google.dagger:hilt-android-gradle-plugin:${Versions.hilt}")
-        classpath("com.github.ben-manes:gradle-versions-plugin:${Versions.gradle_versions_plugin}")
-    }
-}
-
 plugins {
+    id("com.android.application") version Versions.android_build_tools apply false
+    kotlin("android") version Versions.kotlin apply false
+    kotlin("kapt") version Versions.kotlin apply false
+    id("com.google.android.gms.strict-version-matcher-plugin") version Versions.strict_version_matcher_plugin apply false
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin") version Versions.secret_gradle_plugin apply false
+    id("com.google.gms.google-services") version Versions.google_services apply false
+    id("com.google.firebase.crashlytics") version Versions.firebase_crashlytics_plugin apply false
+    id("com.google.firebase.firebase-perf") version Versions.firebase_perf_plugin apply false
+    id("com.google.dagger.hilt.android") version Versions.hilt apply false
+    id("androidx.navigation.safeargs") version Versions.navigation apply false
     id("com.github.ben-manes.versions") version Versions.gradle_versions_plugin
-    id("com.diffplug.spotless") version Versions.spotless apply false
-}
-
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-        maven { url = uri("https://jitpack.io") }
-        maven { url = uri("https://oss.sonatype.org/content/repositories/snapshots") }
-    }
+    id("com.diffplug.spotless") version Versions.spotless
 }
 
 subprojects {
@@ -44,7 +28,7 @@ subprojects {
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
         kotlinOptions {
             // Treat all Kotlin warnings as errors
-            allWarningsAsErrors = true
+            //allWarningsAsErrors = true
         }
     }
 }
@@ -66,8 +50,4 @@ tasks.withType<com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
             }
         }
     }
-}
-
-tasks.register("clean", Delete::class) {
-    delete(rootProject.buildDir)
 }

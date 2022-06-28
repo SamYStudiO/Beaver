@@ -9,6 +9,7 @@ Template includes basic implementation for a launch screen, a home screen, an au
 Authentication is implemented using OAuth2 and automatically refresh token when a 401 HTTP exception is thrown.
 
 Also features :
+- [Permission Launcher](https://github.com/SamYStudiO/PermissionLauncher) Android lightweight library to perform permissions request the right way using ActivityResultCallback.
 - An [AlertDialog](https://github.com/SamYStudiO/Beaver/blob/master/app/src/main/kotlin/net/samystudio/beaver/ui/common/dialog/AlertDialog.kt) implementation using DialogFragment that survive state lost and returns actions/results using [setFragmentResultListener API](https://developer.android.com/guide/fragments/communicate#fragment-result). Some [kotlin extensions](https://github.com/SamYStudiO/Beaver/blob/master/app/src/main/kotlin/net/samystudio/beaver/ui/common/dialog/AlertDialog.kt#L568) are available to make results even straightforward.
 - Some [utilities](https://github.com/SamYStudiO/Beaver/tree/master/app/src/main/kotlin/net/samystudio/beaver/util).
 - [Base classes](https://github.com/SamYStudiO/Beaver/tree/master/app/src/main/kotlin/net/samystudio/beaver/ui/base/adapter) for Adapter/ListAdapter and ViewHolder.
@@ -17,8 +18,6 @@ Also features :
 - Gradle kotlin DSL.
 
 Common used libraries :
-- [Firebase app indexing](https://firebase.google.com/docs/app-indexing/)
-- [Firebase crashlytics](https://firebase.google.com/docs/crashlytics/)
 - [Retrofit](https://github.com/square/retrofit)
 - [Coil](https://github.com/coil-kt/coil)
 - [Timber](https://github.com/JakeWharton/timber)

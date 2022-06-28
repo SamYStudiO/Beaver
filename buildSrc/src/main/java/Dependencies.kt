@@ -1,9 +1,8 @@
+@file:Suppress("unused")
+
 import org.gradle.api.artifacts.dsl.DependencyHandler
 
 object Dependencies {
-    // kotlin
-    const val kotlin = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.kotlin}"
-
     // android
     const val core_ktx = "androidx.core:core-ktx:${Versions.core}"
     const val core_splashscreen = "androidx.core:core-splashscreen:${Versions.core_splashscreen}"
@@ -34,15 +33,17 @@ object Dependencies {
     const val datastore = "androidx.datastore:datastore:${Versions.datastore}"
     const val protobuf = "com.google.protobuf:protobuf-javalite:${Versions.protobuf}"
     const val material = "com.google.android.material:material:${Versions.material}"
+    const val coroutines_android =
+        "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutines}"
+    const val coroutines_test =
+        "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutines}"
 
     // firebase
-    const val firebase_appindexing =
-        "com.google.firebase:firebase-appindexing:${Versions.firebase_appindexing}"
-    const val firebase_crashlytics_ktx =
-        "com.google.firebase:firebase-crashlytics-ktx:${Versions.firebase_crashlytics}"
-    const val firebase_analytics_ktx =
-        "com.google.firebase:firebase-analytics-ktx:${Versions.firebase_analytics}"
-    const val firebase_perf_ktx = "com.google.firebase:firebase-perf-ktx:${Versions.firebase_perf}"
+    const val firebase_bom = "com.google.firebase:firebase-bom:${Versions.firebase_bom}"
+    const val firebase_appindexing = "com.google.firebase:firebase-appindexing"
+    const val firebase_crashlytics_ktx = "com.google.firebase:firebase-crashlytics-ktx"
+    const val firebase_analytics_ktx = "com.google.firebase:firebase-analytics-ktx"
+    const val firebase_perf_ktx = "com.google.firebase:firebase-perf-ktx"
 
     // dagger
     const val hilt_android = "com.google.dagger:hilt-android:${Versions.hilt}"
@@ -66,9 +67,9 @@ object Dependencies {
     const val coil = "io.coil-kt:coil:${Versions.coil}"
 
     // misc
-    const val permissionsdispatcher_ktx =
-        "com.github.permissions-dispatcher:ktx:${Versions.permissionsdispatcher}"
     const val insetter = "dev.chrisbanes.insetter:insetter:${Versions.insetter}"
+    const val permissionlauncher =
+        "net.samystudio.permissionlauncher:permissionlauncher-ktx:${Versions.permissionlauncher}"
     const val flow_binding =
         "io.github.reactivecircus.flowbinding:flowbinding-android:${Versions.flow_binding}"
 
@@ -100,7 +101,6 @@ object Dependencies {
 }
 
 fun DependencyHandler.base() {
-    implementation(Dependencies.kotlin)
     implementation(Dependencies.core_ktx)
     implementation(Dependencies.core_splashscreen)
     implementation(Dependencies.startup)
@@ -112,6 +112,8 @@ fun DependencyHandler.base() {
     implementation(Dependencies.datastore)
     implementation(Dependencies.protobuf)
     implementation(Dependencies.material)
+    implementation(Dependencies.coroutines_android)
+    testImplementation(Dependencies.coroutines_test)
 }
 
 fun DependencyHandler.lifecycle() {
@@ -140,6 +142,7 @@ fun DependencyHandler.work() {
 }
 
 fun DependencyHandler.firebase() {
+    implementation(platform(Dependencies.firebase_bom))
     implementation(Dependencies.firebase_appindexing)
     implementation(Dependencies.firebase_crashlytics_ktx)
     implementation(Dependencies.firebase_analytics_ktx)
@@ -193,34 +196,34 @@ fun DependencyHandler.androidTest() {
     androidTestImplementation(Dependencies.mockito_android)
 }
 
-private fun DependencyHandler.implementation(depName: String) {
-    add("implementation", depName)
+private fun DependencyHandler.implementation(dep: Any) {
+    add("implementation", dep)
 }
 
-private fun DependencyHandler.kapt(depName: String) {
-    add("kapt", depName)
+private fun DependencyHandler.kapt(dep: Any) {
+    add("kapt", dep)
 }
 
-private fun DependencyHandler.compileOnly(depName: String) {
-    add("compileOnly", depName)
+private fun DependencyHandler.compileOnly(dep: Any) {
+    add("compileOnly", dep)
 }
 
-private fun DependencyHandler.debugImplementation(depName: String) {
-    add("debugImplementation", depName)
+private fun DependencyHandler.debugImplementation(dep: Any) {
+    add("debugImplementation", dep)
 }
 
-private fun DependencyHandler.testImplementation(depName: String) {
-    add("testImplementation", depName)
+private fun DependencyHandler.testImplementation(dep: Any) {
+    add("testImplementation", dep)
 }
 
-private fun DependencyHandler.androidTestImplementation(depName: String) {
-    add("androidTestImplementation", depName)
+private fun DependencyHandler.androidTestImplementation(dep: Any) {
+    add("androidTestImplementation", dep)
 }
 
-private fun DependencyHandler.kaptAndroidTest(depName: String) {
-    add("kaptAndroidTest", depName)
+private fun DependencyHandler.kaptAndroidTest(dep: Any) {
+    add("kaptAndroidTest", dep)
 }
 
-private fun DependencyHandler.kaptTest(depName: String) {
-    add("kaptTest", depName)
+private fun DependencyHandler.kaptTest(dep: Any) {
+    add("kaptTest", dep)
 }

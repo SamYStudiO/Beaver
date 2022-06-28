@@ -1,0 +1,51 @@
+name: Check
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    if: ${{ !contains(github.event.head_commit.message, 'Prepare for release') }}
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Cache Gradle Files
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches/
+            ~/.gradle/wrapper/
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Set up Java
+        uses: actions/setup-java@v1
+        with:
+          java-version: '11'
+
+      - name: Access local.properties
+        env:
+          KEYALIAS: ${{ secrets.KEYALIAS }}
+          KEYPASSWORD: ${{ secrets.KEYPASSWORD }}
+          STOREFILE: ${{ secrets.STOREFILE }}
+          STOREPASSWORD: ${{ secrets.STOREPASSWORD }}
+        run: |
+          echo keyAlias=\"$KEYALIAS\" > ./local.properties
+          echo keyPassword=\"KEYPASSWORD\" >> ./local.properties
+          echo storeFile=\"STOREFILE\" >> ./local.properties
+          echo storePassword=\"STOREPASSWORD\" >> ./local.properties
+
+      - name: Gradlew permissions
+        run: chmod +x ./gradlew
+
+      - name: Test
+        run: ./gradlew check

@@ -2,70 +2,68 @@ object Versions {
     const val compileSdk = 31
     const val minSdk = 21
     const val targetSdk = 31
-    const val buildToolsVersion = "31.0.0"
+    const val buildToolsVersion = "32.0.0"
 
     // tools
-    const val android_build_tools = "7.0.2"
-    const val google_services = "4.3.10"
+    const val android_build_tools = "7.2.1"
     const val strict_version_matcher_plugin = "1.2.2"
-    const val firebase_crashlytics_plugin = "2.7.1"
-    const val firebase_perf_plugin = "1.4.0"
-    const val navigation_safe_args_plugin = "2.3.5"
-    const val gradle_versions_plugin = "0.39.0"
+    const val secret_gradle_plugin = "2.0.1"
+    const val google_services = "4.3.10"
+    const val firebase_crashlytics_plugin = "2.8.1"
+    const val firebase_perf_plugin = "1.4.1"
+    const val gradle_versions_plugin = "0.42.0"
     const val protobuf_plugin = "0.8.17"
-    const val spotless = "5.14.3"
+    const val spotless = "6.7.0"
     const val ktlint = "0.40.0"
 
     // kotlin
-    const val kotlin = "1.5.30"
+    const val kotlin = "1.7.0"
 
     // android
-    const val core = "1.6.0"
-    const val core_splashscreen = "1.0.0-alpha01"
-    const val startup = "1.1.0"
-    const val activity = "1.3.1"
-    const val fragment = "1.3.6"
-    const val appcompat = "1.3.1"
-    const val preference = "1.1.1"
-    const val constraintlayout = "2.1.0"
+    const val core = "1.8.0"
+    const val core_splashscreen = "1.0.0-rc01"
+    const val startup = "1.1.1"
+    const val activity = "1.4.0"
+    const val fragment = "1.4.1"
+    const val appcompat = "1.4.2"
+    const val preference = "1.2.0"
+    const val constraintlayout = "2.1.4"
     const val arch_version = "2.1.0"
-    const val lifecycle = "2.3.1"
-    const val navigation = "2.3.5"
-    const val room = "2.3.0"
-    const val work = "2.7.0-beta01"
+    const val lifecycle = "2.4.1"
+    const val navigation = "2.4.2"
+    const val room = "2.4.2"
+    const val work = "2.7.1"
     const val datastore = "1.0.0"
     const val protobuf = "3.17.3"
-    const val material = "1.4.0"
+    const val material = "1.6.1"
+    const val coroutines = "1.6.2"
 
     // firebase
-    const val firebase_appindexing = "20.0.0"
-    const val firebase_crashlytics = "18.2.1"
-    const val firebase_analytics = "19.0.1"
-    const val firebase_perf = "20.0.2"
+    const val firebase_bom = "30.1.0"
 
     // dagger
-    const val hilt = "2.38.1"
+    const val hilt = "2.42"
     const val hilt_androidx = "1.0.0"
 
     // network
-    const val okhttp3 = "4.9.1"
+    const val okhttp3 = "4.9.3"
     const val retrofit2 = "2.9.0"
-    const val coil = "1.3.2"
+    const val coil = "2.1.0"
 
     // misc
-    const val permissionsdispatcher = "1.1.2"
-    const val insetter = "0.6.0"
+    const val insetter = "0.6.1"
+    const val permissionlauncher = "0.9.0"
     const val flow_binding = "1.2.0"
 
     // debug
     const val timber = "5.0.1"
-    const val leakcanary = "2.7"
+    const val leakcanary = "2.9.1"
 
     // test
     const val junit = "4.13.2"
     const val test = "1.4.0"
     const val test_junit = "1.1.3"
     const val espresso = "3.4.0"
-    const val robolectric = "4.6.1"
-    const val mockito = "3.12.4"
+    const val robolectric = "4.8.1"
+    const val mockito = "4.6.1"
 }

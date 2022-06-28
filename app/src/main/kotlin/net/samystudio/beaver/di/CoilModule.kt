@@ -3,7 +3,7 @@ package net.samystudio.beaver.di
 import android.content.ComponentCallbacks2
 import android.content.Context
 import coil.ImageLoader
-import coil.util.CoilUtils
+import coil.disk.DiskCache
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,12 +22,17 @@ object CoilModule {
     @Singleton
     @OkHttpCoilQualifier
     fun provideOkHttpClient(
-        @ApplicationContext context: Context,
         httpLoggingInterceptor: HttpLoggingInterceptor,
     ): OkHttpClient =
         OkHttpClient.Builder()
-            .cache(CoilUtils.createDefaultCache(context))
             .addInterceptor(httpLoggingInterceptor)
+            .build()
+
+    @Provides
+    @Singleton
+    fun provideCoilDiskCache(@ApplicationContext context: Context): DiskCache =
+        DiskCache.Builder()
+            .directory(context.cacheDir.resolve("image_cache"))
             .build()
 
     @Provides
@@ -35,24 +40,25 @@ object CoilModule {
     fun provideCoil(
         @ApplicationContext context: Context,
         @OkHttpCoilQualifier okHttpClient: OkHttpClient,
+        diskCache: DiskCache,
     ): ImageLoader =
         ImageLoader.Builder(context)
             .okHttpClient { okHttpClient }
+            .diskCache { diskCache }
             .crossfade(true)
             .build()
+}
 
-    @Singleton
-    class CoilTrimMemory @Inject constructor(private val imageLoader: ImageLoader) : TrimMemory {
-        override fun onTrimMemory(level: Int) {
-            when (level) {
-                ComponentCallbacks2.TRIM_MEMORY_UI_HIDDEN,
-                ComponentCallbacks2.TRIM_MEMORY_COMPLETE,
-                ComponentCallbacks2.TRIM_MEMORY_RUNNING_CRITICAL -> {
-                    imageLoader.bitmapPool.clear()
-                    imageLoader.memoryCache.clear()
-                }
-                else -> Unit
-            }
+@Singleton
+class CoilTrimMemory @Inject constructor(private val imageLoader: ImageLoader) : TrimMemory {
+    override fun onTrimMemory(level: Int) {
+        when (level) {
+            ComponentCallbacks2.TRIM_MEMORY_UI_HIDDEN,
+            ComponentCallbacks2.TRIM_MEMORY_COMPLETE,
+            ComponentCallbacks2.TRIM_MEMORY_RUNNING_CRITICAL ->
+                imageLoader.memoryCache?.clear()
+            else ->
+                Unit
         }
     }
 }

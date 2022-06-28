@@ -67,14 +67,18 @@ class LoaderDialog : AppCompatDialogFragment() {
 
     private fun hide() {
         binding.progressBar.hide()
-        binding.logo.animate()
-            .translationY(50 * resources.displayMetrics.density)
-            .alpha(0f)
-            .setDuration(TRANSITION_DURATION).setInterpolator(AccelerateInterpolator(2f))
-            .setListener(object : AnimatorListenerAdapter() {
-                override fun onAnimationEnd(animation: Animator?) {
-                    super@LoaderDialog.dismissAllowingStateLoss()
-                }
-            })
+        if (binding.logo.alpha == 0f)
+            super.dismissAllowingStateLoss()
+        else
+            binding.logo.animate()
+                .translationY(50 * resources.displayMetrics.density)
+                .alpha(0f)
+                .setDuration(TRANSITION_DURATION).setInterpolator(AccelerateInterpolator(2f))
+                .setListener(object : AnimatorListenerAdapter() {
+                    override fun onAnimationEnd(animation: Animator?) {
+                        if (isAdded)
+                            super@LoaderDialog.dismissAllowingStateLoss()
+                    }
+                })
     }
 }

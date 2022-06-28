@@ -16,7 +16,8 @@ private class EmailValidator : Validator<CharSequence> {
 val EMAIL_VALIDATOR: Validator<CharSequence> = EmailValidator()
 
 private class PasswordValidator : Validator<CharSequence> {
-    override fun validate(any: CharSequence?): Boolean = !any.isNullOrBlank() && any.length >= 8
+    override fun validate(any: CharSequence?): Boolean =
+        !any.isNullOrBlank() && any.length >= PASSWORD_MIN_LENGTH && any.length <= PASSWORD_MAX_LENGTH
 }
 
 val PASSWORD_VALIDATOR: Validator<CharSequence> = PasswordValidator()
